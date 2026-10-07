@@ -5,7 +5,7 @@
 // words (palette-drag-insert).
 import { activeBreakpoint } from '../view/breakpoints.ts';
 import { useSelectionSize } from '../view/selection-size.ts';
-import { useState, useSyncExternalStore } from 'react';
+import { useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { MessageId } from '../../generated/ids.ts';
 import { saveState, type SaveState } from '../persistence/autosave.ts';
 import { incidents, onIncident } from '../../core/incidents.ts';
@@ -14,9 +14,11 @@ import { openedPage } from '../../core/project/pages.ts';
 import type { Message } from '../../core/commands/registry.ts';
 import { pluralForm } from '../../i18n/index.ts';
 import { dragMessages } from '../canvas/chrome.tsx';
-import { DoorControl, Icon } from '../doors/door.tsx';
+import { DoorControl, Icon, useDoor } from '../doors/door.tsx';
 import { elementIcon, type DoorEntry } from '../../manifest/runtime.ts';
-import { MenuButton } from '../doors/menu.tsx';
+import { MenuButton, useMenuLayer } from '../doors/menu.tsx';
+import { floatBelow, type Placed } from './float.ts';
+import { crumbsAfterFold } from './crumb-fold.ts';
 import { drawnAsOf } from '../doors/placement.ts';
 import { useEditorState } from '../store.ts';
 import { activeState } from '../view/style-state.ts';
@@ -130,7 +132,9 @@ function IncidentCount() {
 // from the page root down to it, each a button that selects it (selection.select's status-bar door), with the
 // element's icon and name; the primary itself wears the current mark. With several selected, the path to the
 // nearest element that holds them all, which wears the mark (the canonical "Page › Main › Planos › Grade de cartões").
-// Empty without a selection.
+// Empty without a selection. It fits the room the bar's other items leave it (CLAUDE.md, rule G5): the page root and as
+// many of the last levels as the room holds, the levels between folded into "…" (crumb-fold.ts), measured on an unseen
+// copy of every crumb as the bar draws it, again whenever the room or the crumbs change.
 function Breadcrumb({ entry }: { readonly entry: DoorEntry }) {
   const t = useT();
   const document = useEditorState((s) => s.document);
@@ -144,15 +148,115 @@ function Breadcrumb({ entry }: { readonly entry: DoorEntry }) {
   // the one node's own path; with several, their shared ancestors (each path less the node itself)
   const crumbs: DocNode[] = paths.length < 2 ? (paths[0] ?? []) : (paths[0] ?? []).slice(0, -1).filter((node, i) => paths.every((path) => path.length - 1 > i && path[i]?.id === node.id));
   const primary = paths.length < 2 ? (selection[0] ?? null) : (crumbs[crumbs.length - 1]?.id ?? null);
+  const nav = useRef<HTMLElement>(null);
+  const copy = useRef<HTMLSpanElement>(null);
+  // how many of the last crumbs stand after the fold; null while all of them fit
+  const [after, setAfter] = useState<number | null>(null);
+  const drawn = [...crumbs.map((node) => `${node.id} ${node.type} ${node.name}`), primary ?? ''].join('\n');
+  useLayoutEffect(() => {
+    const own = nav.current;
+    const measured = copy.current;
+    if (own === null || measured === null) return undefined;
+    const fit = () => {
+      const widths = [...measured.querySelectorAll<HTMLElement>('[data-crumb]')].map((crumb) => crumb.getBoundingClientRect().width);
+      const more = measured.querySelector<HTMLElement>('[data-crumb-more]')?.getBoundingClientRect().width ?? 0;
+      setAfter(crumbsAfterFold(widths, more, own.clientWidth));
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(own);
+    return () => observer.disconnect();
+  }, [drawn]);
+  // each crumb named by its element, the name it shows (WCAG 2.5.3, label in name; every crumb was named "Select"),
+  // which a name cut at the crumb's width is read whole in
+  const crumb = (node: DocNode, i: number) => (
+    <DoorControl key={node.id} entry={entry} args={{ target: node.id }} label={node.name} title={node.name} current={node.id === primary} className={i === 0 ? 'status-bar__crumb status-bar__crumb--first' : 'status-bar__crumb'}>
+      <Icon name={elementIcon(node.type) ?? 'box'} size="xs" />
+      <span className="door__label">{node.name}</span>
+    </DoorControl>
+  );
+  const kept = after === null ? 0 : crumbs.length - after;
   return (
-    <nav className="status-bar__breadcrumb" aria-label={t(panelName('layers'))}>
-      {crumbs.map((node, i) => (
-        <DoorControl key={node.id} entry={entry} args={{ target: node.id }} current={node.id === primary} className={i === 0 ? 'status-bar__crumb status-bar__crumb--first' : 'status-bar__crumb'}>
-          <Icon name={elementIcon(node.type) ?? 'box'} size="xs" />
-          <span className="door__label">{node.name}</span>
-        </DoorControl>
-      ))}
+    <nav ref={nav} className="status-bar__breadcrumb" aria-label={t(panelName('layers'))}>
+      {/* every crumb as the bar draws it, unseen, measured, in a box of no size that clips it (status-bar.css) */}
+      <span className="status-bar__crumbs-measure-box" aria-hidden="true" inert>
+        <span ref={copy} className="status-bar__crumbs-measure">
+          {crumbs.map((node, i) => (
+            <button key={node.id} type="button" tabIndex={-1} data-crumb="" className={`door door--item status-bar__crumb${i === 0 ? ' status-bar__crumb--first' : ''}${node.id === primary ? ' is-current' : ''}`}>
+              <Icon name={elementIcon(node.type) ?? 'box'} size="xs" />
+              <span className="door__label">{node.name}</span>
+            </button>
+          ))}
+          <button type="button" tabIndex={-1} data-crumb-more="" className="door door--item status-bar__crumb status-bar__crumb--more">
+            …
+          </button>
+        </span>
+      </span>
+      {after === null
+        ? crumbs.map(crumb)
+        : [...crumbs.slice(0, 1).map(crumb), <FoldedLevels key="folded" entry={entry} levels={crumbs.slice(1, kept)} />, ...crumbs.slice(kept).map((node, i) => crumb(node, kept + i))]}
     </nav>
+  );
+}
+
+// The levels the breadcrumb folds (crumb-fold.ts): "…", a button whose menu holds them, each its level's door, as the
+// crumbs are; the menu floats from the button, above it at the window's foot (float.ts).
+function FoldedLevels({ entry, levels }: { readonly entry: DoorEntry; readonly levels: readonly DocNode[] }) {
+  const t = useT();
+  const locale = useLocale();
+  const button = useRef<HTMLButtonElement>(null);
+  const list = useRef<HTMLDivElement>(null);
+  const layer = useMenuLayer(button, list);
+  const [at, setAt] = useState<Placed | null>(null);
+  useLayoutEffect(() => {
+    const from = button.current;
+    const own = list.current;
+    if (!layer.open || from === null || own === null) return;
+    const edge = parseFloat(getComputedStyle(own).getPropertyValue('--space-4')) || 0;
+    const { width, height } = own.getBoundingClientRect();
+    setAt(floatBelow(from.getBoundingClientRect(), { width, height }, { width: window.innerWidth, height: window.innerHeight }, edge));
+  }, [layer.open]);
+  const name = t(`statusBar.foldedLevels.${pluralForm(locale, levels.length)}` as MessageId, { count: levels.length });
+  const placed = at === null
+    ? { position: 'fixed' as const, visibility: 'hidden' as const }
+    : { position: 'fixed' as const, left: at.left, top: at.top, ...(at.maxHeight === undefined ? {} : { maxHeight: at.maxHeight, overflowY: 'auto' as const }) };
+  return (
+    <>
+      <button ref={button} type="button" className="door door--item status-bar__crumb status-bar__crumb--more" aria-haspopup="menu" aria-expanded={layer.open} aria-label={name} title={name} onClick={layer.toggle}>
+        …
+      </button>
+      {layer.open ? (
+        <div ref={list} className="menu" role="menu" tabIndex={-1} aria-label={name} data-key-context="menu" style={placed}>
+          {levels.map((node) => (
+            <FoldedLevel key={node.id} entry={entry} node={node} close={layer.close} />
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+// One folded level in the menu: its crumb's door (selection.select), its element's icon and name.
+function FoldedLevel({ entry, node, close }: { readonly entry: DoorEntry; readonly node: DocNode; readonly close: () => void }) {
+  const door = useDoor(entry, { target: node.id });
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      className="menu__item"
+      data-door={entry.ref}
+      data-args={JSON.stringify({ target: node.id })}
+      aria-disabled={door.available ? undefined : true}
+      onClick={() => {
+        close();
+        if (door.available) door.run();
+      }}
+    >
+      <span className="menu__icon">
+        <Icon name={elementIcon(node.type) ?? 'box'} size="sm" />
+      </span>
+      <span className="menu__label">{node.name}</span>
+    </button>
   );
 }
 

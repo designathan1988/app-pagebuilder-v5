@@ -108,10 +108,15 @@
 }
 
 /* the keys of a drag, while one goes on (the user's real-use audit, item 3.3) */
+/* it takes what the toolbar leaves, never more: cut with an ellipsis, whole in its tooltip (canvas.tsx Hint) */
 .canvas-toolbar__hint {
+  flex: 0 1 auto;
+  min-width: 0;
   margin-inline-start: auto;
+  overflow: hidden;
   color: var(--color-text-muted);
   font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

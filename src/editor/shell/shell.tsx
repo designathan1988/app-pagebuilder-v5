@@ -43,7 +43,6 @@ import { TopBar } from './top-bar.tsx';
 import { FitZoom, ReportFitZoom } from './slots.tsx';
 import { FloatingWindows, PanelBodyTable, PanelDragLayer, RightDock } from '../workspace/windows.tsx';
 import { RegionBoundary } from './region-boundary.tsx';
-import { NarrowWindow, useWindowNarrow } from '../workspace/narrow.ts';
 import { splitterSize } from '../workspace/layout.ts';
 import { onFirstUse, wiring } from '../wiring.ts';
 
@@ -134,14 +133,12 @@ export function Shell() {
   // a web address asked to be captured goes to the Builder Companion (import/capture.ts, spec capture-url)
   useEffect(() => installCapture(store), [store]);
   useEffect(() => installSelectOnFocus(), []);
-  // below the manifest's width the sidebar opens over the canvas (workspace/narrow.ts)
-  const narrow = useWindowNarrow();
   // the widths the person gave the sidebar and the inspector (their splitters: workspace.resizeSplitter), which the
   // window's columns and everything sized by them take
   const sidebarWidth = useEditorState((s) => splitterSize(s.ui, 'sidebar-width'));
   const inspectorWidth = useEditorState((s) => splitterSize(s.ui, 'inspector-width'));
   const widths = { ...(sidebarWidth === null ? {} : { '--size-sidebar': `${sidebarWidth}px` }), ...(inspectorWidth === null ? {} : { '--size-inspector': `${inspectorWidth}px` }) } as CSSProperties;
-  const classes = ['shell', sidebar ? '' : 'shell--no-sidebar', inspector ? '' : 'shell--no-inspector', narrow ? 'shell--narrow' : '', `shell--dock-${dock}`].filter((c) => c !== '').join(' ');
+  const classes = ['shell', sidebar ? '' : 'shell--no-sidebar', inspector ? '' : 'shell--no-inspector', `shell--dock-${dock}`].filter((c) => c !== '').join(' ');
   // while previewing, the preview bar and the exported page over the editor (spec preview-mode): the editor stays as it
   // is underneath, its canvas included, and the status bar below says so
   const inPreview = useEditorState((s) => previewing(s.ui));
@@ -149,7 +146,6 @@ export function Shell() {
   // focus moves into the preview and comes back to where it was (the interface audit, finding F04)
   const root = usePreviewModal(inPreview);
   return (
-    <NarrowWindow.Provider value={narrow}>
     <PanelBodyTable.Provider value={ALL_BODIES()}>
     <PanelBodies.Provider value={drawsBody()}>
       <FitZoom.Provider value={zoom}>
@@ -204,6 +200,5 @@ export function Shell() {
       </FitZoom.Provider>
     </PanelBodies.Provider>
     </PanelBodyTable.Provider>
-    </NarrowWindow.Provider>
   );
 }

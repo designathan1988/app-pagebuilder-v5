@@ -1181,7 +1181,9 @@ textarea.input {
   padding: 0 var(--space-2);
 }
 
-.field-choice { position: relative; display: inline-flex; align-items: center; gap: var(--space-3); justify-self: start; min-width: 0; }
+/* the room of a row of choices fills the grid area its row gives it, its buttons from its start: its own width is the
+   width its words are measured against (field.tsx useFits) */
+.field-choice { position: relative; display: inline-flex; align-items: center; gap: var(--space-3); justify-self: stretch; min-width: 0; }
 [data-region='inspector-style'] .field-choice--plate { justify-self: stretch; }
 [data-region='inspector-style'] .field-choice--plate .matrix { width: 100%; }
 [data-region='inspector-style'] .field-choice .segmented--values {
@@ -1415,7 +1417,20 @@ textarea.input {
   line-height: var(--size-row);
 }
 
-/* The unseen copy of a row of worded buttons, measured against the row's value column (field.tsx useFits) */
+/* The unseen copy of a row of worded buttons, measured against its room (field.tsx useFits), lies in a box of no size
+   that clips it: a box that clips its content keeps that content's overflow, and a box of no area adds none (CSS
+   Overflow 3 §2.2, scrollable overflow), so the copy, wider than its room, never widens the panel's scroll — it did,
+   every Style tab scrolled 45 px sideways. Contained (CSS Containment 2: layout and paint containment make the box the
+   copy's containing block and clip it), its layout reaches nothing outside it. */
+.field-choice__measure-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  contain: strict;
+}
 .field-choice__measure {
   position: absolute;
   top: 0;
@@ -1441,8 +1456,10 @@ textarea.input {
 .field__keyword .icon { flex: none; color: var(--color-text-subtle); }
 
 /* The grid track editor's header (J10): the axis named, its count, and its add and remove buttons, which stay in this
-   row however many tracks the list below holds */
-.grid-tracks__header {
+   row however many tracks the list below holds. Its own columns, as specific as the Style tab's rule for every row (a
+   24 px column for Reset at its end), which took the buttons' column and pushed them past the panel's side */
+.grid-tracks__header,
+[data-region='inspector-style'] .field-row.grid-tracks__header {
   grid-template-columns: var(--size-label-column) minmax(0, 1fr) auto;
 }
 .grid-tracks__count {

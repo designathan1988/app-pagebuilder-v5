@@ -37,28 +37,42 @@ test('at 1280 × 720 the canvas has half of the window and the canvas toolbar fi
   expect(toolbar.scroll).toBeLessThanOrEqual(toolbar.client);
 });
 
-// In the narrow window a panel of the activity bar opens over the canvas, which keeps its size; a press on the canvas
-// closes it, and so does Escape, which takes the focus to the canvas.
-test('in a narrow window the sidebar opens over the canvas and closes on a press outside it or on Escape', runs(INSERT, ESCAPE), async ({ page }) => {
+// In a narrow window a panel of the activity bar takes its column beside the canvas, as in any window (CLAUDE.md, rule
+// G4: it once opened over the canvas, and what it inserted, the canvas toolbar and the dock lay under it): nothing of it
+// lies over the canvas, which keeps half of the window, a press on the canvas leaves it open, and Escape in its palette
+// takes the focus to the canvas.
+test('in a narrow window the sidebar opens beside the canvas, never over it, and a press on the canvas leaves it open', runs(INSERT, ESCAPE), async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
   await openEditor(page);
-  const stageWidth = () => page.locator('.stage').evaluate((el) => el.getBoundingClientRect().width);
-  const before = await stageWidth();
   await expect(page.locator('.sidebar')).toHaveCount(0);
   await runDoor(page, INSERT);
   await expect(page.locator('.sidebar')).toBeVisible();
-  expect(await stageWidth()).toBe(before);
-  const sidebar = await page.locator('.sidebar').evaluate((el) => getComputedStyle(el).position);
-  expect(sidebar).toBe('fixed');
-  // a press on the canvas, beside the open panel
+  const open = await page.evaluate(() => {
+    const box = (selector: string) => document.querySelector(selector)?.getBoundingClientRect() ?? null;
+    const sidebar = box('.sidebar');
+    const stage = box('.stage');
+    // the canvas toolbar's controls the sidebar lies over
+    const covered = [...document.querySelectorAll('[data-region="canvas-toolbar"] button')].filter((b) => {
+      const r = b.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) return false;
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return hit !== null && !b.contains(hit) && hit.closest('.sidebar') !== null;
+    }).length;
+    return { sidebarRight: sidebar?.right ?? null, stageLeft: stage?.left ?? null, stageWidth: stage?.width ?? null, covered };
+  });
+  if (open.sidebarRight === null || open.stageLeft === null || open.stageWidth === null) throw new Error('no sidebar or stage');
+  expect(open.sidebarRight, 'the sidebar ends where the canvas begins').toBeLessThanOrEqual(open.stageLeft + 0.5);
+  expect(open.stageWidth / 1280, 'the canvas keeps half of the window beside the open sidebar').toBeGreaterThanOrEqual(0.5);
+  expect(open.covered, 'no control of the canvas toolbar lies under the sidebar').toBe(0);
+  // a press on the canvas leaves it open
   const stage = await page.locator('.stage').boundingBox();
   if (stage === null) throw new Error('no stage');
   await page.mouse.click(stage.x + stage.width - 40, stage.y + stage.height - 40);
-  await expect(page.locator('.sidebar')).toHaveCount(0);
-  // opened again, Escape in its palette takes the focus to the canvas and closes it
-  await runDoor(page, INSERT);
   await expect(page.locator('.sidebar')).toBeVisible();
+  // Escape in its palette takes the focus to the canvas; the sidebar stays
   await page.locator('.sidebar [data-door="element.insert#elements-tile"]').first().focus();
   await page.keyboard.press('Escape');
-  await expect(page.locator('.sidebar')).toHaveCount(0);
+  // the canvas's key context is the page's body (focus/focus.ts focusTheCanvas)
+  await expect.poll(() => page.evaluate(() => document.activeElement === document.body), { message: 'Escape took the focus to the canvas' }).toBe(true);
+  await expect(page.locator('.sidebar')).toBeVisible();
 });

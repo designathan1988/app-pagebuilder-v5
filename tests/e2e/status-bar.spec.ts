@@ -36,7 +36,8 @@ async function clickNode(page: Page, id: string): Promise<void> {
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
 }
 
-const crumbs = (page: Page) => page.locator('.status-bar__breadcrumb .status-bar__crumb').allInnerTexts();
+// the crumbs a person sees: the breadcrumb's own, never the unseen copy it measures them on (status-bar.tsx)
+const crumbs = (page: Page) => page.locator('.status-bar__breadcrumb > .status-bar__crumb').allInnerTexts();
 const size = (page: Page) => page.locator('.status-bar .status-bar__size').innerText();
 
 test.beforeEach(async ({ page }) => {

@@ -4288,6 +4288,8 @@ export const MESSAGE_IDS = [
   "statusBar.size",
   "statusBar.checks.one",
   "statusBar.checks.other",
+  "statusBar.foldedLevels.one",
+  "statusBar.foldedLevels.other",
   "menu.theme",
   "menu.view",
   "menu.zoom",

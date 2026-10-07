@@ -5,18 +5,13 @@
 // doors they share in doors.tsx; this file draws the activity bar, the sidebar and the views' table.
 import { AssistantPanel } from '../assistant/panel.tsx';
 import { DataPanel } from '../data/panel.tsx';
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { onFirstUse, wiring } from '../wiring.ts';
-import type { DispatchResult } from '../../core/store/store.ts';
-import type { CommandId, MessageId } from '../../generated/ids.ts';
+import type { MessageId } from '../../generated/ids.ts';
 import { DoorControl } from '../doors/door.tsx';
-import { useEditorState, useStore } from '../store.ts';
-import { atPlace, isPanelOpen, toggleLeftDock } from '../workspace/panels.ts';
+import { useEditorState } from '../store.ts';
+import { atPlace, isPanelOpen } from '../workspace/panels.ts';
 import { panelName, stackedSections, type Panel } from '../workspace/panel-catalogue.ts';
-import { useNarrowWindow } from '../workspace/narrow.ts';
-import { useOutsideLayer } from './outside-layer.ts';
 import { Splitter } from './splitter.tsx';
-import { pointerViews } from '../input/pointer/views.ts';
 import { combinationAt, splitterSize } from '../workspace/layout.ts';
 import { PanelArea } from '../workspace/windows.tsx';
 import { useT } from '../text.ts';
@@ -73,35 +68,10 @@ export function Sidebar() {
   // panels combined with the view's area (spec panel-combine-tabs): one more tab of it, or one stacked under it; the
   // area then draws itself (PanelArea), so the tab strip and the stacked bodies have one owner
   const combined = useEditorState((s) => combinationAt(s.ui, view).tabs.length > 1 || combinationAt(s.ui, view).stack.length > 0);
-  // In a narrow window the sidebar opens over the canvas (workspace/narrow.ts): a press outside it and its activity
-  // bar, or the focus leaving it for anywhere else (Escape takes it to the canvas), closes it, as the left dock's own
-  // toggle does (workspace.toggleLeftDock)
-  const narrow = useNarrowWindow();
-  const store = useStore();
-  const aside = useRef<HTMLElement>(null);
-  const activity = useRef<HTMLElement | null>(null);
-  useLayoutEffect(() => {
-    activity.current = document.querySelector<HTMLElement>('.activity-bar');
-  });
-  const close = useCallback(() => {
-    if (store.getState().ui.panels.sidebar) (store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(toggleLeftDock.command, {});
-  }, [store]);
-  useOutsideLayer(aside, narrow, close, activity, false);
-  // where the focus went is known once it has moved (Escape hands it to the canvas, which leaves the page's own focus
-  // on its body): read then; a focus left on the body by a press on the panel's own padding keeps it open
-  const pressedInside = useRef(false);
-  useEffect(() => pointerViews(store).outsidePress.subscribe((target) => void (pressedInside.current = aside.current?.contains(target) === true)), [store]);
-  const leave = () => {
-    if (!narrow) return;
-    window.setTimeout(() => {
-      const now = document.activeElement;
-      if (now !== null && (aside.current?.contains(now) === true || activity.current?.contains(now) === true)) return;
-      if ((now === null || now === document.body) && pressedInside.current) return;
-      close();
-    }, 0);
-  };
+  // The sidebar takes its column in every window, a narrow one too (workspace/narrow.ts): it lies over nothing, so the
+  // canvas beside it shows whole and a press there leaves it open (CLAUDE.md, rule G4)
   return (
-    <aside ref={aside} className="sidebar" onBlur={leave}>
+    <aside className="sidebar">
       {combined ? (
         <PanelArea panel={view} />
       ) : (

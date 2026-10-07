@@ -121,8 +121,10 @@
   scrollbar-width: thin;
 }
 
+/* the rows' board: the tree's width less its scrollbar, the room its rows' palettes are held to (.row__palette--lead) */
 .layers-tree__board {
   position: relative;
+  container-type: inline-size;
 }
 
 .layers-tree__slot {
@@ -536,9 +538,13 @@
   pointer-events: none;
 }
 
+/* under the dot, held to the room the row leaves after its indent and its caret, wrapping there: hidden or open, a
+   palette as wide as its seven swatches passed the tree's side on a deep row and scrolled the tree sideways */
 .row__palette--lead .row__swatches {
   right: auto;
   left: 0;
+  flex-wrap: wrap;
+  max-width: calc(100cqw - var(--space-2) - min(var(--depth), 8) * var(--space-5) - var(--size-target-min) - var(--space-3) - var(--space-2));
 }
 
 .row__swatch {

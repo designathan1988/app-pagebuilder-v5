@@ -81,15 +81,22 @@ function ZoomValue() {
   return <span className="zoom-value">{t('view.zoomValue', { zoom: Math.round(zoom * 100) })}</span>;
 }
 
+// A hint of the canvas toolbar: the toolbar's room left over, its words cut there with an ellipsis and read whole in
+// its tooltip (CLAUDE.md, rule G5: a text edited in place at 1280 with the sidebar open pushed the toolbar 8 px past
+// its side)
+function Hint({ chrome, text }: { readonly chrome: string; readonly text: string }) {
+  return (
+    <span className="canvas-toolbar__hint" data-chrome={chrome} title={text}>
+      {text}
+    </span>
+  );
+}
+
 // The keys of a drag, in the canvas toolbar while one goes on (the user's real-use audit, item 3.3)
 function DragHint() {
   const t = useT();
   const dragging = usePointerValue('drag');
-  return dragging === null ? null : (
-    <span className="canvas-toolbar__hint" data-chrome="drag-hint">
-      {t('canvas.drag.hint')}
-    </span>
-  );
+  return dragging === null ? null : <Hint chrome="drag-hint" text={t('canvas.drag.hint')} />;
 }
 
 // The Edit on canvas mode in force, in the same toolbar (the audit's item 4.1: "Mode: Padding · Esc exits"): the mode
@@ -101,15 +108,11 @@ function ModeHint() {
   // a text edited in place: its keys (the canonical toolbar's hint while text is edited)
   const editing = useEditorState((s) => s.ui.textEdit.node !== null);
   const altMeasuring = usePointerValue('measuring');
-  if (editing && dragging === null) return <span className="canvas-toolbar__hint" data-chrome="text-hint">{t('canvas.textEdit.hint')}</span>;
+  if (editing && dragging === null) return <Hint chrome="text-hint" text={t('canvas.textEdit.hint')} />;
   // Alt held over the canvas: the distances are measured (the canonical toolbar's hint)
-  if (altMeasuring && dragging === null) return <span className="canvas-toolbar__hint" data-chrome="measure-hint">{t('canvas.measure.hint')}</span>;
+  if (altMeasuring && dragging === null) return <Hint chrome="measure-hint" text={t('canvas.measure.hint')} />;
   if (mode === NO_MODE || dragging !== null) return null;
-  return (
-    <span className="canvas-toolbar__hint" data-chrome="mode-hint">
-      {t('canvas.editMode.hint', { mode: t(`canvas.editMode.${mode}` as MessageId) })}
-    </span>
-  );
+  return <Hint chrome="mode-hint" text={t('canvas.editMode.hint', { mode: t(`canvas.editMode.${mode}` as MessageId) })} />;
 }
 
 function CanvasToolbar() {

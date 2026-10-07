@@ -246,7 +246,7 @@
       "id": "workspace.narrowWindow",
       "value": 1366,
       "unit": "css-px",
-      "note": "Below this window width the sidebar leaves its column and opens over the canvas (the plan's stage 5, J25: the canvas at least half of a 1280 x 720 window)."
+      "note": "Below this window width a first visit opens with the sidebar closed, so the canvas takes the room (the plan's stage 5, J25: the canvas at least half of a 1280 x 720 window); opened, the sidebar takes its column as in any window and lies over nothing (rule G4: what an action makes shows)."
     },
     {
       "id": "splitter.step",

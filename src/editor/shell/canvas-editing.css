@@ -96,8 +96,11 @@
 
 /* the head is one line (the canonical .qp-head): the element's name in bold, its tag in the code face, then the
    actions and the close button; what the writes land in (A3.8) takes a caption line under it when there is one */
+/* it never shrinks: its min-height takes the place of a flex item's automatic minimum, so in a panel taller than its
+   75vh the head shrank under its own lines and the fields lay over its close button */
 .quick-panel__bar {
   display: flex;
+  flex: none;
   flex-wrap: wrap;
   align-items: center;
   gap: 0 var(--space-1);
@@ -411,13 +414,17 @@
   justify-content: flex-start;
 }
 
+/* the head's actions keep within the panel: several elements selected bring the align and distribute buttons, more than
+   one line of the panel holds, and the row wraps under itself instead of passing the panel's side (it scrolled the
+   panel 22 px sideways) */
 .quick-panel__actions {
   display: flex;
-  flex: none;
-  flex-wrap: nowrap;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-0);
   min-width: 0;
+  max-width: 100%;
 }
 
 /* the head's buttons are the canonical .qp-head buttons: bare, muted, as small as a target may be */
@@ -574,11 +581,13 @@
   position: relative;
 }
 
+/* its options open under it, ending where it ends: the menu stands at the head's end, and opened from its start it passed
+   the panel's side (the panel scrolled 70 px sideways) */
 .quick-panel__options {
   position: absolute;
   z-index: var(--z-canvas-panel-menu);
   top: 100%;
-  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   min-width: calc(var(--space-10) * 4);

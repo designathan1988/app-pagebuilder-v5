@@ -36,6 +36,21 @@
   overflow-wrap: anywhere;
 }
 
+/* an action whose name is longer than the panel's room (A page per item of Cardapio, named by name) keeps within the
+   panel: its name is cut with an ellipsis and read whole in its accessible name (the panel scrolled 19 to 51 px
+   sideways) */
+.data-panel__actions > .door {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.data-panel__actions > .door .door__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* a field, a menu or a form keeps its control on one line and gives it what the row leaves */
 .data-field,
 .data-form {

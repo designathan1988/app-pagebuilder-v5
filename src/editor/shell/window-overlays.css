@@ -763,8 +763,12 @@
   white-space: nowrap;
 }
 
+/* a refusal quotes what was typed, however long: it wraps within the row (a quote of 300 letters, unbroken, widened
+   the Inspector's scroll by 2198 px) */
 .field-row__refusal {
   grid-column: 1 / -1;
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: var(--color-danger);
   font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
 }

@@ -1252,6 +1252,8 @@
   "statusBar.size": "{width} × {height}",
   "statusBar.checks.one": "Checks: {count} issue",
   "statusBar.checks.other": "Checks: {count} issues",
+  "statusBar.foldedLevels.one": "{count} hidden level",
+  "statusBar.foldedLevels.other": "{count} hidden levels",
   "menu.theme": "Theme",
   "menu.view": "View",
   "menu.zoom": "Zoom",

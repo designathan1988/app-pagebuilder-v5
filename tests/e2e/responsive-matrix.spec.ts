@@ -107,19 +107,6 @@ async function setUp(page: Page, c: Condition): Promise<Record<string, string>> 
   }, INSERTED);
 }
 
-// Below the narrow window's width the sidebar opens over the canvas and the dock (src/editor/workspace/narrow.ts): a
-// person puts it away (Ctrl+B) to reach what it lies over
-async function sidebarAway(page: Page, ref: string): Promise<void> {
-  const target = page.locator(`[data-door="${ref}"]`).first();
-  if (!(await target.isVisible())) return;
-  const covered = await target.evaluate((el) => {
-    const r = el.getBoundingClientRect();
-    const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
-    return hit !== null && !el.contains(hit) && hit.closest('.sidebar') !== null;
-  });
-  if (covered) await runDoor(page, 'workspace.toggleLeftDock#key-ctrl-b-in-global');
-}
-
 // an element of the page brought into the canvas's view with the wheel, as a person scrolls to it, and its centre
 async function inView(page: Page, id: string): Promise<{ readonly x: number; readonly y: number }> {
   const view = await page.locator('.frame__view').boundingBox();
@@ -179,7 +166,6 @@ for (const c of CONDITIONS) {
       }
       await closeAll(page);
       for (const dock of DOCKS) {
-        await sidebarAway(page, `workspace.setPanelOpen#dock-strip-${dock}`);
         const strip = page.locator(`[data-door="workspace.setPanelOpen#dock-strip-${dock}"]`).first();
         if (await strip.isVisible()) await strip.click();
         else await control(page, 'workspace.setActiveTab#tab-strip-tab', { args: { panel: dock } }).first().click();

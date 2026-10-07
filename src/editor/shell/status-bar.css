@@ -53,8 +53,52 @@
   color: var(--color-text);
 }
 
+/* The breadcrumb takes the room the bar's other items leave it, never more: a flex item's automatic minimum is its
+   content's (CSS Flexbox, min-width: auto), so a deep selection's breadcrumb ran past the window and the zoom, the
+   language and the save state with it. What it holds fits that room by folding the levels between the page root and
+   the last ones (status-bar.tsx Breadcrumb, crumb-fold.ts). */
 .status-bar__breadcrumb {
-  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.status-bar__breadcrumb .status-bar__crumb {
+  flex: none;
+}
+
+/* the selected level never folds: in a room too narrow even for it, its name is cut with an ellipsis */
+.status-bar__breadcrumb .status-bar__crumb.is-current {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.status-bar__breadcrumb .status-bar__crumb .door__label {
+  min-width: 0;
+}
+
+/* the unseen copy of every crumb, measured (status-bar.tsx), in a box of no size that clips it: it adds nothing to
+   what the bar lays out (CSS Overflow 3 §2.2), as the Inspector's copy of its keyword buttons */
+.status-bar__crumbs-measure-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  contain: strict;
+}
+
+.status-bar__crumbs-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: max-content;
+  visibility: hidden;
 }
 
 /* the breadcrumb: one button per ancestor from the page root down (spec status-bar) */

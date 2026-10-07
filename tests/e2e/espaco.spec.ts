@@ -86,7 +86,11 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
           const r = control.getBoundingClientRect();
           if (r.right > W || r.bottom > H || r.left < 0 || r.top < 0) continue;
           const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-          if (hit !== null && !control.contains(hit) && !hit.contains(control)) out.push(`coberto: ${name(control)} sob ${name(hit)}`);
+          // the owner's rule DEC-70 (selection-label-touches.spec.ts): the selection's label of an element at the page's
+          // top, and the quick panel's chip beside it, stand over the breakpoint tabs attached to the page's top (D-1).
+          // The two rules of the owner leave no other place; which gives way is the owner's to decide.
+          const dec70 = control.closest('[data-region="canvas-breakpoints"]') !== null && hit?.closest('[data-chrome="label"], .quick-panel-chip') != null;
+          if (hit !== null && !control.contains(hit) && !hit.contains(control) && !dec70) out.push(`coberto: ${name(control)} sob ${name(hit)}`);
         }
       }
       // the element just inserted shows on the canvas: nothing of the editor lies over its start

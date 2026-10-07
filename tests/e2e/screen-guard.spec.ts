@@ -144,6 +144,24 @@ const PLANTED: readonly Planted[] = [
     html: '<div style="height:40px;overflow:hidden"><div style="height:200px"></div><div style="width:60px;overflow:hidden;white-space:nowrap">Exportar o projeto inteiro</div></div>',
     finds: [],
   },
+  // a panel that scrolls down holds its content across (the Inspector's measured copy widened it by 45 px, D1); a
+  // copy measured in a box of no size that clips it adds nothing, as the Inspector's does now
+  {
+    name: 'a panel that scrolls down and sideways',
+    html: '<div aria-label="Painel" style="width:120px;height:60px;overflow-y:auto"><div style="width:240px;height:200px"></div></div>',
+    finds: ['sideways: Painel'],
+  },
+  {
+    name: 'a panel that scrolls down whose wider content lies hidden past its side',
+    html: '<div aria-label="Painel" style="width:120px;height:60px;overflow-y:auto;overflow-x:hidden;position:relative"><div style="height:200px"></div><span style="position:absolute;top:0;left:0;width:240px;height:10px;visibility:hidden"></span></div>',
+    finds: ['sideways: Painel'],
+  },
+  { name: 'a panel that scrolls down holding its content across', html: '<div aria-label="Painel" style="width:120px;height:60px;overflow-y:auto"><div style="height:200px"></div></div>', finds: [] },
+  {
+    name: 'a panel that scrolls down with a copy measured in a box of no size that clips it',
+    html: '<div aria-label="Painel" style="width:120px;height:60px;overflow-y:auto;position:relative"><div style="height:200px"></div><span style="position:absolute;top:0;left:0;width:0;height:0;overflow:hidden;contain:strict"><span style="position:absolute;top:0;left:0;width:240px;height:10px;visibility:hidden"></span></span></div>',
+    finds: [],
+  },
   { name: 'an English text left in the Portuguese editor', html: '<span>Abrir</span><button>Export project</button>', finds: ['english: Export project'], english: ['Export project'] },
   { name: 'a Portuguese editor with its own words', html: '<span>Abrir</span><button>Exportar projeto</button>', finds: [], english: ['Export project'] },
 ];

@@ -1277,14 +1277,18 @@ export function KeywordButtons({ entry, door, property, values, icons, label }: 
   const menuButton = useRef<HTMLButtonElement>(null);
   const menuList = useRef<HTMLDivElement>(null);
   const layer = useMenuLayer(menuButton, menuList);
+  // the copy lies in a box of no size that clips it (inspector.css .field-choice__measure-box): measured, it widens no
+  // panel's scroll
   const words = worded ? (
-    <span ref={measure} className="segmented segmented--values field-choice__measure" aria-hidden="true">
-      {values.map((value) => (
-        <span key={value} className="door door--segment">
-          {icons[value] !== undefined ? <Icon name={icons[value]} size="sm" /> : <span className="door__label">{value}</span>}
-        </span>
-      ))}
-      {mixed ? <span className="field-row__mixed">{t('inspector.mixedValue')}</span> : null}
+    <span className="field-choice__measure-box" aria-hidden="true">
+      <span ref={measure} className="segmented segmented--values field-choice__measure">
+        {values.map((value) => (
+          <span key={value} className="door door--segment">
+            {icons[value] !== undefined ? <Icon name={icons[value]} size="sm" /> : <span className="door__label">{value}</span>}
+          </span>
+        ))}
+        {mixed ? <span className="field-row__mixed">{t('inspector.mixedValue')}</span> : null}
+      </span>
     </span>
   ) : null;
   if (!fits) {
@@ -1386,26 +1390,31 @@ export function KeywordButtons({ entry, door, property, values, icons, label }: 
   );
 }
 
-// Whether a row of words fits its room: the unseen copy's width against the width the room may take (its row's value
-// column), measured before the paint and again whenever the room changes size. Icons always fit.
+// Whether a row of words fits its room: the unseen copy's width against the room's own content width — the room fills
+// the grid area its row gives it (the value column, whatever the row's other columns: inspector.css .field-choice),
+// less what it keeps for its Reset — measured before the paint and again whenever the room changes size. Until a
+// measure says the words fit, the row draws its menu, which always fits: a measure that cannot be made (the room or the
+// copy not laid out) never draws words past their room. Icons always fit.
 function useFits(room: RefObject<HTMLElement | null>, measure: RefObject<HTMLElement | null>, worded: boolean): boolean {
-  const [fits, setFits] = useState(true);
+  const [fits, setFits] = useState(false);
   useLayoutEffect(() => {
     const cell = room.current?.parentElement ?? null;
     if (!worded || cell === null) return undefined;
     const check = () => {
       const copy = measure.current;
-      if (copy === null) return;
-      // the row's value column: the last track of its grid, as the browser resolves it
-      const available = parseFloat(getComputedStyle(cell).gridTemplateColumns.split(' ').at(-1) ?? '');
-      if (Number.isFinite(available)) setFits(copy.offsetWidth <= available + 0.5);
+      const own = room.current;
+      if (copy === null || own === null) return;
+      const style = getComputedStyle(own);
+      const available = own.clientWidth - (parseFloat(style.paddingLeft) || 0) - (parseFloat(style.paddingRight) || 0);
+      const needed = copy.offsetWidth;
+      setFits(available > 0 && needed > 0 && needed <= available + 0.5);
     };
     check();
     const observer = new ResizeObserver(check);
     observer.observe(cell);
     return () => observer.disconnect();
   }, [room, measure, worded]);
-  return fits;
+  return !worded || fits;
 }
 
 // The field's label, the handle its scrub is pressed on (the pointer owner runs the drag); its tooltip is the CSS

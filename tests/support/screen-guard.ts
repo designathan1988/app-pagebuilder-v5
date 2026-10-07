@@ -10,7 +10,11 @@
 // - off-window: a control a person must reach whose visible part passes the window's edge;
 // - covered: a control a press cannot reach, because another part of the editor that is not a layer opened above it
 //   (a menu, a dialog, a popover, the command bar) lies over most of it — two canvas controls over each other among them;
-// - english: in Portuguese, an interface text that is an English catalogue text.
+// - english: in Portuguese, an interface text that is an English catalogue text;
+// - sideways: a panel that scrolls down holding content wider than itself, so it scrolls sideways too or hides what
+//   lies past its side until the focus scrolls it there (CLAUDE.md, rule G5: the Inspector scrolled 45 px sideways
+//   under every Style tab, a copy of its keyword buttons measured out of sight widening it, and the focus put in a field
+//   scrolled it and cut every label).
 //
 // Every kind fails the test that leaves it on screen. Exceptions are only those of tests/support/screen-guard-allowed.ts,
 // each with its reason. The guard's own precision and recall are proven on pages built of each defect and of the same
@@ -22,7 +26,7 @@ import path from 'node:path';
 import type { Page, TestInfo } from '@playwright/test';
 import { ALLOWED } from './screen-guard-allowed.ts';
 
-export type FindingKind = 'cut' | 'wrapped' | 'off-window' | 'covered' | 'english';
+export type FindingKind = 'cut' | 'wrapped' | 'off-window' | 'covered' | 'english' | 'sideways';
 export interface Finding {
   readonly kind: FindingKind;
   readonly text: string;
@@ -89,8 +93,8 @@ export function screenFindings(input: { readonly english: readonly string[] | nu
     return held;
   };
   // The window's layers, by the editor's own scale (src/ui/tokens.css, --z-toast, --z-floating, --z-menu…): a
-  // surface placed at one of them floats over the editor — a floating panel, the narrow window's sidebar opened over
-  // the canvas, a toast — and covers what lies under it on purpose
+  // surface placed at one of them floats over the editor — a floating panel, a toast — and covers what lies under it
+  // on purpose
   const floatsFrom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z-toast')) || 40;
   const windowLayer = (e: Element | null): Element | null => {
     for (let x = e; x !== null && x !== document.body; x = x.parentElement) {
@@ -326,6 +330,30 @@ export function screenFindings(input: { readonly english: readonly string[] | nu
     // ENGLISH
     const code = tag === 'KBD' || el.closest('kbd') !== null || (codeFace !== '' && s.fontFamily === codeFace);
     if (english !== null && text.length > 3 && english.has(text) && !project.has(text) && !code && !allowed('english', el)) out.push({ kind: 'english', text, where: where(el), box: box(rect(r)) });
+  }
+  // SIDEWAYS: a box that scrolls down (an overflow of auto or scroll down) holds its content across, whatever it does
+  // with its own overflow across: wider content scrolls it sideways, or lies hidden past its side where a focus scrolls
+  // it into view. Named by the box's own name, or its region's; the width it lacks is the detail.
+  for (const el of all) {
+    const s = style(el);
+    if (s.overflowY !== 'auto' && s.overflowY !== 'scroll') continue;
+    if (el.clientWidth < 4 || el.scrollWidth <= el.clientWidth + 1) continue;
+    const r = shown(el);
+    if (r === null || allowed('sideways', el)) continue;
+    const name = el.getAttribute('aria-label') ?? el.closest('[data-region]')?.getAttribute('data-region') ?? el.tagName.toLowerCase();
+    // what passes its side furthest, the first box that does on its way down (the one to fix)
+    const side = r.left + el.clientWidth;
+    let widest: Element | null = null;
+    let furthest = 1;
+    for (const inner of el.querySelectorAll('*')) {
+      const ir = inner.getBoundingClientRect();
+      const parent = inner.parentElement;
+      if (ir.width < 1 || ir.right - side <= furthest || (parent !== null && parent !== el && parent.getBoundingClientRect().right - side > 1)) continue;
+      widest = inner;
+      furthest = ir.right - side;
+    }
+    const by = widest === null ? '' : `, past it: ${where(widest)} by ${Math.round(furthest)}px`;
+    out.push({ kind: 'sideways', text: name, where: where(el), box: box(rect(r)), detail: `+${el.scrollWidth - el.clientWidth}px across, overflow-x ${s.overflowX}${by}` });
   }
   return out;
 }

@@ -1252,6 +1252,8 @@
   "statusBar.size": "{width} × {height}",
   "statusBar.checks.one": "Verificações: {count} problema",
   "statusBar.checks.other": "Verificações: {count} problemas",
+  "statusBar.foldedLevels.one": "{count} nível oculto",
+  "statusBar.foldedLevels.other": "{count} níveis ocultos",
   "menu.theme": "Tema",
   "menu.view": "Exibir",
   "menu.zoom": "Zoom",
