@@ -51,6 +51,7 @@ O render incremental é igual a um render do zero. `espaco.spec.ts` recarrega e 
   - no máximo 4 workers, com prioridade baixa (`Start-Process` e `PriorityClass = 'BelowNormal'`);
   - nunca duas execuções de Playwright ao mesmo tempo, porque cada uma reconstrói `dist/`;
   - a suíte completa leva uns 18 minutos.
+- **Barras de rolagem:** o Chrome do Playwright as esconde, e a janela do Windows as mostra (~15 px por painel). Para varrer a interface como a pessoa a vê, rode com `E2E_SCROLLBARS=shown`. Nesse modo, leia os achados do guarda de tela. As diferenças de documento, as capturas e as larguras dos cenários foram calibradas sem barras e diferem por desenho: a página Desktop deixa a largura da barra livre (A3.22).
 - **Antes de dizer que funciona:** use o app como a pessoa usa, no laboratório abaixo, a 1280×720 em pt-BR e a 1440×900 em inglês, com entradas variadas.
 
 ## Laboratório: uso real sem tocar no projeto

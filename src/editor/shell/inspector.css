@@ -1493,7 +1493,9 @@ textarea.input {
   justify-content: flex-start;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2);
+  /* its name takes the column less a hair: with the 15 px a Windows scrollbar takes from the panel, "Pequeno" had 45 px
+     of the 47 it needs and was cut */
+  padding: var(--space-2) var(--space-1);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: none;
