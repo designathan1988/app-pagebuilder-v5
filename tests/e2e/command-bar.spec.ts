@@ -26,16 +26,21 @@ const hero = (page: Page) =>
     return doc.pages[0]?.tree.children.find((c) => c.id === 'n-hero')?.children.map((c) => c.name);
   });
 
-test.beforeEach(async ({ page }) => {
+// The Aurora project opened in a fresh editor, for the tests that act on its elements. A test that wants an editor of
+// its own (nothing selected, the empty project) opens one in its fresh page instead: a second editor opened in a page
+// whose first one saved its work starts on a profile holding that work, as soon as the save ran (openEditor's
+// fresh-profile check failed on that timing).
+async function withAurora(page: Page): Promise<void> {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openEditor(page);
   const chooser = page.waitForEvent('filechooser');
   await runDoor(page, OPEN);
   await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync(FIXTURE) });
   await expect(page.frameLocator('.frame__page').locator('[data-node="n-card-a-title"]')).toHaveCount(1);
-});
+}
 
 test('the bar offers a command only while it applies to the selection', runs(CTRL_K, ROW), async ({ page }) => {
+  await withAurora(page);
   await runDoor(page, CTRL_K);
   await page.keyboard.type('wrap in a');
   expect(await options(page)).toEqual([]);
@@ -47,6 +52,7 @@ test('the bar offers a command only while it applies to the selection', runs(CTR
 });
 
 test('the entry run last comes first on an empty query', runs(CTRL_K, ROW, WRAP), async ({ page }) => {
+  await withAurora(page);
   await control(page, ROW, { args: { target: 'n-intro' } }).click();
   await runDoor(page, CTRL_K);
   await expect(bar(page), 'the bar opens').toBeVisible();
@@ -61,6 +67,7 @@ test('the entry run last comes first on an empty query', runs(CTRL_K, ROW, WRAP)
 });
 
 test('the words of a query match in any order, and a press on the backdrop closes the bar', runs(CTRL_K, INSERT, BACKDROP), async ({ page }) => {
+  await withAurora(page);
   await runDoor(page, CTRL_K);
   await page.keyboard.type('hero ins');
   expect(await options(page)).toContain('Insert Hero');
@@ -73,6 +80,7 @@ test('the words of a query match in any order, and a press on the backdrop close
 });
 
 test('while a text is edited, Ctrl+K opens no bar', runs(CLICK, START_EDIT, CTRL_K), async ({ page }) => {
+  await withAurora(page);
   // the Title clicked on the canvas (at its centre on the screen, through the frame's zoom): selected, the focus there
   const at = await page.evaluate(() => {
     const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
@@ -97,6 +105,7 @@ test('while a text is edited, Ctrl+K opens no bar', runs(CLICK, START_EDIT, CTRL
 // The backdrop is the whole window: a press anywhere outside the panel closes the bar, and Escape still closes it after
 // (the audit's U-002: the backdrop was a 28 px strip); every entry shows one icon (U-003: it showed two).
 test('a press anywhere outside the bar closes it, and each entry shows one icon', runs(CTRL_K, BACKDROP), async ({ page }) => {
+  await withAurora(page);
   await runDoor(page, CTRL_K);
   await page.keyboard.type('ins');
   const icons = await bar(page).locator('[role="option"]').evaluateAll((els) => els.map((el) => el.querySelectorAll('svg').length));
@@ -166,6 +175,7 @@ test('every palette entry\'s words start at the same place, with an icon or with
 // backdrop is there for the press that closes the bar, and the editor stays in sight around it (design/final .palette)
 // whatever the pointer rests on — its hover once painted the whole window a solid colour (the audit of 2026-10-05).
 test('the editor stays in sight around the open bar wherever the pointer rests', runs('commandBar.open#toolbar-top-bar-search', BACKDROP), async ({ page }) => {
+  await withAurora(page);
   await runDoor(page, 'commandBar.open#toolbar-top-bar-search');
   await expect(bar(page)).toBeVisible();
   const backdrop = page.locator('.command-bar__backdrop');
