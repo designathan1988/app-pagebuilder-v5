@@ -19,7 +19,7 @@
 // A field whose door is not available (its feature not registered yet, or nothing selected) draws every part disabled.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
-import type { DispatchResult } from '../../core/store/store.ts';
+import type { DispatchResult, EditContext } from '../../core/store/store.ts';
 import { locate, type DocNode, type NodeId } from '../../core/document/model.ts';
 import { DEFAULT_UNIT, codecOf } from '../../core/style/codecs.ts';
 import { borderArgs } from '../../core/style/border.ts';
@@ -47,7 +47,7 @@ import { cssFamily, familyOf, isFontFile } from '../../core/files/fonts.ts';
 import { afterGesture, registerRepeat, registerSlider } from '../input/pointer.ts';
 import { wheelStep } from '../input/wheel-step.ts';
 import { pointerViews } from '../input/pointer/views.ts';
-import { MODEL_RULES, useEditorState, useStore, type EditorState, type EditorStore, layeredRules } from '../store.ts';
+import { MODEL_RULES, editContextOf, useEditorState, useStore, type EditorState, type EditorStore, layeredRules } from '../store.ts';
 import { styleClassOf, styleSource } from '../inspector/style-target.ts';
 import { useMenuLayer } from '../doors/menu.tsx';
 import { useT, useValueLabel } from '../text.ts';
@@ -55,6 +55,7 @@ import { createToken, tokenKindOf, tokensOf } from '../../core/design/tokens.ts'
 import { compactFieldValue, FieldOriginBadge, FieldValueSlot, useFieldAppearance } from './field-face.tsx';
 import { restoreFieldDraft } from '../persistence/drafts.ts';
 import { DRAFT_KEPT, markFieldKept, recordFieldInput } from '../input/drafts.ts';
+import { heldTyping, holdTyping, keepTyping, releaseTyping } from '../input/pending.ts';
 // A cleared status is still a change for a field with typing pending; one stable value keeps the store snapshot pure.
 const CLEARED_MESSAGE = Symbol('cleared field message');
 import { floatBelow, type Placed } from './float.ts';
@@ -91,7 +92,8 @@ const FAMILY_CODEC = 'font-family-list';
 
 // A field's values menu (the audit's J15: drawn inside the inspector, a long font list was cut by the panel's edge):
 // a layer on the body, under the field's value cell (float.ts, as every floating layer), inside the window.
-function FieldMenu({ anchor, list, label, children }: { readonly anchor: RefObject<HTMLElement | null>; readonly list: RefObject<HTMLDivElement | null>; readonly label: string; readonly children: ReactNode }) {
+// Its id is the one its button names (aria-controls, the WAI-ARIA menu button): the menu is part of its field.
+function FieldMenu({ id, anchor, list, label, children }: { readonly id: string; readonly anchor: RefObject<HTMLElement | null>; readonly list: RefObject<HTMLDivElement | null>; readonly label: string; readonly children: ReactNode }) {
   const [at, setAt] = useState<Placed | null>(null);
   useLayoutEffect(() => {
     const from = anchor.current?.getBoundingClientRect();
@@ -106,7 +108,7 @@ function FieldMenu({ anchor, list, label, children }: { readonly anchor: RefObje
   // hidden item takes no focus (Escape then went to another key context and closed nothing)
   const style: CSSProperties = at === null ? { opacity: 0, left: 0, top: 0 } : { left: at.left, top: at.top };
   return createPortal(
-    <div className="menu field__menu field__menu--floating" role="menu" tabIndex={-1} ref={list} aria-label={label} data-key-context="menu" style={style}>
+    <div id={id} className="menu field__menu field__menu--floating" role="menu" tabIndex={-1} ref={list} aria-label={label} data-key-context="menu" style={style}>
       {children}
     </div>,
     document.body,
@@ -276,7 +278,29 @@ export function useTokenSuggestions(property: string): readonly string[] {
   return useMemo(() => (text === '' ? [] : text.split('\n')), [text]);
 }
 
-type Dispatch = (id: CommandId, args: unknown) => DispatchResult;
+type Dispatch = (id: CommandId, args: unknown, context?: EditContext) => DispatchResult;
+
+// The commands a field runs itself, read from the manifest: its door's, its parts' (the unit menu, the step buttons,
+// the Reset), its label's scrub and the keys of its own key context (Enter, the arrows, Escape). They keep or cancel
+// its typing themselves (input/pending.ts), in the context it began in; any other command keeps it first.
+const keyCommands = (context: KeyContextId): readonly CommandId[] =>
+  manifest.doors.flatMap((d) => (d.door.kind === 'shortcut' && d.door.context === context ? [d.command.id] : []));
+const PART_COMMANDS: readonly CommandId[] = [...PARTS, ...(SCRUB === null ? [] : [SCRUB])].map((part) => part.command.id);
+const ownsProperty = (command: CommandId, keys: KeyContextId, property: string) => {
+  const own = new Set([command, ...PART_COMMANDS, ...keyCommands(keys)]);
+  return (id: CommandId, args: Readonly<Record<string, unknown>>): boolean => own.has(id) && (args.property === undefined || args.property === property);
+};
+// The part of the editor a field's own controls lie in (its row: the step buttons, the unit menu, the label's scrub):
+// a press there is the field's own and keeps nothing first.
+const regionOf = (element: HTMLElement): HTMLElement => element.closest<HTMLElement>('[data-door]') ?? element;
+// Leaving a field keeps its typing one task later: a press on a control of this same field (its unit menu, its reset)
+// must not see the layout the kept value makes change what lies under the pointer. Any command that comes first keeps
+// it before it runs (the editor store's dispatch, input/pending.ts).
+const keepSoon = (element: HTMLElement): void => {
+  window.setTimeout(() => {
+    if (heldTyping()?.field === element) keepTyping();
+  }, 0);
+};
 
 // A step button (field.step, the plan's stage 3): a press steps the text the field holds by one, by ten with Shift and
 // by a tenth with Alt (the command reads the modifier); held down, it steps again and again, the pointer owner's
@@ -532,12 +556,12 @@ function slidValue(text: string, range: { readonly unit: string; readonly neutra
 // selected when the field was left (`targets`): the press that left it may select another element before the value is
 // kept (a click on the canvas, a Layers row), and the value belongs to the element it was typed for. Nothing for a
 // selection that was empty.
-function keepValue(store: EditorStore, command: CommandId, property: string, value: string, targets: readonly string[]): void {
+function keepValue(store: EditorStore, command: CommandId, property: string, value: string, targets: readonly string[], context?: EditContext): void {
   if (targets.length === 0) return;
   afterGesture(store, () => {
     const now = store.getState().selection;
     const same = now.length === targets.length && now.every((id, i) => id === targets[i]);
-    (store.dispatch as Dispatch)(command, same ? { property, value } : { property, value, targets: [...targets] });
+    (store.dispatch as Dispatch)(command, same ? { property, value } : { property, value, targets: [...targets] }, context);
   });
 }
 
@@ -560,7 +584,9 @@ export interface NumberFieldProps {
 
 export function NumberField({ entry, door, property, label, bare = false, labelled = false, prefix = null, rowText = null }: NumberFieldProps) {
   const store = useStore();
-  const draft = useRef<{ typed: boolean; message: EditorState['message'] }>({ typed: false, message: store.getState().message });
+  // the typing not kept yet: whether there is some, the message then, and the elements and the context it began in
+  const draft = useRef<{ typed: boolean; message: EditorState['message']; targets: readonly string[]; context: EditContext | undefined }>({ typed: false, message: store.getState().message, targets: [], context: undefined });
+  const hold = useRef<() => void>(() => undefined);
   const primary = useEditorState((s) => s.selection[0] ?? null);
   const stored = useEditorState((s) => {
     const node = styleSource(s);
@@ -596,30 +622,41 @@ export function NumberField({ entry, door, property, label, bare = false, labell
     const face = shown;
     element.value = face;
     draft.current.typed = false;
+    releaseTyping(element);
     markFieldKept(element, face);
     return restoreFieldDraft(element, () => {
       draft.current.message = store.getState().message;
       draft.current.typed = recordFieldInput(element, new Event('input'));
+      if (draft.current.typed) hold.current();
     });
   }, [shown, said, t, store]);
   useEffect(() => {
     const element = input.current;
     const typing = draft.current;
     if (element === null) return;
-    const keep = () => {
+    // what the field holds, kept now: for the elements and in the context the typing began in (rules G1 and G2)
+    const keepNow = () => {
       if (!typing.typed) return;
       typing.typed = false;
       element.dataset.draft = DRAFT_KEPT;
-      // one task later: a press on a control of this same field (its unit menu, its reset) must not see the layout the
-      // commit makes (the reset appearing, the field narrowing) change what lies under the pointer
-      const text = element.value;
-      // the elements the value was typed for, read now: the press that left the field may change the selection
-      const targets = store.getState().selection;
-      window.setTimeout(() => keepValue(store, command, property, text, targets), 0);
+      releaseTyping(element);
+      keepValue(store, command, property, element.value, typing.targets, typing.context);
+    };
+    hold.current = () => {
+      if (heldTyping()?.field === element) return;
+      const state = store.getState();
+      typing.targets = state.selection;
+      typing.context = editContextOf(state);
+      holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, NUMBER_FIELD_CONTEXT, property), keep: keepNow });
     };
     const onInput = (event: Event) => {
       typing.message = store.getState().message;
       typing.typed = recordFieldInput(element, event);
+      if (typing.typed) hold.current();
+      else releaseTyping(element);
+    };
+    const keep = () => {
+      if (typing.typed) keepSoon(element);
     };
     element.addEventListener('input', onInput);
     element.addEventListener('blur', keep);
@@ -627,7 +664,7 @@ export function NumberField({ entry, door, property, label, bare = false, labell
       element.removeEventListener('input', onInput);
       element.removeEventListener('blur', keep);
       // the field goes (another selection, another tab) with typing not kept yet: it is kept
-      keep();
+      keepNow();
     };
   }, [store, command, property]);
   useRevealed(property, input);
@@ -815,7 +852,8 @@ function FieldSlider({ range, value, available, label, said, keep }: {
 // ones in Essentials only), the rest behind More values; the project's own fonts lead the first list, never behind
 // More values, Essentials only too (the audit's AUD-12: an uploaded font showed only in the longer list; Webflow
 // groups uploaded fonts as their own source); a font menu draws every family in its own face (the plan's stage 3).
-function FieldValues({ entry, property, label, anchor, list, suggestions, projectFonts, checked, choose }: {
+function FieldValues({ id, entry, property, label, anchor, list, suggestions, projectFonts, checked, choose }: {
+  readonly id: string;
   readonly entry: DoorEntry;
   readonly property: string;
   readonly label: string;
@@ -837,7 +875,7 @@ function FieldValues({ entry, property, label, anchor, list, suggestions, projec
   const menuValues = first === null ? suggestions : [...first.filter((v) => suggestions.includes(v)), ...(moreValues && !essentialsMode ? suggestions.filter((v) => !first.includes(v)) : [])];
   const hasMoreValues = first !== null && !essentialsMode && suggestions.some((v) => !first.includes(v));
   return (
-    <FieldMenu anchor={anchor} list={list} label={label}>
+    <FieldMenu id={id} anchor={anchor} list={list} label={label}>
       {menuValues.map((value) => (
         <button
           key={value}
@@ -924,7 +962,9 @@ export function TextStyleField({
   readonly rowText?: string | null;
 }) {
   const store = useStore();
-  const draft = useRef<{ typed: boolean; message: EditorState['message'] }>({ typed: false, message: store.getState().message });
+  // the typing not kept yet: whether there is some, the message then, and the elements and the context it began in
+  const draft = useRef<{ typed: boolean; message: EditorState['message']; targets: readonly string[]; context: EditContext | undefined }>({ typed: false, message: store.getState().message, targets: [], context: undefined });
+  const hold = useRef<() => void>(() => undefined);
   const primary = useEditorState((s) => s.selection[0] ?? null);
   const parts = useMemo(() => longhands ?? [property], [longhands, property]);
   const t = useT();
@@ -932,11 +972,11 @@ export function TextStyleField({
   const said = useEditorState((s) => (draft.current.typed && s.message !== draft.current.message ? s.message ?? CLEARED_MESSAGE : null));
   // Enter in a field of its own form (a command of its own, or a part) and leaving any field keep the text the same way
   const own = ownCommand || part !== null;
-  const keepText = useRef<(text: string, targets: readonly string[]) => void>(() => undefined);
+  const keepText = useRef<(text: string, targets: readonly string[], context?: EditContext) => void>(() => undefined);
   useEffect(() => {
-    keepText.current = (text: string, targets: readonly string[]) => {
+    keepText.current = (text: string, targets: readonly string[], context?: EditContext) => {
       if (!own) {
-        keepValue(store, entry.command.id, property, text, targets);
+        keepValue(store, entry.command.id, property, text, targets, context);
         return;
       }
       const args = part !== null ? { ...entry.door.args, ...part.args(text, held) } : ownArgs(entry, property, text, extra);
@@ -946,7 +986,7 @@ export function TextStyleField({
         // a press that selected another element: the value goes to the elements it was typed for (the command's
         // targets, as style.set's: the audit's FD1); a command that takes none keeps it only on the same selection
         if (!same && (targets.length === 0 || !('targets' in entry.command.args))) return;
-        (store.dispatch as Dispatch)(entry.command.id, same ? args : { ...args, targets: [...targets] });
+        (store.dispatch as Dispatch)(entry.command.id, same ? args : { ...args, targets: [...targets] }, context);
       });
     };
   });
@@ -964,6 +1004,7 @@ export function TextStyleField({
   const keepPending = useRef<() => void>(() => {});
   const valuesButton = useRef<HTMLButtonElement>(null);
   const valuesList = useRef<HTMLDivElement>(null);
+  const valuesId = useId();
   const valuesLayer = useMenuLayer(valuesButton, valuesList, undefined, { onOutside: () => keepPending.current(), returnFocus: input });
   const closeValues = useRef(valuesLayer.close);
   useLayoutEffect(() => {
@@ -995,31 +1036,44 @@ export function TextStyleField({
     const face = shown;
     element.value = face;
     draft.current.typed = false;
+    releaseTyping(element);
     markFieldKept(element, face);
     return restoreFieldDraft(element, () => {
       draft.current.message = store.getState().message;
       draft.current.typed = recordFieldInput(element, new Event('input'));
+      if (draft.current.typed) hold.current();
     });
   }, [shown, said, t, store]);
   useEffect(() => {
     const element = input.current;
     const typing = draft.current;
     if (element === null) return;
-    const keep = () => {
+    // what the field holds, kept now: for the elements and in the context the typing began in (rules G1 and G2); a
+    // quick panel field keeps what it holds only while the panel is open: the panel's dismissal cancels the draft as an
+    // Escape in an inspector field does (spec quick-panel)
+    const keepNow = () => {
       if (!typing.typed) return;
       typing.typed = false;
       element.dataset.draft = DRAFT_KEPT;
-      // a quick panel field keeps what it holds only while the panel is open: the panel's dismissal cancels the draft
-      // as an Escape in an inspector field does (spec quick-panel)
+      releaseTyping(element);
       if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
-      // one task later, as the number field's keep above, for the elements selected now
-      const text = element.value;
-      const targets = store.getState().selection;
-      window.setTimeout(() => keepText.current(text, targets), 0);
+      keepText.current(element.value, typing.targets, typing.context);
+    };
+    hold.current = () => {
+      if (heldTyping()?.field === element) return;
+      const state = store.getState();
+      typing.targets = state.selection;
+      typing.context = editContextOf(state);
+      holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, own ? COMMAND_FIELD_CONTEXT : NUMBER_FIELD_CONTEXT, property), keep: keepNow });
+    };
+    const keep = () => {
+      if (typing.typed) keepSoon(element);
     };
     const onInput = (event: Event) => {
       typing.message = store.getState().message;
       typing.typed = recordFieldInput(element, event);
+      if (typing.typed) hold.current();
+      else releaseTyping(element);
     };
     keepPending.current = keep;
     const scope = valueScope.current;
@@ -1054,9 +1108,10 @@ export function TextStyleField({
       document.removeEventListener('focusout', leaveAnywhere, true);
       keepPending.current = () => {};
       // the field goes: the inspector keeps a text not kept yet; a quick panel field drops it (its dismissal cancels)
-      if (keepOnLeave) keep();
+      if (keepOnLeave) keepNow();
+      else releaseTyping(element);
     };
-  }, [store, command, property, keepOnLeave]);
+  }, [store, command, property, keepOnLeave, own]);
   const refused = useFieldRefusal(entry.command.id, property);
   // a field whose door is a command of its own (the background image: style.setBackgroundImage), not style.set: Enter
   // submits its form and keeps what it holds with that command, since the number field's Enter is style.set's
@@ -1066,7 +1121,8 @@ export function TextStyleField({
     if (element === null || !draft.current.typed) return;
     draft.current.typed = false;
     element.dataset.draft = DRAFT_KEPT;
-    keepText.current(element.value, store.getState().selection);
+    releaseTyping(element);
+    keepText.current(element.value, draft.current.targets, draft.current.context);
   };
   // a variable chosen from the suggestions a name typed opens (variable-suggestions.tsx): kept as a text typed is
   const chooseVariable = (value: string) => {
@@ -1119,6 +1175,7 @@ export function TextStyleField({
               className="field__values-button"
               aria-haspopup="menu"
               aria-expanded={valuesLayer.open}
+              aria-controls={valuesLayer.open ? valuesId : undefined}
               aria-label={t('field.values.of', { property: propertyWord(t, property) })}
               aria-disabled={available ? undefined : true}
               onClick={valuesLayer.toggle}
@@ -1126,7 +1183,7 @@ export function TextStyleField({
               <Icon name={GLYPHS.dropdown} size="xs" />
             </button>
             {valuesLayer.open ? (
-              <FieldValues entry={entry} property={property} label={door.label} anchor={valueScope} list={valuesList} suggestions={suggestions} projectFonts={projectFonts} checked={checkedValue} choose={(value) => {
+              <FieldValues id={valuesId} entry={entry} property={property} label={door.label} anchor={valueScope} list={valuesList} suggestions={suggestions} projectFonts={projectFonts} checked={checkedValue} choose={(value) => {
                 draft.current.typed = false;
                 if (input.current) input.current.dataset.draft = DRAFT_KEPT;
                 valuesLayer.close();
@@ -1470,6 +1527,7 @@ const TEXT_FIELD_CONTEXT: KeyContextId = 'element-text-field';
 export function TextField({ entry, node, label, keepOnLeave = true }: { readonly entry: DoorEntry; readonly node: DocNode; readonly label: string; readonly keepOnLeave?: boolean }) {
   const store = useStore();
   const draft = useRef<{ typed: boolean; message: EditorState['message'] }>({ typed: false, message: store.getState().message });
+  const hold = useRef<() => void>(() => undefined);
   const door = useDoor(entry, { target: node.id }, label);
   const field = useRef<HTMLTextAreaElement>(null);
   // whether the person typed since the field last showed the document's text: the field's own draft, never document
@@ -1483,27 +1541,42 @@ export function TextField({ entry, node, label, keepOnLeave = true }: { readonly
     if (element === null) return;
     element.value = stored;
     draft.current.typed = false;
+    releaseTyping(element);
     markFieldKept(element, stored);
     return restoreFieldDraft(element, () => {
       draft.current.message = store.getState().message;
       draft.current.typed = recordFieldInput(element, new Event('input'));
+      if (draft.current.typed) hold.current();
     });
   }, [stored, said, store]);
   useEffect(() => {
     const element = field.current;
     const typing = draft.current;
     if (element === null) return;
-    const keep = () => {
+    // what the field holds, kept now, for the node it is drawn for (rule G2); a quick panel field keeps what it holds
+    // only while the panel is open (spec quick-panel)
+    const keepNow = () => {
       if (!typing.typed) return;
       typing.typed = false;
       element.dataset.draft = DRAFT_KEPT;
-      // a quick panel field keeps what it holds only while the panel is open (spec quick-panel)
+      releaseTyping(element);
       if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
       keepTextWith(store, command, target, element.value);
+    };
+    // its own commands: its door's and its keys' (Enter keeps, Escape cancels), for the node it is drawn for
+    const own = new Set([command, ...keyCommands(TEXT_FIELD_CONTEXT)]);
+    hold.current = () => {
+      if (heldTyping()?.field === element) return;
+      holdTyping({ field: element, region: regionOf(element), context: editContextOf(store.getState()), owns: (id, args) => own.has(id) && (args.target === undefined || args.target === target), keep: keepNow });
     };
     const onInput = (event: Event) => {
       typing.message = store.getState().message;
       typing.typed = recordFieldInput(element, event);
+      if (typing.typed) hold.current();
+      else releaseTyping(element);
+    };
+    const keep = () => {
+      if (typing.typed) keepNow();
     };
     element.addEventListener('input', onInput);
     element.addEventListener('blur', keep);
@@ -1512,7 +1585,8 @@ export function TextField({ entry, node, label, keepOnLeave = true }: { readonly
       element.removeEventListener('blur', keep);
       // the field goes (another selection, another tab) with typing not kept yet: it is kept — unless it is a quick
       // panel field, whose dismissal cancels what it held (spec quick-panel)
-      if (keepOnLeave) keep();
+      if (keepOnLeave) keepNow();
+      else releaseTyping(element);
     };
   }, [store, command, target, keepOnLeave]);
   return (
@@ -1653,6 +1727,7 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
     if (element === null) return;
     element.value = stored;
     draft.current.shown = stored;
+    releaseTyping(element);
     markFieldKept(element, stored);
     setTyped(stored);
     return restoreFieldDraft(element, () => {
@@ -1670,10 +1745,12 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
     const element = field.current;
     const typing = draft.current;
     if (row === null || element === null) return;
+    // what the field holds, kept now for the node it is drawn for when it differs from what it last showed or kept
+    // (rule G2); a quick panel field keeps what it holds only while the panel is open (spec quick-panel)
     const keep = () => {
       const text = element.value;
+      releaseTyping(element);
       if (text === typing.shown) return;
-      // a quick panel field keeps what it holds only while the panel is open (spec quick-panel)
       if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
       typing.shown = text;
       keepAfterGesture(store, () => {
@@ -1688,8 +1765,12 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
       keep();
     };
     row.addEventListener('submit', submit);
+    // its own command is its door's for the attribute it is drawn for (another attribute's keeps this one first)
+    const owns = (id: CommandId, given: Readonly<Record<string, unknown>>) => id === command && Object.entries(args).every(([name, value]) => given[name] === undefined || given[name] === value);
     const onInput = (event: Event) => {
       recordFieldInput(element, event);
+      if (element.value === typing.shown) releaseTyping(element);
+      else if (heldTyping()?.field !== element) holdTyping({ field: element, region: regionOf(element), context: editContextOf(store.getState()), owns, keep });
     };
     element.addEventListener('input', onInput);
     element.addEventListener('blur', keep);
@@ -1700,6 +1781,7 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
       // the field goes (another selection, another tab) with a text not kept yet: it is kept — unless it is a quick
       // panel field, whose dismissal cancels what it held (spec quick-panel)
       if (keepOnLeave) keep();
+      else releaseTyping(element);
     };
   }, [store, command, args, filled, owner, keepOnLeave]);
   const choose = (value: string) => {

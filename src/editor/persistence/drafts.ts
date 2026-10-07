@@ -7,7 +7,8 @@ import type { CommandArgs } from '../../generated/commands.ts';
 import { startEdit } from '../canvas/text-edit.ts';
 import { setOpen } from '../quick-panel/quick-panel.ts';
 import { setStyleTarget } from '../inspector/style-target.ts';
-import { setStyleState, STATES } from '../view/style-state.ts';
+import { activeLayer, setStyleState, STATES } from '../view/style-state.ts';
+import { setBreakpoint } from '../view/breakpoints.ts';
 import { revealField } from '../inspector/sections.ts';
 import { manifest } from '../../manifest/runtime.ts';
 import type { EditorStore } from '../store.ts';
@@ -22,7 +23,9 @@ const runsSchema = z.unknown().transform((value, context) => {
 const rangeSchema = z.object({ start: z.number().int().nonnegative(), end: z.number().int().nonnegative() });
 const common = {
   version: z.literal(1), revision: z.number().int().nonnegative(), selection: z.array(z.string()),
-  context: z.object({ quick: z.boolean(), styleState: z.string().nullable(), styleTarget: z.string().nullable(), revealed: z.string().nullable() }),
+  // the context the typing began in (CLAUDE.md, rule G1): the breakpoint among it, so a restored draft is kept where it
+  // was typed whatever the preferences say by then (a draft of an older editor carries none)
+  context: z.object({ quick: z.boolean(), styleState: z.string().nullable(), styleTarget: z.string().nullable(), revealed: z.string().nullable(), breakpoint: z.string().nullable().optional() }),
 };
 const schema = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('field'), key: z.string(), shown: z.string(), value: z.string(), range: rangeSchema.nullable() }),
@@ -69,7 +72,10 @@ function context() {
   const state = store?.getState();
   return {
     version: 1 as const, revision: revision(), selection: [...(state?.selection ?? [])],
-    context: { quick: state?.ui.quickPanelOpen === true, styleState: state?.ui.styleState ?? null, styleTarget: state?.ui.styleTarget ?? null, revealed: state?.ui.revealed?.field ?? null },
+    context: {
+      quick: state?.ui.quickPanelOpen === true, styleState: state?.ui.styleState ?? null, styleTarget: state?.ui.styleTarget ?? null, revealed: state?.ui.revealed?.field ?? null,
+      breakpoint: state === undefined ? null : activeLayer(state).breakpoint,
+    },
   };
 }
 const fieldKey = (field: Field): string | null => {
@@ -156,6 +162,8 @@ export function startDrafts(owner: EditorStore, currentRevision: () => number, c
   if (held !== null) {
     pending = true;
     const draft = held;
+    const breakpoint = draft.context.breakpoint ?? null;
+    if (breakpoint !== null && activeLayer(owner.getState()).breakpoint !== breakpoint) owner.dispatch(setBreakpoint.command, { breakpoint } as CommandArgs[typeof setBreakpoint.command]);
     const styleState = STATES.find(s => s.id === draft.context.styleState);
     if (styleState) owner.dispatch(setStyleState.command, { state: styleState.id as CommandArgs[typeof setStyleState.command]['state'] });
     if (draft.context.styleTarget && owner.getState().document.classes?.some(c => c.name === draft.context.styleTarget)) owner.dispatch(setStyleTarget.command, { target: 'class', className: draft.context.styleTarget });

@@ -10,7 +10,7 @@ import { rulesFromManifest, type ModelRules } from '../core/document/validate.ts
 import { rulesForDocument } from '../core/document/breakpoints.ts';
 import { systemClock, type Clock } from '../core/ports/clock.ts';
 import { randomIds, type IdGenerator } from '../core/ports/ids.ts';
-import { createStore, type Gesture, type Store, type StoreState } from '../core/store/store.ts';
+import { createStore, type DispatchResult, type EditContext, type Gesture, type Store, type StoreState } from '../core/store/store.ts';
 import type { CommandId, ConstantId } from '../generated/ids.ts';
 import { translate } from '../i18n/index.ts';
 import { manifest } from '../manifest/runtime.ts';
@@ -35,6 +35,7 @@ import { initialEditorUi, type EditorUi } from './state.ts';
 import { siteScripts } from './forms/script.ts';
 import { deriveData } from '../core/data/derive.ts';
 import { wiring } from './wiring.ts';
+import { beforeCommand, heldTyping, keepTyping } from './input/pending.ts';
 
 export type EditorStore = Store<EditorUi>;
 export type EditorState = StoreState<EditorUi>;
@@ -92,6 +93,15 @@ export function layeredRules(shown: { readonly document: DocumentJson; readonly 
   }
   return rules;
 }
+
+// The context an edit begins in (CLAUDE.md, rule G1): the layer the editor writes into (the breakpoint and the state),
+// the class the Style tab targets and the keyframe the playhead sits on. A field takes it when typing begins and keeps
+// its value there, whatever the editor shows by the time the value is kept.
+export function editContextOf(state: EditorState): EditContext {
+  return { layer: activeLayer(state), styleClass: state.ui.styleTarget ?? null, keyframe: keyframeTarget(state) };
+}
+// What a field shows its value for: the elements selected, and the context an edit begins in.
+const editedKey = (state: EditorState): string => JSON.stringify([state.selection, editContextOf(state)]);
 
 export function createEditorStore(options: EditorStoreOptions = {}): EditorStore {
   const storage = options.storage ?? browserStorage;
@@ -152,11 +162,17 @@ export function createEditorStore(options: EditorStoreOptions = {}): EditorStore
   return gestureSafe(store);
 }
 
-// The store the editor hands its parts, safe for the moments one of them cannot run as it asks (the audit's GB1 and
-// AG1): a press while the assistant's turn holds a command group opens a gesture whose document changes are refused
-// with the group's busy words (a selection or a view change still runs), never an uncaught error; and a dispatch that
-// arrives while a pointer gesture is open (a file read that resolved, the wheel during a drag) runs through that
-// gesture when it changes no document, else once the gesture has ended, in order.
+// The store the editor hands its parts: the one way every command of the editor runs (a door, a key, a gesture, a
+// timer), so what must hold around any command holds here (CLAUDE.md, rule G2; input/pending.ts): the typing a field
+// holds and has not kept is kept before a command that changes the document or comes from outside the field, the
+// field's own commands run in the context the typing began in (rule G1), and a command that leaves the typing held but
+// moves what the field edits (another element, breakpoint, state, class or keyframe) keeps it at once, where it was
+// typed, before the field shows the other value. Safe too for the moments a part cannot run as it asks (the audit's
+// GB1 and AG1): a press while the assistant's turn holds a command group opens a gesture whose document changes are
+// refused with the group's busy words (a selection or a view change still runs), never an uncaught error; and a
+// dispatch that arrives while a pointer gesture is open (a file read that resolved, the wheel during a drag) runs
+// through that gesture when it changes no document, else once the gesture has ended, in order, in the context it was
+// asked in.
 const UNDOABLE = new Map(manifest.commands.map((c) => [c.id as CommandId, c.history.undoable] as const));
 function gestureSafe(store: EditorStore): EditorStore {
   let open: Gesture | null = null;
@@ -167,7 +183,20 @@ function gestureSafe(store: EditorStore): EditorStore {
   };
   return {
     ...store,
+    sequence: () => {
+      keepTyping();
+      return store.sequence();
+    },
+    commandGroup: (busy) => {
+      keepTyping();
+      return store.commandGroup(busy);
+    },
+    answer: (confirmed) => {
+      keepTyping();
+      return store.answer(confirmed);
+    },
     gesture: () => {
+      keepTyping();
       if (store.commandGroupOpen()) return { dispatch: (id, args) => store.dispatch(id, args), commit: () => undefined, cancel: () => undefined };
       const gesture = store.gesture();
       open = gesture;
@@ -183,11 +212,20 @@ function gestureSafe(store: EditorStore): EditorStore {
         },
       };
     },
-    dispatch: (id, args) => {
-      if (open === null) return store.dispatch(id, args);
-      if (UNDOABLE.get(id) !== true) return open.dispatch(id, args);
-      waiting.push(() => void store.dispatch(id, args));
-      return { status: 'done', changed: false };
+    dispatch: (id, args, context) => {
+      const changesDocument = UNDOABLE.get(id) === true;
+      const at = context ?? beforeCommand(id, args, changesDocument);
+      const edited = heldTyping() === null ? null : editedKey(store.getState());
+      let result: DispatchResult;
+      if (open === null) result = store.dispatch(id, args, at);
+      else if (!changesDocument) result = open.dispatch(id, args);
+      else {
+        const asked = at ?? editContextOf(store.getState());
+        waiting.push(() => void store.dispatch(id, args, asked));
+        result = { status: 'done', changed: false };
+      }
+      if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();
+      return result;
     },
   };
 }

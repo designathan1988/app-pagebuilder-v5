@@ -60,6 +60,15 @@ interface PendingConfirmation {
   readonly cancel: MessageId;
 }
 
+// The context a command writes into when the person's edit began elsewhere than where the editor stands now (CLAUDE.md,
+// rule G1): the layer (breakpoint and state), the class the Style tab targets and the keyframe. A dispatch that carries
+// one runs in it; any other runs in the editor's present one (StoreOptions.layer, styleClass, keyframe).
+export interface EditContext {
+  readonly layer?: { readonly breakpoint: string; readonly state: string };
+  readonly styleClass?: string | null;
+  readonly keyframe?: KeyframeTarget | null;
+}
+
 export type DispatchResult =
   | { readonly status: 'done'; readonly changed: boolean }
   | { readonly status: 'refused'; readonly message: Message }
@@ -109,7 +118,8 @@ interface CommandGroup extends Gesture {
 
 export interface Store<Ui> {
   getState(): StoreState<Ui>;
-  dispatch<Id extends CommandId>(id: Id, args: CommandArgs[Id]): DispatchResult;
+  // `context`: where the command writes when the edit it keeps began elsewhere (EditContext); else the present one
+  dispatch<Id extends CommandId>(id: Id, args: CommandArgs[Id], context?: EditContext): DispatchResult;
   gesture(): Gesture;
   sequence(): CommandSequence;
   sequenceOpen(): boolean;
@@ -327,17 +337,18 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
   // the rules of the project (its own breakpoints: core/document/breakpoints.ts), and of the layer the editor shows
   // (the breakpoint and state picked): what a handler writes into and what a predicate reads. A breakpoint the project
   // does not have (one removed, a preference from another project) is its base.
-  const layeredNow = (): ModelRules => {
+  const layeredNow = (at?: EditContext): ModelRules => {
     const project = rulesForDocument(rules, state.document);
-    // the same layer for a predicate and a handler (an element made absolute at Phone is positioned there: A3.23)
-    const picked = options.layer?.(state);
+    // the same layer for a predicate and a handler (an element made absolute at Phone is positioned there: A3.23); a
+    // command that carries its edit's context writes into the layer of that context
+    const picked = at?.layer ?? options.layer?.(state);
     if (picked === undefined) return project;
     const layer = project.breakpoints.has(picked.breakpoint) ? picked : { ...picked, breakpoint: project.base.breakpoint };
     return layer.breakpoint === project.base.breakpoint && layer.state === project.base.state ? project : { ...project, base: layer };
   };
-  const handlerContext = (confirmed = false): HandlerContext<Ui> => {
+  const handlerContext = (confirmed = false, at?: EditContext): HandlerContext<Ui> => {
     const ui = state.ui;
-    const layered = layeredNow();
+    const layered = layeredNow(at);
     return {
       state,
       clock,
@@ -348,8 +359,8 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       ...(options.language === undefined ? {} : { language: options.language(ui) }),
       layout: options.layout ?? noLayout,
       css: options.css ?? anyCss,
-      styleClass: options.styleClass?.(ui) ?? null,
-      keyframe: options.keyframe?.(state) ?? null,
+      styleClass: at !== undefined && 'styleClass' in at ? (at.styleClass ?? null) : (options.styleClass?.(ui) ?? null),
+      keyframe: at !== undefined && 'keyframe' in at ? (at.keyframe ?? null) : (options.keyframe?.(state) ?? null),
       motion: options.motion?.(state) ?? null,
       confirmed,
       version: (revision) => options.version?.(revision),
@@ -364,7 +375,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     return { status: 'refused', message: text };
   };
 
-  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null): DispatchResult => {
+  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {
     const entry = table[id];
     const command = commands.get(id);
     if (!command) throw new Error(`unknown command ${id}`);
@@ -375,15 +386,15 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     if (gesture && command.history.undoable && command.history.transaction === 'per-dispatch') throw new Error(`${id} records one transaction per dispatch: it cannot run inside a gesture`);
     if (!isBuilt(entry)) return { status: 'not-available-yet' };
     // arguments the command does not take are refused before anything reads them (core/store/args.ts; AUD-09)
-    const invalid = argumentRefusal(id, command, args, state.document, layeredNow());
+    const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));
     if (invalid !== null) {
       publish(commit({ ...state, message: invalid, refused: true }, id));
       return { status: 'refused', message: invalid };
     }
     const predicate = predicates[command.availability.predicate as keyof PredicateTable<Ui>];
-    if (predicate && !predicate.test(state, layeredNow(), args)) {
+    if (predicate && !predicate.test(state, layeredNow(at), args)) {
       const declared = message((command.availability.refusalKey ?? 'common.notAvailableYet') as Message['key']);
-      const refusal = predicate.refusal?.(state, layeredNow(), args) ?? declared;
+      const refusal = predicate.refusal?.(state, layeredNow(at), args) ?? declared;
       publish(commit({ ...state, message: refusal, refused: true }, id));
       // a refusal the manifest does not declare for the command is a defect of the contract, said after the person has
       // the words (the audit's AUD-08: it threw before anything was said): the incident feed records it, and
@@ -399,7 +410,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     // the status bar says the command failed and nothing changed, and development and tests still throw
     let outcome: Outcome<Ui>;
     try {
-      outcome = entry.run(handlerContext(confirmed), args);
+      outcome = entry.run(handlerContext(confirmed, at), args);
     } catch (error) {
       const failed = message('status.change.failed', { command: nameOf(command) });
       publish(commit({ ...state, message: failed, refused: true }, id));
@@ -644,10 +655,10 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     },
     canRun: (id, args) => refusal(id, args) === null,
     refusal,
-    dispatch: (id, args) => {
+    dispatch: (id, args, context) => {
       if (open) throw new Error('a gesture is open: dispatch through it');
       settleSequence();
-      return run(id, args, null);
+      return run(id, args, null, false, null, context);
     },
     answer: (confirmed) => {
       if (group !== null) return busyResult();

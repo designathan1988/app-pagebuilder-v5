@@ -13,6 +13,7 @@ import { elementPredicate } from '../../../core/style/applies.ts';
 import { MODEL_RULES } from '../../store.ts';
 import { toolPoint, toolPress } from '../pointer-tools.ts';
 import { typedBand } from '../../canvas/band-typing.ts';
+import { heldTyping, keepTypingBefore } from '../pending.ts';
 import { SHADOW_EDITS } from '../../canvas/handles.ts';
 import { geometryAttributes, shapeResizeFrom } from '../../../core/elements/svg.ts';
 import { editedNode } from '../../canvas/text-edit.ts';
@@ -24,6 +25,12 @@ import type { PointerOwner } from './owner.ts';
 export function pointerEvents(p: PointerOwner): Pick<PointerOwner, 'onDoubleClick' | 'onDown' | 'onMove' | 'onUp' | 'onCancel' | 'onLostCapture' | 'onNative' | 'onContextMenu' | 'onMouseDown'> {
   const { ps, shared, store } = p;
   const { pointerPressing, setPressing, setPressRegion, publishOutsidePress, setResizing, setPanView, setPressPoint, setGhostReturn, setMenuOver, setCanvasPointer, setBanding, setGuideOnRuler, setHovered, guideOverRuler } = p.views;
+  // the box the canvas draws for the one element selected, on the screen; null for none, or for more than one
+  const selectionBox = () => {
+    const frame = canvasFrame();
+    const selected = store.getState().selection;
+    return frame && selected.length === 1 && selected[0] !== undefined ? nodeBox(frame, selected[0]) : null;
+  };
   // A double click is the browser's own (its dblclick, after the second release, by the system's double-click time;
   // Chrome's pointerdown carries no click count, so each press is a single click): the double-click door of what it
   // lands on runs as a gesture of its own.
@@ -40,6 +47,12 @@ export function pointerEvents(p: PointerOwner): Pick<PointerOwner, 'onDoubleClic
   const onDown = (event: PointerEvent) => {
     // a press or a gesture still open here lost its release: it ends before anything new begins
     if (pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();
+    // a value typed in a field and not kept yet is kept then, before the press measures what it acts from or runs
+    // anything (CLAUDE.md, rule G2; input/pending.ts): a press on the field's own controls excepted. What the press
+    // aims at is what was drawn when it began: the selection's box then, read before the value kept moves it, is the
+    // box a handle pressed is checked against (a handle drawn for it is the person's, wherever the kept value puts it)
+    const aimed = heldTyping() === null ? null : selectionBox();
+    keepTypingBefore(event.target);
     setPressing(true);
     setPressRegion(pressRegionOf(event.target));
     publishOutsidePress(event.target);
@@ -175,7 +188,7 @@ export function pointerEvents(p: PointerOwner): Pick<PointerOwner, 'onDoubleClic
     const zoom = frame ? geometryOf(frame)?.zoom : undefined;
     // the chrome draws the handles from its last measure: right after a change (a drop that moved the element) they
     // may still stand where the element was, so a handle is taken only where the element is now
-    const current = frame && selected[0] !== undefined ? nodeBox(frame, selected[0]) : null;
+    const current = aimed ?? (frame && selected[0] !== undefined ? nodeBox(frame, selected[0]) : null);
     if (handle && handleEntry && basis !== null && zoom !== undefined && current !== null && handleInPlace(handle, current)) {
       event.preventDefault();
       const resized = selected[0] as NodeId;
