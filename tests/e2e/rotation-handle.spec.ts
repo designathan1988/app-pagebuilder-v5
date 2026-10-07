@@ -131,3 +131,54 @@ test('the four corners turn the element, the label shows the live angle, and the
   await expect.poll(() => titleRotate(page)).toBe('-90deg');
   await expect(chip, 'and stays afterwards').toHaveText(String(during));
 });
+
+// A turned element's chrome holds still (the arrangement, DEC-75): its rotation zones once took a resize handle's place
+// on one frame and gave it back on the next, for as long as the element stayed turned, so a handle took a press only on
+// every other frame. Thirty frames in a row draw the same zones, and every resize handle shown takes a press.
+for (const angle of ['-30deg', '30deg', '-45deg']) {
+  test(`turned by ${angle}, the zones and the handles hold their places and every handle takes a press`, runs(HANDLE), async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openEditor(page, {
+      project: 'aurora',
+      commands: [
+        { command: 'view.zoomTo', args: { percent: 50 } },
+        { command: 'selection.select', args: { target: { $node: '/Page/Hero/Title' } } },
+        { command: 'style.set', args: { property: 'rotate', value: angle } },
+      ],
+    });
+    await expect(page.locator('[data-canvas-overlay] [data-rotate-zone]').first()).toBeVisible();
+    const frames = await page.evaluate(
+      () =>
+        new Promise<string[]>((resolve) => {
+          const seen: string[] = [];
+          const read = () => {
+            const zones = [...document.querySelectorAll('[data-rotate-zone]')].map((z) => {
+              const r = z.getBoundingClientRect();
+              return `${z.getAttribute('data-rotate-zone') ?? ''}@${Math.round(r.x)},${Math.round(r.y)}`;
+            });
+            // the resize handles shown in the stage that take no press, by the arrangement's own rule (arrangement.ts,
+            // the screen guard): a press reaches the handle at three of five points along it. A corner turned past the
+            // stage is clipped there, as any part of the page is
+            const stage = document.querySelector('[data-canvas-stage]')?.getBoundingClientRect();
+            const missed = [...document.querySelectorAll('[data-resize-handle][data-arrange-key]')].filter((h) => {
+              if (getComputedStyle(h).visibility === 'hidden' || stage === undefined) return false;
+              const r = h.getBoundingClientRect();
+              const [cx, cy] = [r.x + r.width / 2, r.y + r.height / 2];
+              if (cx < stage.left || cx > stage.right || cy < stage.top || cy > stage.bottom) return false;
+              const reached = [0.2, 0.35, 0.5, 0.65, 0.8].filter((f) => {
+                const hit = document.elementFromPoint(r.x + r.width * f, cy);
+                return hit !== null && h.contains(hit);
+              }).length;
+              return reached < 3;
+            });
+            seen.push(`${zones.join(' ')} | ${missed.map((h) => h.getAttribute('data-resize-handle')).join(' ')}`);
+            if (seen.length < 30) requestAnimationFrame(read);
+            else resolve(seen);
+          };
+          requestAnimationFrame(read);
+        }),
+    );
+    expect([...new Set(frames)], 'one arrangement through thirty frames').toHaveLength(1);
+    expect(frames[0]?.split(' | ')[1], 'no resize handle shown under another control').toBe('');
+  });
+}

@@ -762,10 +762,11 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
           const box = local(el.getBoundingClientRect());
           return rule === undefined || box === null || box.width <= 0 || box.height <= 0 ? [] : [{ key: el.getAttribute('data-arrange-key') ?? '', layer: rule.layer, box, optional: rule.optional }];
         });
-        // a zone leaves the chip, the panel, the text toolbar, the handles shown and the anchor tabs their presses, and
-        // keeps clear of the label while it can
-        const shownBefore = new Set(last?.yielded ?? []);
-        const keep = arranged.filter((one) => (one.layer === 'chip' || one.layer === 'panel' || one.layer === 'handle' || one.layer === 'anchor') && !shownBefore.has(one.key)).map((one) => one.box);
+        // a zone leaves the chip, the panel, the text toolbar, every resize handle and the anchor tabs their presses,
+        // and keeps clear of the label while it can. Every handle, shown or given way: a handle that gave way still
+        // stands in the layout, and leaving it out let the zone take its place, the handle give way under the zone,
+        // the zone move off and the handle come back, a frame each, for as long as the element stayed turned
+        const keep = arranged.filter((one) => one.layer === 'chip' || one.layer === 'panel' || one.layer === 'handle' || one.layer === 'anchor').map((one) => one.box);
         const labels = arranged.filter((one) => one.layer === 'label').map((one) => one.box);
         const rotate = single === undefined ? null : placeRotationZones(single, origin, zone, gapTo, spin, keep, labels, pageText);
         // the optional controls a press would not reach under what is drawn over them give way
