@@ -175,8 +175,12 @@ test('the quick panel opened beside a label near the bottom moves the canvas so 
   const panel = page.locator('.quick-panel:not(.is-measuring)');
   await expect(panel).toBeVisible();
   await holds(page, 'open beside the label');
-  // whole: nothing held scrolled inside it, and its bottom inside the window
-  await expect.poll(() => panel.evaluate((element) => element.scrollHeight - element.clientHeight), { message: 'no inner scroll' }).toBeLessThanOrEqual(1);
+  // whole: as tall as what it holds, up to the share of the window a panel takes (TALLEST_SHARE, 75 %), and only what
+  // passes that share scrolled inside it (this heading's panel holds 15 px more than 675: it fitted only while its
+  // head shrank under its own context line, which then lay over the fields)
+  await expect
+    .poll(() => panel.evaluate((element) => Math.min(element.scrollHeight, window.innerHeight * 0.75) - element.clientHeight - (element.offsetHeight - element.clientHeight)), { message: 'no inner scroll short of the window share' })
+    .toBeLessThanOrEqual(1);
   const placed = await panel.boundingBox();
   expect((placed?.y ?? 0) + (placed?.height ?? 0), 'inside the window').toBeLessThanOrEqual(viewport);
   expect(placed?.height ?? 0, 'taller than one field').toBeGreaterThan(200);

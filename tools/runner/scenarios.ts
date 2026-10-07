@@ -1874,6 +1874,36 @@ function setupCommands(s: Scenario): TestBootCommand[] {
 }
 // the zoom, once the editor is drawn: the canvas keeps its place on the stage it measures, as the zoom's door does
 const drawnCommands = (s: Scenario): TestBootCommand[] => (s.setup.zoom === 'fit' ? [] : [{ command: 'view.zoomTo', args: doorData(settingDoor('view.zoomTo', 'percent', s.setup.zoom)).args }]);
+// The page at its top once the setup's zoom has settled: a zoom keeps the middle of the view where it was, a scroll of
+// the page the frame holds for a few frames (canvas/frame.tsx) — taken when the page has laid itself out by then, lost
+// when it has not, so the starting point raced the page's layout (drag-autoscroll met its Title scrolled away, two
+// runs in sixteen). A scenario starts where an editor opens, the page at its top, whatever the race.
+async function pageAtTop(page: Page): Promise<void> {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        const view = () => document.querySelector<HTMLIFrameElement>('.frame__page')?.contentWindow ?? null;
+        let last = Number.NaN;
+        let still = 0;
+        let frames = 0;
+        const settle = () => {
+          const y = view()?.scrollY ?? 0;
+          still = y === last ? still + 1 : 0;
+          last = y;
+          frames += 1;
+          // the zoom's hold lasts eight frames at most: twelve unchanged mean it is over
+          if (still < 12 && frames < 120) {
+            requestAnimationFrame(settle);
+            return;
+          }
+          const inside = view();
+          if (inside !== null && inside.scrollY !== 0) inside.scrollTo(inside.scrollX, 0);
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        };
+        requestAnimationFrame(settle);
+      }),
+  );
+}
 // whether a scenario's steps touch the system clipboard: a command that reads it, or one that copies, cuts or pastes
 const touchesClipboard = (s: Scenario, action: string): boolean => s.setup.clipboard !== undefined || s.steps.some((step) => {
   const ref = step.action ? action : step.door;
@@ -1903,6 +1933,7 @@ async function setUp(page: Page, s: Scenario, action: string): Promise<unknown> 
   const reading = s.setup.tabs === 'another-tab-editing';
   if (playsTime(s)) await installClock(page);
   await openEditor(page, { ...(project === undefined || reading ? {} : { project: { text: project } }), commands: setupCommands(s), drawn: drawnCommands(s), reusedProfile: reading });
+  if (s.setup.zoom !== 'fit') await pageAtTop(page);
   // the system clipboard as the editor reads it (a paste in the text edited in place, spec text-inline-formatting):
   // allowed, as a person allows it once when the browser asks, and empty, whatever an earlier test in this browser
   // copied (the browser's clipboard outlives a test's context). A setup naming `clipboard: "denied"` withdraws the
