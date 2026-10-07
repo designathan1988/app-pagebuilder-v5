@@ -7,7 +7,11 @@
 // beside or moved aside for what lies there, at any size, zoom, scroll, rotation or breakpoint, for one element or
 // several. Where it lies over page text it says so (`covers`), and the selection's label then takes no press, so a
 // press meant for the text under it reaches the text (jornada03 J16: a label over a card's price selected the button
-// instead).
+// instead). One thing it never lies over: the editor's own controls about the page — the breakpoint tabs attached to
+// the page's top (D-1), where the one place of an element at the page's top falls (clearedLabel; the owner's choice of
+// 2026-10-07): there it moves along the frame's top line just past the tabs, while it still stands whole over its
+// element, else it stands under its element, the mirror of its one place, so the tabs stay seen and pressed (CLAUDE.md,
+// rule G5).
 //
 // A drop label (placeLabel) never covers page content, nor a control the chrome draws (a
 // resize handle or an edit band under it would lose the press to the label): it sits above its element when that space
@@ -134,6 +138,46 @@ export function turnedFrame(box: Box, degrees: number, edge: number): Box {
   const x = box.x + box.width / 2 - across / 2;
   const y = box.y + box.height / 2 - down / 2;
   return { x: x + edge, y: y + edge, width: across - 2 * edge, height: down - 2 * edge };
+}
+
+// The selection's label kept clear of the editor's own controls about the page (the breakpoint tabs attached to its
+// top, D-1): `group` is what stands with it — the text toolbar above it while a text is edited and the quick panel's
+// chip beside it, taller than the label (`above`: how far they rise over the label's top; `width`: how far they reach
+// across). Where the group's place lies over a control, the label keeps to the frame's top line and moves along it just
+// past the controls it lay over, while the whole group still stands over its element (a wide element at the page's
+// top: the header, the hero, the page); else it stands under its element, its top on the frame's line drawn `edge`
+// outside `frame`'s bottom and its start where it was ('below'), the mirror of its one place. Never onto the element:
+// moved down onto it, the label covered its corner's radius handle and the chip beside it lay under its east handle;
+// and never under a tall one first, where it left the view. Anywhere else it keeps its one place (CLAUDE.md, rule G5:
+// no control of the editor out of reach).
+export function clearedLabel(
+  placed: { readonly box: Box; readonly placement: Placement; readonly covers: boolean },
+  frame: Box,
+  edge: number,
+  group: { readonly above: number; readonly width: number },
+  controls: readonly Box[],
+  content: readonly Box[],
+): { box: Box; placement: Placement; covers: boolean } {
+  const whole = { x: placed.box.x, y: placed.box.y - group.above, width: Math.max(placed.box.width, group.width), height: placed.box.height + group.above };
+  const under = controls.filter((c) => overlaps(whole, c));
+  if (under.length === 0) return { ...placed };
+  // along the top, past each control it lies over in turn, while the whole group stands over its element
+  let past: number | null = whole.x;
+  while (past !== null) {
+    const x: number = past;
+    const hit = controls.filter((c) => overlaps({ ...whole, x }, c));
+    if (hit.length === 0) break;
+    const next = Math.max(...hit.map((c) => c.x + c.width)) + 2 * SLACK;
+    past = next + whole.width > frame.x + frame.width + edge ? null : next;
+  }
+  if (past !== null) {
+    const moved = { ...placed.box, x: past };
+    const innerMoved = { x: moved.x + SLACK, y: moved.y + SLACK, width: moved.width - 2 * SLACK, height: moved.height - 2 * SLACK };
+    return { box: moved, placement: 'above', covers: content.some((c) => overlaps(innerMoved, c)) };
+  }
+  const box = { ...placed.box, y: frame.y + frame.height + edge };
+  const inner = { x: box.x + SLACK, y: box.y + SLACK, width: box.width - 2 * SLACK, height: box.height - 2 * SLACK };
+  return { box, placement: 'below', covers: content.some((c) => overlaps(inner, c)) };
 }
 
 // A label's box held inside an area: moved the least distance that puts it inside, its size kept.

@@ -12,14 +12,15 @@ export interface Allowed {
 export const ALLOWED: readonly Allowed[] = [
   {
     kind: 'covered',
-    selector: '.frame-tabs',
-    why: "the label of an element at the page's top stands above the page, fixed in the window, over the breakpoint tabs (nothing clips it there); the tab takes a press beside it, and the label hides once the page scrolls it out of view",
-  },
-  {
-    kind: 'covered',
     selector: '.gradient__stop',
     by: '.gradient__stop',
     why: 'two stops a person put at one position of the gradient lie one over the other, as in every gradient editor: the one on top takes the press, and each is reached by Tab and edited in its stop fields',
+  },
+  {
+    kind: 'covered',
+    selector: '.row--tree .row__name',
+    by: '.row__actions',
+    why: "a Layers row's name may run to the row's end, under its actions strip: the strip shows, its own background over the name's end, as soon as the pointer is on the row, so a press always sees what it presses (as a tree's hover actions do); at rest its buttons are transparent over a long name's end (seen with the 15 px a Windows scrollbar takes from the tree, E2E_SCROLLBARS=shown)",
   },
   {
     kind: 'sideways',

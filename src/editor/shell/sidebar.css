@@ -604,19 +604,8 @@
   padding-right: calc(var(--space-3) + var(--row-actions-room));
 }
 
-/* the details stand in that room, out of the row's flow: a negative margin once gave them the room back, and with it
-   every item of the row, so a long name ran up to 37 px under the transparent strip (the sweep with the scrollbars a
-   Windows window shows: the tree 15 px narrower) */
 .row--tree .row__meta {
-  position: absolute;
-  top: 0;
-  right: var(--space-3);
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  max-width: var(--row-actions-room);
-  overflow: hidden;
-  white-space: nowrap;
+  margin-right: calc(-1 * var(--row-actions-room));
 }
 
 /* the row wears the colour it holds: a line on its left, never a filled background, so the name stays readable */

@@ -4,7 +4,28 @@
 // it (the chip resting on the frame as the label does, the open panel level with the label's top). It holds for a small
 // element and a large one, at the page's top and its right edge, rotated, zoomed from 25 % to 400 %, scrolled, for
 // several selected, at every breakpoint, with the panel open and closed. (QA 375 had placed the label at the first
-// free place of six, and the chip beside it, held inside the stage.)
+// free place of six, and the chip beside it, held inside the stage.) One exception, the owner's choice of 2026-10-07:
+// where that place lies over the breakpoint tabs attached to the page's top (an element at the page's top), the label
+// and the chip move along the frame's top line just past the tabs while they stand over the element, else under it
+// (placement.ts clearedLabel).
+
+// for an element at the page's top: the label's bottom on the frame's top line, the chip touching the label's right,
+// and neither over a breakpoint tab
+async function clearOfTabs(page: Page, chip: 'chip' | 'none' = 'chip'): Promise<{ readonly top: number; readonly chip: number | null; readonly overTabs: boolean } | null> {
+  return page.evaluate((withChip) => {
+    const frame = document.querySelector('[data-chrome="selection"]');
+    const label = document.querySelector('[data-chrome="label"]:not(.is-measuring)');
+    if (frame === null || label === null || getComputedStyle(label).visibility === 'hidden') return null;
+    const edge = parseFloat(getComputedStyle(frame).outlineWidth) || 0;
+    const f = frame.getBoundingClientRect();
+    const l = label.getBoundingClientRect();
+    const c = withChip ? document.querySelector('.quick-panel-chip:not(.is-measuring)')?.getBoundingClientRect() : undefined;
+    const meets = (a: DOMRect, b: DOMRect) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+    const tabs = [...document.querySelectorAll('[data-region="canvas-breakpoints"] button')].map((t) => t.getBoundingClientRect());
+    const round = (n: number) => Math.round(n * 2) / 2 + 0;
+    return { top: round(f.top - edge - l.bottom), chip: c === undefined ? null : round(c.left - l.right), overTabs: tabs.some((t) => meets(l, t) || (c !== undefined && meets(c, t))) };
+  }, chip === 'chip');
+}
 import fs from 'node:fs';
 import { expect, nextFrames, test, type Page } from '../support/test.ts';
 import { openEditor } from '../support/editor.ts';
@@ -73,16 +94,19 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('the selection label stands above its element touching its frame, the chip on its right, for every kind of element', runs(OPEN, ROW), async ({ page }) => {
-  // a large section, a small link (narrower than its label), the header and the page at the page's top (their label
-  // over the breakpoint tabs), the last link at the page's right edge, an image at the right, a heading under text, a
-  // button
-  for (const target of ['c-hero', 'c-nav-0', 'c-header', 'c-enter', 'c-hero-image', 'c-title', 'c-subscribe']) {
+  // a large section, a small link (narrower than its label), the last link at the page's right edge, an image at the
+  // right, a heading under text, a button
+  for (const target of ['c-hero', 'c-nav-0', 'c-enter', 'c-hero-image', 'c-title', 'c-subscribe']) {
     await select(page, target);
     await holds(page, target);
   }
-  // the page root draws no quick panel; its label stands above the page, over the tabs, in sight
+  // the header and the page at the page's top: their one place lies over the breakpoint tabs, so the label (and the
+  // chip beside it) move along the frame's top line past the tabs, touching it, the tabs seen and pressed
+  await select(page, 'c-header');
+  await expect.poll(() => clearOfTabs(page), { message: 'c-header' }).toEqual({ top: 0, chip: 0, overTabs: false });
+  // the page root draws no quick panel
   await select(page, 'c-page');
-  await holds(page, 'c-page', 'none');
+  await expect.poll(() => clearOfTabs(page, 'none'), { message: 'c-page' }).toEqual({ top: 0, chip: null, overTabs: false });
   // several selected: the label over their union
   await select(page, 'c-card-subscription');
   await select(page, 'c-card-beans', ['Shift']);

@@ -77,8 +77,9 @@ const clamp = (value: number, low: number, high: number) => Math.max(low, Math.m
 
 // Where the chip (`open` false) or the open panel of `size` goes, in the stage's pixels: `label` is the selection's
 // label's box; `offset` the person's own drag of the open panel, from the element's top-left corner, held inside the
-// stage less its `inset`.
-export function placeQuickPanel(label: Box, element: Box, size: { readonly width: number; readonly height: number }, open: boolean, stage: Box, inset: number, offset: Offset | null): Box {
+// stage less its `inset`. `under`: the label stands under its element (placement.ts clearedLabel), so the chip hangs
+// from the label's top as it rests on its bottom above the element: neither covers the frame.
+export function placeQuickPanel(label: Box, element: Box, size: { readonly width: number; readonly height: number }, open: boolean, stage: Box, inset: number, offset: Offset | null, under = false): Box {
   if (open && offset !== null) {
     // The person's own drag wins: the panel is where it was left, held inside the stage. A remembered offset is never
     // refused for covering the element — the panel is taller than most elements, and refusing the drag would leave a
@@ -87,7 +88,7 @@ export function placeQuickPanel(label: Box, element: Box, size: { readonly width
     const bottom = stage.y + stage.height - inset;
     return { x: clamp(element.x + offset.x, stage.x + inset, right - size.width), y: clamp(element.y + offset.y, stage.y + inset, bottom - size.height), ...size };
   }
-  return { x: label.x + label.width, y: open ? label.y : label.y + label.height - size.height, ...size };
+  return { x: label.x + label.width, y: open || under ? label.y : label.y + label.height - size.height, ...size };
 }
 
 // the offset of a placed panel from its element, what quickPanel.setOffset keeps

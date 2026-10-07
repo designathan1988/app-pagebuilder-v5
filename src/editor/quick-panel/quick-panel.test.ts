@@ -16,6 +16,10 @@ describe('placeQuickPanel (src/editor/quick-panel/quick-panel.ts)', () => {
     expect(placeQuickPanel(LABEL, ELEMENT, CHIP, false, STAGE, INSET, null)).toEqual({ x: 188, y: 54, ...CHIP });
   });
 
+  it("hangs the chip from the label's top where the label stands under its element", () => {
+    expect(placeQuickPanel(LABEL, ELEMENT, CHIP, false, STAGE, INSET, null, true)).toEqual({ x: 188, y: 62, ...CHIP });
+  });
+
   it('puts the open panel on the right of the label, touching it, its top level with the label', () => {
     expect(placeQuickPanel(LABEL, ELEMENT, PANEL, true, STAGE, INSET, null)).toEqual({ x: 188, y: 62, ...PANEL });
   });

@@ -447,7 +447,7 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
             if (PAN !== undefined) (store.dispatch as (command: CommandId, args: unknown) => unknown)(PAN.command.id, { dx: Math.round(dx), dy: Math.round(dy) });
           }
         }
-        const placedBox = at === undefined || !seen ? null : placeQuickPanel({ x: at.x, y: at.y, width: at.width, height: at.height }, element, size, open, whole, inset, offset);
+        const placedBox = at === undefined || !seen ? null : placeQuickPanel({ x: at.x, y: at.y, width: at.width, height: at.height }, element, size, open, whole, inset, offset, label?.getAttribute('data-placement') === 'below');
         const next = placedBox === null ? null : { id, open, box: placedBox, element, widest: Math.max(0, window.innerWidth - 2 * inset), tallest: Math.max(0, window.innerHeight - placedBox.y - inset) };
         setPlaced((before) => (JSON.stringify(before) === JSON.stringify(next) ? before : next));
       }

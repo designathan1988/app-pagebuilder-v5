@@ -4,7 +4,7 @@
 // button's label over a card's price selected the button). A drop label takes the first free place around its element,
 // and where none is free it covers the least it can and says so.
 import { describe, expect, it } from 'vitest';
-import { placeLabel, selectionLabelBox, turnedFrame, type Box } from './placement.ts';
+import { clearedLabel, placeLabel, selectionLabelBox, turnedFrame, type Box } from './placement.ts';
 
 const box = (x: number, y: number, width: number, height: number): Box => ({ x, y, width, height });
 const CANVAS = box(0, 0, 1000, 1000);
@@ -36,6 +36,44 @@ describe("the selection's label", () => {
   it('does not count text it meets by less than a pixel, the rounding of a fractional layout', () => {
     const above = box(0, 150, 400, 32.6);
     expect(selectionLabelBox(BUTTON, SIZE, 2, [above]).covers).toBe(false);
+  });
+
+  // the breakpoint tabs attached to the page's top (D-1) are where the one place of an element at the page's top falls:
+  // the label and what stands with it (the chip beside it, the text toolbar above it) never lie over them (rule G5)
+  describe("kept clear of the editor's own controls", () => {
+    const TOP = box(0, 0, 600, 40);
+    const TABS = [box(0, -30, 90, 26), box(92, -30, 90, 26), box(184, -30, 90, 26)];
+    it('keeps its one place where no control lies there', () => {
+      const one = selectionLabelBox(BUTTON, SIZE, 2, []);
+      expect(clearedLabel(one, BUTTON, 2, { above: 0, width: SIZE.width }, TABS, [])).toEqual(one);
+    });
+    it('moves along the top just past the tabs, over a wide element, touching the frame line', () => {
+      const one = selectionLabelBox(TOP, SIZE, 2, []);
+      const cleared = clearedLabel(one, TOP, 2, { above: 0, width: SIZE.width }, TABS, []);
+      expect(cleared.placement).toBe('above');
+      expect(cleared.box).toEqual(box(276, -18, 80, 16));
+      expect(TABS.some((tab) => cleared.box.x < tab.x + tab.width && tab.x < cleared.box.x + cleared.box.width)).toBe(false);
+    });
+    it('stands under a narrow element the tabs lie over, at the same left edge, touching the frame line', () => {
+      const narrow = box(0, 0, 200, 40);
+      const one = selectionLabelBox(narrow, SIZE, 2, []);
+      const cleared = clearedLabel(one, narrow, 2, { above: 0, width: SIZE.width }, TABS, []);
+      expect(cleared.placement).toBe('below');
+      expect(cleared.box).toEqual(box(-2, 42, 80, 16));
+    });
+    it('goes under for the chip beside it and what rises above it too', () => {
+      const element = box(100, 30, 300, 40);
+      const one = selectionLabelBox(element, SIZE, 2, []);
+      // alone the label clears the tabs (its top at 12); the chip beside it reaches a control, what rises above it
+      // (the text toolbar, a chip taller than the label) the tabs
+      expect(clearedLabel(one, element, 2, { above: 0, width: SIZE.width }, [box(184, -30, 90, 26)], [])).toEqual(one);
+      expect(clearedLabel(one, element, 2, { above: 0, width: SIZE.width + 40 }, [box(170, 0, 90, 20)], []).box.x).toBe(262);
+      expect(clearedLabel(one, element, 2, { above: 30, width: SIZE.width }, TABS, []).box.x).toBe(276);
+    });
+    it('says it covers page text where it lands on it', () => {
+      const one = selectionLabelBox(TOP, SIZE, 2, []);
+      expect(clearedLabel(one, TOP, 2, { above: 0, width: SIZE.width }, TABS, [box(270, -20, 100, 10)]).covers).toBe(true);
+    });
   });
 });
 

@@ -41,7 +41,7 @@ O render incremental é igual a um render do zero. `espaco.spec.ts` recarrega e 
 
 ## Decisões do dono que valem como regra
 - **D-1:** as abas de breakpoint ficam coladas no topo da moldura.
-- **DEC-70:** o rótulo da seleção fica sempre acima do elemento, encostado na moldura, e o chip do painel rápido fica à direita dele. No topo da página, os dois ficam sobre as abas. A exceção está registrada no guarda e em `espaco.spec.ts`.
+- **DEC-70:** o rótulo da seleção fica sempre acima do elemento, encostado na moldura, e o chip do painel rápido fica à direita dele. Única exceção, escolhida pelo dono em 2026-10-07: onde esse lugar cai sobre as abas de breakpoint (um elemento no topo da página), rótulo e chip seguem pela linha de cima da moldura só até passar a última aba, enquanto couberem sobre o elemento; num elemento estreito sob as abas, ficam logo abaixo dele (`clearedLabel` em `src/editor/canvas/placement.ts`). Descer para dentro do elemento cobria a alça de raio e punha o chip sob a alça leste; ficar sempre embaixo tirava de vista o rótulo de um elemento alto.
 - Mudar qualquer uma delas é decisão do dono.
 
 ## Como verificar
