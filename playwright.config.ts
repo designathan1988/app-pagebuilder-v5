@@ -48,8 +48,12 @@ export default defineConfig({
     channel: CHANNEL,
     reducedMotion: REDUCED_MOTION,
     // the window the contract declares (manifest/environment.json), not Playwright's own 1280 x 720: below the narrow
-    // window's width the sidebar opens over the canvas (src/editor/workspace/narrow.ts)
+    // window's width a first visit opens with the sidebar closed (src/editor/workspace/narrow.ts)
     viewport: VIEWPORT,
+    // Playwright's Chrome hides the scrollbars (--hide-scrollbars), so no test saw the width they take on a Windows
+    // window, about 15 px in every panel that scrolls: E2E_SCROLLBARS=shown runs the suite with them, as a person sees
+    // the editor there
+    ...(process.env.E2E_SCROLLBARS === 'shown' ? { launchOptions: { ignoreDefaultArgs: ['--hide-scrollbars'] } } : {}),
     // the browser's language is pinned: the editor opens in it (jornada03 J26), and the scenarios name their locale
     locale: 'en-US',
     // a failure keeps what it showed: its screenshot (taken only when a test fails, so a passing test pays nothing), the
