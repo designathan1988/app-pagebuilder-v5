@@ -19,9 +19,14 @@
 // A step or a scrub never takes a length below zero where the browser refuses a negative value (Width, Height: the
 // CSS support port). A font-relative unit (em, rem…: FINE_STEP_UNITS of the codecs) moves by numberField.fineStep a
 // step, any other by the step itself; a field that holds no number to step (a keyword, calc()) says so
-// (status.value.notSteppable) and writes nothing; an empty field steps nothing (Problems in Pager 4).
+// (status.value.notSteppable) and writes nothing. An empty field steps from the value it shows (its placeholder): the
+// value the elements hold at the layer written, else the one the page computes for them, when they share it; nothing
+// when they do not, or when the page draws none. The rule lives here, once, for every door of the step and the scrub
+// (the step buttons, the arrows, the wheel, the label): each door hands the text the field holds, typed or empty
+// (CLAUDE.md, rule G3).
 import { message, registerHandler, type HandlerContext, type Outcome } from '../../core/commands/registry.ts';
 import { locate, type NodeId } from '../../core/document/model.ts';
+import { storedValue } from '../../core/style/stored.ts';
 import type { ModelRules } from '../../core/document/validate.ts';
 import { convertLength, FINE_STEP_UNITS } from '../../core/style/codecs.ts';
 import { propertyName, readValue, writeStyle, writeValue } from '../../core/style/set.ts';
@@ -45,9 +50,24 @@ export function factorOf(modifier: 'Shift' | 'Alt' | undefined): number {
   return modifier === 'Shift' ? SHIFT_FACTOR : modifier === 'Alt' ? ALT_FACTOR : 1;
 }
 
+// What a step or a scrub starts from: the text the field holds; an empty field, the value it shows — what the elements
+// hold at the layer written, else what the page computes for them — when they all share it (rule G3).
+function startOf<Ui>(context: HandlerContext<Ui>, property: string, value: string): string {
+  if (value.trim() !== '') return value;
+  const { state } = context;
+  const shown = new Set(
+    state.selection.map((id) => {
+      const found = locate(state.document, id as NodeId);
+      return found === null ? '' : (storedValue(found.node, property, context.rules) ?? context.layout.computed(id as NodeId, property) ?? '');
+    }),
+  );
+  return shown.size === 1 ? ([...shown][0] ?? '') : '';
+}
+
 // The length the field holds moved by `delta` of its own unit, written into the selection; nothing for a field that
 // holds no length. Below zero it stops at zero where the browser takes no negative value.
-function moved<Ui>(context: HandlerContext<Ui>, property: string, value: string, delta: number): Outcome<Ui> {
+function moved<Ui>(context: HandlerContext<Ui>, property: string, typed: string, delta: number): Outcome<Ui> {
+  const value = startOf(context, property, typed);
   if (value.trim() === '') return { kind: 'change' };
   const read = readValue(context, property, value);
   if (read === null || read.value.kind !== 'length') return { kind: 'refused', message: message('status.value.notSteppable', { property: propertyName(property, context.rules), value: value.trim() }) };

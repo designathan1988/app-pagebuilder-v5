@@ -414,6 +414,10 @@ export function trackBoxes(iframe: HTMLIFrameElement, id: string): readonly { re
 // The layout port of the core (src/core/ports/layout.ts), measured on the canvas's page: a node's box in page pixels,
 // or null when the canvas does not draw it (no frame, or no element of that node).
 export const pageLayout: Layout = {
+  computed(id, property) {
+    const value = computedValues(id, [property], NO_LINES)?.[property];
+    return value === undefined || value === '' ? null : value;
+  },
   box(id) {
     const iframe = current;
     const g = iframe ? geometryOf(iframe) : null;
@@ -518,6 +522,8 @@ function readContentBoxes(iframe: HTMLIFrameElement): { x: number; y: number; wi
 // 0px under a style of none or hidden (CSS Backgrounds 3), and otherwise is the width the page declares
 // (declaredWidth), never the one the zoomed canvas computes (BW1).
 const NO_LINE: readonly string[] = ['none', 'hidden'];
+// no line style read with a width (a step of an empty field reads the value itself)
+const NO_LINES: ReadonlyMap<string, string> = new Map();
 export function computedValues(id: string, properties: readonly string[], lines: ReadonlyMap<string, string>): Readonly<Record<string, string>> | null {
   const element = current?.contentDocument?.querySelector(nodeSelector(id as NodeId));
   if (!element) return null;

@@ -6,7 +6,7 @@ import { EMPTY_HISTORY } from '../../core/history/history.ts';
 import { manualClock } from '../../core/ports/clock.ts';
 import type { CssSupport } from '../../core/ports/css.ts';
 import { sequentialIds } from '../../core/ports/ids.ts';
-import { noLayout } from '../../core/ports/layout.ts';
+import { fixedLayout, noLayout } from '../../core/ports/layout.ts';
 import { manifest } from '../../manifest/runtime.ts';
 import { cancelField, factorOf, scrubField, setFieldUnit, stepField } from './number-field.ts';
 
@@ -55,6 +55,17 @@ describe('the number fields', () => {
       expect(outcome).toMatchObject({ kind: 'refused', message: { key: 'status.value.notSteppable', params: { value } } });
     }
     expect(stepField.run(context(), { property: width, value: '', direction: 'up', size: 'step' })).toEqual({ kind: 'change' });
+  });
+
+  it('step an empty field from the value it shows: the one held, else the one the page computes (rule G3)', () => {
+    const empty = { property: width, value: '', direction: 'up', size: 'step' } as const;
+    // held at the layer written
+    expect(written(stepField.run(context(DOC({ styles: { desktop: { base: { width: '120px' } } } })), empty))).toBe('121px');
+    // held nowhere: what the page computes for it
+    const computed = { ...context(), layout: fixedLayout({}, {}, {}, {}, { ['Actions' as NodeId]: { width: '300px' } }) };
+    expect(written(stepField.run(computed, empty))).toBe('301px');
+    // the scrub starts from the same value
+    expect(written(scrubField.run(computed, { property: width, value: '', distance: constant('numberField.scrubPixelsPerStep') }))).toBe('301px');
   });
 
   it('scrub one step per numberField.scrubPixelsPerStep, with the factors, and stop at zero where negatives are refused', () => {

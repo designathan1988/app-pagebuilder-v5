@@ -206,6 +206,7 @@ const layoutAsking = (asked: Asked): Layout => ({
   paddingBox: () => ((asked.layout = true), null),
   place: () => ((asked.layout = true), null),
   fontPx: () => ((asked.layout = true), null),
+  computed: () => ((asked.layout = true), null),
 });
 const cssAsking = (asked: Asked): CssSupport => ({ supports: () => ((asked.css = true), true) });
 

@@ -321,7 +321,7 @@ function StepButton({ entry, property, shown, input, ready }: { readonly entry: 
     if (element === null || !available) return;
     return registerRepeat(element, (modifier) => {
       const held = modifier !== null && entry.command.args.modifier?.values.includes(modifier) === true ? { modifier } : {};
-      (store.dispatch as Dispatch)(entry.command.id, { ...entry.door.args, property, value: input.current?.value || shown, ...held });
+      (store.dispatch as Dispatch)(entry.command.id, { ...entry.door.args, property, value: input.current?.value ?? '', ...held });
     });
   }, [store, entry, property, shown, input, available]);
   return (

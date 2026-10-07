@@ -19,6 +19,10 @@ export interface Layout {
   // the font size the page computes for a node, in page pixels, or the root's when the node is null: what a length in
   // rem, em or % stands for (the user's real-use audit, item 5.3); null when the canvas draws neither
   fontPx(node: NodeId | null): number | null;
+  // the value the page computes for a node's property, as CSS writes it (24px), or null when the canvas does not draw
+  // the node: what a field shows when the node holds no value of its own (its placeholder), and what a step of an
+  // empty field starts from (CLAUDE.md, rule G3)
+  computed(node: NodeId, property: string): string | null;
 }
 
 export interface Place {
@@ -36,6 +40,7 @@ export const noLayout: Layout = {
   paddingBox: () => null,
   place: () => null,
   fontPx: () => null,
+  computed: () => null,
 };
 
 // A layout of fixed boxes (and places), for tests.
@@ -44,11 +49,13 @@ export function fixedLayout(
   places: Readonly<Record<NodeId, Place>> = {},
   fonts: Readonly<Record<string, number>> = {},
   paddings: Readonly<Record<NodeId, Rect>> = {},
+  computed: Readonly<Record<NodeId, Readonly<Record<string, string>>>> = {},
 ): Layout {
   return {
     box: (node) => boxes[node] ?? null,
     paddingBox: (node) => paddings[node] ?? boxes[node] ?? null,
     place: (node) => places[node] ?? null,
     fontPx: (node) => (node === null ? (fonts.root ?? null) : (fonts[node] ?? null)),
+    computed: (node, property) => computed[node]?.[property] ?? null,
   };
 }
