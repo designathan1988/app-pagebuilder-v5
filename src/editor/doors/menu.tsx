@@ -122,7 +122,15 @@ function MenuList({ menu, onDone, focusFirst, anchor, beside }: MenuListProps) {
       // its first item level with the item it opens from: up by its border and its padding
       const inset = (parseFloat(style.borderTopWidth) || 0) + (parseFloat(style.paddingTop) || 0);
       const view = { width: window.innerWidth, height: window.innerHeight };
-      flushSync(() => setSide(floatBeside(item.getBoundingClientRect(), { width, height: naturalHeight(own) }, view, edge, inset)));
+      // past the menu's own scrollbar when it shows one (a menu held to the window's height, with the scrollbars a
+      // Windows window draws): opened from the item's edge, the submenu lay over that scrollbar while it was open
+      const box = item.getBoundingClientRect();
+      const parent = item.closest<HTMLElement>('[role="menu"]');
+      const ps = parent === null ? null : getComputedStyle(parent);
+      const bar = parent === null || ps === null ? 0 : parent.offsetWidth - parent.clientWidth - (parseFloat(ps.borderLeftWidth) || 0) - (parseFloat(ps.borderRightWidth) || 0);
+      const right = parent !== null && ps !== null && bar > 0 ? Math.max(box.right, parent.getBoundingClientRect().right - (parseFloat(ps.borderRightWidth) || 0)) : box.right;
+      const anchor = { left: box.left, top: box.top, right, bottom: box.bottom };
+      flushSync(() => setSide(floatBeside(anchor, { width, height: naturalHeight(own) }, view, edge, inset)));
     };
     const sizes = new ResizeObserver(place);
     sizes.observe(own);

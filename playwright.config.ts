@@ -54,6 +54,9 @@ export default defineConfig({
     // window, about 15 px in every panel that scrolls: E2E_SCROLLBARS=shown runs the suite with them, as a person sees
     // the editor there
     ...(process.env.E2E_SCROLLBARS === 'shown' ? { launchOptions: { ignoreDefaultArgs: ['--hide-scrollbars'] } } : {}),
+    // the display scale of the screen (Windows' 125 % and 150 % are common on laptops): E2E_SCALE=1.25 draws the editor
+    // at that device pixel ratio, where fractional pixels round differently
+    ...(process.env.E2E_SCALE !== undefined && process.env.E2E_SCALE !== '' ? { deviceScaleFactor: Number(process.env.E2E_SCALE) } : {}),
     // the browser's language is pinned: the editor opens in it (jornada03 J26), and the scenarios name their locale
     locale: 'en-US',
     // a failure keeps what it showed: its screenshot (taken only when a test fails, so a passing test pays nothing), the

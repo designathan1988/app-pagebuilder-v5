@@ -41,9 +41,16 @@ test('in a 1280 × 720 window the View menu fits the window, its last item and i
   const opened = await sub.boundingBox();
   expect(opened).not.toBeNull();
   expect(opened?.x ?? 0, 'beside its item').toBeGreaterThanOrEqual((item?.x ?? 0) + (item?.width ?? 0) - 1);
-  // its item spans the menu, as every item does, so the submenu opens at the menu's edge, over none of it
-  const edge = await menu.evaluate((element) => element.getBoundingClientRect().right - parseFloat(getComputedStyle(element).paddingRight) - parseFloat(getComputedStyle(element).borderRightWidth));
-  expect((item?.x ?? 0) + (item?.width ?? 0), 'the item spans the menu').toBeCloseTo(edge, 0);
+  // its item spans the menu, as every item does, so the submenu opens at the menu's edge, over none of it — past the
+  // menu's scrollbar where the window draws one (E2E_SCROLLBARS=shown, a Windows window)
+  const edges = await menu.evaluate((element) => {
+    const style = getComputedStyle(element);
+    const border = parseFloat(style.borderRightWidth);
+    const bar = (element as HTMLElement).offsetWidth - element.clientWidth - parseFloat(style.borderLeftWidth) - border;
+    return { content: element.getBoundingClientRect().right - parseFloat(style.paddingRight) - border - bar, bar, outer: element.getBoundingClientRect().right - border };
+  });
+  expect((item?.x ?? 0) + (item?.width ?? 0), 'the item spans the menu').toBeCloseTo(edges.content, 0);
+  if (edges.bar > 0) expect(opened?.x ?? 0, 'the submenu opens past the menu’s scrollbar').toBeGreaterThanOrEqual(edges.outer - 0.5);
   expect((opened?.y ?? 0) + (opened?.height ?? 0), 'inside the window').toBeLessThanOrEqual(720);
   // nothing of it cut: the item under its middle is its own
   const hit = await page.evaluate(([x, y]) => document.elementFromPoint(x ?? 0, y ?? 0)?.closest('[data-region="menu:theme"]') !== null, [(opened?.x ?? 0) + (opened?.width ?? 0) / 2, (opened?.y ?? 0) + (opened?.height ?? 0) / 2]);
