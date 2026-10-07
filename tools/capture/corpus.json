@@ -1,0 +1,25 @@
+{
+  "$comment": "The capture corpus (stage 12, STG-12.6): twenty public sites spanning documentation, applications, blogs, shops, fonts, grids and animation. A live photograph at each initial viewport is the reference, stored with a matching HAR digest under .cache/corpus/references/<id>/; the HAR replays for Companion capture and is also compared separately with the live reference (tools/capture/corpus.capture.ts).",
+  "sites": [
+    { "id": "mdn", "url": "https://developer.mozilla.org/en-US/", "kind": "documentation" },
+    { "id": "govuk", "url": "https://www.gov.uk/", "kind": "documentation" },
+    { "id": "w3c", "url": "https://www.w3.org/", "kind": "documentation" },
+    { "id": "react", "url": "https://react.dev/", "kind": "React application" },
+    { "id": "nextjs", "url": "https://nextjs.org/", "kind": "React application" },
+    { "id": "vue", "url": "https://vuejs.org/", "kind": "Vue application" },
+    { "id": "nuxt", "url": "https://nuxt.com/", "kind": "Vue application" },
+    { "id": "svelte", "url": "https://svelte.dev/", "kind": "landing" },
+    { "id": "astro", "url": "https://astro.build/", "kind": "landing" },
+    { "id": "bootstrap", "url": "https://getbootstrap.com/", "kind": "landing" },
+    { "id": "tailwind", "url": "https://tailwindcss.com/", "kind": "landing" },
+    { "id": "overreacted", "url": "https://overreacted.io/", "kind": "blog" },
+    { "id": "frontendmastersblog", "url": "https://blog.master.dev/", "kind": "blog" },
+    { "id": "smashing", "url": "https://www.smashingmagazine.com/", "kind": "blog" },
+    { "id": "bellroy", "url": "https://bellroy.com/", "kind": "shop" },
+    { "id": "allbirds", "url": "https://www.allbirds.com/", "kind": "shop" },
+    { "id": "typewolf", "url": "https://www.typewolf.com/", "kind": "web fonts" },
+    { "id": "gridbyexample", "url": "https://gridbyexample.com/", "kind": "grid" },
+    { "id": "everylayout", "url": "https://every-layout.dev/", "kind": "grid" },
+    { "id": "animatestyle", "url": "https://animate.style/", "kind": "animation" }
+  ]
+}

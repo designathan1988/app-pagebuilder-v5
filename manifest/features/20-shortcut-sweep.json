@@ -1,0 +1,296 @@
+{
+  "group": "shortcut-sweep",
+  "titleKey": "featureGroup.shortcutSweep",
+  "features": [
+    {
+      "id": "shortcuts-e2e-sweep",
+      "titleKey": "feature.shortcutsE2eSweep",
+      "commands": [],
+      "dependsOn": [
+        "shortcuts-panel"
+      ],
+      "intent": {
+        "title": "Every listed shortcut works in its context",
+        "steps": [
+          "Run the shortcut sweep test: for each row of the keymap, set up its context and press its keys.",
+          "Type words on the canvas and after closing a picker or a panel; then choose the canvas or Layers and press an intentional letter shortcut."
+        ],
+        "expected": [
+          "Every binding listed in the Keyboard shortcuts panel runs its command in its context, checked by the document JSON, the selection or the UI state it changes.",
+          "No two bindings in the same context use the same keys (unit test on the keymap); a context includes what is selected or focused, so the arrow keys nudge a positioned selection and walk the tree otherwise, and keys handled inside a tree, tab strip, splitter or field belong to that control.",
+          "Each keymap row declares its own context setup and check next to its binding, so rows added by any entry are swept without editing the sweep test.",
+          "Printable canvas and Layers shortcuts require a deliberate choice of that region. A press elsewhere or focus lost when a control closes does not choose the canvas; blocked letters explain how to choose it.",
+          "A word takes back the letter shortcuts already run in its typing burst, preserving the document, selection, redo history and transient editor modes; shifted letters are blocked too. The store owns cancellation and persistence waits for settlement. Intentional shortcut sequences and a later isolated shortcut keep working. A non-printable key or modified command ends the burst, except Shift alone, so later typing cannot undo an intervening command. The latest pointer or keyboard choice wins."
+        ]
+      },
+      "scenarios": [
+        {
+          "id": "keys-pressed-one-after-another-run-their-commands-in-their-context",
+          "setup": {
+            "fixture": "aurora",
+            "selection": [
+              "/Page/Hero/Title"
+            ],
+            "context": "global",
+            "breakpoint": "desktop",
+            "state": "base",
+            "locale": "en",
+            "viewport": "desktop-1440",
+            "zoom": "fit"
+          },
+          "steps": [
+            {
+              "door": "element.moveDown#key-alt-arrow-down-in-canvas",
+              "args": {},
+              "target": null,
+              "drop": null,
+              "action": false,
+              "hold": false,
+              "type": null
+            },
+            {
+              "door": "element.wrapRow#key-r-in-canvas",
+              "args": {},
+              "target": null,
+              "drop": null,
+              "action": true,
+              "hold": false,
+              "type": null
+            }
+          ],
+          "doors": [
+            "element.wrapRow#key-r-in-canvas"
+          ],
+          "expect": {
+            "document": [
+              {
+                "op": "set",
+                "path": "/Page/Hero/@children",
+                "value": [
+                  {
+                    "type": "paragraph",
+                    "name": "Intro",
+                    "tag": "p",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": "Fresh coffee, roasted every week.",
+                    "children": []
+                  },
+                  {
+                    "type": "div",
+                    "name": "Row",
+                    "tag": "div",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {
+                      "desktop": {
+                        "base": {
+                          "display": "flex",
+                          "flex-direction": "row",
+                          "column-gap": "16px"
+                        }
+                      }
+                    },
+                    "text": null,
+                    "children": [
+                      {
+                        "type": "heading",
+                        "name": "Title",
+                        "tag": "h1",
+                        "attributes": {},
+                        "classes": [],
+                        "styles": {
+                          "desktop": {
+                            "base": {
+                              "flex-grow": "1",
+                              "flex-basis": "0px"
+                            }
+                          }
+                        },
+                        "text": "Welcome to Aurora",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "div",
+                    "name": "Actions",
+                    "tag": "div",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": null,
+                    "children": []
+                  }
+                ]
+              }
+            ],
+            "selection": [
+              "/Page/Hero/Row"
+            ],
+            "history": {
+              "undoSteps": 2,
+              "undoRestores": true,
+              "redoRestores": true
+            },
+            "render": {
+              "computed": [
+                {
+                  "node": "/Page/Hero/Row",
+                  "property": "display",
+                  "value": "flex"
+                },
+                {
+                  "node": "/Page/Hero/Row",
+                  "property": "flex-direction",
+                  "value": "row"
+                }
+              ],
+              "geometry": [],
+              "feedback": [
+                {
+                  "key": "status.wrapped",
+                  "params": {
+                    "name": "Title",
+                    "wrapper": "Row",
+                    "styles": "display: flex; flex-direction: row; column-gap: 16px"
+                  }
+                }
+              ]
+            },
+            "editor": null,
+            "persistence": null,
+            "export": null
+          },
+          "refusals": []
+        },
+        {
+          "id": "ctrl-d-then-alt-arrow-up-puts-a-copy-first",
+          "setup": {
+            "fixture": "aurora",
+            "selection": [
+              "/Page/Hero/Intro"
+            ],
+            "context": "global",
+            "breakpoint": "desktop",
+            "state": "base",
+            "locale": "en",
+            "viewport": "desktop-1440",
+            "zoom": "fit"
+          },
+          "steps": [
+            {
+              "door": "element.duplicate#key-ctrl-d-in-global",
+              "args": {},
+              "target": null,
+              "drop": null,
+              "action": false,
+              "hold": false,
+              "type": null
+            },
+            {
+              "door": "element.moveUp#key-alt-arrow-up-in-canvas",
+              "args": {},
+              "target": null,
+              "drop": null,
+              "action": false,
+              "hold": false,
+              "type": null
+            },
+            {
+              "door": "element.moveUp#key-alt-arrow-up-in-canvas",
+              "args": {},
+              "target": null,
+              "drop": null,
+              "action": true,
+              "hold": false,
+              "type": null
+            }
+          ],
+          "doors": [
+            "element.moveUp#key-alt-arrow-up-in-canvas"
+          ],
+          "expect": {
+            "document": [
+              {
+                "op": "set",
+                "path": "/Page/Hero/@children",
+                "value": [
+                  {
+                    "type": "paragraph",
+                    "name": "Intro 2",
+                    "tag": "p",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": "Fresh coffee, roasted every week.",
+                    "children": []
+                  },
+                  {
+                    "type": "heading",
+                    "name": "Title",
+                    "tag": "h1",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": "Welcome to Aurora",
+                    "children": []
+                  },
+                  {
+                    "type": "paragraph",
+                    "name": "Intro",
+                    "tag": "p",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": "Fresh coffee, roasted every week.",
+                    "children": []
+                  },
+                  {
+                    "type": "div",
+                    "name": "Actions",
+                    "tag": "div",
+                    "attributes": {},
+                    "classes": [],
+                    "styles": {},
+                    "text": null,
+                    "children": []
+                  }
+                ]
+              }
+            ],
+            "selection": [
+              "/Page/Hero/Intro 2"
+            ],
+            "history": {
+              "undoSteps": 3,
+              "undoRestores": true,
+              "redoRestores": true
+            },
+            "render": {
+              "computed": [],
+              "geometry": [],
+              "feedback": [
+                {
+                  "key": "status.moved",
+                  "params": {
+                    "name": "Intro 2",
+                    "position": 1,
+                    "count": 4,
+                    "parent": "Hero"
+                  }
+                }
+              ]
+            },
+            "editor": null,
+            "persistence": null,
+            "export": null
+          },
+          "refusals": []
+        }
+      ],
+      "toothProof": "src/editor/input/keymap.ts"
+    }
+  ]
+}

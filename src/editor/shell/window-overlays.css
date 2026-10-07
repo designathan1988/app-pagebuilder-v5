@@ -1,0 +1,1510 @@
+/* the project's variables in the Styles view (src/editor/shell/variables.tsx) */
+/* New variable's list of kinds, in the editor's popover (primitives.css .popover places and draws it) */
+.variables__kinds {
+  display: flex;
+  flex-direction: column;
+  min-width: calc(var(--space-10) * 4);
+  padding: var(--space-1);
+}
+
+/* an empty section's words (the Styles view's classes and variables): what to do to have one, under its title */
+.styles__none {
+  margin: 0;
+  padding: 0 var(--space-6) var(--space-3);
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.variables__group-title {
+  padding: var(--space-2) var(--space-6) var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.variables__field .input:not(:focus) {
+  padding-inline: var(--space-1);
+  border-color: transparent;
+  background: transparent;
+}
+
+/* a variable's row: its name takes what its value leaves, the value as wide as it is up to half the row, and its
+   delete in a column of its own at the row's end, in the subtle ink until the row is hovered or focused (LR2: in the
+   sidebar's 224 px "terracota-escuro" was cut in half the row; the canonical row names the variable first). The delete
+   never lies over the value: laid over the row's end (QA 379), a press meant for the value deleted the variable, and
+   at rest, unseen, it still took the press (the audit of 2026-10-05); from the section titles' start */
+.variables__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) fit-content(50%) auto;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) 0 var(--space-1) var(--space-6);
+}
+
+/* a colour variable's row: its swatch, then its name and value (variables.tsx) */
+.variables__row--colour {
+  grid-template-columns: auto minmax(0, 1fr) fit-content(50%) auto;
+}
+
+/* the value's field as wide as what it holds (MDN field-sizing: content), within its column */
+.variables__row > .variables__field:last-of-type .input {
+  field-sizing: content;
+  min-width: calc(var(--space-9) * 2);
+  max-width: 100%;
+}
+
+.variables__row > .door {
+  /* the target's minimum, the room the name keeps */
+  width: var(--size-target-min);
+  min-width: var(--size-target-min);
+  color: var(--color-text-subtle);
+}
+
+.variables__row:hover > .door,
+.variables__row:focus-within > .door {
+  color: var(--color-text);
+}
+
+.variables__swatch {
+  /* the colour, set on each swatch (variables.tsx); none without it */
+  --swatch-colour: transparent;
+  width: var(--space-7);
+  height: var(--space-7);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--swatch-colour);
+}
+
+/* a colour in use (spec site-colours): its swatch, its replace field, how many values use it, its variable button */
+.site-colours__row {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+}
+
+.site-colours__uses {
+  color: var(--color-text-muted);
+  font-size: var(--fs-caption);
+  white-space: nowrap;
+}
+
+/* a suggestion (spec style-suggestions): what repeats, then the button that makes a class of it */
+.suggestions__row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+}
+
+.suggestions__text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.variables__kind {
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  text-align: start;
+  cursor: pointer;
+}
+
+/* a dialog (guides-grids-dialog): a modal centred over a scrim that takes every click
+   outside it */
+.dialog-shield {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-scrim);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--size-inspector) * 1.6);
+  max-height: calc(100vh - var(--space-10) * 2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+  color: var(--color-text);
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+}
+
+.dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dialog__title {
+  margin: 0;
+  font: var(--fw-dialog) var(--fs-dialog) / var(--lh-dialog) var(--font-ui);
+}
+
+.dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  overflow: auto;
+}
+
+/* a dialog's words stand at the dialog's own spacing, never the browser's 1 em margins (the capture dialog: its pages'
+   hint 40 px from its field, its notices floating apart; the user's review of 2026-10-05, LR2); a hint in the muted
+   caption under what it explains */
+.dialog__body p {
+  margin: 0;
+}
+
+.capture-url__hint {
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* Guides & Grids: its sections, switches, guides and grid fields */
+.guides-grids__title {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font: var(--fw-overline) var(--fs-overline) / var(--lh-overline) var(--font-ui);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  cursor: help;
+}
+
+.guides-grids__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.guides-grids__add {
+  position: relative;
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.guides-grids__place .input {
+  width: calc(var(--space-10) * 2);
+}
+
+.guides-grids__guides {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guides-grids__guide {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.guides-grids__at {
+  margin-left: auto;
+  font: var(--fw-code) var(--fs-code) / var(--lh-code) var(--font-mono);
+}
+
+.guides-grids__none {
+  width: 100%;
+  margin: 0;
+  color: var(--color-text-subtle);
+}
+
+.guides-grids__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-6);
+  width: 100%;
+}
+
+/* a setting is a field row of a dialog (jornada02 pairing 5.2): its label in the card's column, its field beside
+   it, 24 px high — never its label stacked over a 28 px box */
+.guides-grids__field {
+  display: grid;
+  grid-template-columns: var(--size-label-column-card) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.guides-grids__field .input {
+  height: var(--size-control);
+}
+
+/* the label reads as the inspector's field labels do: the body type in the muted ink */
+.guides-grids__label {
+  color: var(--color-text-muted);
+  line-height: var(--lh-label);
+}
+
+.dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Snap settings: the targets in two columns, then the distance */
+.snap-settings__targets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.snap-settings__targets legend {
+  grid-column: 1 / -1;
+  padding: 0;
+}
+
+.snap-settings__target {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The Breakpoints dialog (src/editor/shell/breakpoints-dialog.tsx, spec project-breakpoints): a row per breakpoint,
+   its name, its width and its trash in three columns */
+.breakpoints-dialog__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.breakpoints-dialog__table {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.breakpoints-dialog__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--size-tag-field) var(--size-control);
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.breakpoints-dialog__row--head {
+  color: var(--color-text-subtle);
+}
+
+.breakpoints-dialog__cell {
+  display: contents;
+}
+
+.breakpoints-dialog__base {
+  color: var(--color-text-subtle);
+}
+
+/* a breakpoint's trash as tall as its fields (the dialog's 24 px controls), so every row is one height, the base's with
+   its word as the others with their trash (the user's review of 2026-10-05, LR2: the 28 px trash made the base's row
+   4 px shorter and the rows stood unevenly apart) */
+.breakpoints-dialog__row .door--icon-button {
+  width: var(--size-control);
+  min-width: var(--size-control);
+  height: var(--size-control);
+}
+
+/* A snap line (src/editor/canvas/snap-lines.tsx, spec snap-while-moving; item 4.5): snap.lineWidth wide, in its own
+   colour of the canvas snap token, from the moving element to the target it snapped to, the target outlined, with the
+   distance it stands from it */
+.snap-line {
+  position: absolute;
+  pointer-events: none;
+  border: 0 solid var(--color-canvas-snap);
+}
+
+.snap-line--x {
+  border-left-width: var(--size-snap-line);
+}
+
+.snap-line--y {
+  border-top-width: var(--size-snap-line);
+}
+
+/* the distance of a snap line (the gap to an element target, the place for a guide or a grid) */
+.snap-line__value {
+  position: absolute;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas-snap);
+  color: var(--color-canvas-handle);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  white-space: nowrap;
+}
+
+.snap-line--x .snap-line__value {
+  top: var(--space-2);
+  left: var(--space-2);
+}
+
+.snap-line--y .snap-line__value {
+  top: var(--space-2);
+  left: var(--space-2);
+}
+
+.snap-target {
+  position: absolute;
+  pointer-events: none;
+  outline: 1px dashed var(--color-canvas-target);
+}
+
+/* an equal gap (spec smart-guides): a solid mark across the gap with its value in page px */
+.equal-gap {
+  position: absolute;
+  pointer-events: none;
+  border: 0 solid var(--color-canvas-measure);
+}
+
+.equal-gap--x {
+  border-top-width: 1px;
+}
+
+.equal-gap--y {
+  border-left-width: 1px;
+}
+
+.equal-gap__value {
+  position: absolute;
+  top: calc(var(--space-6) * -1);
+  left: 50%;
+  translate: -50% 0;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--color-canvas-measure);
+  color: var(--color-on-canvas-band);
+  font: var(--fw-micro) var(--fs-micro) / var(--lh-micro) var(--font-ui);
+}
+
+/* a command's confirmation (confirmation.tsx): a modal box in the middle of the window over the scrim */
+.confirmation {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-confirm);
+  display: grid;
+  place-items: center;
+}
+
+.confirmation__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-scrim);
+}
+
+.confirmation__box {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  max-width: calc(var(--size-inspector) * 1.3);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+}
+
+.confirmation__message {
+  margin: 0;
+  color: var(--color-text);
+  font: var(--fw-dialog) var(--fs-dialog) / var(--lh-dialog) var(--font-ui);
+}
+
+.confirmation__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* the recovery dialog (recovery.tsx): its hint above the versions */
+.recovery__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* the tab guard (tab-guard.tsx): a bar hanging under the top bar while this tab only reads the project — never over the
+   top bar, whose page switcher and Commands still work (the audit's U-024) */
+.tab-guard {
+  position: fixed;
+  top: var(--size-top-bar);
+  left: 50%;
+  z-index: var(--z-guard);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-warning);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-2);
+  color: var(--color-text);
+  translate: -50% 0;
+}
+
+/* the state edited (canvas.tsx StateBadge, spec state-styles): a badge at the right of the frame's tab row */
+.canvas-state-badge {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-2);
+  z-index: 2;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-mode-state);
+  color: var(--color-on-mode-state);
+  font: var(--fw-label) var(--fs-label) / var(--lh-label) var(--font-ui);
+}
+
+/* the breakpoint being edited, when it is not the base (canvas.tsx BreakpointBadge, J22): the canonical band
+   (design/final .bpband) across the whole frame, under its tabs and over the page, in the breakpoint mode's colour */
+.canvas-breakpoint-badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--size-target-min);
+  padding: 0 var(--space-4);
+  overflow: hidden;
+  background: var(--color-mode-breakpoint);
+  color: var(--color-on-mode-breakpoint);
+  font: var(--weight-semibold) var(--fs-body) / var(--lh-body) var(--font-ui);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.canvas-breakpoint-badge > span {
+  flex: none;
+  line-height: var(--size-target-min);
+}
+
+/* what the edits reach, after the breakpoint's name, on the band's one line where it fits whole; where it does not, the
+   line wraps it under the band's height (overflow hidden), out of sight, and the band's tooltip says it */
+.canvas-breakpoint-badge {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: var(--space-4);
+}
+
+/* while a breakpoint other than the base is edited, the frame wears its colour: the page's outline and the tab of
+   the breakpoint in view (the canonical .frame-view and .bpt.is-bp) */
+.frame:has(.canvas-breakpoint-badge) .frame__view {
+  outline: 2px solid var(--color-mode-breakpoint);
+}
+
+.frame:has(.canvas-breakpoint-badge) .frame-tab.is-current {
+  border-color: var(--color-mode-breakpoint);
+  background: var(--color-mode-breakpoint);
+  color: var(--color-on-mode-breakpoint);
+}
+
+.frame:has(.canvas-breakpoint-badge) .frame-tab.is-current .frame-tab__width {
+  color: var(--color-on-mode-breakpoint);
+}
+
+/* the preview (preview.tsx, spec preview-mode): the preview bar over the exported page, which keeps its width at 100 %,
+   laid over the editor down to the status bar */
+.preview {
+  position: fixed;
+  inset: 0 0 var(--size-status-bar) 0;
+  z-index: var(--z-preview);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-canvas);
+}
+
+.preview-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--size-top-bar);
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* the breakpoint the preview shows reads as chosen, as the canvas's frame tabs do (the dogfooding pass: no tab was) */
+.preview-bar .door--tab.is-current {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+.preview-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.preview__page {
+  display: block;
+  height: 100%;
+  margin: 0 auto;
+  border: 0;
+  background: var(--color-surface-raised);
+}
+
+/* the command bar (command-palette): a search field over its entries, near the top of the
+   window, over a scrim whose press closes it (the backdrop door) */
+.command-bar {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-palette);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  /* the canonical palette (jornada02 R-34; the audit's U-041): 72 px from the window's top */
+  padding-top: calc(var(--space-10) * 2 + var(--space-4));
+}
+
+/* the whole window: a control's own height and padding (.door) must not shrink it to a strip (the audit's U-002, a
+   press on the scrim landed on nothing and Escape stopped closing the bar) */
+.command-bar > .command-bar__backdrop {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  /* the canonical palette leaves the editor as it is (design/final .palette): the backdrop is there for the press */
+  background: transparent;
+}
+
+/* and stays so under the pointer: a door's hover tint (primitives' .door:hover) painted the whole window a solid
+   colour, the editor gone behind it while the pointer rested outside the bar (the audit of 2026-10-05, AU6-04) */
+.command-bar > .command-bar__backdrop:not(.is-unavailable):hover {
+  background: transparent;
+}
+
+.command-bar__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(var(--size-palette), calc(100vw - var(--space-10) * 2));
+  max-height: calc(100vh - var(--space-10) * 6);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+  color: var(--color-text);
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+}
+
+/* the field's row (the canonical .pal-in): the search glyph, the query, the key that closes the bar; a line under it */
+.command-bar__search {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-4);
+  height: calc(var(--space-10) + var(--space-6) + var(--space-2));
+  padding: 0 var(--space-7);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.command-bar__close-key {
+  flex: none;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* the palette's input: the row's height in the input role (15/22); the caret says where the focus is */
+.command-bar__field {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: var(--fw-input) var(--fs-input) / var(--lh-input) var(--font-ui);
+}
+
+.command-bar__field:focus-visible {
+  outline: none;
+}
+
+.command-bar__list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.command-bar__entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  height: var(--space-10);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+}
+
+.command-bar__entry:hover {
+  background: var(--color-surface-hover);
+}
+
+/* the entry the keyboard marks: the accent's soft fill and an inset ring, told apart from a hover (the canonical
+   .pal-i.is-hot) */
+.command-bar__option[aria-selected='true'] .command-bar__entry {
+  background: var(--color-accent-soft);
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+/* a group's title in the list (the canonical .pal-g) */
+.command-bar__group {
+  padding: var(--space-4) var(--space-5) var(--space-2);
+  color: var(--color-text-subtle);
+  font: var(--weight-semibold) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* the parts of a label the query matches (the canonical .pal-i mark) */
+.command-bar__match {
+  background: none;
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+/* the menu the command stands in, after its label (the canonical .pal-i .d) */
+.command-bar__label[data-menu]::after {
+  content: attr(data-menu);
+  margin-left: var(--space-4);
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+}
+
+/* a search no entry matches says so (jornada02 G-22) */
+.command-bar__none {
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.command-bar__label {
+  flex: 1;
+}
+
+/* an entry without an icon keeps the room of the small icon the others draw (shell.css .icon--sm), so every entry's
+   words start at one place (LR2: they started 2 px left) */
+.command-bar__no-icon {
+  flex: none;
+  width: calc(var(--space-7) - var(--space-1));
+}
+
+.command-bar__chord,
+.command-bar__hints kbd {
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+/* the keys of the bar (the canonical .pal-foot): on the sunken surface, each key in its cap */
+.command-bar__hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-8);
+  margin: 0;
+  padding: var(--space-3) var(--space-7);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-sunken);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  color: var(--color-text-subtle);
+}
+
+.command-bar__hints kbd {
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+}
+
+/* Find a property with no match (spec inspector-property-search): what the sections would show says so */
+.inspector-search__none {
+  margin: 0;
+  padding: var(--space-6);
+  color: var(--color-text-muted);
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+}
+
+/* a value the field's command refused (spec inspector-number-fields, Problems in Pager 3): the field in the error
+   outline, and the refusal said under it, across the row — a field of a pair row wears the same states on its cell */
+.field-row.is-invalid .input,
+.field-cell.is-invalid .input {
+  outline: 1px solid var(--color-danger);
+}
+
+/* several selected elements with different values, beside a control that has no placeholder to say it (A3.35) */
+.field-row__mixed {
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.field-row__refusal {
+  grid-column: 1 / -1;
+  color: var(--color-danger);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* The files tree (spec explorer-file-system): the two create fields over the rows, a folder's row, its drop targets */
+.row--maker {
+  gap: var(--space-4);
+  height: auto;
+  min-height: var(--size-row);
+  padding-bottom: var(--space-1);
+}
+
+.row__maker {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  min-width: 0;
+}
+
+.row__maker-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.row--folder .row__name {
+  color: var(--color-text);
+}
+
+.row__open {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.row__thumb {
+  flex: none;
+  width: var(--space-6);
+  height: var(--space-6);
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+}
+
+/* the folders a row may move into (its Move to… door, one entry per folder) */
+.row__targets {
+  position: absolute;
+  z-index: 2;
+  top: 100%;
+  left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  min-width: calc(var(--space-10) * 4);
+  padding: var(--space-1);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-2);
+}
+
+.row__target {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.row.is-dragging {
+  opacity: 0.5;
+}
+
+.row--folder.is-over {
+  background: var(--color-surface-selected);
+  outline: 1px solid var(--color-accent);
+  outline-offset: -1px;
+}
+
+/* The Timeline panel (group 18): the animations of the selected element on the left, the track with its ruler,
+   playhead and keyframes on the right (src/editor/timeline/panel.tsx) — the canonical anatomy (jornada02 pairing
+   5.6): a 236 px side, a 32 px transport bar of 24 px buttons over the track, a bar under it for the keyframe's
+   actions. The dock body's padding is the panel's own. */
+.dock-body:has(> .timeline) {
+  padding: 0;
+}
+
+.timeline {
+  display: grid;
+  flex: 1 0 100%;
+  grid-template-columns: var(--size-timeline-side) minmax(0, 1fr);
+  align-self: stretch;
+  min-height: 100%;
+}
+
+.timeline__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-right: 1px solid var(--color-border);
+  overflow: auto;
+}
+
+.timeline__title {
+  margin: 0;
+  font: var(--fw-overline) var(--fs-overline) / var(--lh-overline) var(--font-ui);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.timeline__none,
+.timeline__hint {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.timeline__hint {
+  padding: var(--space-2) var(--space-4);
+}
+
+.timeline__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline__rows .door {
+  justify-content: flex-start;
+  width: 100%;
+  height: var(--size-row);
+}
+
+.timeline__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* an animation's delete is its row's small trash button, its name kept for assistive technology */
+.timeline__rows .timeline__row > .door:not(:first-child) {
+  flex: none;
+  width: var(--size-target-min);
+  min-width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+}
+.timeline__rows .timeline__row > .door:not(:first-child) .door__label {
+  position: absolute;
+  width: var(--space-1);
+  height: var(--space-1);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.timeline__rows .timeline__row > .door:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* the name and the settings: one per line, the label in the card's column (the canonical .prop) */
+.timeline__settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.timeline__side .panel-field {
+  grid-template-columns: var(--size-label-column-card) minmax(0, 1fr);
+  min-height: var(--size-row);
+}
+
+/* the timeline's values in the code face, the small radius, no edge (the canonical .f) */
+.timeline__side .panel-field__text {
+  border-color: transparent;
+  border-radius: var(--radius-xs);
+  font: var(--fw-code) var(--fs-code) / var(--lh-code) var(--font-mono);
+}
+
+.timeline__name,
+.timeline__setting {
+  display: contents;
+}
+
+.timeline__name .panel-field__text:not(:focus) {
+  background: transparent;
+}
+
+.timeline__setting.is-set .panel-field__text {
+  background: var(--color-origin-here-soft);
+  color: var(--color-origin-here);
+  font-weight: var(--weight-semibold);
+}
+
+.timeline__setting.is-default .panel-field__text {
+  background: var(--color-surface-sunken);
+  color: var(--color-origin-default);
+}
+
+.timeline__track-area {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* the transport bar: Play, Pause, Stop and Loop as the small icon buttons */
+.timeline__controls {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--space-10);
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timeline__controls .door {
+  width: var(--size-target-min);
+  min-width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+  border-color: transparent;
+  background: none;
+  color: var(--color-text-muted);
+}
+
+.timeline__track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timeline__ruler {
+  position: relative;
+  height: var(--size-row);
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+  cursor: pointer;
+  /* a line at each quarter, its time just after it (the labels below), none through a label */
+  background: repeating-linear-gradient(to right, var(--color-border) 0, var(--color-border) 1px, transparent 1px, transparent 25%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* the ruler's quarters in seconds (the canonical .tl-ruler span), the last ending at the ruler's end */
+.timeline__ruler-label {
+  position: absolute;
+  top: var(--space-1);
+  translate: var(--space-1) 0;
+  pointer-events: none;
+  white-space: nowrap;
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.timeline__ruler-label:last-child {
+  translate: calc(-100% - var(--space-1)) 0;
+}
+
+/* the playhead's time over the animation's length, after the transport (the canonical .tl-time and its subtle length) */
+.timeline__time {
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+  font: var(--weight-semibold) var(--fs-code) / var(--lh-code) var(--font-mono);
+}
+
+.timeline__length {
+  color: var(--color-text-subtle);
+  font-weight: var(--weight-regular);
+}
+
+.timeline__playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--space-1);
+  background: var(--color-canvas-selection);
+}
+
+.timeline__lane {
+  position: relative;
+  height: var(--size-row);
+}
+
+.timeline__keyframe {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-control);
+  height: var(--size-control);
+  margin-left: calc(var(--size-control) / -2);
+  color: var(--color-canvas-target);
+  cursor: grab;
+}
+
+.timeline__keyframe.is-current {
+  color: var(--color-canvas-selection);
+}
+
+/* the keyframe's own actions, in the bar under the track: each at its own width, wrapping to a second line rather than
+   squeezed (the user's review of 2026-10-05, LR2: "Add keyframe" ran into its border, the curve lay over the delete,
+   the delete ran past the panel) */
+.timeline__track-area > .timeline__row {
+  flex-wrap: wrap;
+  row-gap: var(--space-2);
+  min-height: var(--space-10);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timeline__track-area > .timeline__row > * {
+  flex: none;
+}
+
+/* the keyframe's easing: its name on one line beside its value and its curve */
+.timeline__track-area > .timeline__row > .panel-field {
+  grid-template-columns: max-content calc(var(--size-control) * 5);
+  align-items: center;
+  gap: 0 var(--space-2);
+}
+
+.timeline__track-area > .timeline__row > .panel-field > .field-row__label {
+  white-space: nowrap;
+}
+
+/* its value in the code face of the Timeline's values (the canonical .f) */
+.timeline__track-area > .timeline__row .panel-field__text {
+  font: var(--fw-code) var(--fs-code) / var(--lh-code) var(--font-mono);
+}
+
+/* the keyframe's delete is a small trash button, as an animation's is, its name kept for assistive technology */
+.timeline__track-area > .timeline__row > [data-door$='#timeline-keyframe-delete'] {
+  width: var(--size-target-min);
+  min-width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+}
+
+.timeline__track-area > .timeline__row > [data-door$='#timeline-keyframe-delete'] .door__label {
+  position: absolute;
+  width: var(--space-1);
+  height: var(--space-1);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The inspector's Interactions tab (group 18): one card per interaction of the selected element */
+.inspector-tab--interactions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.interactions__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: var(--space-10);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.interactions__element {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  overflow: hidden;
+  font: var(--weight-semibold) var(--fs-body) / var(--lh-body) var(--font-ui);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.interactions__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* the element's tag (design/final .ix-who .tag) */
+.interactions__tag {
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-mono);
+}
+
+/* the title of each list of the tab: the events, then the motion */
+.interactions__title {
+  margin: 0;
+  padding: var(--space-4) var(--space-6) 0;
+  color: var(--color-text-muted);
+  font: var(--fw-overline) var(--fs-micro) / var(--lh-overline) var(--font-ui);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+}
+
+.interactions__head > .door {
+  flex: none;
+  height: var(--size-control);
+}
+
+.interactions__none,
+.interactions__note {
+  margin: 0;
+  padding: var(--space-5) var(--space-6);
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.interaction-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: var(--space-4) var(--space-6) 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.interaction-card.is-expanded {
+  border-color: var(--color-accent);
+  outline: calc(var(--space-1) / 2) solid var(--color-accent);
+}
+
+.interaction-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  min-height: var(--space-10);
+  padding: 0 var(--space-2) 0 var(--space-4);
+}
+
+.interaction-card.is-expanded .interaction-card__head {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.interaction-card__summary {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.interaction-card__summary .icon {
+  flex: none;
+}
+
+.interaction-card__name {
+  overflow: hidden;
+  font: var(--weight-semibold) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interaction-card__action {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interaction-card__head > .door {
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+  border-color: transparent;
+  background: none;
+  color: var(--color-text-muted);
+}
+
+.interactions__head > .door {
+  font-weight: var(--weight-semibold);
+}
+
+.interaction-card .interaction-card__fields .interaction-card__default .panel-field__text {
+  background: var(--color-surface-sunken);
+  color: var(--color-origin-default);
+  font-weight: var(--weight-regular);
+}
+
+.interaction-card__default,
+.interaction-card__set {
+  display: contents;
+}
+
+.interaction-card__head > .door .door__label {
+  position: absolute;
+  width: var(--space-1);
+  height: var(--space-1);
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.interaction-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+/* an event's fields are the canonical card's (design/final, the Interactions tab): no border, a soft fill, the value
+   set on the element in the colour of where it comes from (here), in the code face; its target picked on the canvas
+   wears the picking colour */
+.interaction-card .interaction-card__fields .panel-field__text,
+.interaction-card .interaction-card__fields .panel-field__text::placeholder {
+  border-color: transparent;
+  border-radius: var(--radius-xs);
+  background: var(--color-origin-here-soft);
+  color: var(--color-origin-here);
+  font: var(--weight-semibold) var(--fs-code) / var(--lh-code) var(--font-mono);
+}
+
+.interaction-card .interaction-card__fields .panel-field__text:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+}
+
+.interaction-card .interaction-card__fields .panel-field__text:focus:not(:disabled) {
+  border-color: var(--color-focus);
+}
+
+.interaction-card__target .door[aria-pressed='true'] {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-canvas-target) 18%, transparent);
+  color: var(--color-canvas-target);
+  font-weight: var(--weight-semibold);
+}
+
+.interaction-card__pick {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.interaction-card__note {
+  margin: 0;
+  padding: 0 var(--space-4) var(--space-3) calc(var(--space-4) + var(--space-7));
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+/* a card's rows: the label column of a card (jornada02 R-06 .ix; 116 px since LR2), its values in the UI font */
+.interaction-card .panel-field,
+.interaction-card .interaction-card__target,
+.interaction-card .field-row {
+  display: grid;
+  grid-template-columns: var(--size-label-column-card) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.interaction-card .panel-field__form,
+.interaction-card .panel-field__text,
+.interaction-card .interaction-card__target > .door {
+  min-width: 0;
+  width: 100%;
+}
+
+.interaction-card .panel-field__text,
+.interaction-card .interaction-card__target > .door {
+  height: var(--size-control);
+}
+
+/* a card's values in the size of the inspector's other values (the dogfooding pass: click and show stood larger than
+   the rows around them), an empty scope saying what it means */
+.interaction-card .panel-field__text {
+  font: var(--fw-input) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* a row with a switch (Only once, Open in a new tab) wears the same caption label and value size as its neighbours */
+.interaction-card .field-row > .field-row__label,
+.interaction-card .field-row > .door {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.interaction-card .field-row > .door {
+  height: var(--size-control);
+}
+
+.interaction-card .panel-field__text::placeholder {
+  color: var(--color-text-muted);
+}
+
+.interaction-card .interaction-card__target > .door {
+  overflow: hidden;
+  justify-content: flex-start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* a field of a panel: its label above the input (the timeline's settings, an interaction's card) */
+.panel-field {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+
+.panel-field .field-row__label {
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.panel-field__text {
+  width: 100%;
+  padding: 0 var(--space-2);
+  height: var(--size-control);
+  font: var(--fw-input) var(--fs-input) / var(--lh-input) var(--font-ui);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+}
+
+/* The canvas grid editor (grid-editor.tsx; the user real-use audit, item 8.2): the column numbers at their starts,
+   a grip on every track boundary and the selected item corner grip. Drawn in the chrome, never in the page. */
+.chrome__grid-edit {
+  position: absolute;
+  pointer-events: none;
+}
+
+.chrome__grid-line-number {
+  position: absolute;
+  transform: translateY(-100%);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-canvas-selection) 18%, var(--color-surface));
+  color: var(--color-text);
+  font: var(--fw-caption) var(--fs-micro) / var(--lh-micro) var(--font-mono);
+}
+
+.chrome__band--grid-track {
+  background: var(--color-canvas-selection);
+  opacity: 0.5;
+  cursor: col-resize;
+}
+
+.chrome__band--grid-track:hover {
+  opacity: 0.85;
+}
+
+/* over the side's resize grip it sits on (the item's bottom-right corner, .chrome__edge) */
+.chrome__band--grid-span {
+  z-index: 2;
+  background: var(--color-canvas-drop);
+  opacity: 0.7;
+  border-radius: var(--radius-sm);
+  cursor: nwse-resize;
+}
+
+.chrome__band--grid-span:hover {
+  opacity: 1;
+}
+
+/* the palette's scope pills (the canonical .pal-scopes): a line of small pills under the field, the current one filled */
+/* the scope pills under the field (the canonical .pal-scopes), a line under them */
+.command-bar__scopes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-7);
+  border-bottom: 1px solid var(--color-border);
+}
+.command-bar__scope {
+  height: var(--size-target-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+  white-space: nowrap;
+}
+.command-bar__scope:hover { background: var(--color-surface-hover); color: var(--color-text); }
+.command-bar__scope.is-current {
+  border-color: transparent;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+/* Import destinations share the existing modal and command controls. */
+.html-import__choices { display: grid; gap: var(--space-6); }
+.html-import__choice { display: grid; gap: var(--space-2); }
+.html-import__choice p { margin: 0; color: var(--color-text-muted); }
+.html-import li { overflow-wrap: anywhere; }
+
+/* The batch rename dialog (batch-rename.tsx, spec batch-rename): what the pattern means, and the names it gives */
+.batch-rename__hint,
+.batch-rename__preview {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+
+/* the Timeline's Add keyframe the small button (the canonical .btn.sm), New animation in the subtle ink beside the
+   Animations title (the canonical .sec-t .acts .ib), an animation's name the row's 18 px line */
+.timeline [data-door$='#timeline-add-keyframe'] {
+  height: var(--size-control);
+}
+
+.timeline [data-door$='#timeline-new-animation'] {
+  color: var(--color-text-subtle);
+}
+
+.timeline__name .panel-field__text:not(:focus) {
+  height: var(--lh-code);
+}
+
+/* the interaction card's Remove in the head's weight (the canonical .ix-h) */
+.interaction-card__head > .door {
+  font-weight: var(--weight-semibold);
+}
+
+/* a transport toggle that is on keeps the accent (the canonical loop .ib.sm.is-on), over the bare buttons above */
+.timeline__controls .door.is-current {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}

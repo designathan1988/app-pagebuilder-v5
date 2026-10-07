@@ -1,0 +1,161 @@
+/* ---------------------------------------------------------------- menus */
+
+.menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--size-control-lg);
+  min-width: var(--size-target-min);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.menu-button:hover,
+.menu-button.is-open {
+  background: var(--color-surface-hover);
+}
+
+.menu-button--icon-button {
+  width: var(--size-control-lg);
+  padding: 0;
+  justify-content: center;
+  color: var(--color-text-muted);
+}
+
+/* a menu (jornada02 G-18, the audit's U-035): 240 px at the least, its items 26 px, radius lg, the floating shadow */
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: var(--z-menu);
+  display: flex;
+  flex-direction: column;
+  min-width: var(--size-menu-min);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+}
+
+.menu__item {
+  display: grid;
+  grid-template-columns: var(--space-7) minmax(max-content, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--size-chip);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.menu__item:not(.is-unavailable):hover,
+.menu__item:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.menu__item:not(.is-unavailable):hover > *,
+.menu__item:focus-visible > * {
+  color: var(--color-on-accent);
+}
+
+.menu__item.is-unavailable {
+  color: var(--color-text-subtle);
+  cursor: not-allowed;
+}
+
+/* the line between the groups of a menu (jornada02 G-18): the values a field suggests, then its units */
+.menu__separator {
+  margin: var(--space-2) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.menu__reason {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--color-text-subtle);
+}
+
+/* the item's keys stand apart at its end, in the caption size and the subtle ink (the canonical .mi .sc) */
+.menu__chord {
+  padding-left: var(--space-8);
+  border: 0;
+  background: none;
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+}
+
+/* a menu held to the window's height scrolls, its scroll bar thin as the panels': its items keep their height, never
+   squeezed to fit */
+.menu {
+  scrollbar-width: thin;
+}
+
+.menu > * {
+  flex-shrink: 0;
+}
+
+.menu__sub {
+  position: relative;
+}
+
+/* a submenu's item spans the menu's width as every item does (a button shrinks to its content otherwise): its hover
+   fills the row, its chevron ends it, and its submenu opens at the menu's edge */
+.menu__sub > .menu__item {
+  width: 100%;
+}
+
+/* the backdrop under an open menu (ui.dismiss#overlay-backdrop): the whole window, transparent, under the menu */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop);
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.overlay-backdrop:not(.is-unavailable):hover {
+  background: transparent;
+}
+
+/* the context menu: at the pointer in the window (its left and top come from the drawing), over its backdrop; the
+   wrapper takes no place in the shell's grid */
+.context-menu {
+  display: contents;
+}
+
+.context-menu > .menu {
+  position: fixed;
+}
+
+/* a submenu shows while the pointer is over its item or the focus is in it, or once its item is clicked; fixed to the
+   window, placed beside its item when it shows (menu.tsx, floatBeside), so the scroll of a menu held to the window's
+   height never cuts it */
+.menu__sub > .menu {
+  position: fixed;
+  display: none;
+}
+
+.menu__sub:hover > .menu,
+.menu__sub:focus-within > .menu,
+.menu__sub.is-open > .menu {
+  display: flex;
+}
+

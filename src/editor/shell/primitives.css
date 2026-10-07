@@ -1,0 +1,278 @@
+/* The primitives of the interface (the audit's CSS-2: one owner stylesheet per primitive): the door and its variants,
+   the segmented control, the colour swatch and the alignment matrix. A region's stylesheet places them and sizes them
+   for its region; how a primitive looks at rest, hovered, pressed, current and disabled is written here once.
+   src/main.tsx loads this file right after shell.css, before every region's stylesheet. */
+
+/* ---------------------------------------------------------------- native choices */
+
+/* a native check box or radio button (Snap settings' targets, the pages a data collection makes) in the accent of the
+   interface, not the browser's own blue (the user's review of 2026-10-05, LR2; MDN accent-color: check boxes, radio
+   buttons, ranges and progress bars take it); a range keeps the accent its own region gives it */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--color-accent);
+}
+
+/* ---------------------------------------------------------------- doors */
+
+.door {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: var(--size-target-min);
+  height: var(--size-control-lg);
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.door:not(.is-unavailable):hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.door.is-unavailable {
+  cursor: not-allowed;
+}
+
+/* a control that cannot act (its feature not built, nothing it applies to): clearly disabled, never looking like one
+   that works (the user's real-use audit, item 1.4) — the subtle ink on its own container, no hover plate, the
+   not-allowed pointer and its reason in the tooltip; never faded, so its words stay legible (jornada02 G-13) */
+.door.is-unavailable:not(.door--primary) {
+  color: var(--color-text-subtle);
+}
+
+.door--icon-button {
+  width: var(--size-control-lg);
+  padding: 0;
+}
+
+/* the small icon button (the canonical .ib.sm): the 24 px target, an sm glyph — beside the 26 px chips of a row */
+.door--icon-button.door--sm {
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+}
+
+.door--icon-button.is-current {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+/* an on/off switch (drawnAs toggle: a table's caption, head and foot): outlined, and filled with the accent while on */
+.door--toggle {
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.door--toggle.is-current,
+.door--toggle.is-current:not(.is-unavailable):hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.field-row.field-row--toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.door--button {
+  padding: 0 var(--space-5);
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+/* the region's main action (drawnAs primary): a button filled with the accent */
+.door--primary {
+  padding: 0 var(--space-5);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--weight-semibold);
+}
+
+/* a main action that cannot run ("not available yet", or its predicate does not hold) never wears the accent: it
+   looks like every other control that cannot be used */
+.door--primary.is-unavailable {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.door--disclosure {
+  justify-content: flex-start;
+  padding: 0 var(--space-2);
+  color: var(--color-text);
+}
+
+.separator {
+  width: 0;
+  height: var(--space-8);
+  flex: none;
+  margin: 0 var(--space-2);
+  border-left: 1px solid var(--color-border);
+}
+
+.segmented {
+  display: inline-flex;
+  gap: var(--space-1);
+  padding: var(--space-0);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+}
+
+.segmented .door {
+  height: var(--size-target-min);
+  border: 0;
+  border-radius: var(--radius-xs);
+}
+
+.segmented .door.is-current {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-1);
+  font-weight: var(--weight-semibold);
+}
+
+/* the effective keyword while the element holds none of its own (inherited or the default): muted, not pressed */
+.segmented .door.is-default {
+  outline: 1px dashed var(--color-origin-default);
+  outline-offset: -1px;
+}
+
+/* a field with no value of its own shows the effective value as its placeholder, in the Default origin colour */
+/* A field draws its border only while it is hovered or holds the focus (the design's field): its own box is what a
+   person sees, so a column of fields reads as a list and not as a grid of boxes. */
+.input:not(:hover):not(:focus),
+.box__input:not(:hover):not(:focus) {
+  border-color: transparent;
+}
+
+.input::placeholder,
+.box__input::placeholder {
+  color: var(--color-origin-default);
+}
+
+.search {
+  width: 100%;
+  height: var(--size-control-lg);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+}
+
+.search::placeholder {
+  color: var(--color-text-subtle);
+}
+
+
+/* a segmented group whose segments keep their own width and wrap onto another line when the room runs out */
+.segmented--hug {
+  flex-wrap: wrap;
+}
+
+.segmented--hug .door {
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- the popover */
+
+/* a layer that floats next to the control that opened it (popover.tsx): drawn from the body, placed in the window by
+   float.ts, over its backdrop; its owner lays out what it holds */
+.popover {
+  position: fixed;
+  z-index: var(--z-menu);
+  max-width: calc(100vw - var(--space-4) * 2);
+  max-height: calc(100vh - var(--space-4) * 2);
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-2);
+  color: var(--color-text);
+}
+
+/* opened from a modal dialog: over it */
+.popover.popover--over-dialog {
+  z-index: var(--z-confirm);
+}
+
+/* ---------------------------------------------------------------- the colour swatch */
+
+/* a colour field's swatch (color-picker): the colour over a checkerboard, which shows through a translucent one */
+.swatch {
+  width: calc(var(--space-7) - var(--space-1));
+  height: calc(var(--space-7) - var(--space-1));
+  flex: none;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+}
+
+.swatch,
+.picker__swatch {
+  --swatch-colour: var(--color-surface);
+  background:
+    linear-gradient(var(--swatch-colour), var(--swatch-colour)),
+    repeating-conic-gradient(var(--color-border) 0 25%, var(--color-surface) 0 50%) 0 0 / var(--space-4) var(--space-4);
+}
+
+/* ---------------------------------------------------------------- the alignment matrix */
+
+.matrix {
+  display: grid;
+  grid-template-columns: repeat(3, var(--size-target-min));
+  grid-auto-rows: var(--size-target-min);
+  width: fit-content;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+}
+
+.matrix__cell {
+  display: grid;
+  place-items: center;
+}
+
+/* a place the content can take: a 4 px dot in the subtle ink, which reads on the plate (3:1; the audit's P-S33: the
+   border-strong dot read 1.7:1) */
+.matrix__cell::before {
+  content: '';
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-text-subtle);
+}
+
+/* a cell of the matrix (props-flex-container): a button, its dot accented while it stands for what the element
+   holds */
+.matrix__cell.door {
+  padding: var(--space-0);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+}
+
+.matrix__cell.door:not(.is-unavailable) {
+  cursor: pointer;
+}
+
+.matrix__cell.door:not(.is-unavailable):hover::before {
+  background: var(--color-text-muted);
+}
+
+/* the place the content takes now: a bar of the value's own ink, as the canonical matrix draws it (jornada02 R-29) */
+.matrix__cell.door.is-current::before {
+  width: calc(var(--space-6) + var(--space-1));
+  height: var(--space-2);
+  background: var(--color-origin-here);
+}

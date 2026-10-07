@@ -1,0 +1,154 @@
+// @vitest-environment happy-dom
+// @vitest-environment-options {"settings":{"disableCSSFileLoading":true,"handleDisabledFileLoadingAsSuccess":true,"disableJavaScriptFileLoading":true}}
+// Format-3 captured pages retain every author sheet and DOM node in their source order. These cases
+// previously exercised a residual CSS split that changed the cascade; authored imports still use their model.
+import { describe, expect, it } from 'vitest';
+import type { PickedFile } from '../../generated/commands.ts';
+import { documentOf, runHandler } from '../testing/handlers.ts';
+import { capturedPageCss } from './capture-styles.ts';
+import type { CapturedNode } from '../document/captured.ts';
+import { importHtmlCommand } from './import.ts';
+
+const file = (name: string, type: string, text: string): PickedFile => {
+  let binary = '';
+  for (const byte of new TextEncoder().encode(text)) binary += String.fromCharCode(byte);
+  return { name, type, bytes: btoa(binary) };
+};
+const SHEET = [
+  '.brand { color: #f5e6d3; --accent: #b9512a; }',
+  'nav a:hover > span { color: red; }',
+  '@font-face { font-family: Serif; src: url("../fonts/serif.woff2"); }',
+  '@media (prefers-color-scheme: dark) { .brand { color: white; } }',
+].join('\n');
+const page = (meta: string) => `<!doctype html><html><head>${meta}<link rel="stylesheet" href="css/site.css"></head><body><h1 class="brand">Hi</h1><nav><a href="/"><span>x</span></a></nav></body></html>`;
+
+function imported(meta: string) {
+  const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', page(meta)), file('css/site.css', 'text/css', SHEET)] }, { confirmed: true });
+  if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+  expect(ran.problems).toEqual([]);
+  return ran.document;
+}
+
+// Format-3 captures retain the complete author sheet and DOM; no selector is partitioned into a
+// residual rule and a later generated rule. Each prior cascade case now checks its full source.
+const capturedStyles = (document: ReturnType<typeof imported>): string[] => {
+  const root = document.pages[0]?.capture?.root;
+  const find = (node: CapturedNode): string[] => node.kind === 'element'
+    ? [...(node.tag === 'style' ? [node.children.filter((child) => child.kind === 'text').map((child) => child.kind === 'text' ? child.value : '').join('')] : []), ...node.children.flatMap(find)]
+    : [];
+  return root === undefined ? [] : find(root);
+};
+
+describe('the original stylesheet of a captured page', () => {
+  it('keeps every selector, at-rule and declaration in source order instead of splitting mapped winners', () => {
+    const document = imported('<meta name="builder-capture" content="https://example.com/">');
+    const home = document.pages[0];
+    if (home === undefined) throw new Error('no page');
+    const sheet = document.files?.find((one) => one.path === 'css/site.css');
+    expect(sheet).toBeDefined();
+    const source = new TextDecoder().decode(Uint8Array.from(atob(sheet?.bytes ?? ''), (character) => character.charCodeAt(0)));
+    expect(source).toBe(SHEET);
+    expect(source).toContain('nav a:hover > span');
+    expect(source).toContain('@font-face');
+    expect(source).toContain('@media (prefers-color-scheme: dark)');
+    expect(source).toContain('color: #f5e6d3');
+    expect(home.capture?.root.children.some((one) => one.kind === 'element' && one.tag === 'head' && one.children.some((child) => child.kind === 'element' && child.tag === 'link'))).toBe(true);
+    expect(home.tree.children).toHaveLength(0);
+    expect(capturedPageCss(document, home)).toBe('');
+  });
+
+  it('is not written for a page that is no capture', () => {
+    const document = imported('');
+    const home = document.pages[0];
+    if (home === undefined) throw new Error('no page');
+    expect(capturedPageCss(document, home)).toBe('');
+  });
+
+  it('keeps an author universal reset in its inline source sheet', () => {
+    const markup = '<!doctype html><html><head><meta name="builder-capture" content="https://example.com/"><style>*,:before{box-sizing:border-box}</style></head><body><div>Card</div></body></html>';
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    expect(capturedStyles(ran.document)).toContain('*,:before{box-sizing:border-box}');
+  });
+
+  it('keeps a width rule nested under a screen sheet without generated base declarations', () => {
+    const markup = '<!doctype html><html><head><meta name="builder-capture" content="https://example.com/"><style>@media screen {.navigation{display:flex;flex-wrap:wrap}@media screen and (min-width:80em){.navigation{flex-wrap:nowrap}}}</style></head><body><nav class="navigation">Links</nav></body></html>';
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    expect(capturedStyles(ran.document)[0]).toContain('@media screen and (min-width:80em)');
+    expect(ran.document.pages[0]?.tree.children).toHaveLength(0);
+  });
+
+  it('keeps CSS and DOM nodes targeting the drawing inside SVG', () => {
+    const markup = '<!doctype html><html><head><meta name="builder-capture" content="https://example.com/"><style>.mandala svg > text { fill: #51565d; }</style></head><body><div class="mandala"><svg viewBox="0 0 10 10"><text>x</text></svg></div></body></html>';
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    expect(capturedStyles(ran.document)[0]).toContain('.mandala svg > text { fill: #51565d; }');
+    expect(JSON.stringify(ran.document.pages[0]?.capture)).toContain('"tag":"text"');
+  });
+});
+describe('a state an element does not take', () => {
+  it('is reported, and the import stays a valid document', () => {
+    const markup = '<!doctype html><html><head><style>a:visited { color: red; }</style></head><body><a href="https://example.com/"><div>Card</div></a></body></html>';
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    expect(ran.outcome.kind).toBe('change');
+    expect(ran.problems).toEqual([]);
+  });
+});
+
+describe('what the importer keeps of a page', () => {
+  const run = (markup: string) => {
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    expect(ran.problems).toEqual([]);
+    return ran.document.pages[0]?.tree;
+  };
+  it('keeps what an unknown element holds, in its place', () => {
+    const tree = run('<!doctype html><html><body><main><x-card><p>Kept</p></x-card></main></body></html>');
+    expect(JSON.stringify(tree)).toContain('"text":"Kept"');
+  });
+  it('keeps images inside an unstyled inline wrapper', () => {
+    const tree = run('<!doctype html><html><body><div><span><img src="shoe.png" alt="Shoe"><img src="shoe-hover.png" alt="Hover"></span></div></body></html>');
+    const container = tree?.children[0];
+    expect(container?.children.map((child) => child.type)).toEqual(['image', 'image']);
+    expect(container?.children.map((child) => child.attributes)).toEqual([
+      expect.objectContaining({ src: 'shoe.png', alt: 'Shoe' }),
+      expect.objectContaining({ src: 'shoe-hover.png', alt: 'Hover' }),
+    ]);
+  });
+  it('keeps a visual link inside an unstyled inline wrapper', () => {
+    const tree = run('<!doctype html><html><body><div><span><a href="https://example.com/"><img src="logo.svg" alt="Logo"></a></span></div></body></html>');
+    const container = tree?.children[0];
+    expect(container?.children.map((child) => child.type)).toEqual(['linkBlock']);
+    expect(container?.children[0]?.children.map((child) => child.type)).toEqual(['image']);
+  });
+  it('keeps a list link and its following words on one editable line', () => {
+    const tree = run('<!doctype html><html><body><ul><li><a href="https://example.com/">Perch CMS</a> - a small CMS.</li></ul></body></html>');
+    const item = tree?.children[0]?.children[0];
+    expect(item?.children).toHaveLength(1);
+    expect(item?.children[0]).toMatchObject({ type: 'paragraph', tag: 'span', text: 'Perch CMS - a small CMS.' });
+    expect(item?.children[0]?.inline).toEqual([{ tag: 'a', href: 'https://example.com/', children: ['Perch CMS'] }, ' - a small CMS.']);
+  });
+  it('takes the hidden attribute as the element hidden', () => {
+    const tree = run('<!doctype html><html><body><div hidden><p>Closed</p></div></body></html>');
+    expect(tree?.children[0]?.hidden).toBe(true);
+  });
+  it('ranks a class above any number of types, as CSS does', () => {
+    const tree = run('<!doctype html><html><head><style>.lead { color: rgb(1, 2, 3); } main p { color: rgb(9, 9, 9); }</style></head><body><main><p class="lead">A</p></main></body></html>');
+    expect(JSON.stringify(tree)).toContain('rgb(1, 2, 3)');
+    expect(JSON.stringify(tree)).not.toContain('rgb(9, 9, 9)');
+  });
+  it('matches a descendant rule on a class the element’s own rule took', () => {
+    const tree = run('<!doctype html><html><head><style>.box { padding: 4px; } .box p { color: rgb(4, 5, 6); }</style></head><body><div class="box"><p>B</p></div></body></html>');
+    expect(JSON.stringify(tree)).toContain('rgb(4, 5, 6)');
+  });
+  it('lets an important author class beat a less important element rule', () => {
+    const markup = '<!doctype html><html><head><style>.VPNav{top:72px!important}.VPNav.nav-bar.stick{top:0}</style></head><body><header class="VPNav nav-bar stick">Navigation</header></body></html>';
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file('index.html', 'text/html', markup)] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    const header = ran.document.pages[0]?.tree.children[0];
+    expect(header?.classes).toContain('VPNav');
+    expect(ran.document.classes?.find((one) => one.name === 'VPNav')?.styles.desktop?.base?.top).toBe('72px');
+    expect(header?.styles.desktop?.base?.top).toBeUndefined();
+  });
+});

@@ -1,0 +1,598 @@
+/* ---------------------------------------------------------------- toast */
+
+/* the notice that follows a delete (toast.tsx): above the status bar, centred on the window, under an open menu */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--size-status-bar) + var(--space-6));
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+  color: var(--color-text);
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+/* a saved colour's chip and a shadow layer's swatch wear the colour the editor sets on them (--swatch-colour, the
+   swatch primitive's variable: primitives.css); none set, they are empty */
+.picker__chip,
+.shadow__swatch {
+  --swatch-colour: transparent;
+}
+
+.picker__saved {
+  display: inline-flex;
+  align-items: center;
+}
+
+.picker__chip {
+  width: var(--space-8);
+  height: var(--space-8);
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--swatch-colour);
+  cursor: pointer;
+}
+
+/* a variable of the project: its colour, ringed so it reads as a named value (color.tsx VariableChip) */
+.picker__chip--variable {
+  border-radius: var(--radius-pill);
+}
+
+/* the contrast of a text colour with its background (color.tsx ContrastLine) */
+.picker__contrast {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.picker__contrast.is-low {
+  color: var(--color-danger);
+}
+
+.field__swatch.door {
+  flex: none;
+  padding: var(--space-0);
+  border: 0;
+  background: none;
+}
+
+.field__swatch.door:not(.is-unavailable) {
+  cursor: pointer;
+}
+
+/* a colour that is a part of a larger value (a border's, a shadow's, a stop's): a chip of it, no picker (A3.29) */
+.field__sample {
+  align-self: center;
+}
+
+/* the colour picker (color-picker): a popover beside the inspector, level
+   with the field it opened from, in a pointer-transparent positioning layer */
+.picker-shield {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-picker);
+}
+
+.picker {
+  pointer-events: auto;
+  --picker-top: var(--space-10);
+  position: absolute;
+  top: var(--picker-top);
+  right: calc(var(--size-inspector) + var(--space-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  /* the canonical popover's geometry (jornada02 GENERALISATION: 240 wide, 8 inset) */
+  width: var(--size-popover);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-3);
+  color: var(--color-text);
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+}
+
+.picker__header {
+  margin: 0;
+  font: var(--fw-title) var(--fs-title) / var(--lh-title) var(--font-ui);
+}
+
+/* the link picker's pages and elements: a list of rows from their start, the one the link points at now marked as a
+   chosen row is (the accent's soft fill, its words in the accent) — they stood centred, none marked (LR2) */
+.picker--link > .door {
+  justify-content: flex-start;
+  width: 100%;
+  height: var(--size-row);
+  text-align: left;
+}
+
+.picker--link > .door.is-current {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+/* a picker's lone field (the component's name): the picker's whole width */
+.picker__form {
+  display: flex;
+}
+
+.picker__form .input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* a picker's head: its title, its close button at the end (the link and asset pickers, as every dialog's head) */
+.picker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.picker__swatches {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.picker__swatch {
+  flex: 1;
+  height: var(--space-9);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+
+button.picker__swatch {
+  padding: var(--space-0);
+  cursor: pointer;
+}
+
+.picker__area {
+  --picker-area: none;
+  position: relative;
+  height: calc(var(--space-10) * 5 + var(--space-4));
+  border-radius: var(--radius-sm);
+  background: var(--picker-area);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.picker__area:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.picker__dot {
+  --dot-x: 0%;
+  --dot-y: 0%;
+  position: absolute;
+  top: var(--dot-y);
+  left: var(--dot-x);
+  width: var(--space-6);
+  height: var(--space-6);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.picker__strip {
+  --picker-strip: none;
+  display: block;
+  height: var(--space-6);
+  border-radius: var(--radius-pill);
+  background: var(--picker-strip);
+}
+
+.picker__strip--alpha {
+  background:
+    var(--picker-strip),
+    repeating-conic-gradient(var(--color-border) 0 25%, var(--color-surface) 0 50%) 0 0 / var(--space-4) var(--space-4);
+}
+
+.picker__range {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: var(--space-0);
+  appearance: none;
+  background: none;
+  cursor: pointer;
+}
+
+.picker__range::-webkit-slider-thumb {
+  width: var(--space-6);
+  height: var(--space-6);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: none;
+  box-shadow: var(--shadow-1);
+  appearance: none;
+}
+
+.picker__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.picker__channels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.picker__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* Cancel and Apply are the small buttons (.btn.sm): 24 high */
+.picker__actions .door {
+  height: var(--size-target-min);
+  padding: 0 var(--space-4);
+}
+
+/* a channel's field: its key inside, before its value (H 210) */
+.picker__field {
+  gap: var(--space-2);
+  height: var(--size-control);
+  padding: 0 var(--space-2);
+}
+.picker__field .field__prefix {
+  flex: none;
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+.picker__field .input {
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+/* the gradient editor (spec gradient-editor): the bar paints the gradient over a checkerboard, its stops under it */
+.gradient__track {
+  padding-bottom: var(--space-7);
+}
+
+.gradient__bar {
+  --gradient-preview: none;
+  position: relative;
+  height: var(--space-9);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background:
+    var(--gradient-preview),
+    repeating-conic-gradient(var(--color-border) 0 25%, var(--color-surface) 0 50%) 0 0 / var(--space-4) var(--space-4);
+  cursor: copy;
+}
+
+.gradient__bar[aria-disabled='true'] {
+  cursor: default;
+}
+
+.gradient__stop {
+  --stop-at: 0%;
+  --stop-colour: var(--color-surface);
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: var(--stop-at);
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: var(--space-0);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--stop-colour);
+  box-shadow: var(--shadow-1);
+  transform: translateX(-50%);
+  cursor: ew-resize;
+}
+
+.gradient__stop.is-current {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* the shadow editor (spec shadow-editor): the rows of the layers, the light pad with its centre and its handle */
+/* the head row's value cell: the note, then the + at the row's end */
+.shadow__add {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.shadow__none {
+  flex: 1;
+  min-width: 0;
+  margin: var(--space-0);
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shadow__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.shadow__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--fw-code) var(--fs-caption) / var(--lh-caption) var(--font-mono);
+  text-align: left;
+  cursor: grab;
+}
+
+/* the layer's colour, then what it is in words (A3.34): never the raw CSS */
+.shadow__swatch {
+  flex: 0 0 auto;
+  width: var(--space-4);
+  height: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: var(--swatch-colour);
+}
+
+.shadow__summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shadow__tag {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: var(--space-0) var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.shadow__row.is-current {
+  border-color: var(--color-accent);
+}
+
+.shadow__row.is-hidden {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.shadow__pad {
+  position: relative;
+  height: calc(var(--space-10) * 3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(var(--color-border), var(--color-border)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--color-border), var(--color-border)) 0 50% / 100% 1px no-repeat,
+    var(--color-surface-sunken);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.shadow__pad.is-unavailable {
+  cursor: not-allowed;
+  color: var(--color-text-subtle);
+}
+
+.shadow__handle {
+  --light-x: 0px;
+  --light-y: 0px;
+  position: absolute;
+  top: calc(50% + var(--light-y));
+  left: calc(50% + var(--light-x));
+  width: var(--space-6);
+  height: var(--space-6);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* where a value comes from (spec inspector-provenance-reset): a field whose element holds a value of its own has a dot
+   before its label; the others show the value inherited or the default, muted; a section's header counts its values */
+[data-region='inspector-style'] .field-row.is-set > .field-row__label::before {
+  content: none;
+}
+
+[data-region='inspector-style'] .field-row:not(.is-set) .input,
+[data-region='inspector-style'] .field-cell:not(.is-set) .input {
+  color: var(--color-text-muted);
+}
+
+
+/* the mode's segments and, beside them, Add a property with its list (spec inspector-add-property) */
+/* The mode row (Essentials only / All properties, and Add a property). A translated label is longer than the English
+   one here, and the row may not push the panel sideways: it wraps, so "+" takes the next line when the two labels
+   need the whole width (the interface audit, finding F21). */
+.inspector-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.inspector-mode > .segmented {
+  flex: 1;
+}
+
+.add-property {
+  position: relative;
+}
+
+/* "+" stays over the popover's backdrop, so a press on it closes the list as it opened it */
+.add-property > .door[aria-expanded='true'] {
+  position: relative;
+  z-index: var(--z-menu);
+}
+
+/* the list: a popover (popover.tsx) under "+" */
+.add-property__menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: calc(var(--size-inspector) - var(--space-9));
+  max-height: calc(var(--space-10) * 10);
+  padding: var(--space-3);
+  overflow-y: auto;
+}
+
+.add-property__none {
+  margin: var(--space-0);
+  color: var(--color-text-muted);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+.add-property__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.add-property__item.door {
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+}
+
+/* the property the filter's arrows mark, which Enter chooses */
+[aria-selected='true'] > .add-property__item.door {
+  background: var(--color-accent-soft);
+}
+
+/* An easing field's curve (easing-curve.tsx, spec easing-curve): the curve in the unit square, the button beside the
+   field that draws it small, and the layer of ready-made curves and control points */
+.easing-curve {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+.easing-curve__square {
+  fill: none;
+  stroke: var(--color-border);
+}
+
+.easing-curve__line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* a field with a curve: its text and the curve's button side by side in the value cell */
+.panel-field__form:has(.easing-curve__button) {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-width: 0;
+}
+
+.panel-field__form:has(.easing-curve__button) .panel-field__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.easing-curve__button {
+  display: grid;
+  place-items: center;
+  width: var(--size-control);
+  height: var(--size-control);
+  flex: none;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  cursor: pointer;
+}
+
+.easing-popover__body {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.easing-popover__heading {
+  color: var(--color-text-muted);
+}
+
+.easing-popover__presets {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--space-3);
+}
+
+.easing-preset {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.easing-preset:hover,
+.easing-preset:focus-visible,
+.easing-preset.is-current {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.easing-popover__bezier {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.easing-popover__points {
+  display: grid;
+  grid-template-columns: repeat(2, var(--size-tag-field));
+  gap: var(--space-3);
+}
+
+.easing-popover__point {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.easing-popover__points .door {
+  grid-column: 1 / -1;
+}
+

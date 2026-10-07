@@ -1,0 +1,75 @@
+/* ---------------------------------------------------------------- the window */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--size-activity-bar) var(--size-sidebar) minmax(0, 1fr) var(--size-inspector);
+  grid-template-rows: var(--size-top-bar) minmax(0, 1fr) var(--size-status-bar);
+  grid-template-areas:
+    'top top top top'
+    'activity sidebar centre inspector'
+    'status status status status';
+  height: 100vh;
+}
+
+.shell--no-sidebar {
+  grid-template-columns: var(--size-activity-bar) 0 minmax(0, 1fr) var(--size-inspector);
+}
+
+.shell--no-inspector {
+  grid-template-columns: var(--size-activity-bar) var(--size-sidebar) minmax(0, 1fr) 0;
+}
+
+.shell--no-sidebar.shell--no-inspector {
+  grid-template-columns: var(--size-activity-bar) 0 minmax(0, 1fr) 0;
+}
+
+/* A narrow window (workspace/narrow.ts): the sidebar keeps no column of its own; it opens over the canvas, beside the
+   activity bar, and closes when a press or the focus goes elsewhere (shell/sidebar.tsx) */
+.shell--narrow {
+  grid-template-columns: var(--size-activity-bar) 0 minmax(0, 1fr) var(--size-inspector);
+}
+
+.shell--narrow.shell--no-inspector {
+  grid-template-columns: var(--size-activity-bar) 0 minmax(0, 1fr) 0;
+}
+
+.shell--narrow .sidebar {
+  position: fixed;
+  top: var(--size-top-bar);
+  bottom: var(--size-status-bar);
+  left: var(--size-activity-bar);
+  z-index: var(--z-floating);
+  width: var(--size-sidebar);
+  box-shadow: var(--shadow-3);
+}
+
+
+/* ---------------------------------------------------------------- a region that could not draw (region-boundary.tsx) */
+
+.region-fallback {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-4) var(--space-6);
+  overflow: hidden;
+  background: var(--color-surface);
+  color: var(--color-danger);
+  font-size: var(--fs-caption);
+}
+
+.region-fallback--top-bar { grid-area: top; }
+.region-fallback--activity-bar { grid-area: activity; }
+.region-fallback--sidebar { grid-area: sidebar; }
+.region-fallback--inspector { grid-area: inspector; }
+.region-fallback--status-bar { grid-area: status; }
+.region-fallback--canvas { flex: 1; }
+
+/* the overlays draw over the editor, so their fallback does too, above the status bar */
+.region-fallback--overlays {
+  position: fixed;
+  right: var(--space-7);
+  bottom: calc(var(--size-status-bar) + var(--space-4));
+  z-index: var(--z-toast);
+  border-radius: var(--radius-md);
+}

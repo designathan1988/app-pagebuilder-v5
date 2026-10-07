@@ -1,0 +1,13 @@
+nome,preco,foto,descricao
+Café coado,"6,50",img/graos.png,"Grãos da casa, moídos na hora"
+Espresso,"5,00",img/xicara.png,Curto e encorpado
+Cappuccino,"9,90",img/xicara.png,"Com canela, ou chocolate"
+Pão de queijo,"4,50",img/loja.png,Assado na loja
+Bolo de fubá,"7,00",img/loja.png,Fatia generosa
+Torrada,"6,00",img/loja.png,Manteiga ou requeijão
+Suco de laranja,"8,00",img/loja.png,"Natural, 300 ml"
+Chá gelado,"7,50",img/xicara.png,Hibisco e limão
+Mocha,"11,00",img/xicara.png,"Café, leite e chocolate"
+Pingado,"5,50",img/xicara.png,Café com um pingo de leite
+Croissant,"8,50",img/loja.png,Folhado na manteiga
+Grãos 250 g,"32,00",img/graos.png,Torra média

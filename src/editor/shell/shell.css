@@ -1,0 +1,109 @@
+/* The editor shell's base: the page, the controls' defaults, the one focus ring. Every colour, type style, spacing,
+   size, radius and shadow is a token of src/ui/tokens.css (lint rule builder-css/use-tokens). src/main.tsx loads this
+   file first and each region's stylesheet after it, once (the audit's CSS-1: they were loaded twice, through @import
+   here and again from main.tsx, and the later copy won every tie). */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font: var(--fw-body) var(--fs-body) / var(--lh-body) var(--font-ui);
+  color: var(--color-text);
+  background: var(--color-bg-app);
+  overflow: hidden;
+}
+
+/* every form control takes the interface's type, a select and a textarea too (the browser's own is 13.333 px, a
+   textarea's monospace: TY1) */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* a control that takes a click says so with the pointer; one that takes none says not-allowed (A3.43) */
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+button[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* the one focus ring (jornada02 GRAMMAR R-40): 2 px of the focus colour, 1 px off the control; a control whose region clips
+   its edges moves it inside with a negative offset, and nothing else draws a ring of its own */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+/* on a surface filled with a strong colour the ring takes the surface's own ink, which reads on it (G-15): the status
+   bar is the focus colour itself */
+[data-region='status-bar'] :focus-visible {
+  outline-color: var(--color-on-status-bar);
+}
+
+/* in a strip whose edges clip what goes past them (the file tabs, the canvas toolbar) the ring is drawn inside (G-14) */
+.file-tabs :focus-visible,
+.canvas-toolbar :focus-visible {
+  outline-offset: -2px;
+}
+
+kbd {
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+  color: var(--color-text-subtle);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background: var(--color-surface);
+  white-space: nowrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: var(--space-0);
+  height: var(--space-0);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* icons: the sprite's symbols, drawn with the current colour */
+.icon {
+  width: var(--space-7);
+  height: var(--space-7);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--lg {
+  width: var(--space-8);
+  height: var(--space-8);
+}
+
+.icon--sm {
+  width: calc(var(--space-7) - var(--space-1));
+  height: calc(var(--space-7) - var(--space-1));
+}
+
+.icon--xs {
+  width: var(--space-6);
+  height: var(--space-6);
+}

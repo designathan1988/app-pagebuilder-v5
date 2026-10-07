@@ -1,0 +1,870 @@
+/* ---------------------------------------------------------------- activity bar and sidebar */
+
+.activity-bar {
+  grid-area: activity;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  background: var(--color-bg-app);
+  border-right: 1px solid var(--color-border);
+}
+
+.activity-bar .door {
+  position: relative;
+  width: var(--size-activity-bar);
+  height: var(--size-activity-bar);
+  border: 0;
+  color: var(--color-text-subtle);
+}
+
+.activity-bar .door .icon {
+  width: var(--space-8);
+  height: var(--space-8);
+}
+
+.activity-bar .door.is-current {
+  background: none;
+  color: var(--color-text);
+}
+
+.activity-bar .door.is-current::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  width: var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--color-accent);
+}
+
+.sidebar {
+  position: relative;
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+
+.view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* the line at the top of the Insert view naming where a palette click inserts (the user's real-use audit, A3.19) */
+.insert__destination {
+  flex: none;
+  padding: 0 var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  line-height: var(--space-9);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* the dashed line in the Layers at the row a palette click would insert at (the user's real-use audit, A3.19) */
+.row__insert {
+  flex: none;
+  height: 0;
+  margin-left: calc(var(--space-2) + min(var(--depth), 8) * var(--space-5));
+  border-top: 2px dashed var(--color-accent);
+}
+
+/* the sidebar's view above its stack (spec panel-resize): it takes what the stack leaves */
+.sidebar__view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* a stacked section (the Layers, spec panel-resize): its height is the size its splitter holds, set inline */
+.sidebar__stack {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* the Layers tree scrolls its own rows, so a page of any size draws only the rows in the view (A3.28) */
+.view--section {
+  overflow: hidden;
+}
+
+/* the rows region is as tall as the search and the tree it holds, never taller than the panel (A3.28) */
+.view--section [data-region='layers-row'] {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* the tree is as tall as its rows while they fit the panel, and as tall as the panel while they do not (A3.28: the
+   rows beyond it are drawn as the scroll reaches them) */
+.layers-tree {
+  position: relative;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.layers-tree__board {
+  position: relative;
+}
+
+.layers-tree__slot {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* a splitter (spec panel-resize, Problems in Pager 4): a 6 px pointer target with the visible line centred on it */
+.splitter {
+  position: relative;
+  flex: none;
+  z-index: 1;
+  user-select: none;
+}
+.splitter--y {
+  height: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  cursor: row-resize;
+}
+.splitter--x {
+  width: var(--space-3);
+  border-left: 1px solid var(--color-border);
+  cursor: col-resize;
+}
+.splitter:hover,
+.splitter:focus-visible {
+  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+/* a column's width splitter (spec panel-resize): over the column's inner edge, the whole height, the line the column's
+   own border */
+.splitter--column-end,
+.splitter--column-start {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: none;
+}
+.splitter--column-end {
+  right: 0;
+}
+.splitter--column-start {
+  left: 0;
+}
+
+/* the keyboard's focus on a splitter wears the one ring, drawn inside its 6 px (the audit's U-030: it had none) */
+.splitter:focus-visible {
+  outline-offset: -2px;
+}
+
+.view__title {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: var(--space-10);
+  padding: 0 var(--space-2) 0 var(--space-6);
+  font: var(--fw-overline) var(--fs-overline) / var(--lh-overline) var(--font-ui);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* the name takes its words' width, the grip beside it (the window's drag band) the rest: both at flex 1, the name had
+   half the title and "Compondo Page" broke over two lines (the audit of 2026-10-05) */
+.view__name {
+  flex: 0 1 auto;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--space-1);
+  height: var(--size-row);
+  padding: 0 var(--space-2) 0 var(--space-6);
+  font: var(--fw-overline) var(--fs-overline) / var(--lh-overline) var(--font-ui);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--color-text);
+  border-top: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+/* the section's name as its toggle: the 24 px target with the small radius (the canonical .sec-t > .ttl) */
+.section-title__toggle {
+  height: var(--size-target-min);
+  border-radius: var(--radius-xs);
+  margin-left: calc(var(--space-4) * -1);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.section-title__actions {
+  display: inline-flex;
+  margin-left: auto;
+}
+
+.section-title__count {
+  padding: 0 var(--space-2);
+  font: var(--fw-micro) var(--fs-micro) / var(--lh-micro) var(--font-ui);
+  letter-spacing: var(--ls-micro);
+  color: var(--color-text-subtle);
+  background: var(--color-surface-hover);
+  border-radius: var(--radius-pill);
+}
+
+.section-title__actions .door--icon-button {
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  color: var(--color-text-subtle);
+}
+
+/* a drag's drop on a Layers row (spec layers-drag): a line in the drop colour on the row's top or bottom edge,
+   starting at the indentation of the level it inserts into (Problems in Pager 5); inside a row, its outline; refused,
+   the danger colour; the receiving parent's row tinted in the target colour */
+.row--tree[data-drop-position='before']::after,
+.row--tree[data-drop-position='after']::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: calc(var(--space-2) + min(var(--depth), 8) * var(--space-5));
+  height: 0;
+  outline: 1.5px solid var(--color-canvas-drop);
+  pointer-events: none;
+}
+
+.row--tree[data-drop-position='before']::after {
+  top: 0;
+}
+
+.row--tree[data-drop-position='after']::after {
+  bottom: 0;
+}
+
+.row--tree[data-drop-position='inside'] {
+  outline: 2px solid var(--color-canvas-drop);
+  outline-offset: -2px;
+}
+
+.row--tree[data-drop-position='refused'] {
+  outline: 2px solid var(--color-danger);
+  outline-offset: -2px;
+}
+
+/* a row that matches the Layers search (spec layers-search): its name in the accent colour */
+.row--tree.is-match .row__name {
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+.layers__search {
+  padding: var(--space-2) var(--space-4);
+}
+
+.layers__search .search {
+  width: 100%;
+}
+
+.row--tree.is-receiving {
+  background: color-mix(in srgb, var(--color-canvas-target) 12%, transparent);
+}
+
+.row {
+  --depth: 0;
+  position: relative;
+  /* a row is pressed, never its text selected: a Shift+click choosing a range of rows stretched the browser's text
+     selection over the whole interface (the audit of 2026-10-05); a name is renamed in its own field */
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--size-row);
+  padding: 0 var(--space-3) 0 calc(var(--space-2) + min(var(--depth), 8) * var(--space-5));
+  min-width: 0;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.row:hover {
+  background: var(--color-surface-hover);
+}
+
+.row:has(> .door.is-current) {
+  background: var(--color-surface-selected);
+  box-shadow: inset var(--space-1) 0 0 var(--color-accent);
+}
+
+/* the current row's door is the row's whole face (the canonical .row.is-active): its fill, square */
+.row > .door.is-current {
+  border-radius: 0;
+  background: inherit;
+}
+
+.row.is-selected {
+  background: var(--color-surface-selected);
+}
+
+/* on the selected fill the subtle ink falls to 3.9:1 in the dark theme (the audit's U-047): a selected row's detail
+   takes the muted ink, which holds 4.5:1 there */
+.row.is-selected .row__meta,
+.row[aria-selected='true'] .row__meta,
+.row:has(> .door.is-current) .row__meta {
+  color: var(--color-text-muted);
+}
+
+/* a row's main area lays its icon, name (or name field) and meta out on one line, whether it is a door (a file,
+   which drags) or not (a folder) */
+.row__main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-start;
+  height: var(--size-row);
+  padding: 0 var(--space-4);
+  gap: var(--space-3);
+  border: 0;
+  color: var(--color-text);
+}
+
+.row .door:hover {
+  background: none;
+}
+
+/* a name keeps its room before the row's details and ends in an ellipsis where the row is too narrow for it (a page's
+   long file name ran over the badge and the size; the whole name stays in the row's tooltip and its field) */
+.row__name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* a row's name while its node is renamed (spec rename-element): a field in the name's place, as wide as the row lets it */
+.row__rename {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+/* the Explorer's page row: the row's door, then the page's name field, then its actions */
+.row__page-name {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+/* The page name occupies the row between the icon and the generated file name. Its real input stays editable. */
+.row--page .row__main {
+  flex: 0 0 var(--space-9);
+  padding: 0 var(--space-2);
+}
+.row--page .row__main .row__meta {
+  position: absolute;
+  right: var(--space-3);
+  /* never wider than the room the name leaves it (.row__page-name's margin): a long file name ends in an ellipsis
+     instead of running back over the page's name (jornada03 plan, stage 5: row__meta) */
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row--page .row__page-name {
+  margin-right: calc(var(--space-10) * 2 + var(--space-3));
+}
+.row--page .row__name-field {
+  border-color: transparent;
+  background: transparent;
+}
+.row--page .row__name-field:hover,
+.row--page .row__name-field:focus { border-color: var(--color-border-strong); background: var(--color-surface-sunken); }
+
+/* A file or folder is created through its icon in the Files heading; focusing its real door reveals the path field. */
+.file-maker {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  color: var(--color-text-subtle);
+}
+.file-maker:hover { color: var(--color-text); background: var(--color-surface-hover); }
+.file-maker > .icon { width: var(--space-7); height: var(--space-7); pointer-events: none; }
+.file-maker__input.input {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+  opacity: 0;
+}
+.file-maker:focus-within { z-index: 5; }
+.file-maker:focus-within .file-maker__input.input {
+  top: 100%;
+  width: calc(var(--size-sidebar) - var(--space-6) * 2);
+  padding: 0 var(--space-3);
+  border-color: var(--color-focus);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  opacity: 1;
+  box-shadow: var(--shadow-2);
+}
+
+.row__name-field {
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--size-row) - var(--space-2));
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-focus);
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+}
+
+/* a row whose name does not fit beside its details gives the name their room (sidebar/name-first.ts) */
+.row[data-name-first] > .row__meta[data-region='layers-row-details'],
+.row__main[data-name-first] > .row__meta {
+  display: none;
+}
+
+.row__meta {
+  margin-left: auto;
+  padding-left: var(--space-3);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-mono);
+  color: var(--color-text-subtle);
+}
+
+/* Hide and Lock appear on the row under the pointer (layers-row 8 and 9), so a
+   selected row keeps its whole name. Until then they are transparent, never out of the layout: the pointer that comes
+   to press one shows it, and the keyboard reaches it, which shows it too. */
+
+/* The label colour of a Layers row (spec layers-row-colours): the dot the row draws wears the element's colour and
+   opens the palette under it while the pointer is on it or the keyboard reaches it */
+.row__palette {
+  --row-colour: var(--color-text-subtle);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.row__palette > span > .door {
+  width: var(--space-8);
+  height: var(--size-row);
+  opacity: 0;
+}
+.row:hover .row__palette > span > .door,
+.row__palette:focus-within > span > .door,
+.row--tree.is-coloured .row__palette > span > .door { opacity: 1; }
+
+.row__palette > span > .door .icon {
+  color: var(--row-colour);
+  width: var(--space-3);
+  height: var(--space-3);
+  fill: currentColor;
+}
+
+.row__swatches {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-1);
+  /* the palette hangs under the row's dot, never over the row's own name or the row below's middle */
+  position: absolute;
+  z-index: 2;
+  top: 100%;
+  right: 0;
+  width: max-content;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-2);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the palette opens on the dot's own press, and a pointer on the dot reveals it without one */
+.row__palette.is-open .row__swatches,
+.row__palette:hover .row__swatches,
+.row__palette:focus-within .row__swatches {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* the lead palette: the coloured row's dot as its door, a 24 px target before the row's icon, the palette under it */
+.row__palette--lead {
+  flex: none;
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+}
+
+.row__palette--lead > span > .door {
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  opacity: 1;
+}
+
+.row__palette--lead > .row__colour-dot {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  pointer-events: none;
+}
+
+.row__palette--lead .row__swatches {
+  right: auto;
+  left: 0;
+}
+
+.row__swatch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-pill);
+}
+
+.row__swatch > .door {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-pill);
+}
+
+.row__swatch--none {
+  border: 1px dashed var(--color-border-strong);
+}
+
+/* the colour the row wears: marked by a ring, and no door (sidebar.tsx LayerPalette) */
+.row__swatch.is-chosen {
+  outline: 2px solid var(--color-text);
+  outline-offset: 1px;
+}
+
+/* an instance's row names its component, in the accent (sidebar.tsx LayersRow, J21) */
+.row__component {
+  flex: none;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-accent);
+}
+
+/* the coloured row's dot, before its icon (sidebar.tsx LayersRow) */
+.row__colour-dot {
+  --row-colour: var(--color-text-subtle);
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--row-colour);
+}
+
+/* A tree row keeps the room its actions strip takes at its end (the strip lies over the row: .row__actions), so the name
+   ends before it — a long name ran under the strip's buttons, transparent until hovered, and a press on its end took
+   one of them (the screen guard, the conditions sweep of 2026-10-06). The row's details (its tag, .row__meta) still
+   stand in that room, under the strip, as before. An Explorer file row keeps the same room for its own strip (move,
+   fill, rename, delete), its folder and size ending before it. */
+.row--tree,
+[data-region='explorer-file-rows'] .row {
+  /* the actions the row draws in its strip: set by the row itself (layers.tsx), none by default */
+  --row-actions: 0;
+  --row-actions-room: calc(var(--row-actions) * var(--size-target-min));
+  padding-right: calc(var(--space-3) + var(--row-actions-room));
+}
+
+.row--tree .row__meta {
+  margin-right: calc(-1 * var(--row-actions-room));
+}
+
+/* the row wears the colour it holds: a line on its left, never a filled background, so the name stays readable */
+.row--tree.is-coloured {
+  /* the line is a border, not a shadow: it follows the row's colour without a length literal */
+  border-left: var(--space-1) solid var(--row-colour);
+}
+
+.row__actions {
+  display: inline-flex;
+  position: absolute;
+  right: var(--space-1);
+  top: 0;
+  /* the strip is only its buttons: a press that lands between them is the row's own (the name, the selection) */
+  pointer-events: none;
+}
+
+.row__actions > * {
+  pointer-events: auto;
+}
+
+/* a row's actions show while the row is hovered or one of them holds the keyboard's focus, over the row's meta (a
+   file's Move sat on its folder and size, wrapped in a span the child rule missed) */
+.row__actions .door {
+  opacity: 0;
+}
+
+.row:hover .row__actions {
+  background: var(--color-surface-hover);
+}
+
+.row:hover .row__actions .door,
+.row__actions .door:focus-visible {
+  opacity: 1;
+}
+
+/* a row's labelled action (a data file's Fill, spec repeat-element) shows at rest: its words say what it does without a
+   hover (jornada03 J13), over the row's meta */
+.row__actions .door--button {
+  opacity: 1;
+}
+
+.row:has(.row__actions .door--button) .row__meta {
+  visibility: hidden;
+}
+
+.row:hover .row__meta,
+.row:has(.row__actions .door:focus-visible) .row__meta {
+  visibility: hidden;
+}
+
+/* a hidden node's row (spec hide-element): dimmed, its Hide pressed and shown in place of the tag */
+.row--hidden > .icon,
+.row--hidden > .row__name {
+  color: var(--color-text-subtle);
+}
+
+/* a locked node's row (spec lock-element): its Lock pressed and shown in place of the tag */
+.row--hidden .row__meta,
+.row--locked .row__meta {
+  visibility: hidden;
+}
+
+.row--hidden .row__actions > .door[aria-pressed='true'],
+.row--locked .row__actions > .door[aria-pressed='true'] {
+  opacity: 1;
+}
+
+.row__actions .door--icon-button,
+.row .door--disclosure {
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+  justify-content: center;
+}
+
+/* a branch's caret in the subtle colour (the canonical .row .car) */
+.row .door--disclosure {
+  color: var(--color-text-subtle);
+}
+
+.row__caret-space {
+  width: var(--size-target-min);
+  flex: none;
+}
+
+.insert {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.palette-group__header {
+  width: 100%;
+  height: var(--size-target-min);
+  margin-top: var(--space-2);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.palette-group__count {
+  margin-left: auto;
+  font-weight: var(--weight-regular);
+  color: var(--color-text-subtle);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.tile {
+  flex-direction: column;
+  gap: var(--space-1);
+  /* at least two targets tall; a name that takes two lines makes its row taller, never cut (the audit of 2026-10-05:
+     "Imagem responsi…", "Formulário com c…") */
+  height: auto;
+  min-height: calc(var(--size-target-min) * 2);
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.tile .icon {
+  color: var(--color-text-muted);
+}
+
+/* the Elements panel's densities (palette.setDensity): a list of rows with the tag, two or three columns of tiles,
+   or a grid of icons whose label is the tooltip */
+.insert--list .tiles {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.insert--list .tile {
+  flex-direction: row;
+  justify-content: flex-start;
+  min-height: var(--size-target-min);
+  padding: 0 var(--space-2);
+}
+
+.tile__tag {
+  margin-left: auto;
+  color: var(--color-text-subtle);
+  font-family: var(--font-mono);
+}
+
+.insert--three-columns .tiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.insert--icons .tiles {
+  grid-template-columns: repeat(auto-fill, minmax(var(--size-target-min), 1fr));
+}
+
+.insert--icons .tile {
+  min-height: var(--size-target-min);
+}
+
+.insert--icons .tile .tile__label {
+  display: none;
+}
+
+.insert__matches {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-subtle);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+/* the note of a Layers search that matches nothing (the audit's U-020), in the note recipe (jornada02 G-22) */
+.layers-search__none {
+  margin: 0;
+  padding: var(--space-3) var(--space-6);
+  color: var(--color-text-subtle);
+  font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
+}
+
+/* a code file's kind as its tag in place of the icon (the canonical .ftag): micro mono, on-surface ink on its colour */
+.ftag {
+  flex: none;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-xs);
+  background: var(--color-text-muted);
+  color: var(--color-surface);
+  font: var(--fw-micro) var(--fs-micro) / var(--lh-micro) var(--font-mono);
+}
+.ftag--css { background: var(--color-accent); }
+.ftag--js { background: var(--color-warning); }
+
+/* a file the editor writes (the canonical .gen pill) */
+.row__gen {
+  flex: none;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font: var(--fw-micro) var(--fs-micro) / var(--lh-micro) var(--font-ui);
+}
+
+/* a file's name is a path: mono (a page's name in Pages stays in the interface's type) */
+[data-region='explorer-file-rows'] .row__name {
+  font-family: var(--font-mono);
+}
+
+/* the file row's icon (or tag) is the door that opens the file: it hugs what it shows, the row's gap after it */
+.row__main > .row__open-icon.door {
+  /* the kind's badge keeps its size beside a long name (it shrank under the name's first letters) */
+  flex: none;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+}
+
+/* a tile's name longer than its tile is cut with an ellipsis, its tooltip holding it whole (the viewport and language
+   sweep: "Formulário com campos" spilled out of its tile in pt-BR) */
+.tile .tile__label {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* a row of the list keeps its name on its one line */
+.insert--list .tile .tile__label {
+  display: block;
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* another page's name reads as text: a click opens the page (only the page on the canvas is renamed in place) */
+.row--page .row__name-field[data-opens] {
+  cursor: pointer;
+}
+.row--page .row__name-field[data-opens]:hover,
+.row--page .row__name-field[data-opens]:focus {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* a row's Pick target while an interaction's target is picked: the small bare icon button, never the browser's own
+   grey button */
+.row__button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--size-target-min);
+  height: var(--size-target-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+  color: var(--color-text-muted);
+}
+
+.row:hover .row__button {
+  color: var(--color-canvas-target);
+}
