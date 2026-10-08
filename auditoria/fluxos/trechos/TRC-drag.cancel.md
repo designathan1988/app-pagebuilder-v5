@@ -4,7 +4,7 @@
 - **Ramos que dependem dos argumentos:** nenhum — não há campo cujo valor mude o caminho.
 
 ## Passos
-1. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+1. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
 2. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade é `always` (`manifest/commands/structure.json:373` `"predicate": "always",`). [lê: EST-L01-030 via run]
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador sob `'drag.cancel'`. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext]
 4. `src/editor/drag/drag-session.ts:124` `export const cancelDrag = registerHandler<'drag.cancel', EditorUi>('drag.cancel', ({ state }) => ({` — o tratador recebe o estado. [lê: EST-L01-037 via handlerContext]
@@ -34,7 +34,7 @@
 
 ## Regras
 - G1: n/a — o comando não grava no documento nem num contexto de edição; escreve `ui.drag.cancels` (`src/editor/drag/drag-session.ts:126`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
 - G3: ok `src/app/commands.ts:369` `'drag.cancel': cancelDrag,` — um só tratador; as portas mandam só a intenção vazia.
 - G4: n/a — o comando não desenha sobre o canvas; a terminação do arraste é do dono do ponteiro, fora do trecho.
 - G5: n/a — o comando não mede nem desenha painel ou barra (`src/editor/drag/drag-session.ts:127`).

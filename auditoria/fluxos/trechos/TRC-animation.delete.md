@@ -1,5 +1,5 @@
 # TRC-animation.delete
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string }`; a porta panel-control `timeline-animation-delete` não declara argumentos próprios (`manifest/commands/animation.json:177` `          "args": {}`) e o painel acrescenta o nome da animação mostrada.
 - **Ramos que dependem dos argumentos:** R1 (a animação existe no elemento), R3 (interações que a tocam)
 

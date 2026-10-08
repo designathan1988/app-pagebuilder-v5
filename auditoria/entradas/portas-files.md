@@ -7,7 +7,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.add
 - **Porta:** `manifest/commands/files.json:33` `"id": "explorer-add-page",`
 - **Tratador:** `src/app/commands.ts:296` `'pages.add': addPageCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0001.md
 - **Requisitos:** REQ-1101
 
@@ -25,7 +25,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.duplicate
 - **Porta:** `manifest/commands/files.json:152` `"id": "explorer-page-duplicate",`
 - **Tratador:** `src/app/commands.ts:298` `'pages.duplicate': duplicatePageCommandFor<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0003.md
 - **Requisitos:** REQ-1103
 
@@ -34,7 +34,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.delete
 - **Porta:** `manifest/commands/files.json:213` `"id": "explorer-page-delete",`
 - **Tratador:** `src/app/commands.ts:299` `'pages.delete': deletePageCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0004.md
 - **Requisitos:** REQ-1104
 
@@ -43,7 +43,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.switch
 - **Porta:** `manifest/commands/files.json:264` `"id": "explorer-page-row",`
 - **Tratador:** `src/app/commands.ts:300` `'pages.switch': SWITCH_PAGE,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0005.md
 - **Requisitos:** REQ-1105
 
@@ -52,7 +52,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.switch
 - **Porta:** `manifest/commands/files.json:290` `"id": "file-tab",`
 - **Tratador:** `src/app/commands.ts:300` `'pages.switch': SWITCH_PAGE,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0006.md
 - **Requisitos:** REQ-1105
 
@@ -61,7 +61,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.switch
 - **Porta:** `manifest/commands/files.json:318` `"id": "toolbar-top-bar-page-switcher",`
 - **Tratador:** `src/app/commands.ts:300` `'pages.switch': SWITCH_PAGE,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0007.md
 - **Requisitos:** REQ-1105
 
@@ -70,7 +70,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** pages.switch
 - **Porta:** `manifest/commands/files.json:342` `"id": "command-bar-go-to-page",`
 - **Tratador:** `src/app/commands.ts:300` `'pages.switch': SWITCH_PAGE,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0008.md
 - **Requisitos:** REQ-1105
 
@@ -97,7 +97,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.startRename
 - **Porta:** `manifest/commands/files.json:505` `"id": "explorer-file-name",`
 - **Tratador:** `src/app/commands.ts:303` `'files.startRename': startRenameFile,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0011.md
 - **Requisitos:** REQ-1108
 
@@ -125,7 +125,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.move
 - **Porta:** `manifest/commands/files.json:658` `"id": "explorer-move-to",`
 - **Tratador:** `src/app/commands.ts:305` `'files.move': moveFileCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0014.md
 - **Requisitos:** REQ-1110
 
@@ -134,7 +134,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.move
 - **Porta:** `manifest/commands/files.json:684` `"id": "explorer-move-target",`
 - **Tratador:** `src/app/commands.ts:305` `'files.move': moveFileCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0015.md
 - **Requisitos:** REQ-1110
 
@@ -143,7 +143,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.delete
 - **Porta:** `manifest/commands/files.json:745` `"id": "explorer-delete",`
 - **Tratador:** `src/app/commands.ts:306` `'files.delete': deleteFileCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0016.md
 - **Requisitos:** REQ-1111
 
@@ -152,7 +152,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.open
 - **Porta:** `manifest/commands/files.json:795` `"id": "explorer-file-row",`
 - **Tratador:** `src/app/commands.ts:307` `'files.open': openFile,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0017.md
 - **Requisitos:** REQ-1112
 
@@ -161,7 +161,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.open
 - **Porta:** `manifest/commands/files.json:821` `"id": "file-tab",`
 - **Tratador:** `src/app/commands.ts:307` `'files.open': openFile,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0018.md
 - **Requisitos:** REQ-1112
 
@@ -170,7 +170,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.closeTab
 - **Porta:** `manifest/commands/files.json:871` `"id": "file-tab-close",`
 - **Tratador:** `src/app/commands.ts:308` `'files.closeTab': closeFileTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0019.md
 - **Requisitos:** REQ-1113
 
@@ -179,7 +179,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.upload
 - **Porta:** `manifest/commands/files.json:933` `"id": "explorer-upload",`
 - **Tratador:** `src/app/commands.ts:309` `'files.upload': uploadCommand,`
-- **Início:** `src/editor/doors/door.tsx:131` `dispatch(entry.command.id, { ...given, [file]: records });`
+- **Início:** `src/editor/doors/door.tsx:132` `dispatch(entry.command.id, { ...given, [file]: records });`
 - **Fluxo:** fluxos/ENT-P-files-0020.md
 - **Requisitos:** REQ-1114
 
@@ -198,7 +198,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** files.saveContent
 - **Porta:** `manifest/commands/files.json:1017` `"id": "code-panel-save",`
 - **Tratador:** `src/app/commands.ts:310` `'files.saveContent': saveFileContentCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** fluxos/ENT-P-files-0022.md
 - **Requisitos:** REQ-1115
 
@@ -208,7 +208,7 @@ Fonte: `manifest/commands/files.json`. Uma porta por bloco, na ordem do manifest
 - **Porta:** `manifest/commands/files.json:1046` `"id": "key-ctrl-s-in-code-editor",`
 - **Gatilho:** `manifest/commands/files.json:1049` `"chord": "Ctrl+S",`
 - **Tratador:** `src/app/commands.ts:310` `'files.saveContent': saveFileContentCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** fluxos/ENT-P-files-0023.md
 - **Requisitos:** REQ-1115
 

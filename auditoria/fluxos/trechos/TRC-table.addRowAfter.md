@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a linha da tabela, não um valor de estilo `src/core/elements/table.ts:143` `return { kind: 'change', patches: [{ op: 'add', path: [...at.group.path, 'children', at.row.index + 1], value: row }], message: message('status.table.rowCreated', { name: row.name }) };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/table.ts:137` `export const addRowAfterCommand = registerHandler('table.addRowAfter', ({ state, rules, ids, words }): Outcome<never> => {`
 - G4: n/a — a porta é o item do menu de contexto e da command bar, não um ponto do canvas `manifest/commands/elements.json:5555` `"kind": "context-menu",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/table.ts:143` `return { kind: 'change', patches: [{ op: 'add', path: [...at.group.path, 'children', at.row.index + 1], value: row }], message: message('status.table.rowCreated', { name: row.name }) };`.

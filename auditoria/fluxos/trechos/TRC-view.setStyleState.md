@@ -53,7 +53,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava o estado de estilo `src/editor/view/style-state.ts:74` `const ui: EditorUi = chosen.id === BASE.id ? rest : { ...rest, styleState: chosen.id };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as quinze portas de `view.setStyleState` (os itens do menu de estados) chegam à tabela `src/app/commands.ts:456` `'view.setStyleState': setStyleState,` e enviam só o id do estado `src/editor/view/style-state.ts:66` `({ state }, args) => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/style-state.ts:75` `return { kind: 'change', ui, message: message('status.styleStateActive', { state: { key: chosen.labelKey as MessageId } }) };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava o estado de estilo `src/editor/view/style-state.ts:74` `const ui: EditorUi = chosen.id === BASE.id ? rest : { ...rest, styleState: chosen.id };`.

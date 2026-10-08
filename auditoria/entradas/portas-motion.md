@@ -675,7 +675,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.toggleRun
 - **Porta:** `manifest/commands/motion.json:3293` `"id": "menu-view-run-interactions",`
 - **Tratador:** `src/app/commands.ts:293` `'motion.toggleRun': toggleRunCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-motion-0074.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1630
 

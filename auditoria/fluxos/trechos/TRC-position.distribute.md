@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:329` `'position.distribute': distributeCommand,` — a tabela de comandos liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor.
-3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor.
+3. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `distributableSelection` é testada.
 6. `src/core/geometry/align.ts:87` `(state, rules) => positionedSelection.test(state, rules) && selectionRoots(state.document, state.selection).length >= DISTRIBUTE_MIN,` — exige três posicionados ou mais [lê: EST-L01-030 via selectionRoots] [lê: EST-L01-031 via selectionRoots].
@@ -47,8 +47,8 @@
 - **DOM do canvas:** o iframe desenha os elementos com os vãos iguais pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/align.ts:47`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/align.ts:47`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:329` `'position.distribute': distributeCommand,` — o painel rápido, o menu Organizar e a barra de comandos chamam o mesmo tratador com a mesma forma `{ axis }`.
 - G4: n/a — o trecho não desenha painel nem barra sobre o canvas (`src/core/geometry/align.ts:114`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/core/geometry/align.ts:47`).

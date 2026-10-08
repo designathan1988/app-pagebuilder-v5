@@ -1,5 +1,5 @@
 # TRC-pages.fromNames
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ names: string }`; a porta `data-pages-from-names` manda o texto digitado (um nome por linha).
 - **Ramos que dependem dos argumentos:** R1 (nenhum nome). Os demais ramos dependem do estado (R2 a página aberta).
 

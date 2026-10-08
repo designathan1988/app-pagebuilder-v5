@@ -1,19 +1,19 @@
 # ENT-P-geometry-0058 — canvas.setEditMode pela porta canvas.setEditMode#key-escape-in-canvas-edit-mode
 
 ## Passos
-1. `src/editor/input/keymap.ts:380` `const onKeyDown = (event: KeyboardEvent) => {` — o keymap recebe a tecla `Escape` no contexto `canvas-edit-mode`.
-2. `src/editor/input/keymap.ts:476` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — a ligação do acorde no contexto `canvas-edit-mode`.
-3. `src/editor/input/keymap.ts:526` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do manifesto (`manifest/commands/geometry.json:1738` `"mode": "none"`) sobre os do controle focado.
-4. `src/editor/input/keymap.ts:527` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — este `gesture` é nulo (`manifest/commands/geometry.json:1725` `"gesture": null,`), então `args` é `given`.
-5. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a Início: a tecla entrega a intenção à store do editor. [lê: EST-L01-037 via keyContextIn]
+1. `src/editor/input/keymap.ts:381` `const onKeyDown = (event: KeyboardEvent) => {` — o keymap recebe a tecla `Escape` no contexto `canvas-edit-mode`.
+2. `src/editor/input/keymap.ts:477` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — a ligação do acorde no contexto `canvas-edit-mode`.
+3. `src/editor/input/keymap.ts:527` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do manifesto (`manifest/commands/geometry.json:1738` `"mode": "none"`) sobre os do controle focado.
+4. `src/editor/input/keymap.ts:528` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — este `gesture` é nulo (`manifest/commands/geometry.json:1725` `"gesture": null,`), então `args` é `given`.
+5. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a Início: a tecla entrega a intenção à store do editor. [lê: EST-L01-037 via keyContextIn]
 6. `src/app/commands.ts:331` `'canvas.setEditMode': setEditMode,` — a Chamada do trecho TRC-canvas.setEditMode: a tabela liga o id ao tratador.
 
 ## Ramos
-- R1 `src/editor/input/keymap.ts:505` `if (!shortcutRunsNow(binding)) return;` — a porta não corre agora: nada; corre: segue ao passo 5.
-- R2 `src/editor/input/keymap.ts:530` `const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — um argumento de área de transferência faria a tecla aguardar; este comando não tem: o passo 5 despacha direto.
+- R1 `src/editor/input/keymap.ts:506` `if (!shortcutRunsNow(binding)) return;` — a porta não corre agora: nada; corre: segue ao passo 5.
+- R2 `src/editor/input/keymap.ts:531` `const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — um argumento de área de transferência faria a tecla aguardar; este comando não tem: o passo 5 despacha direto.
 
 ## Fronteiras assíncronas
-- nenhuma — o keymap despacha de forma síncrona; a leitura da área de transferência (`src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`) só vale para um argumento de área de transferência, que este comando não tem.
+- nenhuma — o keymap despacha de forma síncrona; a leitura da área de transferência (`src/editor/input/keymap.ts:533` `else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`) só vale para um argumento de área de transferência, que este comando não tem.
 
 ## Estado
 - Lê: EST-L01-037 (`ui.editMode`), EST-L05a-001 (digitação pendente).
@@ -27,7 +27,7 @@
 
 ## Regras
 - G1: n/a — o comando grava só o estado do editor (`src/editor/canvas/edit-mode.ts:39`), não uma camada de estilo de elemento.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:331` `'canvas.setEditMode': setEditMode,` — o item do painel rápido e o Esc do canvas chamam o mesmo tratador com a mesma forma `{ mode }`.
 - G4: ok `src/editor/canvas/edit-mode.ts:37` `const { quickPanelOpen: _folded, ...clear } = rest;` — o modo recolhe o painel rápido ao chip, para nenhuma alça ficar sob ele.
 - G5: n/a — o comando não redimensiona painel nem barra; só troca o modo do canvas (`src/editor/canvas/edit-mode.ts:39`).

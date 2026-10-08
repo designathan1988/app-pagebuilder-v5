@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta panel-control `manifest/commands/workspace.json:3162` `"kind": "panel-control",`
 - **Porta:** `manifest/commands/workspace.json:3161` `"id": "code-panel-tab-css",`
 - **Tratador:** `src/app/commands.ts:507` `'codePanel.setPane': setPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
-1. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
-2. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-3. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-4. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+1. `src/editor/doors/door.tsx:286` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
+2. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+3. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+4. `src/editor/doors/door.tsx:144` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:507` `'codePanel.setPane': setPane,` — a tabela liga o id ao tratador; o trecho TRC-codePanel.setPane começa aqui
 
 ## Ramos
@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/code-panel/code-panel.ts:139`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/code-panel/code-panel.ts:137` `export const setPane = registerHandler<'codePanel.setPane', EditorUi>(` — as três abas (HTML, CSS, JS) chegam ao mesmo tratador com só `pane`.
 - G4: n/a — o comando muda estado; o painel de código ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/code-panel/code-panel.ts:139`).
 - G5: n/a — o encaixe do painel de código é medido na Fase 6 (`src/editor/code-panel/code-panel.ts:139`).

@@ -8,11 +8,11 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 3. `src/editor/shell/batch-rename.tsx:51` `const typed = String(form.get('start') ?? '').trim();` — o texto do campo do número inicial; vazio vira `NaN`.
 4. `src/editor/shell/batch-rename.tsx:49` `if (!door.available) return;` — o botão só despacha quando o comando corre agora.
 5. `src/editor/shell/batch-rename.tsx:53` `afterGesture(store, () => {` — o despacho corre uma vez sem gesto aberto (o caminho de `afterGesture` é a Fronteira assíncrona abaixo).
-6. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-7. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `element.renameMany` é undoable (`manifest/commands/nodes.json:585` `"undoable": true`), então `changesDocument` é verdadeiro.
-8. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
-10. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
+6. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+7. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — `element.renameMany` é undoable (`manifest/commands/nodes.json:585` `"undoable": true`), então `changesDocument` é verdadeiro.
+8. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:236` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
+10. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
 11. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 12. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 13. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos devolve a entrada do comando.
@@ -21,7 +21,7 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 ## Ramos
 - R1 `src/editor/shell/batch-rename.tsx:49` `if (!door.available) return;` — o comando indisponível (sem seleção, o predicado `hasSelection` não segura) não despacha; disponível, segue.
 - R2 `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — o predicado `hasSelection` é lido antes do tratador; sem seleção, a recusa viria por aqui.
-- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, entraria na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R3 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, entraria na fila `waiting` (`src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R4 `src/editor/input/pointer/common.ts:386` `if (shared.open === null) {` — sem gesto aberto, `afterGesture` corre o despacho no ato; com um gesto aberto, ele espera o gesto terminar (o ramo assíncrono).
 
 ## Fronteiras assíncronas
@@ -38,8 +38,8 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 - **DOM do canvas:** os rótulos dos alvos mostram os nomes novos (`src/editor/canvas/chrome.tsx:1014` `<span className="chrome__name">{node.name}</span>`).
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da digitação é capturado aqui e entregue à store do núcleo em `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da digitação é capturado aqui e entregue à store do núcleo em `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/editor/shell/batch-rename.tsx:54` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(apply.command.id as CommandId, args);` — a porta envia só a intenção e o tratador único `src/app/commands.ts:337` `'element.renameMany': renameManyCommand,` decide.
 - G4: n/a — o botão é desenhado no diálogo de renomear em lote, fora do canvas; nada do editor cobre o ponto da ação no canvas (`src/editor/shell/batch-rename.tsx:54` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(apply.command.id as CommandId, args);`).
 - G5: n/a — o caminho da porta não desenha painel nem barra; só despacha o comando (`src/editor/shell/batch-rename.tsx:54` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(apply.command.id as CommandId, args);`).

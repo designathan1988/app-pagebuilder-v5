@@ -7,7 +7,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.newBlankPage
 - **Porta:** `manifest/commands/project.json:25` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:343` `'project.newBlankPage': newBlankPage,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2001
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.newBlankPage
 - **Porta:** `manifest/commands/project.json:47` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:343` `'project.newBlankPage': newBlankPage,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2001
 
@@ -25,7 +25,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.restoreVersion
 - **Porta:** `manifest/commands/project.json:94` `"id": "recovery-dialog-restore",`
 - **Tratador:** `src/app/commands.ts:344` `'project.restoreVersion': restoreVersion,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2002
 
@@ -34,7 +34,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.takeOverEditing
 - **Porta:** `manifest/commands/project.json:138` `"id": "tab-guard-take-over",`
 - **Tratador:** `src/app/commands.ts:345` `'project.takeOverEditing': takeOverEditing,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2003
 
@@ -43,7 +43,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.save
 - **Porta:** `manifest/commands/project.json:182` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:346` `'project.save': saveProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2004
 
@@ -52,7 +52,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.save
 - **Porta:** `manifest/commands/project.json:204` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:346` `'project.save': saveProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2004
 
@@ -61,7 +61,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.open
 - **Porta:** `manifest/commands/project.json:256` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:349` `'project.open': openProject,`
-- **Início:** `src/editor/doors/door.tsx:150` `if (bytes !== null) dispatch(entry.command.id, { ...given, [file]: await projectFileText(bytes) });`
+- **Início:** `src/editor/doors/door.tsx:151` `if (bytes !== null) dispatch(entry.command.id, { ...given, [file]: await projectFileText(bytes) });`
 - **Fluxo:** `fluxos/ENT-P-project-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2005
 
@@ -70,7 +70,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.open
 - **Porta:** `manifest/commands/project.json:278` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:349` `'project.open': openProject,`
-- **Início:** `src/editor/doors/door.tsx:150` `if (bytes !== null) dispatch(entry.command.id, { ...given, [file]: await projectFileText(bytes) });`
+- **Início:** `src/editor/doors/door.tsx:151` `if (bytes !== null) dispatch(entry.command.id, { ...given, [file]: await projectFileText(bytes) });`
 - **Fluxo:** `fluxos/ENT-P-project-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2005
 
@@ -79,7 +79,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.openFolder
 - **Porta:** `manifest/commands/project.json:331` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:350` `'project.openFolder': openFolderCommand,`
-- **Início:** `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });`
+- **Início:** `src/editor/doors/door.tsx:140` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });`
 - **Fluxo:** `fluxos/ENT-P-project-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2006
 
@@ -88,7 +88,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.openFolder
 - **Porta:** `manifest/commands/project.json:354` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:350` `'project.openFolder': openFolderCommand,`
-- **Início:** `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });`
+- **Início:** `src/editor/doors/door.tsx:140` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });`
 - **Fluxo:** `fluxos/ENT-P-project-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2006
 
@@ -97,7 +97,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:426` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:102` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
+- **Início:** `src/editor/doors/door.tsx:103` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
 - **Fluxo:** `fluxos/ENT-P-project-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -106,7 +106,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:448` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:102` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
+- **Início:** `src/editor/doors/door.tsx:103` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
 - **Fluxo:** `fluxos/ENT-P-project-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -115,7 +115,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:469` `"id": "menu-file-folder",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:102` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
+- **Início:** `src/editor/doors/door.tsx:103` `dispatch(entry.command.id, { ...given, [files]: await readPickedFiles(chosen) });`
 - **Fluxo:** `fluxos/ENT-P-project-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -124,7 +124,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:492` `"id": "destination-page",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -133,7 +133,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:521` `"id": "destination-inside",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -142,7 +142,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.importHtml
 - **Porta:** `manifest/commands/project.json:550` `"id": "destination-replace",`
 - **Tratador:** `src/app/commands.ts:351` `'project.importHtml': choosingImport(importHtmlCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2007
 
@@ -151,7 +151,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.export
 - **Porta:** `manifest/commands/project.json:597` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:352` `'project.export': exportProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2008
 
@@ -160,7 +160,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.export
 - **Porta:** `manifest/commands/project.json:619` `"id": "toolbar-top-bar-export",`
 - **Tratador:** `src/app/commands.ts:352` `'project.export': exportProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2008
 
@@ -169,7 +169,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.export
 - **Porta:** `manifest/commands/project.json:641` `"id": "toolbar-preview-bar-export",`
 - **Tratador:** `src/app/commands.ts:352` `'project.export': exportProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2008
 
@@ -178,7 +178,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.export
 - **Porta:** `manifest/commands/project.json:663` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:352` `'project.export': exportProject,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-project-0020.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2008
 

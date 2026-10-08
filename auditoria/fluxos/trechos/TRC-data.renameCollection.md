@@ -1,5 +1,5 @@
 # TRC-data.renameCollection
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, name: string }`; a porta entrega no contexto em que a digitação começou (G1/G2).
 - **Ramos que dependem dos argumentos:** R1 (nome igual ao atual), R2 (nome vazio ou repetido), R4 (a coleção mostrada é a renomeada).
 

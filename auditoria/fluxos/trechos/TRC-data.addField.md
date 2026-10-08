@@ -1,5 +1,5 @@
 # TRC-data.addField
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ label: string, type: enum }`; a porta `data-field-add` manda o rótulo digitado e o tipo escolhido.
 - **Ramos que dependem dos argumentos:** R1 (sem coleção mostrada), R2 (rótulo vazio), R3 (rótulo repetido ou tipo inválido).
 

@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:190` `'assistant.clearConversation': clearAssistantConversation,` — a tabela de comandos liga o id ao tratador `clearAssistantConversation` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:66` `export const clearAssistantConversation = registerHandler<'assistant.clearConversation', EditorUi>('assistant.clearConversation', ({ state }) => {` — o tratador recebe o estado.
 5. `src/editor/assistant/state.ts:67` `if (assistantOf(state.ui).busy) return { kind: 'refused', message: message('assistant.busy') };` — recusa durante um turno. [lê: EST-L06-050 via assistantOf]

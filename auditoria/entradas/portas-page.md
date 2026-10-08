@@ -7,7 +7,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.openProperties
 - **Porta:** `manifest/commands/page.json:21` `"id": "inspector-page-properties-button",`
 - **Tratador:** `src/app/commands.ts:341` `'page.openProperties': openPageProperties,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1901
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.openProperties
 - **Porta:** `manifest/commands/page.json:47` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:341` `'page.openProperties': openPageProperties,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1901
 
@@ -25,7 +25,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:106` `"id": "inspector-page-title",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -34,7 +34,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:132` `"id": "inspector-page-language",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -43,7 +43,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:158` `"id": "inspector-page-direction",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -52,7 +52,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:184` `"id": "inspector-page-html-classes",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -61,7 +61,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:210` `"id": "inspector-page-description",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -70,7 +70,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:236` `"id": "inspector-page-canonical",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -79,7 +79,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:262` `"id": "inspector-page-og-title",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -88,7 +88,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:288` `"id": "inspector-page-og-image",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -97,7 +97,7 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:314` `"id": "inspector-page-favicon",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902
 
@@ -106,6 +106,6 @@ Fonte: `manifest/commands/page.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** page.setSetting
 - **Porta:** `manifest/commands/page.json:340` `"id": "inspector-page-scripts",`
 - **Tratador:** `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-page-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1902

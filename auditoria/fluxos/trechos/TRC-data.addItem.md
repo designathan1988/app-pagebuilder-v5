@@ -1,5 +1,5 @@
 # TRC-data.addItem
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string }`; a porta `data-item-add` manda a coleção mostrada.
 - **Ramos que dependem dos argumentos:** R1 (a coleção não existe).
 

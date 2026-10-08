@@ -7,11 +7,11 @@
 ## Passos
 
 1. `src/app/commands.ts:341` `'page.openProperties': openPageProperties,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho da store do editor entra aqui.
-4. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — o comando não é undoável (`manifest/commands/page.json:17` `"undoable": false`), `changesDocument` é falso.
-5. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand]
-6. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho segue para a store do núcleo.
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
+3. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — o despacho da store do editor entra aqui.
+4. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — o comando não é undoável (`manifest/commands/page.json:17` `"undoable": false`), `changesDocument` é falso.
+5. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand]
+6. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho segue para a store do núcleo.
 7. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 8. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 9. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — sem argumentos, nenhuma recusa.
@@ -66,8 +66,8 @@
 ## Regras
 
 - G1: n/a — o comando cria o contexto com a seleção e `ui` (`src/editor/inspector/page-properties.ts:27` `return { kind: 'change', selection: [root.id], ui: withInspectorTab(withInspector(state.ui, true), settingsTab(rules)), message: message('status.selected', { name: root.name }) };`), não escreve camada de estilo nem classe nem quadro-chave.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `page.openProperties` muda a seleção e, vindo de fora do campo, grava a digitação pendente antes (`src/editor/input/pending.ts:82` `keepTyping();`).
-- G3: ok `src/app/commands.ts:341` `'page.openProperties': openPageProperties,` — as duas portas chegam ao mesmo tratador (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `page.openProperties` muda a seleção e, vindo de fora do campo, grava a digitação pendente antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G3: ok `src/app/commands.ts:341` `'page.openProperties': openPageProperties,` — as duas portas chegam ao mesmo tratador (`src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`).
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/editor/inspector/page-properties.ts:27`).
 - G5: n/a — o comando não desenha painel nem controle (`src/editor/inspector/page-properties.ts:27`); as famílias de defeito de painel são medidas em Fase 6.
 - G6: ok `src/core/store/store.ts:522` `const chosen = outcome.selection ?? before.selection;` — a seleção passa a ser `[root.id]` e vem da store, sem cópia local.

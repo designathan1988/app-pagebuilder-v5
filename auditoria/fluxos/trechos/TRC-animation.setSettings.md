@@ -1,5 +1,5 @@
 # TRC-animation.setSettings
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string; readonly setting: "duration" | "delay" | "iterations" | "direction" | "fill" | "timing" | "play-state"; readonly value: string }`; as sete portas panel-control `setting-*` declaram cada uma o seu `setting` (`manifest/commands/animation.json:545` `            "setting": "duration"`, e as demais) e o painel acrescenta a animação mostrada e o texto digitado (`value`).
 - **Ramos que dependem dos argumentos:** R2 (setting sem porta), R3 (texto que não é valor da propriedade), R4 (valor igual ao atual)
 

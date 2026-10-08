@@ -51,7 +51,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava a largura e as preferências `src/editor/view/breakpoints.ts:43` `ui: { ...state.ui, viewportWidth: width, preferences: choosing(state.ui, chosen) }`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — a única porta de `view.resizeViewport` (o arraste da borda do quadro) chega à tabela `src/app/commands.ts:448` `'view.resizeViewport': resizeViewport,` e envia só o tamanho e a distância do arraste `src/editor/view/frame-edge.ts:13` `({ state }, { size, distance }) => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/frame-edge.ts:16` `return showingWidth(state, Math.min(MAX_BREAKPOINT_WIDTH, Math.max(MIN_VIEWPORT_WIDTH, width)));`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a largura e as preferências `src/editor/view/breakpoints.ts:43` `ui: { ...state.ui, viewportWidth: width, preferences: choosing(state.ui, chosen) }`.

@@ -34,7 +34,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/inspector/color-picker.ts:46`).
-- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:216` `keepTyping();`).
+- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:217` `keepTyping();`).
 - G3: ok `src/editor/inspector/color-picker.ts:44` `export const setColorFormat = registerHandler<'colorPicker.setFormat', EditorUi>(` — as portas (os segmentos HSB, RGB, Hex, OKLCH, OKLab) chegam ao mesmo tratador com só `format`.
 - G4: n/a — o comando muda estado; o seletor abre sobre o painel e o cobrimento no ponto da ação é medido na Fase 6 (`src/editor/inspector/color-picker.ts:46`).
 - G5: n/a — o encaixe do seletor num formato mais alto é medido na Fase 6 (`src/editor/inspector/color-picker.ts:46`).

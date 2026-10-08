@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta panel-control `manifest/commands/workspace.json:1769` `"kind": "panel-control",`
 - **Porta:** `manifest/commands/workspace.json:1768` `"id": "panel-header-dock",`
 - **Tratador:** `src/app/commands.ts:486` `'workspace.movePanel': movePanel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
-1. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
-2. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-3. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-4. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+1. `src/editor/doors/door.tsx:286` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
+2. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+3. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+4. `src/editor/doors/door.tsx:144` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:486` `'workspace.movePanel': movePanel,` — a tabela liga o id ao tratador; o trecho TRC-workspace.movePanel começa aqui
 
 ## Ramos
@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:234`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:230` `export const movePanel = registerHandler<'workspace.movePanel', EditorUi>(` — as portas de arraste (header para o canvas, para a borda esquerda, para a direita, para a parte de cima ou de baixo de outro painel) e o botão Dock chegam ao mesmo tratador com só `to`, `at` e `host`.
 - G4: n/a — o comando muda estado; a janela flutuante cobre parte do canvas e esse cobrimento é medido na Fase 6 (`src/editor/workspace/layout.ts:239`).
 - G5: n/a — o encaixe da janela flutuante e das áreas combinadas é medido na Fase 6 (`src/editor/workspace/layout.ts:238`).

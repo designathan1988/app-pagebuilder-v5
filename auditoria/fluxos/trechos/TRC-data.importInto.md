@@ -1,5 +1,5 @@
 # TRC-data.importInto
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, mode: 'append'|'replace'|'update' }`; as três portas mandam só a coleção e o modo.
 - **Ramos que dependem dos argumentos:** R3 (coluna que casa nenhum campo), R4 (modo `update` com chave), R5 (chave vazia ou repetida).
 

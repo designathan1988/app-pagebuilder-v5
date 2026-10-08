@@ -19,6 +19,7 @@ import { PanelBodies } from '../shell/bodies.ts';
 import { useT } from '../text.ts';
 import { opensEmptyPanel } from '../workspace/panel-catalogue.ts';
 import { readClipboard } from '../clipboard.ts';
+import { afterRead } from '../input/after-read.ts';
 import { isCurrent, labelParamsOf } from './current.ts';
 import { GLYPHS } from './placement.ts';
 import { readPickedDataFile } from '../data/read-file.ts';
@@ -108,7 +109,7 @@ export function useDoor(entry: DoorEntry, args: Readonly<Record<string, unknown>
     // a command that takes what the system clipboard holds (clipboard.paste) runs once the clipboard is read
     const clipboard = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in given))?.[0];
     if (clipboard !== undefined) {
-      void readClipboard().then((content) => dispatch(entry.command.id, { ...given, [clipboard]: content }));
+      afterRead(store, readClipboard(), (content) => dispatch(entry.command.id, { ...given, [clipboard]: content }));
       return;
     }
     // a command that stores the files themselves (Upload files, an image file dropped on the canvas) reads them as an

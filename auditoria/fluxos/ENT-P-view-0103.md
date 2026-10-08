@@ -12,8 +12,8 @@
 2. `src/editor/input/pointer/resize.ts:21` `const distance = axis === 'x' ? Math.round(at.x - start.x) : Math.round(at.y - start.y);` — a distância do arraste, no eixo horizontal ou vertical
 3. `src/editor/input/pointer/resize.ts:23` `shared.open = store.gesture();` — o gesto novo, aberto com a store [escreve: EST-L05a-019 via resize]
 4. `src/editor/input/pointer/resize.ts:22` `shared.open?.cancel();` — o gesto anterior é cancelado antes de o novo abrir
-5. `src/editor/store.ts:216` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
-6. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor
+5. `src/editor/store.ts:217` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
+6. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor
 7. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto da store do núcleo entra no `run` com o gesto aberto
 8. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` resolve o id na entrada da tabela de comandos
 9. `src/app/commands.ts:448` `'view.resizeViewport': resizeViewport,` — a entrada da tabela onde o id nomeia o tratador (a Chamada do trecho)
@@ -42,7 +42,7 @@
 ## Regras
 
 - G1: n/a — o fluxo de porta para na chamada do tratador `src/app/commands.ts:448` `'view.resizeViewport': resizeViewport,`; a gravação no contexto em que a digitação começou é do tratador e está no trecho.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — a única porta de view.resizeViewport chega à tabela `src/app/commands.ts:448` `'view.resizeViewport': resizeViewport,` e envia só a intenção, sem decidir por conta própria.
 - G4: n/a — a porta não desenha elemento algum sobre o canvas; `src/editor/input/pointer/resize.ts:24` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, size: from, distance } as never);` não toca o DOM.
 - G5: n/a — a porta não desenha nem mede painel, barra ou rótulo; `src/editor/input/pointer/resize.ts:24` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, size: from, distance } as never);` só despacha o comando.

@@ -63,7 +63,7 @@
 ## Regras
 
 - G1: n/a — o comando troca o documento inteiro, sem gravar estilo nem valor de camada (`src/core/import/folder.ts:197` `return { kind: 'load' as const, document: { ...read.document, ...projectLanguages(context.state.document) }, message: reportMessage(wanted?.name ?? '', read.report) };`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/import/folder.ts:190` `export const openFolderCommand = registerHandler('project.openFolder', (context, { folder }) => {` — o único tratador do comando.
 - G4: n/a — o comando troca o documento; não desenha nada sobre o canvas (`src/core/import/folder.ts:197`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/import/folder.ts:197`).

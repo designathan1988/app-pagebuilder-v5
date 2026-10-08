@@ -1,5 +1,5 @@
 # TRC-data.deleteCollection
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string }`; a confirmação reexecuta o tratador com `confirmed === true` (`src/core/store/store.ts:434` `      outcome = entry.run(handlerContext(confirmed, at), args);`).
 - **Ramos que dependem dos argumentos:** R1 (ainda não confirmado), R2 (a coleção é a última).
 

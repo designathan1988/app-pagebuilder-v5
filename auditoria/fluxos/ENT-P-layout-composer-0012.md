@@ -10,8 +10,8 @@
 ## Passos
 1. `src/modules/layout-composer/interaction/tool.ts:101` `if (travelled) points.push(local(next));` — o arraste que percorreu completa os `points` com o ponto da liberação.
 2. `src/modules/layout-composer/interaction/tool.ts:102` `gesture.dispatch(STROKE as never, { mode: handle === null ? modeOf(next, composer.tool) : 'auto', points: [...points], ...(handleText === null ? {} : { handle: handleText }) } as never);` — o comando do traço roda dentro do gesto, com os `points`, o `mode` e o `handle` quando há alça.
-3. `src/editor/store.ts:216` `keepTyping();` — o gesto, aberto na pressão (`src/editor/input/pointer/events.ts:69` `const gesture = store.gesture();`), guarda a digitação pendente. [escreve: EST-L05a-001 via keepTyping]
-4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
+3. `src/editor/store.ts:217` `keepTyping();` — o gesto, aberto na pressão (`src/editor/input/pointer/events.ts:69` `const gesture = store.gesture();`), guarda a digitação pendente. [escreve: EST-L05a-001 via keepTyping]
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o despacho do gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto entrega o comando a `run`.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador do comando na tabela `wiring().commands`.
@@ -20,7 +20,7 @@
 
 ## Ramos
 - R1 `src/modules/layout-composer/interaction/tool.ts:101` `if (travelled) points.push(local(next));` — um arraste que percorreu completa os `points` com o ponto da liberação antes do despacho; um clique em lugar não chega ao traço.
-- R2 `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho entra no gesto da store do editor, com a digitação pendente já guardada (`src/editor/store.ts:216` `keepTyping();`).
+- R2 `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho entra no gesto da store do editor, com a digitação pendente já guardada (`src/editor/store.ts:217` `keepTyping();`).
 - R3 `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — sem contêiner composto o predicado `layoutComposing` falha e o comando é recusado com `layout.inactive` (`src/modules/layout-composer/host/handlers.ts:57` `(state) => composerOf(state.ui) !== null,`); composto, segue.
 
 ## Fronteiras assíncronas
@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador recebe o contexto capturado e grava nele.
-- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
+- G2: ok `src/editor/store.ts:217` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
 - G3: ok `src/modules/layout-composer/host/handlers.ts:463` `export const strokeLayout = registerHandler<'layout.stroke', EditorUi>('layout.stroke', (context, { mode, points, handle }) =>` — um só tratador; esta porta envia só a intenção.
 - G4: n/a — o caminho da porta não desenha elemento sobre o canvas `src/modules/layout-composer/interaction/tool.ts:102` `gesture.dispatch(STROKE as never, { mode: handle === null ? modeOf(next, composer.tool) : 'auto', points: [...points], ...(handleText === null ? {} : { handle: handleText }) } as never);`.
 - G5: n/a — o caminho da porta não desenha painel nem barra `src/modules/layout-composer/interaction/tool.ts:102` `gesture.dispatch(STROKE as never, { mode: handle === null ? modeOf(next, composer.tool) : 'auto', points: [...points], ...(handleText === null ? {} : { handle: handleText }) } as never);`.

@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:433` `'text.insertLineBreak': insertLineBreak,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto.
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador.
 5. `src/editor/canvas/text-edit.ts:120` `export const insertLineBreak = registerHandler<'text.insertLineBreak', EditorUi>('text.insertLineBreak', ({ state }) => {` — o tratador.
@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:122` `return { kind: 'change', ui: withEdit(state.ui, { ...state.ui.textEdit, lineBreaks: state.ui.textEdit.lineBreaks + 1 }) };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/canvas/text-edit.ts:120` `export const insertLineBreak = registerHandler<'text.insertLineBreak', EditorUi>('text.insertLineBreak', ({ state }) => {` — o único tratador; a porta do manifesto chama a mesma linha `src/app/commands.ts:433` `'text.insertLineBreak': insertLineBreak,`.
 - G4: n/a — o tratador muda o estado do editor e não desenha nada sobre o canvas `src/editor/canvas/text-edit.ts:122`.
 - G5: n/a — o trecho não desenha painel nem barra `src/editor/canvas/text-edit.ts:122`; as famílias de defeito de painel são medidas na Fase 6.

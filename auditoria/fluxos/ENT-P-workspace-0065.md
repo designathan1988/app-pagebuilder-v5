@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta menu `manifest/commands/workspace.json:1902` `"kind": "menu",`
 - **Porta:** `manifest/commands/workspace.json:1901` `"id": "menu-language-en",`
 - **Tratador:** `src/app/commands.ts:489` `'preferences.setLanguage': setLanguage,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
 1. `src/editor/doors/menu.tsx:54` `onClick={() => {` — o clique do item do menu roda a porta (o menu fecha antes)
 2. `src/editor/doors/menu.tsx:59` `door.run();` — a porta é rodada
-3. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-4. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+3. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+4. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:489` `'preferences.setLanguage': setLanguage,` — a tabela liga o id ao tratador; o trecho TRC-preferences.setLanguage começa aqui
 
 ## Ramos
@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/preferences/preferences.ts:30`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/preferences/preferences.ts:26` `export const setLanguage: RegisteredHandler<'preferences.setLanguage', EditorUi> = registerHandler(` — as duas portas (menu Idioma, item pt-BR e item en) chegam ao mesmo tratador com só `locale`.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/preferences/preferences.ts:30`).
 - G5: n/a — o encaixe dos painéis na língua nova (a família `english`) é medido na Fase 6 (`src/editor/preferences/preferences.ts:30`).

@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext].
 6. `src/editor/workspace/layout.ts:111` `if (group === INSPECTOR_GROUP) {` — um grupo escolhe o ramo do tratador [lê: EST-L01-037 via handlerContext].
@@ -39,7 +39,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:131`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:107` `export const setActiveTab = registerHandler<'workspace.setActiveTab', EditorUi>(` — as portas (abas do inspector, do dock, de uma área combinada) chegam ao mesmo tratador com o `group` e o `panel` da aba.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:131`).
 - G5: n/a — o encaixe da faixa de abas é medido na Fase 6 (`src/editor/workspace/layout.ts:131`).

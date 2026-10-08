@@ -18,7 +18,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:47` `"id": "key-enter-in-canvas",`
 - **Gatilho:** `manifest/commands/text.json:50` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:430` `'text.startEdit': startEdit,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2401
 
@@ -27,7 +27,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.startEdit
 - **Porta:** `manifest/commands/text.json:67` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:430` `'text.startEdit': startEdit,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2401
 
@@ -37,7 +37,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:125` `"id": "key-enter-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:128` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:431` `'text.set': setTextCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2402
 
@@ -47,7 +47,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:145` `"id": "key-escape-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:148` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:431` `'text.set': setTextCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2402
 
@@ -66,7 +66,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.set
 - **Porta:** `manifest/commands/text.json:187` `"id": "inspector-text",`
 - **Tratador:** `src/app/commands.ts:431` `'text.set': setTextCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2402
 
@@ -76,7 +76,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:213` `"id": "key-enter-in-element-text-field",`
 - **Gatilho:** `manifest/commands/text.json:216` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:431` `'text.set': setTextCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2402
 
@@ -85,7 +85,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.set
 - **Porta:** `manifest/commands/text.json:233` `"id": "quick-panel-text",`
 - **Tratador:** `src/app/commands.ts:431` `'text.set': setTextCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2402
 
@@ -95,7 +95,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:274` `"id": "key-escape-in-element-text-field",`
 - **Gatilho:** `manifest/commands/text.json:277` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:432` `'text.cancelEdit': cancelEdit,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2403
 
@@ -105,7 +105,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:312` `"id": "key-shift-enter-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:315` `"chord": "Shift+Enter",`
 - **Tratador:** `src/app/commands.ts:433` `'text.insertLineBreak': insertLineBreak,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2404
 
@@ -115,7 +115,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:350` `"id": "key-ctrl-b-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:353` `"chord": "Ctrl+B",`
 - **Tratador:** `src/app/commands.ts:434` `'text.toggleBold': toggleBold,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2405
 
@@ -124,7 +124,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.toggleBold
 - **Porta:** `manifest/commands/text.json:370` `"id": "toolbar-text-toolbar-bold",`
 - **Tratador:** `src/app/commands.ts:434` `'text.toggleBold': toggleBold,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2405
 
@@ -134,7 +134,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:410` `"id": "key-ctrl-i-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:413` `"chord": "Ctrl+I",`
 - **Tratador:** `src/app/commands.ts:435` `'text.toggleItalic': toggleItalic,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2406
 
@@ -143,7 +143,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.toggleItalic
 - **Porta:** `manifest/commands/text.json:430` `"id": "toolbar-text-toolbar-italic",`
 - **Tratador:** `src/app/commands.ts:435` `'text.toggleItalic': toggleItalic,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2406
 
@@ -153,7 +153,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:478` `"id": "key-ctrl-k-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:481` `"chord": "Ctrl+K",`
 - **Tratador:** `src/app/commands.ts:436` `'text.editLink': editLink,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2407
 
@@ -162,7 +162,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Comando:** text.editLink
 - **Porta:** `manifest/commands/text.json:498` `"id": "toolbar-text-toolbar-link",`
 - **Tratador:** `src/app/commands.ts:436` `'text.editLink': editLink,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-text-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2407
 
@@ -172,7 +172,7 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:547` `"id": "key-ctrl-v-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:550` `"chord": "Ctrl+V",`
 - **Tratador:** `src/app/commands.ts:437` `'text.paste': pasteText,`
-- **Início:** `src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`
+- **Início:** `src/editor/input/keymap.ts:533` `else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`
 - **Fluxo:** `fluxos/ENT-P-text-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2408
 
@@ -182,6 +182,6 @@ Fonte: `manifest/commands/text.json`. Uma porta por bloco, na ordem do manifesto
 - **Porta:** `manifest/commands/text.json:585` `"id": "key-ctrl-a-in-text-editing",`
 - **Gatilho:** `manifest/commands/text.json:588` `"chord": "Ctrl+A",`
 - **Tratador:** `src/app/commands.ts:438` `'text.selectAll': selectAllText,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-text-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2409

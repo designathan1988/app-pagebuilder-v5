@@ -18,6 +18,7 @@ import { aimArgs, heldHand } from '../../core/structure/hand.ts';
 import { wiring } from '../wiring.ts';
 import { TEXT_EDITING, editArgs } from '../canvas/text-edit.ts';
 import { readClipboard } from '../clipboard.ts';
+import { afterRead } from './after-read.ts';
 import type { EditorStore } from '../store.ts';
 import { cancelPan, holdSpace, modifierOf, openGesture } from './pointer.ts';
 import { holdLetter, releaseLetters, toolKeyContext } from './pointer-tools.ts';
@@ -529,7 +530,7 @@ export function installKeymap(store: EditorStore, target: Window = window): () =
     // clipboard is read (src/editor/clipboard.ts); a key held during a gesture never waits for it
     const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];
     if (clipboard === undefined) dispatch(binding.command.id, args);
-    else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));
+    else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));
   };
   const onKeyUp = (event: KeyboardEvent) => {
     holdLetter(event.key, false);

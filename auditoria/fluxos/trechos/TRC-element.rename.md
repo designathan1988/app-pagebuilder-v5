@@ -7,7 +7,7 @@
 ## Passos
 
 1. `src/app/commands.ts:336` `'element.rename': renameCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 5. `src/core/nodes/names.ts:14` `export const renameCommand = registerHandler('element.rename', ({ state }, { target, name }) => {` — o tratador.
@@ -60,7 +60,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve o nome do nó, fora de qualquer camada de estilo (`src/core/nodes/names.ts:28`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/nodes/names.ts:14` `export const renameCommand = registerHandler('element.rename', ({ state }, { target, name }) => {` — o único tratador do comando; a porta entrega o mesmo par `{ target, name }`.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/nodes/names.ts:28`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/nodes/names.ts:28`); as famílias de defeito de painel são medidas em Fase 6.

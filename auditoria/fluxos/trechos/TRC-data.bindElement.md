@@ -1,5 +1,5 @@
 # TRC-data.bindElement
-- **Chamada (menu do campo):** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada (menu do campo):** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Chamada (arraste de coluna):** `src/editor/input/pointer/effects.ts:199` `      if (ps.columning !== null && effect === 'commit' && ps.columning.over !== null) closing?.dispatch(ps.columning.press.entry.command.id as CommandId, { ...ps.columning.press.entry.door.args, field: ps.columning.press.field, node: ps.columning.over.node, to: ps.columning.over.to } as never);`
 - **Argumentos:** `{ node: string, field: string, to: enum }`; as duas portas mandam o nó, o campo e o destino.
 - **Ramos que dependem dos argumentos:** R2 (o destino não cabe no elemento), R3 (campo de página de item com destino fora de ligação), R4 (campo vazio desliga a ligação).
@@ -50,7 +50,7 @@
 ## Regras
 - G1: n/a — o comando não tem digitação de campo; os argumentos são o nó, o campo e o destino.
 - G2: n/a — não há rascunho pendente lido pelo tratador.
-- G3: ok `src/core/data/commands.ts:301` `export const bindElementCommand = registerHandler('data.bindElement', (context, { node, field, to }): Outcome<never> => {` — o menu do campo (`src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`) e o arraste de coluna (`src/editor/input/pointer/effects.ts:199` `      if (ps.columning !== null && effect === 'commit' && ps.columning.over !== null) closing?.dispatch(ps.columning.press.entry.command.id as CommandId, { ...ps.columning.press.entry.door.args, field: ps.columning.press.field, node: ps.columning.over.node, to: ps.columning.over.to } as never);`) mandam a mesma intenção (o nó, o campo e o destino) ao mesmo tratador.
+- G3: ok `src/core/data/commands.ts:301` `export const bindElementCommand = registerHandler('data.bindElement', (context, { node, field, to }): Outcome<never> => {` — o menu do campo (`src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`) e o arraste de coluna (`src/editor/input/pointer/effects.ts:199` `      if (ps.columning !== null && effect === 'commit' && ps.columning.over !== null) closing?.dispatch(ps.columning.press.entry.command.id as CommandId, { ...ps.columning.press.entry.door.args, field: ps.columning.press.field, node: ps.columning.over.node, to: ps.columning.over.to } as never);`) mandam a mesma intenção (o nó, o campo e o destino) ao mesmo tratador.
 - G4: n/a — o tratador só grava estado (`src/core/data/commands.ts:318` `      working = replaceAt(working, holder.path, value);`).
 - G5: n/a — o comando não desenha controle: o menu do campo e o arraste vivem na colocação do painel e do canvas.
 - G6: n/a — o comando não escreve seleção (`src/core/data/commands.ts:67` `    const moved = result.selection !== undefined || selection.length !== chosen.length;` falso).

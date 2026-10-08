@@ -1,5 +1,5 @@
 # TRC-regions.stopSharing
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ component: string }`; a porta `data-shared-stop` manda o nome do componente (a região).
 - **Ramos que dependem dos argumentos:** R1 (o componente não é região compartilhada).
 

@@ -49,8 +49,8 @@
 ## Regras
 
 - G1: n/a — o comando escreve `ui.page` e a seleção, fora de qualquer camada de estilo (`src/core/project/pages.ts:228`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
-- G3: ok `src/core/project/pages.ts:218` `return registerHandler<'pages.switch', Ui>(` — as quatro portas chegam ao mesmo tratador (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G3: ok `src/core/project/pages.ts:218` `return registerHandler<'pages.switch', Ui>(` — as quatro portas chegam ao mesmo tratador (`src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`).
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/project/pages.ts:228`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/pages.ts:228`); as famílias de defeito de painel são medidas em Fase 6.
 - G6: ok `src/core/store/store.ts:522` `const chosen = outcome.selection ?? before.selection;` — a seleção vem da store, sem cópia local.

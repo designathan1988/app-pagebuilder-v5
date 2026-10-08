@@ -1,5 +1,5 @@
 # TRC-timeline.play
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{}`; a porta panel-control `timeline-play` não declara argumentos (`manifest/commands/animation.json:899` `          "args": {}`).
 - **Ramos que dependem dos argumentos:** nenhum
 

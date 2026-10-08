@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a tag do nó, não um valor de estilo; nenhum passo lê a camada (breakpoint, estado, classe ou quadro-chave) `src/core/elements/tag.ts:51` `{ op: 'replace' as const, path: [...at.path, 'tag'], value: typed },`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/tag.ts:28` `export const setTagCommand = registerHandler('element.setTag', ({ state, rules }, { tag }) => {`
 - G4: n/a — as portas do comando são um campo do inspetor e um controle do painel rápido, não um ponto do canvas `manifest/commands/elements.json:42` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/tag.ts:56` `return { kind: 'change', patches, message: said };`.

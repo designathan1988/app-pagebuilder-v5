@@ -10,11 +10,11 @@
 1. `src/editor/input/pointer/tools.ts:59` `else p.dispatchPan(entry, { dx: -dx, dy: -dy });` — a roda sobre o palco roda o comando da porta com os argumentos calculados do evento.
 2. `src/editor/input/pointer/tools.ts:45` `const dispatchPan = (entry: DoorEntry, args: Readonly<Record<string, unknown>>) => {` — o despacho da pan e da roda.
 3. `src/editor/input/pointer/tools.ts:46` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });` — o comando é despachado na store do editor com os argumentos da porta.
-4. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho da porta.
-5. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — o comando não é reversível no manifesto, então `changesDocument` é falso.
-6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, salvo com o foco dentro do próprio campo. [lê: EST-L05a-001 via beforeCommand] [escreve: EST-L05a-001 via keepTyping]
-7. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o estado do editor que a digitação edita, quando há digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
-8. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o comando vai à store do núcleo.
+4. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho da porta.
+5. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — o comando não é reversível no manifesto, então `changesDocument` é falso.
+6. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, salvo com o foco dentro do próprio campo. [lê: EST-L05a-001 via beforeCommand] [escreve: EST-L05a-001 via keepTyping]
+7. `src/editor/store.ts:236` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o estado do editor que a digitação edita, quando há digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
+8. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o comando vai à store do núcleo.
 9. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 10. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 11. `src/core/store/store.ts:399` `const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {` — a função que roda um comando.
@@ -27,7 +27,7 @@
 - R2 `src/editor/input/pointer/tools.ts:50` `const modifier = event.ctrlKey || event.metaKey ? 'Ctrl' : event.shiftKey ? 'Shift' : null;` — o modificador decide a porta; esta porta é a do modificador nulo (nenhum).
 - R3 `src/editor/input/pointer/tools.ts:51` `const entry = WHEEL_DOORS.find((d) => d.door.kind === 'canvas-wheel' && d.door.modifier === modifier);` — a porta da roda pelo modificador.
 - R4 `src/editor/input/pointer/tools.ts:58` `else if (modifier === 'Shift') p.dispatchPan(entry, { dx: -(dx !== 0 ? dx : dy), dy: 0 });` é falso (sem Shift) e o caminho segue para `src/editor/input/pointer/tools.ts:59` `else p.dispatchPan(entry, { dx: -dx, dy: -dy });`, a pan sem modificador.
-- R5 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o caminho vai à store do núcleo.
+- R5 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o caminho vai à store do núcleo.
 - R6 `src/core/store/store.ts:400` `const entry = table[id];` — o id é um comando do manifesto, então a tabela sempre devolve a entrada `src/app/commands.ts:445` `'view.pan': pan,`.
 
 ## Fronteiras assíncronas
@@ -48,8 +48,8 @@
 
 ## Regras
 
-- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` e o tratador só grava a câmera.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`.
+- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` e o tratador só grava a câmera.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`.
 - G3: ok — a porta chega à tabela `src/app/commands.ts:445` `'view.pan': pan,` e envia só a intenção, os argumentos da porta.
 - G4: n/a — a porta não desenha elemento algum sobre o canvas `src/editor/input/pointer/tools.ts:59` `else p.dispatchPan(entry, { dx: -dx, dy: -dy });`.
 - G5: n/a — a porta não desenha nem mede painel, barra ou rótulo `src/editor/input/pointer/tools.ts:59` `else p.dispatchPan(entry, { dx: -dx, dy: -dy });`.
@@ -59,7 +59,7 @@
 
 ## Limpeza
 
-- Nenhum ouvinte, timer ou observador é criado nesta porta; o despacho não cria nenhum `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);`. O ouvinte que entrega o evento é de outra entrada e não é criado nem removido aqui.
+- Nenhum ouvinte, timer ou observador é criado nesta porta; o despacho não cria nenhum `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);`. O ouvinte que entrega o evento é de outra entrada e não é criado nem removido aqui.
 
 ## Medições
 

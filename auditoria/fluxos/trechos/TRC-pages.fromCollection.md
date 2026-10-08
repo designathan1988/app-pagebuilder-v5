@@ -1,5 +1,5 @@
 # TRC-pages.fromCollection
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, nameField: string }`; a porta `data-pages-from-collection` manda a coleção e o campo que nomeia cada página.
 - **Ramos que dependem dos argumentos:** R2 (o campo não existe). Os demais ramos dependem do estado (R1 a página aberta é página de item, R3 itens já com página, R4 item sem nome).
 

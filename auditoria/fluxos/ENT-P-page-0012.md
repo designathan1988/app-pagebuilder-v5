@@ -7,10 +7,10 @@ O campo Início do bloco da porta (`src/editor/doors/door.tsx:144`) não é a li
 ## Passos
 1. `src/editor/shell/field.tsx:1768` `        (store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(command, { ...args, [filled]: text });` — o campo grava o que ele mostra no argumento que lhe cabe, para o nó que ele desenha (aqui a página).
 2. `src/editor/shell/field.tsx:1665` `    return filled === undefined ? null : { args: { [named]: attribute, ...forNode }, filled, stored, suggestions: keywordsOf(attribute) };` — o campo monta os argumentos: `named` é `setting` (`manifest/commands/page.json:76` `"setting": {`) e `filled` é `value` (`manifest/commands/page.json:81` `"value": {`).
-3. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-4. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `page.setSetting` é desfazível (`manifest/commands/page.json:98` `"undoable": true,`).
-5. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição. [lê: EST-L05a-001 via beforeCommand]
-6. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
+3. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+4. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — `page.setSetting` é desfazível (`manifest/commands/page.json:98` `"undoable": true,`).
+5. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição. [lê: EST-L05a-001 via beforeCommand]
+6. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
 7. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 8. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 9. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — o argumento `setting` é lido contra os atributos do modelo (`src/core/store/args.ts:48` `return typeof value === 'string' && rules.attributeValues.has(value) ? 'fits' : 'invalid';`); `pageScripts` é um deles. [lê: EST-L01-030 via argumentRefusal]
@@ -18,8 +18,8 @@ O campo Início do bloco da porta (`src/editor/doors/door.tsx:144`) não é a li
 11. `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-page.setSetting`).
 
 ## Ramos
-- R1 `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — comando desfazível: a digitação pendente é gravada antes.
-- R2 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o comando roda agora; com um gesto aberto e o comando desfazível, o despacho entra na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R1 `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — comando desfazível: a digitação pendente é gravada antes.
+- R2 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o comando roda agora; com um gesto aberto e o comando desfazível, o despacho entra na fila `waiting` (`src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R3 `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — um `setting` que o modelo não tem tomaria o lado da recusa; `pageScripts` é um atributo do modelo.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `page.setSetting` tem tratador na tabela.
 
@@ -38,7 +38,7 @@ O campo Início do bloco da porta (`src/editor/doors/door.tsx:144`) não é a li
 
 ## Regras
 - G1: n/a — o comando escreve um caminho fixo do documento (`src/core/page/settings.ts:74` `const path = ['pages', at, 'tree', 'attributes', setting];`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,` — as dez portas inspector-page-* chegam ao mesmo tratador e cada uma envia só a intenção (`setting` e `value`).
 - G4: n/a — o comando muda o documento; não desenha nada sobre o canvas: `src/core/page/settings.ts:98`.
 - G5: n/a — o caminho da porta não desenha painel nem barra: `src/editor/shell/field.tsx:1768`.

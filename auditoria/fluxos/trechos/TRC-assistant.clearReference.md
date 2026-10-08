@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:181` `'assistant.clearReference': clearAssistantReference,` — a tabela de comandos liga o id ao tratador `clearAssistantReference` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:44` `export const clearAssistantReference = registerHandler<'assistant.clearReference', EditorUi>('assistant.clearReference', ({ state }) => ({ kind: 'change', ui: nextUi(state.ui, { reference: null }) }));` — o tratador grava `reference` como nulo. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via nextUi]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

@@ -10,8 +10,8 @@
 ## Passos
 1. `src/editor/input/pointer/events.ts:240` `const step = ps.tooling.session.move(toolPoint(event));` — o movimento do arraste pede o passo à sessão da ferramenta (`src/modules/layout-composer/interaction/place-tool.ts:62` `return { command: PLACE, args: travel(next) };`), que traz o comando `layout.place` e o deslocamento.
 2. `src/editor/input/pointer/events.ts:247` `gesture.dispatch(step.command as never, step.args as never);` — o deslocamento entrega o comando do passo ao gesto (`src/editor/input/pointer/events.ts:244` `const gesture = store.gesture();` abre um novo a cada movimento).
-3. `src/editor/store.ts:216` `keepTyping();` — o gesto guarda a digitação pendente antes de o comando rodar. [escreve: EST-L05a-001 via keepTyping]
-4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
+3. `src/editor/store.ts:217` `keepTyping();` — o gesto guarda a digitação pendente antes de o comando rodar. [escreve: EST-L05a-001 via keepTyping]
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o despacho do gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto entrega o comando a `run`.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador do comando na tabela `wiring().commands`.
@@ -20,7 +20,7 @@
 
 ## Ramos
 - R1 `src/editor/input/pointer/events.ts:240` `const step = ps.tooling.session.move(toolPoint(event));` — o passo só existe depois do limite de clique (o movimento pede o passo à sessão); sem deslocamento, o caminho não despacha.
-- R2 `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho entra no gesto da store do editor, com a digitação pendente já guardada (`src/editor/store.ts:216` `keepTyping();`).
+- R2 `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho entra no gesto da store do editor, com a digitação pendente já guardada (`src/editor/store.ts:217` `keepTyping();`).
 
 ## Fronteiras assíncronas
 - nenhuma — cada passo roda inteiro no mesmo quadro do movimento do arraste; o ouvinte do ponteiro que o repete existe fora do fluxo (`src/editor/input/pointer/events.ts:240` `const step = ps.tooling.session.move(toolPoint(event));`).
@@ -37,7 +37,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador recebe o contexto capturado e grava nele.
-- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
+- G2: ok `src/editor/store.ts:217` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
 - G3: ok `src/modules/layout-composer/host/handlers.ts:541` `export const placeLayout = registerHandler<'layout.place', EditorUi>('layout.place', (context, { target: named, dx, dy, edges }) =>` — um só tratador; esta porta envia só a intenção.
 - G4: n/a — o caminho da porta não desenha elemento sobre o canvas `src/editor/input/pointer/events.ts:247` `gesture.dispatch(step.command as never, step.args as never);`.
 - G5: n/a — o caminho da porta não desenha painel nem barra `src/editor/input/pointer/events.ts:247` `gesture.dispatch(step.command as never, step.args as never);`.

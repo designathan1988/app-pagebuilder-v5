@@ -1,11 +1,11 @@
 # TRC-data.preview
-- **Chamada:** `src/editor/doors/door.tsx:123` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`
+- **Chamada:** `src/editor/doors/door.tsx:124` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`
 - **Argumentos:** `{ file: file }`; a porta `data-import` entrega o arquivo lido como JSON (as planilhas, ou o problema da leitura).
 - **Ramos que dependem dos argumentos:** R1 (o arquivo não pôde ser lido), R2 (a leitura trouxe um problema nomeado), R3 (o arquivo tem planilhas).
 
 ## Passos
-1. `src/editor/doors/door.tsx:119` `    if (file !== undefined && entry.door.adapter.fileReading === 'data') {` — a porta lê o arquivo de dados do disco antes de rodar o comando. [nada muda]
-2. `src/editor/doors/door.tsx:123` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });` — o arquivo lido entra nos argumentos e o comando é despachado. [lê: EST-L01-037 via dispatch]
+1. `src/editor/doors/door.tsx:120` `    if (file !== undefined && entry.door.adapter.fileReading === 'data') {` — a porta lê o arquivo de dados do disco antes de rodar o comando. [nada muda]
+2. `src/editor/doors/door.tsx:124` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });` — o arquivo lido entra nos argumentos e o comando é despachado. [lê: EST-L01-037 via dispatch]
 3. `src/app/commands.ts:164` `  'data.preview': previewFile,` — a tabela liga o comando ao tratador. [nada muda]
 4. `src/editor/data/state.ts:139` `export const previewFile = registerHandler<'data.preview', EditorUi>('data.preview', ({ state }, { file }) => {` — o tratador recebe `file`. [nada muda]
 5. `src/editor/data/state.ts:140` `  const handed = handedFile(file);` — lê o texto entregue como JSON. [lê: EST-L01-037 via handedFile]
@@ -27,7 +27,7 @@
 - R3: `src/editor/data/state.ts:143` `  const sheet = handed.sheets[0];` — a primeira planilha é mostrada; a contagem de linhas usa a planilha (zero quando não há).
 
 ## Fronteiras assíncronas
-- a leitura do arquivo é assíncrona, no próprio despacho (`src/editor/doors/door.tsx:123` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`): entre o gesto e o `dispatch` correm o seletor de arquivos e a leitura. Nesse intervalo a aplicação está sem prévia e sem comando em curso; entradas do seletor de arquivos do próprio navegador podem rodar (fora do documento do app). O tratador em si (linhas 139-146) é síncrono.
+- a leitura do arquivo é assíncrona, no próprio despacho (`src/editor/doors/door.tsx:124` `        dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`): entre o gesto e o `dispatch` correm o seletor de arquivos e a leitura. Nesse intervalo a aplicação está sem prévia e sem comando em curso; entradas do seletor de arquivos do próprio navegador podem rodar (fora do documento do app). O tratador em si (linhas 139-146) é síncrono.
 
 ## Estado
 - Lê: EST-L01-037 (`state.ui`).

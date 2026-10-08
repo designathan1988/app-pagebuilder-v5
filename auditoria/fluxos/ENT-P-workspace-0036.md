@@ -4,19 +4,19 @@
 - **Trecho:** TRC-workspace.reset
 
 ## Passos
-1. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique no controle desenhado pela porta executa o `run` da porta.
-2. `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — a porta só entrega a intenção quando o comando está construído e disponível.
-3. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos são os do manifesto da porta sobre os do contexto.
-4. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência, então o caminho segue ao despacho.
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega o id e os argumentos ao despacho da store do editor (o Início da porta).
+1. `src/editor/doors/door.tsx:286` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique no controle desenhado pela porta executa o `run` da porta.
+2. `src/editor/doors/door.tsx:94` `if (!built || !available) return;` — a porta só entrega a intenção quando o comando está construído e disponível.
+3. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos são os do manifesto da porta sobre os do contexto.
+4. `src/editor/doors/door.tsx:144` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência, então o caminho segue ao despacho.
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega o id e os argumentos ao despacho da store do editor (o Início da porta).
 6. `src/app/commands.ts:482` `'workspace.reset': resetWorkspace,` — a store resolve o id na tabela de comandos, que o liga ao tratador; a Chamada do trecho.
 
 ## Ramos
-- `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — com o comando construído e a disponibilidade verdadeira, a porta segue aos passos seguintes; caso contrário não entrega nada.
-- `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência: `files`, `file` e `clipboard` são indefinidos e o caminho toma o despacho direto. Os ramos de arquivo e área de transferência (linhas 98 a 142) não rodam.
+- `src/editor/doors/door.tsx:94` `if (!built || !available) return;` — com o comando construído e a disponibilidade verdadeira, a porta segue aos passos seguintes; caso contrário não entrega nada.
+- `src/editor/doors/door.tsx:144` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência: `files`, `file` e `clipboard` são indefinidos e o caminho toma o despacho direto. Os ramos de arquivo e área de transferência (linhas 98 a 142) não rodam.
 
 ## Fronteiras assíncronas
-- nenhuma — o caminho da porta é síncrono (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`), sem await, temporizador nem ouvinte.
+- nenhuma — o caminho da porta é síncrono (`src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`), sem await, temporizador nem ouvinte.
 
 ## Estado
 - lê: EST-L01-037 (`ui.preferences`, `ui.panels`, `ui.layout`), EST-L05a-001 (digitação pendente).
@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:272` `export const resetWorkspace = registerHandler<'workspace.reset', EditorUi>('workspace.reset', ({ state }) => {` — a porta envia só a intenção sem argumentos; o tratador é o mesmo de todas as portas do comando workspace.reset.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
@@ -39,7 +39,7 @@
 - INT: n/a — nenhum esquema, id ou referência do documento é tocado (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
 
 ## Limpeza
-- nada a remover — o caminho da porta não cria ouvinte, temporizador nem observador (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`).
+- nada a remover — o caminho da porta não cria ouvinte, temporizador nem observador (`src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`).
 
 ## Medições
 - nenhuma — a porta não lê valores que só o navegador calcula; o encaixe é medido na Fase 6.

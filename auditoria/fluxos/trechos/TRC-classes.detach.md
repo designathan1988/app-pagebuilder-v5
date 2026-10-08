@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:229` `'classes.detach': detachClassCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
+3. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 6. `src/core/design/classes.ts:105` `export const detachClassCommand = registerHandler('classes.detach', (context, { className }): Outcome<never> => {` — o tratador recebe o contexto e o argumento `className`.
@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve caminhos do documento a partir da seleção (`src/core/design/classes.ts:111`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:229` `'classes.detach': detachClassCommand,`
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/classes.ts:112`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/classes.ts:112`).

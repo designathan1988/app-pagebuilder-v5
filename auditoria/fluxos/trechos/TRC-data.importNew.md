@@ -1,5 +1,5 @@
 # TRC-data.importNew
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ name: string }`; a porta `data-import-new` manda o nome digitado (o da coleção nova).
 - **Ramos que dependem dos argumentos:** R2 (nome vazio) e os ramos do estado (R1 sem prévia ou planilha vazia, R3 nome repetido, R4 valor fora do tipo).
 

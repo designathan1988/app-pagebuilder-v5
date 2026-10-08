@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -95,6 +95,10 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M44', file: 'src/editor/shell/field-origin.tsx', from: "      document.removeEventListener('focusin', update);\n", to: '', breaks: 'um addEventListener sem remoção num efeito de componente', source: 'C6', detectors: ['lint'] },
   { id: 'M45', file: 'src/editor/doors/menu.tsx', from: '    return () => sizes.disconnect();', to: '    return () => undefined;', breaks: 'um ResizeObserver que não desconecta ao fechar o menu', source: 'C6', detectors: ['lint'] },
   { id: 'M46', file: 'src/editor/input/keymap.ts', from: '    const context = gesture?.context ?? (previewing(', to: '    const context = (previewing(', breaks: 'um menu que abre durante um arraste: com o gesto do ponteiro aberto, os atalhos globais chegam', source: 'C6', detectors: ['modes'] },
+  { id: 'M47', file: 'src/editor/persistence/autosave.ts', from: "    window.clearTimeout(retry);\n    window.removeEventListener('beforeunload', guard);", to: "    window.removeEventListener('beforeunload', guard);", breaks: 'um setTimeout de autosave que sobrevive à parada: a nova tentativa fica agendada', source: 'C6', detectors: ['lifetime'] },
+  { id: 'M48', file: 'src/editor/persistence/autosave.ts', from: "    pending = work;\n    setState('saving');\n    writeWhenIdle();", to: "    pending ??= work;\n    setState('saving');\n    writeWhenIdle();", breaks: 'um autosave que sobrevive à troca de projeto: o trabalho do projeto anterior fica pendente e é gravado', source: 'C6', detectors: ['lifetime'] },
+  { id: 'M49', file: 'src/editor/input/after-read.ts', from: '    if (editedKey(store.getState()) !== taken) {', to: "    if (editedKey(store.getState()) === '\\u0000') {", breaks: 'o que chega tarde de uma leitura roda no contexto que mudou', source: 'DEF-0513', detectors: ['races'] },
+  { id: 'M50', file: 'src/editor/input/keymap.ts', from: 'afterRead(store, readClipboard(), (content) =>', to: 'void readClipboard().then((content) =>', breaks: 'a tecla de colar despacha quando a leitura chega, sem conferir o contexto da tecla', source: 'DEF-0513', detectors: ['races'] },
 ];
 
 export const ALL_DETECTORS = ALL;

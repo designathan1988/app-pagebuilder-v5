@@ -4,7 +4,7 @@
 - **Ramos que dependem dos argumentos:** R1 e R2 (o `entry`, presente ou não, decide o que chega), R3 (o `side` decide a ordem dentro do invólucro) e R4 (o `wrapper` decide a definição do invólucro).
 
 ## Passos
-1. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+1. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
 2. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são conferidos contra o manifesto. [lê: EST-L01-030 via argumentRefusal]
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador sob `'element.wrapBeside'`. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext]
 4. `src/core/structure/wrap.ts:235` `export const wrapBesideCommand = registerHandler('element.wrapBeside', ({ state, ids, rules, words }, { target, side, wrapper: kind, entry }): Outcome<never> => {` — o tratador recebe o estado e os quatro campos. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-031 via handlerContext]
@@ -51,7 +51,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador escreve pela camada do contexto capturado (`at`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
 - G3: ok `src/core/structure/wrap.ts:235` `export const wrapBesideCommand = registerHandler('element.wrapBeside', ({ state, ids, rules, words }, { target, side, wrapper: kind, entry }): Outcome<never> => {` — um só tratador; as portas mandam só a intenção (o alvo, o lado, o invólucro e a entrada).
 - G4: n/a — o comando não desenha sobre o canvas; devolve remendos (`src/core/structure/wrap.ts:284`).
 - G5: n/a — o comando não mede nem desenha painel ou barra (`src/core/structure/wrap.ts:290`).

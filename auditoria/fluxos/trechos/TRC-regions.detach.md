@@ -1,5 +1,5 @@
 # TRC-regions.detach
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ node: string }`; a porta `data-shared-detach` manda o nó (a instância da região na página).
 - **Ramos que dependem dos argumentos:** R2 (o nó não é região compartilhada). Os demais dependem do estado (R1 o nó está travado).
 

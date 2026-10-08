@@ -1,5 +1,5 @@
 # TRC-data.unbind
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ node: string }`; a porta `data-unbind` manda o nó (a lista ou um cartão dela).
 - **Ramos que dependem dos argumentos:** R1 (o nó não é lista nem cartão de lista), R2 (a lista está travada), R3 (o nó não existe).
 

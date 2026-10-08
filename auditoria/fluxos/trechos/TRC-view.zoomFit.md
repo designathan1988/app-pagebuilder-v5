@@ -47,7 +47,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só tira a preferência de zoom e zera a câmera `src/editor/view/camera.ts:112` `camera: { ...state.ui.camera, panX: 0, pivot: null }`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as quatro portas de `view.zoomFit` (Shift+1, o botão da barra de status, o item do menu de zoom e a barra de comandos) chegam à tabela `src/app/commands.ts:443` `'view.zoomFit': zoomFit,` e mandam só a intenção de ajustar `src/editor/view/camera.ts:112` `preferences: rest, camera: { ...state.ui.camera, panX: 0, pivot: null }`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/camera.ts:110` `const { zoom: _chosen, ...rest } = state.ui.preferences;`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só devolve as preferências e a câmera `src/editor/view/camera.ts:112` `camera: { ...state.ui.camera, panX: 0, pivot: null }`.

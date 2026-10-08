@@ -3,21 +3,21 @@
 Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `src/editor/doors/door.tsx:144` até a linha que despacha o comando ao tratador — sem repetir o trecho `TRC-text.startEdit`, que segue daqui.
 
 ## Passos
-1. `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);` — o controle desenhado despacha a porta. O `dispatch` é ligado em `src/editor/doors/door.tsx:94` `    const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`, e os argumentos são montados em `src/editor/doors/door.tsx:95` `    const given = { ...entry.door.args, ...args };`.
-2. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-3. `src/editor/store.ts:233` `      const changesDocument = UNDOABLE.get(id) === true;` — `text.startEdit` não é desfazível, então `changesDocument` é `false`.
-4. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é respondida antes de o comando rodar.
-5. `src/editor/store.ts:235` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via getState] [lê: EST-L01-037 via getState] a digitação pendente e o estado da store do editor.
-6. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
+1. `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);` — o controle desenhado despacha a porta. O `dispatch` é ligado em `src/editor/doors/door.tsx:95` `    const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`, e os argumentos são montados em `src/editor/doors/door.tsx:96` `    const given = { ...entry.door.args, ...args };`.
+2. `src/editor/store.ts:233` `    dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+3. `src/editor/store.ts:234` `      const changesDocument = UNDOABLE.get(id) === true;` — `text.startEdit` não é desfazível, então `changesDocument` é `false`.
+4. `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é respondida antes de o comando rodar.
+5. `src/editor/store.ts:236` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via getState] [lê: EST-L01-037 via getState] a digitação pendente e o estado da store do editor.
+6. `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
 7. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho do núcleo chama `run`.
 8. `src/core/store/store.ts:400` `    const entry = table[id];` — `run` busca o comando na tabela (`wiring().commands`).
 9. `src/app/commands.ts:430` `  'text.startEdit': startEdit,` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-text.startEdit`).
 
 ## Ramos
-- R1 `src/editor/doors/door.tsx:99` `    if (files !== undefined) {` — o comando não declara um argumento de tipo `files`, então `files` é `undefined` e o ramo do escolhedor de vários arquivos não é tomado.
-- R2 `src/editor/doors/door.tsx:110` `    if (clipboard !== undefined) {` — o comando não declara um argumento de tipo `clipboard`, então `clipboard` é `undefined` e o ramo da leitura da área de transferência não é tomado.
-- R3 `src/editor/doors/door.tsx:143` `    if (file === undefined) {` — o comando não declara um argumento de tipo `file`, então `file` é `undefined` e o caminho segue para a linha 144; um comando que pedisse arquivo seguiria pelo ramo do arquivo (`src/editor/doors/door.tsx:149` `    void chooseFile().then(async (bytes) => {`).
-- R4 `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com um gesto aberto e um comando que muda o documento, o despacho entra na fila `waiting` (`src/editor/store.ts:243` `        waiting.push(() => void store.dispatch(id, args, asked));`).
+- R1 `src/editor/doors/door.tsx:100` `    if (files !== undefined) {` — o comando não declara um argumento de tipo `files`, então `files` é `undefined` e o ramo do escolhedor de vários arquivos não é tomado.
+- R2 `src/editor/doors/door.tsx:111` `    if (clipboard !== undefined) {` — o comando não declara um argumento de tipo `clipboard`, então `clipboard` é `undefined` e o ramo da leitura da área de transferência não é tomado.
+- R3 `src/editor/doors/door.tsx:144` `    if (file === undefined) {` — o comando não declara um argumento de tipo `file`, então `file` é `undefined` e o caminho segue para a linha 144; um comando que pedisse arquivo seguiria pelo ramo do arquivo (`src/editor/doors/door.tsx:150` `    void chooseFile().then(async (bytes) => {`).
+- R4 `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com um gesto aberto e um comando que muda o documento, o despacho entra na fila `waiting` (`src/editor/store.ts:244` `        waiting.push(() => void store.dispatch(id, args, asked));`).
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho é síncrono de `src/editor/doors/door.tsx:144` a `src/app/commands.ts:430`; nenhum passo cita `await`, timer, quadro ou ouvinte (os escolhedores de arquivo das linhas 100, 120, 128, 138 e 149 não são tomados por este comando).
@@ -34,8 +34,8 @@ Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:104` `  return { kind: 'change', ui: withEdit(state.ui, { ...state.ui.textEdit, node: node.id }), message: message('status.textEdit.editing') };`.
-- G2: ok `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado antes de o comando rodar.
-- G3: ok `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);` — a porta envia só a intenção (o id do comando e os argumentos) e o tratador único decide; as três portas do manifesto chamam a mesma linha `src/app/commands.ts:430` `  'text.startEdit': startEdit,`.
+- G2: ok `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado antes de o comando rodar.
+- G3: ok `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);` — a porta envia só a intenção (o id do comando e os argumentos) e o tratador único decide; as três portas do manifesto chamam a mesma linha `src/app/commands.ts:430` `  'text.startEdit': startEdit,`.
 - G4: n/a — a porta é um item da barra de comandos, não um ponto do canvas `manifest/commands/text.json:68` `      "kind": "command-bar",`.
 - G5: n/a — o caminho da porta não desenha painel nem barra `src/editor/doors/door.tsx:144`; as famílias de defeito de painel são medidas na Fase 6.
 - G6: n/a — o caminho da porta não escreve a seleção `src/editor/doors/door.tsx:144`.
@@ -50,5 +50,5 @@ Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `
 
 ## Ramos do trecho
 - **Trecho:** TRC-text.startEdit
-- **Argumentos enviados:** `{}` — a porta declara `{}` (`manifest/commands/text.json:85` `          "args": {}`) e o item da barra de comandos acrescenta nada (`src/editor/doors/door.tsx:95` `    const given = { ...entry.door.args, ...args };`).
+- **Argumentos enviados:** `{}` — a porta declara `{}` (`manifest/commands/text.json:85` `          "args": {}`) e o item da barra de comandos acrescenta nada (`src/editor/doors/door.tsx:96` `    const given = { ...entry.door.args, ...args };`).
 - nenhum — o trecho não lista ramo que dependa dos argumentos, porque o comando não tem argumentos (`auditoria/fluxos/trechos/TRC-text.startEdit.md`, campo `Ramos que dependem dos argumentos`).

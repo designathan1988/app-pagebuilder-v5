@@ -10,8 +10,8 @@
 ## Passos
 1. `src/modules/layout-composer/interaction/tool.ts:92` `if (!travelled && (handle === null || handle.kind === 'move')) {` — um clique em lugar (sem alça de redimensionamento) segue pelo ramo do clique.
 2. `src/modules/layout-composer/interaction/tool.ts:98` `gesture.dispatch(SELECT as never, { regions: picked === null ? [] : [picked], mode } as never);` — o comando do clique roda dentro do gesto, com a região sob o ponto e o `mode` calculado.
-3. `src/editor/store.ts:216` `keepTyping();` — o gesto, aberto na pressão (`src/editor/input/pointer/events.ts:69` `const gesture = store.gesture();`), guarda a digitação pendente. [escreve: EST-L05a-001 via keepTyping]
-4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
+3. `src/editor/store.ts:217` `keepTyping();` — o gesto, aberto na pressão (`src/editor/input/pointer/events.ts:69` `const gesture = store.gesture();`), guarda a digitação pendente. [escreve: EST-L05a-001 via keepTyping]
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o despacho do gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto entrega o comando a `run`.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador do comando na tabela `wiring().commands`.
@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador recebe o contexto capturado e grava nele.
-- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
+- G2: ok `src/editor/store.ts:217` `keepTyping();` — a digitação pendente é guardada antes de o comando rodar.
 - G3: ok `src/modules/layout-composer/host/handlers.ts:574` `export const selectLayout = registerHandler<'layout.select', EditorUi>('layout.select', (context, { regions, mode }) =>` — um só tratador; esta porta envia só a intenção.
 - G4: n/a — o caminho da porta não desenha elemento sobre o canvas `src/modules/layout-composer/interaction/tool.ts:98` `gesture.dispatch(SELECT as never, { regions: picked === null ? [] : [picked], mode } as never);`.
 - G5: n/a — o caminho da porta não desenha painel nem barra `src/modules/layout-composer/interaction/tool.ts:98` `gesture.dispatch(SELECT as never, { regions: picked === null ? [] : [picked], mode } as never);`.

@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava atributos do nó, não um valor de estilo `src/core/elements/inputs.ts:117` `return { kind: 'change', patches: [{ op: 'replace', path: [...at.path, 'attributes'], value: kept }], message: said };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/inputs.ts:104` `export const setInputTypeCommand = registerHandler('element.setInputType', ({ state, rules }, { type }): Outcome<never> => {`
 - G4: n/a — a porta é o campo Mudar o tipo do inspetor, não um ponto do canvas `manifest/commands/elements.json:4356` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/inputs.ts:117` `return { kind: 'change', patches: [{ op: 'replace', path: [...at.path, 'attributes'], value: kept }], message: said };`.

@@ -22,13 +22,13 @@
 
 ## Resultado
 - **Estado final:** EST-L01-037 com `ui.assetPicker` igual a `{ attribute }` por `src/editor/shell/asset-picker.ts:10` `return { kind: 'change', ui: { ...state.ui, assetPicker: { attribute } } };`, ou inalterado no ramo R1.
-- **Re-renderizado:** o painel do seletor de arquivos, que lê `ui.assetPicker` pelo caminho de `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
+- **Re-renderizado:** o painel do seletor de arquivos, que lê `ui.assetPicker` pelo caminho de `src/editor/store.ts:276` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
 - **DOM do editor:** o painel do seletor de arquivos passa a ser desenhado.
 - **DOM do canvas:** nada muda — o seletor não altera o documento.
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/shell/asset-picker.ts:10` `return { kind: 'change', ui: { ...state.ui, assetPicker: { attribute } } };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/shell/asset-picker.ts:8` `export const openAssetPicker = registerHandler<'assetPicker.open', EditorUi>('assetPicker.open', ({ state }, { attribute }) => {`
 - G4: n/a — a porta é o controle do campo Origem, não um ponto do canvas `manifest/commands/elements.json:3621` `"kind": "panel-control",`.
 - G5: n/a — o trecho escreve só o estado do editor; o painel é desenhado pela view `src/editor/shell/asset-picker.ts:10` `return { kind: 'change', ui: { ...state.ui, assetPicker: { attribute } } };`.

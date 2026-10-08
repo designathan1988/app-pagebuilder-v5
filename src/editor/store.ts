@@ -104,8 +104,9 @@ export function layeredRules(shown: { readonly document: DocumentJson; readonly 
 export function editContextOf(state: EditorState): EditContext {
   return { layer: activeLayer(state), styleClass: state.ui.styleTarget ?? null, keyframe: keyframeTarget(state) };
 }
-// What a field shows its value for: the elements selected, and the context an edit begins in.
-const editedKey = (state: EditorState): string => JSON.stringify([state.selection, editContextOf(state)]);
+// What a field shows its value for: the elements selected, and the context an edit begins in (also what a door whose
+// read arrives later takes when its input comes, input/after-read.ts).
+export const editedKey = (state: EditorState): string => JSON.stringify([state.selection, editContextOf(state)]);
 
 export function createEditorStore(options: EditorStoreOptions = {}): EditorStore {
   const storage = options.storage ?? browserStorage;

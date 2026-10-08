@@ -11,7 +11,7 @@
   - V1 nenhuma store: antes de o boot chamar `createStore`.
   - V2 a store devolvida por uma chamada, com o estado fechado que os itens EST-L01-002 a EST-L01-010 e EST-L01-030 a EST-L01-037 descrevem.
 - **Escritores:**
-  - `src/editor/store.ts:120` `const store = createStore<EditorUi>({` via a fábrica do editor (o boot que instala a store)
+  - `src/editor/store.ts:121` `const store = createStore<EditorUi>({` via a fábrica do editor (o boot que instala a store)
 - **Leitores:**
   - `src/core/store/store.ts:603` `getState: () => state,` via `createStore` (o objeto expõe o estado fechado que ele mesmo lê)
 - **Criação:** `src/core/store/store.ts:240` `export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {`
@@ -2353,133 +2353,133 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 - **Navegador:** não
 
 ## EST-L05a-004 — cache dos atalhos de comando por contexto
-- **Declaração:** `src/editor/input/keymap.ts:95` `const HINTS = new Map<string, string | null>();`
+- **Declaração:** `src/editor/input/keymap.ts:96` `const HINTS = new Map<string, string | null>();`
 - **Forma:** `Map<string, string | null>` com a chave `command context`
 - **Valores possíveis:** V1 vazio; V2 com a chave guardada como `null` (o comando não tem atalho no contexto); V3 com o acorde guardado
-- **Escritores:** `src/editor/input/keymap.ts:108` `  HINTS.set(key, found);` via `chordHint`
-- **Leitores:** `src/editor/input/keymap.ts:98` `  const known = HINTS.get(key);` via `chordHint`
-- **Criação:** `src/editor/input/keymap.ts:95` `const HINTS = new Map<string, string | null>();`
-- **Descarte:** fim-da-página `src/editor/input/keymap.ts:95` `const HINTS = new Map<string, string | null>();`
+- **Escritores:** `src/editor/input/keymap.ts:109` `  HINTS.set(key, found);` via `chordHint`
+- **Leitores:** `src/editor/input/keymap.ts:99` `  const known = HINTS.get(key);` via `chordHint`
+- **Criação:** `src/editor/input/keymap.ts:96` `const HINTS = new Map<string, string | null>();`
+- **Descarte:** fim-da-página `src/editor/input/keymap.ts:96` `const HINTS = new Map<string, string | null>();`
 - **Navegador:** não
 
 ## EST-L05a-005 — valor que cada campo de texto tinha ao receber o foco
-- **Declaração:** `src/editor/input/keymap.ts:316` `  const focusValues = new WeakMap<EventTarget, string>();`
+- **Declaração:** `src/editor/input/keymap.ts:317` `  const focusValues = new WeakMap<EventTarget, string>();`
 - **Forma:** `WeakMap<EventTarget, string>` fechado na instalação do teclado
 - **Valores possíveis:** V1 sem entrada para o campo; V2 com o valor que o campo tinha ao receber o foco; V3 com o valor antigo enquanto o campo já foi esvaziado à mão
-- **Escritores:** `src/editor/input/keymap.ts:551` `      focusValues.set(event.target, event.target.value);` via `onFocusIn`
-- **Leitores:** `src/editor/input/keymap.ts:465` `    const untouched = field !== null && field.dataset.draft === undefined && focusValues.get(field) === field.value && (ownUndos.get(field) ?? 0) === 0;` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:316` `  const focusValues = new WeakMap<EventTarget, string>();`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:552` `      focusValues.set(event.target, event.target.value);` via `onFocusIn`
+- **Leitores:** `src/editor/input/keymap.ts:466` `    const untouched = field !== null && field.dataset.draft === undefined && focusValues.get(field) === field.value && (ownUndos.get(field) ?? 0) === 0;` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:317` `  const focusValues = new WeakMap<EventTarget, string>();`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-006 — contagem dos desfazeres nativos de cada campo
-- **Declaração:** `src/editor/input/keymap.ts:317` `  const ownUndos = new WeakMap<EventTarget, number>();`
+- **Declaração:** `src/editor/input/keymap.ts:318` `  const ownUndos = new WeakMap<EventTarget, number>();`
 - **Forma:** `WeakMap<EventTarget, number>`
 - **Valores possíveis:** V1 sem entrada; V2 com 0 (o campo recebeu o foco); V3 maior que 0 enquanto o campo tem um desfazer nativo pendente; V4 de volta a 0 quando o refazer nativo o consome
-- **Escritores:** `src/editor/input/keymap.ts:552` `      ownUndos.set(event.target, 0);` via `onFocusIn`; `src/editor/input/keymap.ts:580` `    if (textField(event.target)) ownUndos.set(event.target, Math.max(0, (ownUndos.get(event.target) ?? 0) + (event.inputType === 'historyUndo' ? 1 : -1)));` via `onBeforeInput`
-- **Leitores:** `src/editor/input/keymap.ts:465` `    const untouched = field !== null && field.dataset.draft === undefined && focusValues.get(field) === field.value && (ownUndos.get(field) ?? 0) === 0;` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:317` `  const ownUndos = new WeakMap<EventTarget, number>();`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:553` `      ownUndos.set(event.target, 0);` via `onFocusIn`; `src/editor/input/keymap.ts:581` `    if (textField(event.target)) ownUndos.set(event.target, Math.max(0, (ownUndos.get(event.target) ?? 0) + (event.inputType === 'historyUndo' ? 1 : -1)));` via `onBeforeInput`
+- **Leitores:** `src/editor/input/keymap.ts:466` `    const untouched = field !== null && field.dataset.draft === undefined && focusValues.get(field) === field.value && (ownUndos.get(field) ?? 0) === 0;` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:318` `  const ownUndos = new WeakMap<EventTarget, number>();`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-007 — controle que tomou o foco com o botão do ponteiro pressionado
-- **Declaração:** `src/editor/input/keymap.ts:319` `  let pointerFocused: EventTarget | null = null;`
+- **Declaração:** `src/editor/input/keymap.ts:320` `  let pointerFocused: EventTarget | null = null;`
 - **Forma:** `EventTarget | null`
 - **Valores possíveis:** V1 null (o foco veio do teclado ou de um clique já solto); V2 o alvo do evento de foco, quando o ponteiro estava pressionado
-- **Escritores:** `src/editor/input/keymap.ts:549` `    pointerFocused = views.pointerPressing() ? event.target : null;` via `onFocusIn`
-- **Leitores:** `src/editor/input/keymap.ts:429` `    if (event.code === 'Space' && !FIELDS.includes(focused) && !typesText(event.target) && !spaceIsTheControls(event.target, focused, pointerFocused) && holdSpace(store, true)) {` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:319` `  let pointerFocused: EventTarget | null = null;`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:550` `    pointerFocused = views.pointerPressing() ? event.target : null;` via `onFocusIn`
+- **Leitores:** `src/editor/input/keymap.ts:430` `    if (event.code === 'Space' && !FIELDS.includes(focused) && !typesText(event.target) && !spaceIsTheControls(event.target, focused, pointerFocused) && holdSpace(store, true)) {` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:320` `  let pointerFocused: EventTarget | null = null;`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** foco
 
 ## EST-L05a-008 — instante da última letra digitada
-- **Declaração:** `src/editor/input/keymap.ts:344` `  let lastLetterAt = Number.NEGATIVE_INFINITY;`
+- **Declaração:** `src/editor/input/keymap.ts:345` `  let lastLetterAt = Number.NEGATIVE_INFINITY;`
 - **Forma:** `number` (carimbo de tempo do evento)
 - **Valores possíveis:** V1 `Number.NEGATIVE_INFINITY` (nenhuma rajada em curso); V2 o carimbo da última letra, enquanto a rajada de digitação corre
-- **Escritores:** `src/editor/input/keymap.ts:393` `      lastLetterAt = event.timeStamp;` via `onKeyDown`; `src/editor/input/keymap.ts:370` `    lastLetterAt = Number.NEGATIVE_INFINITY;` via `endBurst`
-- **Leitores:** `src/editor/input/keymap.ts:388` `    if ((!letter && event.key !== SHIFT) || (letter && event.timeStamp - lastLetterAt >= TYPING_BURST)) {` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:344` `  let lastLetterAt = Number.NEGATIVE_INFINITY;`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:394` `      lastLetterAt = event.timeStamp;` via `onKeyDown`; `src/editor/input/keymap.ts:371` `    lastLetterAt = Number.NEGATIVE_INFINITY;` via `endBurst`
+- **Leitores:** `src/editor/input/keymap.ts:389` `    if ((!letter && event.key !== SHIFT) || (letter && event.timeStamp - lastLetterAt >= TYPING_BURST)) {` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:345` `  let lastLetterAt = Number.NEGATIVE_INFINITY;`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-009 — marca de que a rajada de letras é digitação
-- **Declaração:** `src/editor/input/keymap.ts:345` `  let typing = false;`
+- **Declaração:** `src/editor/input/keymap.ts:346` `  let typing = false;`
 - **Forma:** `boolean`
 - **Valores possíveis:** V1 false; V2 true a partir da primeira letra que não casa atalho algum, até o fim da rajada
-- **Escritores:** `src/editor/input/keymap.ts:479` `      typing = true;` via `onKeyDown`; `src/editor/input/keymap.ts:371` `    typing = false;` via `endBurst`
-- **Leitores:** `src/editor/input/keymap.ts:391` `    const inBurst = letter && typing;` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:345` `  let typing = false;`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:480` `      typing = true;` via `onKeyDown`; `src/editor/input/keymap.ts:372` `    typing = false;` via `endBurst`
+- **Leitores:** `src/editor/input/keymap.ts:392` `    const inBurst = letter && typing;` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:346` `  let typing = false;`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-010 — se as teclas de letra do canvas foram escolhidas
-- **Declaração:** `src/editor/input/keymap.ts:351` `  let lettersChosen = true;`
+- **Declaração:** `src/editor/input/keymap.ts:352` `  let lettersChosen = true;`
 - **Forma:** `boolean`
 - **Valores possíveis:** V1 true (o canvas ou as Camadas foram escolhidos, ou o editor acabou de montar); V2 false quando o foco se perdeu para nenhum lugar; V3 recalculado a cada leitura de `readChoice` a partir dos contadores das visões
-- **Escritores:** `src/editor/input/keymap.ts:358` `      lettersChosen = seenChoices > seenPresses || views.pressRegion() !== 'elsewhere';` via `readChoice`; `src/editor/input/keymap.ts:568` `    lettersChosen = false;` via `onFocusOut`
-- **Leitores:** `src/editor/input/keymap.ts:493` `      if (!lettersChosen) {` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:351` `  let lettersChosen = true;`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:359` `      lettersChosen = seenChoices > seenPresses || views.pressRegion() !== 'elsewhere';` via `readChoice`; `src/editor/input/keymap.ts:569` `    lettersChosen = false;` via `onFocusOut`
+- **Leitores:** `src/editor/input/keymap.ts:494` `      if (!lettersChosen) {` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:352` `  let lettersChosen = true;`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-011 — contagem de pressões já vistas pelo teclado
-- **Declaração:** `src/editor/input/keymap.ts:352` `  let seenPresses = views.pressCount();`
+- **Declaração:** `src/editor/input/keymap.ts:353` `  let seenPresses = views.pressCount();`
 - **Forma:** `number`
 - **Valores possíveis:** V1 a contagem das visões na montagem; V2 outra depois de uma pressão nova
-- **Escritores:** `src/editor/input/keymap.ts:356` `      seenPresses = views.pressCount();` via `readChoice`
-- **Leitores:** `src/editor/input/keymap.ts:355` `    if (views.pressCount() !== seenPresses || views.canvasChosenCount() !== seenChoices) {` via `readChoice`
-- **Criação:** `src/editor/input/keymap.ts:352` `  let seenPresses = views.pressCount();`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:357` `      seenPresses = views.pressCount();` via `readChoice`
+- **Leitores:** `src/editor/input/keymap.ts:356` `    if (views.pressCount() !== seenPresses || views.canvasChosenCount() !== seenChoices) {` via `readChoice`
+- **Criação:** `src/editor/input/keymap.ts:353` `  let seenPresses = views.pressCount();`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-012 — contagem de escolhas do canvas pelo teclado já vistas
-- **Declaração:** `src/editor/input/keymap.ts:353` `  let seenChoices = views.canvasChosenCount();`
+- **Declaração:** `src/editor/input/keymap.ts:354` `  let seenChoices = views.canvasChosenCount();`
 - **Forma:** `number`
 - **Valores possíveis:** V1 a contagem das visões na montagem; V2 outra depois do F6 ou de o teclado alcançar uma linha de Camadas
-- **Escritores:** `src/editor/input/keymap.ts:357` `      seenChoices = views.canvasChosenCount();` via `readChoice`
-- **Leitores:** `src/editor/input/keymap.ts:355` `    if (views.pressCount() !== seenPresses || views.canvasChosenCount() !== seenChoices) {` via `readChoice`
-- **Criação:** `src/editor/input/keymap.ts:353` `  let seenChoices = views.canvasChosenCount();`
-- **Descarte:** `src/editor/input/keymap.ts:589` `  return () => {`
+- **Escritores:** `src/editor/input/keymap.ts:358` `      seenChoices = views.canvasChosenCount();` via `readChoice`
+- **Leitores:** `src/editor/input/keymap.ts:356` `    if (views.pressCount() !== seenPresses || views.canvasChosenCount() !== seenChoices) {` via `readChoice`
+- **Criação:** `src/editor/input/keymap.ts:354` `  let seenChoices = views.canvasChosenCount();`
+- **Descarte:** `src/editor/input/keymap.ts:590` `  return () => {`
 - **Navegador:** não
 
 ## EST-L05a-013 — transação reversível da rajada de atalhos
-- **Declaração:** `src/editor/input/keymap.ts:362` `  let burstSequence: CommandSequence | null = null;`
+- **Declaração:** `src/editor/input/keymap.ts:363` `  let burstSequence: CommandSequence | null = null;`
 - **Forma:** `CommandSequence | null`
 - **Valores possíveis:** V1 null; V2 a sequência aberta enquanto a rajada de letras corre e guarda os atalhos que a rajada rodou; V3 gravada ao fim da rajada; V4 cancelada quando a rajada vira digitação
-- **Escritores:** `src/editor/input/keymap.ts:520` `        burstSequence = store.sequence();` via `onKeyDown`; `src/editor/input/keymap.ts:369` `    burstSequence = null;` via `endBurst`
-- **Leitores:** `src/editor/input/keymap.ts:519` `      if (burstSequence?.active() !== true) {` via `onKeyDown`; `src/editor/input/keymap.ts:376` `    if (burstSequence?.cancel() === true) store.notice(message('status.keys.typedNotShortcuts', { keys: burstKeys }));` via `takeBackBurst`
-- **Criação:** `src/editor/input/keymap.ts:362` `  let burstSequence: CommandSequence | null = null;`
-- **Descarte:** `src/editor/input/keymap.ts:369` `    burstSequence = null;`
+- **Escritores:** `src/editor/input/keymap.ts:521` `        burstSequence = store.sequence();` via `onKeyDown`; `src/editor/input/keymap.ts:370` `    burstSequence = null;` via `endBurst`
+- **Leitores:** `src/editor/input/keymap.ts:520` `      if (burstSequence?.active() !== true) {` via `onKeyDown`; `src/editor/input/keymap.ts:377` `    if (burstSequence?.cancel() === true) store.notice(message('status.keys.typedNotShortcuts', { keys: burstKeys }));` via `takeBackBurst`
+- **Criação:** `src/editor/input/keymap.ts:363` `  let burstSequence: CommandSequence | null = null;`
+- **Descarte:** `src/editor/input/keymap.ts:370` `    burstSequence = null;`
 - **Navegador:** não
 
 ## EST-L05a-014 — temporizador do fim da rajada de digitação
-- **Declaração:** `src/editor/input/keymap.ts:363` `  let burstTimer: number | undefined;`
+- **Declaração:** `src/editor/input/keymap.ts:364` `  let burstTimer: number | undefined;`
 - **Forma:** `number | undefined` (identificador de `setTimeout`)
 - **Valores possíveis:** V1 `undefined` (nenhuma rajada); V2 o identificador armado pela última letra; V3 limpo por uma tecla que não é letra, por um clique ou pela desmontagem
-- **Escritores:** `src/editor/input/keymap.ts:395` `      burstTimer = target.setTimeout(endBurst, TYPING_BURST);` via `onKeyDown`
-- **Leitores:** `src/editor/input/keymap.ts:367` `    target.clearTimeout(burstTimer);` via `endBurst`
-- **Criação:** `src/editor/input/keymap.ts:363` `  let burstTimer: number | undefined;`
-- **Descarte:** `src/editor/input/keymap.ts:367` `    target.clearTimeout(burstTimer);`
+- **Escritores:** `src/editor/input/keymap.ts:396` `      burstTimer = target.setTimeout(endBurst, TYPING_BURST);` via `onKeyDown`
+- **Leitores:** `src/editor/input/keymap.ts:368` `    target.clearTimeout(burstTimer);` via `endBurst`
+- **Criação:** `src/editor/input/keymap.ts:364` `  let burstTimer: number | undefined;`
+- **Descarte:** `src/editor/input/keymap.ts:368` `    target.clearTimeout(burstTimer);`
 - **Navegador:** não
 
 ## EST-L05a-015 — letras que a rajada já rodou
-- **Declaração:** `src/editor/input/keymap.ts:364` `  let burstKeys = '';`
+- **Declaração:** `src/editor/input/keymap.ts:365` `  let burstKeys = '';`
 - **Forma:** `string`
 - **Valores possíveis:** V1 vazio; V2 as letras acumuladas em maiúscula, ditas ao aviso quando a rajada se desfaz; V3 esvaziado ao fim ou ao cancelamento da rajada
-- **Escritores:** `src/editor/input/keymap.ts:523` `      burstKeys += event.key.toUpperCase();` via `onKeyDown`; `src/editor/input/keymap.ts:372` `    burstKeys = '';` via `endBurst`
-- **Leitores:** `src/editor/input/keymap.ts:376` `    if (burstSequence?.cancel() === true) store.notice(message('status.keys.typedNotShortcuts', { keys: burstKeys }));` via `takeBackBurst`
-- **Criação:** `src/editor/input/keymap.ts:364` `  let burstKeys = '';`
-- **Descarte:** `src/editor/input/keymap.ts:372` `    burstKeys = '';`
+- **Escritores:** `src/editor/input/keymap.ts:524` `      burstKeys += event.key.toUpperCase();` via `onKeyDown`; `src/editor/input/keymap.ts:373` `    burstKeys = '';` via `endBurst`
+- **Leitores:** `src/editor/input/keymap.ts:377` `    if (burstSequence?.cancel() === true) store.notice(message('status.keys.typedNotShortcuts', { keys: burstKeys }));` via `takeBackBurst`
+- **Criação:** `src/editor/input/keymap.ts:365` `  let burstKeys = '';`
+- **Descarte:** `src/editor/input/keymap.ts:373` `    burstKeys = '';`
 - **Navegador:** não
 
 ## EST-L05a-016 — aviso de teclas não escolhidas já dado
-- **Declaração:** `src/editor/input/keymap.ts:365` `  let told = false;`
+- **Declaração:** `src/editor/input/keymap.ts:366` `  let told = false;`
 - **Forma:** `boolean`
 - **Valores possíveis:** V1 false; V2 true depois de o aviso `status.keys.notChosen` ser dado uma vez na rajada
-- **Escritores:** `src/editor/input/keymap.ts:496` `        told = true;` via `onKeyDown`; `src/editor/input/keymap.ts:373` `    told = false;` via `endBurst`
-- **Leitores:** `src/editor/input/keymap.ts:495` `        if (!told) store.notice(message('status.keys.notChosen'));` via `onKeyDown`
-- **Criação:** `src/editor/input/keymap.ts:365` `  let told = false;`
-- **Descarte:** `src/editor/input/keymap.ts:373` `    told = false;`
+- **Escritores:** `src/editor/input/keymap.ts:497` `        told = true;` via `onKeyDown`; `src/editor/input/keymap.ts:374` `    told = false;` via `endBurst`
+- **Leitores:** `src/editor/input/keymap.ts:496` `        if (!told) store.notice(message('status.keys.notChosen'));` via `onKeyDown`
+- **Criação:** `src/editor/input/keymap.ts:366` `  let told = false;`
+- **Descarte:** `src/editor/input/keymap.ts:374` `    told = false;`
 - **Navegador:** não
 
 ## EST-L05a-017 — campo que recebeu o foco e o instante dele
@@ -2497,7 +2497,7 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 - **Forma:** atributos `data-*` no elemento do campo (`data-draft` com `typed` ou `kept`, `data-draftRedo` numérico, `data-shown` com o valor gravado)
 - **Valores possíveis:** V1 sem atributos (campo nunca digitado); V2 `data-draft="kept"` com o valor gravado; V3 `data-draft="typed"` com digitação não gravada; V4 `data-draftRedo` maior que 0 com um desfazer nativo pendente; V5 de volta a `kept` e `0`
 - **Escritores:** `src/editor/input/drafts.ts:12` `  field.dataset.shown = value;` via `markFieldKept`; `src/editor/input/drafts.ts:13` `  field.dataset.draft = DRAFT_KEPT;` via `markFieldKept`; `src/editor/input/drafts.ts:24` `  field.dataset.draftRedo = String(inputType === 'historyUndo' ? redo + 1 : inputType === 'historyRedo' ? Math.max(0, redo - 1) : 0);` via `recordFieldInput`; `src/editor/input/drafts.ts:26` `  field.dataset.draft = typed ? DRAFT_TYPED : DRAFT_KEPT;` via `recordFieldInput`
-- **Leitores:** `src/editor/input/drafts.ts:17` `export const hasDraftRedo = (field: DraftField): boolean => Number(field.dataset.draftRedo ?? 0) > 0;` via `hasDraftRedo`; `src/editor/input/drafts.ts:25` `  const typed = !inputType.startsWith('history') || field.value !== field.dataset.shown;` via `recordFieldInput`; `src/editor/input/keymap.ts:252` `  (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) && target.dataset.draft === DRAFT_KEPT && target.value === target.dataset.shown;` via `keptField`; `src/editor/persistence/drafts.ts:90` `  if (key === null || field.dataset.shown === undefined) return;` via `saveFieldDraft`
+- **Leitores:** `src/editor/input/drafts.ts:17` `export const hasDraftRedo = (field: DraftField): boolean => Number(field.dataset.draftRedo ?? 0) > 0;` via `hasDraftRedo`; `src/editor/input/drafts.ts:25` `  const typed = !inputType.startsWith('history') || field.value !== field.dataset.shown;` via `recordFieldInput`; `src/editor/input/keymap.ts:253` `  (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) && target.dataset.draft === DRAFT_KEPT && target.value === target.dataset.shown;` via `keptField`; `src/editor/persistence/drafts.ts:90` `  if (key === null || field.dataset.shown === undefined) return;` via `saveFieldDraft`
 - **Criação:** `src/editor/input/drafts.ts:12` `  field.dataset.shown = value;`
 - **Descarte:** fim-da-página `src/editor/input/drafts.ts:11` `export function markFieldKept(field: DraftField, value: string): void {`
 - **Navegador:** não
@@ -2673,43 +2673,43 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 - **Navegador:** não
 
 ## EST-L05a-036 — a store do editor
-- **Declaração:** `src/editor/store.ts:110` `export function createEditorStore(options: EditorStoreOptions = {}): EditorStore {`
+- **Declaração:** `src/editor/store.ts:111` `export function createEditorStore(options: EditorStoreOptions = {}): EditorStore {`
 - **Forma:** `EditorStore` (o estado do documento, da seleção e da interface, com `dispatch`, `gesture`, `sequence`, `commandGroup` e `subscribe`)
 - **Valores possíveis:** V1 a store recém-criada, restaurada ou vazia; V2 a store com um gesto aberto; V3 a store com uma sequência aberta (a rajada do teclado); V4 a store com um grupo de comandos ocupado; V5 a store com uma gravação adiada em `waiting`; V6 a store em modo somente leitura (aba sem a trava de edição)
-- **Escritores:** `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` via `gestureSafe`; `src/editor/store.ts:217` `      if (store.commandGroupOpen()) return { dispatch: (id, args) => store.dispatch(id, args), commit: () => undefined, cancel: () => undefined };` via `gestureSafe`
-- **Leitores:** `src/editor/store.ts:235` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` via `gestureSafe`; `src/editor/store.ts:275` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));` via `useEditorState`
-- **Criação:** `src/editor/store.ts:120` `  const store = createStore<EditorUi>({`; `src/main.tsx:64` `const store = createEditorStore({ restored, recovery, narrow: windowIsNarrow() });`
-- **Descarte:** fim-da-página `src/editor/store.ts:170` `  return gestureSafe(store);`
+- **Escritores:** `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` via `gestureSafe`; `src/editor/store.ts:218` `      if (store.commandGroupOpen()) return { dispatch: (id, args) => store.dispatch(id, args), commit: () => undefined, cancel: () => undefined };` via `gestureSafe`
+- **Leitores:** `src/editor/store.ts:236` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` via `gestureSafe`; `src/editor/store.ts:276` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));` via `useEditorState`
+- **Criação:** `src/editor/store.ts:121` `  const store = createStore<EditorUi>({`; `src/main.tsx:64` `const store = createEditorStore({ restored, recovery, narrow: windowIsNarrow() });`
+- **Descarte:** fim-da-página `src/editor/store.ts:171` `  return gestureSafe(store);`
 - **Navegador:** não
 
 ## EST-L05a-037 — contexto React da store do editor
-- **Declaração:** `src/editor/store.ts:264` `export const StoreContext = createContext<EditorStore | null>(null);`
+- **Declaração:** `src/editor/store.ts:265` `export const StoreContext = createContext<EditorStore | null>(null);`
 - **Forma:** `React.Context<EditorStore | null>`
 - **Valores possíveis:** V1 null (nenhum provedor acima); V2 a store do editor
 - **Escritores:** `src/editor/app.tsx:6` `    <StoreContext.Provider value={store}>` via o provedor montado por `App`
-- **Leitores:** `src/editor/store.ts:267` `  const store = useContext(StoreContext);` via `useStore`
-- **Criação:** `src/editor/store.ts:264` `export const StoreContext = createContext<EditorStore | null>(null);`
-- **Descarte:** fim-da-página `src/editor/store.ts:264` `export const StoreContext = createContext<EditorStore | null>(null);`
+- **Leitores:** `src/editor/store.ts:268` `  const store = useContext(StoreContext);` via `useStore`
+- **Criação:** `src/editor/store.ts:265` `export const StoreContext = createContext<EditorStore | null>(null);`
+- **Descarte:** fim-da-página `src/editor/store.ts:265` `export const StoreContext = createContext<EditorStore | null>(null);`
 - **Navegador:** não
 
 ## EST-L05a-038 — gesto aberto visto pela store do editor
-- **Declaração:** `src/editor/store.ts:186` `  let open: Gesture | null = null;`
+- **Declaração:** `src/editor/store.ts:187` `  let open: Gesture | null = null;`
 - **Forma:** `Gesture | null` fechado em `gestureSafe`
 - **Valores possíveis:** V1 null; V2 o gesto aberto por `gesture()`, até o `commit` ou o `cancel`; V3 null de novo depois de `settle` correr as gravações adiadas
-- **Escritores:** `src/editor/store.ts:219` `      open = gesture;` via `gestureSafe.gesture`; `src/editor/store.ts:189` `    open = null;` via `settle`
-- **Leitores:** `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` via `gestureSafe.dispatch`
-- **Criação:** `src/editor/store.ts:186` `  let open: Gesture | null = null;`
-- **Descarte:** `src/editor/store.ts:189` `    open = null;`
+- **Escritores:** `src/editor/store.ts:220` `      open = gesture;` via `gestureSafe.gesture`; `src/editor/store.ts:190` `    open = null;` via `settle`
+- **Leitores:** `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` via `gestureSafe.dispatch`
+- **Criação:** `src/editor/store.ts:187` `  let open: Gesture | null = null;`
+- **Descarte:** `src/editor/store.ts:190` `    open = null;`
 - **Navegador:** não
 
 ## EST-L05a-039 — gravações adiadas até o gesto fechar
-- **Declaração:** `src/editor/store.ts:187` `  const waiting: (() => void)[] = [];`
+- **Declaração:** `src/editor/store.ts:188` `  const waiting: (() => void)[] = [];`
 - **Forma:** `(() => void)[]`
 - **Valores possíveis:** V1 vazio; V2 com as gravações que mudam o documento chegadas com um gesto aberto; V3 esvaziado em ordem quando o gesto fecha
-- **Escritores:** `src/editor/store.ts:243` `        waiting.push(() => void store.dispatch(id, args, asked));` via `gestureSafe.dispatch`
-- **Leitores:** `src/editor/store.ts:190` `    for (const run of waiting.splice(0)) run();` via `settle`
-- **Criação:** `src/editor/store.ts:187` `  const waiting: (() => void)[] = [];`
-- **Descarte:** `src/editor/store.ts:190` `    for (const run of waiting.splice(0)) run();`
+- **Escritores:** `src/editor/store.ts:244` `        waiting.push(() => void store.dispatch(id, args, asked));` via `gestureSafe.dispatch`
+- **Leitores:** `src/editor/store.ts:191` `    for (const run of waiting.splice(0)) run();` via `settle`
+- **Criação:** `src/editor/store.ts:188` `  const waiting: (() => void)[] = [];`
+- **Descarte:** `src/editor/store.ts:191` `    for (const run of waiting.splice(0)) run();`
 - **Navegador:** não
 
 ## EST-L05a-040 — a composição do editor instalada
@@ -3057,7 +3057,7 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 - **Forma:** estado do navegador: o `activeElement` do documento
 - **Valores possíveis:** V1 o corpo da página (nada focado); V2 um campo do editor (o campo de um painel, a barra de comandos); V3 o texto editado em lugar no canvas (contenteditable do quadro); V4 um botão de controlo de um painel; V5 nenhum (`null`) enquanto o documento não tem foco
 - **Escritores:** `src/editor/input/pointer/events.ts:144` `      guideEl.focus();` via `onDown`; `src/editor/input/pointer/events.ts:475` `      else element.focus();` via `onUp`; `src/editor/input/pointer/effects.ts:97` `        press.element.focus();` via `run`; `src/editor/persistence/drafts.ts:121` `    field.focus();` via `apply`
-- **Leitores:** `src/editor/input/pointer/common.ts:424` `  const field = document.activeElement;` via `onOwnOption`; `src/editor/input/pending.ts:80` `  const focused = document.activeElement;` via `beforeCommand`; `src/editor/input/keymap.ts:576` `    if (event.target instanceof Node && event.target !== event.target.ownerDocument?.activeElement) {` via `onBeforeInput`; `src/editor/persistence/drafts.ts:58` `  const field = document.activeElement;` via `flushDraftCaret`
+- **Leitores:** `src/editor/input/pointer/common.ts:424` `  const field = document.activeElement;` via `onOwnOption`; `src/editor/input/pending.ts:80` `  const focused = document.activeElement;` via `beforeCommand`; `src/editor/input/keymap.ts:577` `    if (event.target instanceof Node && event.target !== event.target.ownerDocument?.activeElement) {` via `onBeforeInput`; `src/editor/persistence/drafts.ts:58` `  const field = document.activeElement;` via `flushDraftCaret`
 - **Criação:** `src/editor/input/pointer/effects.ts:97` `        press.element.focus();`
 - **Descarte:** `src/editor/input/pointer/effects.ts:275` `    if (focused instanceof HTMLElement && (focused.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(focused.tagName))) focused.blur();`
 - **Navegador:** foco
@@ -3067,7 +3067,7 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 - **Forma:** estado do navegador: o intervalo de seleção do campo e o modo `contenteditable` do texto editado no canvas
 - **Valores possíveis:** V1 o campo recém-focado, com a seleção vazia no fim do valor; V2 o valor inteiro selecionado pelo primeiro clique (o caráter escolhido substitui-o); V3 uma seleção feita a arrastar dentro do campo, mantida; V4 o intervalo de um rascunho restaurado; V5 o texto em lugar no canvas com `contenteditable` ligado, e o cursor dentro dele
 - **Escritores:** `src/editor/input/select-on-focus.ts:21` `    if (was.field.selectionStart === was.field.selectionEnd) was.field.select();` via `onClick`; `src/editor/persistence/drafts.ts:126` `      if (draft.range) field.setSelectionRange(draft.range.start, draft.range.end);` via `apply`
-- **Leitores:** `src/editor/input/pointer/common.ts:448` `  if (row && !target?.closest('button, input, textarea, [contenteditable="true"], [contenteditable="plaintext-only"]') && modifierOf(event) === null) {` via `pressAt`; `src/editor/input/pointer/effects.ts:275` `    if (focused instanceof HTMLElement && (focused.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(focused.tagName))) focused.blur();` via `leaveField`; `src/editor/input/keymap.ts:418` `    // Native buttons consume Space even when contenteditable. Insert it in the edited element's own document;` via a nota do `onKeyDown`
+- **Leitores:** `src/editor/input/pointer/common.ts:448` `  if (row && !target?.closest('button, input, textarea, [contenteditable="true"], [contenteditable="plaintext-only"]') && modifierOf(event) === null) {` via `pressAt`; `src/editor/input/pointer/effects.ts:275` `    if (focused instanceof HTMLElement && (focused.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(focused.tagName))) focused.blur();` via `leaveField`; `src/editor/input/keymap.ts:419` `    // Native buttons consume Space even when contenteditable. Insert it in the edited element's own document;` via a nota do `onKeyDown`
 - **Criação:** `src/editor/input/select-on-focus.ts:21` `    if (was.field.selectionStart === was.field.selectionEnd) was.field.select();`
 - **Descarte:** fim-da-página `src/editor/input/pointer/effects.ts:275` `    if (focused instanceof HTMLElement && (focused.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(focused.tagName))) focused.blur();`
 - **Navegador:** seleção-de-texto
@@ -3106,23 +3106,23 @@ Estado que os arquivos deste lote declaram e guardam. Os doze arquivos `*.test.t
 
 ## EXC-L05a-003
 - **Padrão:** P-E02
-- **Ocorrência:** `src/editor/store.ts:184` `const UNDOABLE = new Map(manifest.commands.map((c) => [c.id as CommandId, c.history.undoable] as const));`
-- **Motivo:** mapa constante derivado do manifesto na carga do módulo; nenhuma entrada o escreve, então não há escrita a sobreviver (`src/editor/store.ts:233` `      const changesDocument = UNDOABLE.get(id) === true;`)
+- **Ocorrência:** `src/editor/store.ts:185` `const UNDOABLE = new Map(manifest.commands.map((c) => [c.id as CommandId, c.history.undoable] as const));`
+- **Motivo:** mapa constante derivado do manifesto na carga do módulo; nenhuma entrada o escreve, então não há escrita a sobreviver (`src/editor/store.ts:234` `      const changesDocument = UNDOABLE.get(id) === true;`)
 
 ## EXC-L05a-004
 - **Padrão:** P-E03
-- **Ocorrência:** `src/editor/input/keymap.ts:100` `  let found: string | null = null;`
-- **Motivo:** local de `chordHint`, preenchido e devolvido na mesma chamada (`src/editor/input/keymap.ts:109` `  return found;`)
+- **Ocorrência:** `src/editor/input/keymap.ts:101` `  let found: string | null = null;`
+- **Motivo:** local de `chordHint`, preenchido e devolvido na mesma chamada (`src/editor/input/keymap.ts:110` `  return found;`)
 
 ## EXC-L05a-005
 - **Padrão:** P-E02
-- **Ocorrência:** `src/editor/input/keymap.ts:247` `const CHOSEN_CONTEXTS: ReadonlySet<string> = new Set([CANVAS_CONTEXT, LAYERS_CONTEXT]);`
-- **Motivo:** conjunto constante montado da lista literal na carga do módulo; nenhuma entrada o escreve (`src/editor/input/keymap.ts:490` `    const typedKey = letter && binding.door.kind === 'shortcut' && CHOSEN_CONTEXTS.has(binding.door.context) && (focused === CANVAS_CONTEXT || focused === LAYERS_CONTEXT) && gesture === null;`)
+- **Ocorrência:** `src/editor/input/keymap.ts:248` `const CHOSEN_CONTEXTS: ReadonlySet<string> = new Set([CANVAS_CONTEXT, LAYERS_CONTEXT]);`
+- **Motivo:** conjunto constante montado da lista literal na carga do módulo; nenhuma entrada o escreve (`src/editor/input/keymap.ts:491` `    const typedKey = letter && binding.door.kind === 'shortcut' && CHOSEN_CONTEXTS.has(binding.door.context) && (focused === CANVAS_CONTEXT || focused === LAYERS_CONTEXT) && gesture === null;`)
 
 ## EXC-L05a-006
 - **Padrão:** P-E02
-- **Ocorrência:** `src/editor/input/keymap.ts:258` `const TEXT_TYPES: ReadonlySet<string> = new Set(['text', 'search', 'url', 'email', 'tel', 'number', 'password']);`
-- **Motivo:** conjunto constante montado da lista literal na carga do módulo; nenhuma entrada o escreve (`src/editor/input/keymap.ts:260` `  target instanceof HTMLTextAreaElement || (target instanceof HTMLInputElement && TEXT_TYPES.has(target.type));`)
+- **Ocorrência:** `src/editor/input/keymap.ts:259` `const TEXT_TYPES: ReadonlySet<string> = new Set(['text', 'search', 'url', 'email', 'tel', 'number', 'password']);`
+- **Motivo:** conjunto constante montado da lista literal na carga do módulo; nenhuma entrada o escreve (`src/editor/input/keymap.ts:261` `  target instanceof HTMLTextAreaElement || (target instanceof HTMLInputElement && TEXT_TYPES.has(target.type));`)
 
 ## EXC-L05a-007
 - **Padrão:** P-E02

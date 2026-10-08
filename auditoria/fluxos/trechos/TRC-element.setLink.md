@@ -43,7 +43,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava um atributo do nó, não um valor de estilo `src/core/elements/link.ts:101` `return { kind: 'change', patches: [{ op: stored === undefined ? 'add' : 'replace', path, value: read.value }], message: set };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/link.ts:29` `export const setLinkCommand = registerHandler('element.setLink', ({ state, rules }, { target, href, newTab, page, anchor }) => {`
 - G4: n/a — as portas são o campo de endereço e o campo de nova aba do inspetor, não um ponto do canvas `manifest/commands/elements.json:3890` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/link.ts:101` `return { kind: 'change', patches: [{ op: stored === undefined ? 'add' : 'replace', path, value: read.value }], message: set };`.

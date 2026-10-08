@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:187` `'assistant.saveKey': saveAssistantKey,` — a tabela de comandos liga o id ao tratador `saveAssistantKey` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:63` `export const saveAssistantKey = registerHandler<'assistant.saveKey', EditorUi>('assistant.saveKey', ({ state }) => ({ kind: 'change', ui: request(state.ui, 'save-key') }));` — grava o pedido `save-key`. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via request]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

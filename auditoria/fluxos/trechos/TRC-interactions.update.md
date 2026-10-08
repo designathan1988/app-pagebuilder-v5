@@ -60,12 +60,12 @@
 ## Resultado
 - **Estado final:** `src/core/store/store.ts:535` `const ran: StoreState<Ui> = {` — o documento passa a listar a interação mudada no índice dado, e o estado do editor perde a escolha do alvo; a seleção não muda.
 - **Re-renderizado:** `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();` — os assinantes da store são notificados.
-- **DOM do editor:** `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));` — o inspetor redescreve os campos da interação e o botão de alvo deixa de estar pressionado.
+- **DOM do editor:** `src/editor/store.ts:276` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));` — o inspetor redescreve os campos da interação e o botão de alvo deixa de estar pressionado.
 - **DOM do canvas:** `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);` — o canvas é notificado da mudança do documento; a interação não é desenhada nem executada.
 
 ## Regras
 - G1: n/a — o trecho grava `interactions` no caminho do próprio nó e o campo de escolha no estado do editor; não lê ponto de quebra, estado, classe-alvo nem quadro-chave (`src/core/events/interactions.ts:357`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `interactions.update` é desfazível no manifesto (`manifest/commands/events.json:132` `"undoable": true,`), então a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `interactions.update` é desfazível no manifesto (`manifest/commands/events.json:132` `"undoable": true,`), então a digitação pendente é gravada antes.
 - G3: ok `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,` — as nove portas do comando (`inspector-interaction-trigger`, `inspector-interaction-action`, `inspector-interaction-target`, `inspector-interaction-value`, `inspector-interaction-options`, `inspector-interaction-scope`, `canvas-click-pick-target`, `layers-row-pick-target`, `inspector-interaction-new-tab`) despacham para este tratador; a porta decide só o campo e o valor.
 - G4: n/a — as portas nascem no painel do inspetor e nas Camadas, em colunas próprias, ou no canvas com a intenção do alvo (`manifest/commands/events.json:77` `"region": "inspector-interactions",`).
 - G5: n/a — o comando muda um campo de uma interação e não desenha controle que cresça painel ou barra (`manifest/commands/events.json:142` `"drawnAs": "field",`).

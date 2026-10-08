@@ -23,13 +23,13 @@
 
 ## Resultado
 - **Estado final:** EST-L01-037 com `ui.linkPicker.kind` no tipo escolhido por `src/editor/shell/link-picker.ts:32` `return { kind: 'change', ui: { ...state.ui, linkPicker: { ...state.ui.linkPicker, kind } } };`, ou inalterado nos ramos R1 e R2.
-- **Re-renderizado:** o painel do seletor de links, pelo caminho de `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
+- **Re-renderizado:** o painel do seletor de links, pelo caminho de `src/editor/store.ts:276` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
 - **DOM do editor:** o painel do seletor de links passa a mostrar os alvos do tipo escolhido.
 - **DOM do canvas:** nada muda — o comando não altera o documento.
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/shell/link-picker.ts:32` `return { kind: 'change', ui: { ...state.ui, linkPicker: { ...state.ui.linkPicker, kind } } };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/shell/link-picker.ts:29` `export const setLinkKind = registerHandler<'linkPicker.setKind', EditorUi>('linkPicker.setKind', ({ state }, { kind }) => {`
 - G4: n/a — a porta é um controle do painel do seletor, não um ponto do canvas `manifest/commands/elements.json:4120` `"kind": "panel-control",`.
 - G5: n/a — o trecho escreve só o estado do editor; o painel é desenhado pela view `src/editor/shell/link-picker.ts:32` `return { kind: 'change', ui: { ...state.ui, linkPicker: { ...state.ui.linkPicker, kind } } };`.

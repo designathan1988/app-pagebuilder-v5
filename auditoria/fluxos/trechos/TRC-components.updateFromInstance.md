@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:219` `'components.updateFromInstance': updateFromInstanceCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
+3. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `insideInstance` é lida antes do tratador [lê: EST-L01-031 via insideInstance].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 6. `src/core/design/components.ts:365` `export const updateFromInstanceCommand = registerHandler('components.updateFromInstance', ({ state, ids }): Outcome<never> => {` — o tratador recebe o estado e o gerador de ids.
@@ -51,7 +51,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve caminhos fixos do documento (`src/core/design/components.ts:423`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:219` `'components.updateFromInstance': updateFromInstanceCommand,`
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/components.ts:426`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/components.ts:426`).

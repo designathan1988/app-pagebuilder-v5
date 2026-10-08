@@ -3,7 +3,7 @@
 - **Comando:** colors.saveSwatch
 - **Porta:** `manifest/commands/design-system.json:31` `"id": "color-picker-save-current",`
 - **Tratador:** `src/app/commands.ts:211` `'colors.saveSwatch': saveSwatchCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0001.md`
 - **Requisitos:** REQ-0801
 
@@ -12,7 +12,7 @@
 - **Comando:** colors.removeSwatch
 - **Porta:** `manifest/commands/design-system.json:85` `"id": "color-picker-swatch-remove",`
 - **Tratador:** `src/app/commands.ts:212` `'colors.removeSwatch': removeSwatchCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0002.md`
 - **Requisitos:** REQ-0802
 
@@ -21,7 +21,7 @@
 - **Comando:** tokens.create
 - **Porta:** `manifest/commands/design-system.json:157` `"id": "variables-add",`
 - **Tratador:** `src/app/commands.ts:213` `'tokens.create': createToken,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0003.md`
 - **Requisitos:** REQ-0803
 
@@ -30,7 +30,7 @@
 - **Comando:** tokens.update
 - **Porta:** `manifest/commands/design-system.json:219` `"id": "variables-value-field",`
 - **Tratador:** `src/app/commands.ts:214` `'tokens.update': updateToken,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0004.md`
 - **Requisitos:** REQ-0804
 
@@ -39,7 +39,7 @@
 - **Comando:** tokens.rename
 - **Porta:** `manifest/commands/design-system.json:282` `"id": "variables-name-field",`
 - **Tratador:** `src/app/commands.ts:225` `'tokens.rename': renameToken,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0005.md`
 - **Requisitos:** REQ-0805
 
@@ -48,7 +48,7 @@
 - **Comando:** tokens.delete
 - **Porta:** `manifest/commands/design-system.json:340` `"id": "variables-delete",`
 - **Tratador:** `src/app/commands.ts:226` `'tokens.delete': deleteToken,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0006.md`
 - **Requisitos:** REQ-0806
 
@@ -57,7 +57,7 @@
 - **Comando:** classes.create
 - **Porta:** `manifest/commands/design-system.json:398` `"id": "inspector-class-save-as",`
 - **Tratador:** `src/app/commands.ts:227` `'classes.create': createClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0007.md`
 - **Requisitos:** REQ-0807
 
@@ -66,7 +66,7 @@
 - **Comando:** classes.apply
 - **Porta:** `manifest/commands/design-system.json:455` `"id": "inspector-class-add",`
 - **Tratador:** `src/app/commands.ts:228` `'classes.apply': applyClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0008.md`
 - **Requisitos:** REQ-0808
 
@@ -75,7 +75,7 @@
 - **Comando:** classes.apply
 - **Porta:** `manifest/commands/design-system.json:481` `"id": "command-bar-apply-class",`
 - **Tratador:** `src/app/commands.ts:228` `'classes.apply': applyClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0009.md`
 - **Requisitos:** REQ-0808
 
@@ -84,7 +84,7 @@
 - **Comando:** classes.detach
 - **Porta:** `manifest/commands/design-system.json:534` `"id": "inspector-class-remove",`
 - **Tratador:** `src/app/commands.ts:229` `'classes.detach': detachClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0010.md`
 - **Requisitos:** REQ-0809
 
@@ -93,7 +93,7 @@
 - **Comando:** classes.rename
 - **Porta:** `manifest/commands/design-system.json:597` `"id": "styles-class-rename",`
 - **Tratador:** `src/app/commands.ts:230` `'classes.rename': renameClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0011.md`
 - **Requisitos:** REQ-0810
 
@@ -102,7 +102,7 @@
 - **Comando:** classes.delete
 - **Porta:** `manifest/commands/design-system.json:657` `"id": "styles-class-delete",`
 - **Tratador:** `src/app/commands.ts:231` `'classes.delete': deleteClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0012.md`
 - **Requisitos:** REQ-0811
 
@@ -111,7 +111,7 @@
 - **Comando:** inspector.setStyleTarget
 - **Porta:** `manifest/commands/design-system.json:719` `"id": "inspector-class-bar-target",`
 - **Tratador:** `src/app/commands.ts:232` `'inspector.setStyleTarget': setStyleTarget,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0013.md`
 - **Requisitos:** REQ-0812
 
@@ -120,7 +120,7 @@
 - **Comando:** components.startCreate
 - **Porta:** `manifest/commands/design-system.json:774` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:234` `'components.startCreate': openComponentPrompt,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0014.md`
 - **Requisitos:** REQ-0813
 
@@ -129,7 +129,7 @@
 - **Comando:** components.startCreate
 - **Porta:** `manifest/commands/design-system.json:794` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:234` `'components.startCreate': openComponentPrompt,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0015.md`
 - **Requisitos:** REQ-0813
 
@@ -138,7 +138,7 @@
 - **Comando:** components.create
 - **Porta:** `manifest/commands/design-system.json:848` `"id": "prompt-name",`
 - **Tratador:** `src/app/commands.ts:233` `'components.create': createComponentCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0016.md`
 - **Requisitos:** REQ-0814
 
@@ -147,7 +147,7 @@
 - **Comando:** components.closePrompt
 - **Porta:** `manifest/commands/design-system.json:892` `"id": "close",`
 - **Tratador:** `src/app/commands.ts:235` `'components.closePrompt': closeComponentPrompt,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0017.md`
 - **Requisitos:** REQ-0815
 
@@ -157,7 +157,7 @@
 - **Porta:** `manifest/commands/design-system.json:918` `"id": "key-escape-in-component-prompt",`
 - **Gatilho:** `manifest/commands/design-system.json:921` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:235` `'components.closePrompt': closeComponentPrompt,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0018.md`
 - **Requisitos:** REQ-0815
 
@@ -166,7 +166,7 @@
 - **Comando:** components.insertInstance
 - **Porta:** `manifest/commands/design-system.json:987` `"id": "elements-component-tile",`
 - **Tratador:** `src/app/commands.ts:236` `'components.insertInstance': insertInstanceCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0019.md`
 - **Requisitos:** REQ-0816
 
@@ -185,7 +185,7 @@
 - **Comando:** components.detach
 - **Porta:** `manifest/commands/design-system.json:1055` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:237` `'components.detach': detachInstanceCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0021.md`
 - **Requisitos:** REQ-0817
 
@@ -194,7 +194,7 @@
 - **Comando:** components.detach
 - **Porta:** `manifest/commands/design-system.json:1075` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:237` `'components.detach': detachInstanceCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0022.md`
 - **Requisitos:** REQ-0817
 
@@ -204,7 +204,7 @@
 - **Porta:** `manifest/commands/design-system.json:1131` `"id": "key-ctrl-shift-d-in-global",`
 - **Gatilho:** `manifest/commands/design-system.json:1134` `"chord": "Ctrl+Shift+D",`
 - **Tratador:** `src/app/commands.ts:238` `'components.repeat': repeatCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0023.md`
 - **Requisitos:** REQ-0818
 
@@ -213,7 +213,7 @@
 - **Comando:** components.repeat
 - **Porta:** `manifest/commands/design-system.json:1151` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:238` `'components.repeat': repeatCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0024.md`
 - **Requisitos:** REQ-0818
 
@@ -222,7 +222,7 @@
 - **Comando:** components.repeat
 - **Porta:** `manifest/commands/design-system.json:1171` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:238` `'components.repeat': repeatCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0025.md`
 - **Requisitos:** REQ-0818
 
@@ -231,7 +231,7 @@
 - **Comando:** components.repeat
 - **Porta:** `manifest/commands/design-system.json:1193` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:238` `'components.repeat': repeatCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0026.md`
 - **Requisitos:** REQ-0818
 
@@ -240,7 +240,7 @@
 - **Comando:** components.fillFromData
 - **Porta:** `manifest/commands/design-system.json:1247` `"id": "explorer-fill-from-data",`
 - **Tratador:** `src/app/commands.ts:239` `'components.fillFromData': fillFromDataCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0027.md`
 - **Requisitos:** REQ-0819
 
@@ -249,7 +249,7 @@
 - **Comando:** design.replaceColour
 - **Porta:** `manifest/commands/design-system.json:1309` `"id": "styles-site-colour-replace",`
 - **Tratador:** `src/app/commands.ts:215` `'design.replaceColour': replaceColourCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0028.md`
 - **Requisitos:** REQ-0820
 
@@ -258,7 +258,7 @@
 - **Comando:** design.colourToVariable
 - **Porta:** `manifest/commands/design-system.json:1372` `"id": "styles-site-colour-variable",`
 - **Tratador:** `src/app/commands.ts:224` `'design.colourToVariable': colourToVariableCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0029.md`
 - **Requisitos:** REQ-0821
 
@@ -267,7 +267,7 @@
 - **Comando:** classes.moveInto
 - **Porta:** `manifest/commands/design-system.json:1431` `"id": "inspector-class-move-into",`
 - **Tratador:** `src/app/commands.ts:222` `'classes.moveInto': moveIntoClassCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0030.md`
 - **Requisitos:** REQ-0822
 
@@ -276,7 +276,7 @@
 - **Comando:** classes.applyToSimilar
 - **Porta:** `manifest/commands/design-system.json:1498` `"id": "inspector-class-apply-similar",`
 - **Tratador:** `src/app/commands.ts:223` `'classes.applyToSimilar': applyToSimilarCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0031.md`
 - **Requisitos:** REQ-0823
 
@@ -285,7 +285,7 @@
 - **Comando:** classes.applyToSimilar
 - **Porta:** `manifest/commands/design-system.json:1526` `"id": "inspector-class-apply-project",`
 - **Tratador:** `src/app/commands.ts:223` `'classes.applyToSimilar': applyToSimilarCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0032.md`
 - **Requisitos:** REQ-0823
 
@@ -294,7 +294,7 @@
 - **Comando:** design.applySuggestion
 - **Porta:** `manifest/commands/design-system.json:1593` `"id": "styles-suggestion-apply",`
 - **Tratador:** `src/app/commands.ts:221` `'design.applySuggestion': applySuggestionCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0033.md`
 - **Requisitos:** REQ-0824
 
@@ -303,7 +303,7 @@
 - **Comando:** components.updateFromInstance
 - **Porta:** `manifest/commands/design-system.json:1641` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:219` `'components.updateFromInstance': updateFromInstanceCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0034.md`
 - **Requisitos:** REQ-0825
 
@@ -312,6 +312,6 @@
 - **Comando:** components.setVariant
 - **Porta:** `manifest/commands/design-system.json:1692` `"id": "inspector-component-variant",`
 - **Tratador:** `src/app/commands.ts:220` `'components.setVariant': setVariantCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-design-system-0035.md`
 - **Requisitos:** REQ-0826

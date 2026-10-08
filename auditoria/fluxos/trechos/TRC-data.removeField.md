@@ -1,5 +1,5 @@
 # TRC-data.removeField
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, field: string }`.
 - **Ramos que dependem dos argumentos:** R1 (o campo está em uso), R2 (o campo é o último).
 

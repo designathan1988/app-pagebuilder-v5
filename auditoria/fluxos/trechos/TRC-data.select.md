@@ -1,5 +1,5 @@
 # TRC-data.select
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string }`; a porta declara `entry.door.args` vazio e o painel acrescenta `collection` (o nome da coleção da aba).
 - **Ramos que dependem dos argumentos:** R1
 
@@ -33,7 +33,7 @@
 - **DOM do canvas:** nada muda — o documento não muda (`src/core/store/store.ts:536` `      document: documentChanged ? applied.document : before.document,` com `documentChanged` falso).
 
 ## Regras
-- G1: n/a — o comando não tem digitação de campo; o único argumento é um nome de coleção vindo da porta (`src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`).
+- G1: n/a — o comando não tem digitação de campo; o único argumento é um nome de coleção vindo da porta (`src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`).
 - G2: n/a — não há rascunho pendente: o tratador não lê campo de digitação.
 - G3: n/a — o comando tem uma porta só (`manifest/commands/content.json:28` `      "id": "data-collection-tab",`).
 - G4: n/a — o tratador só grava estado do editor (`src/editor/data/state.ts:48` `kind: 'change', ui: withData(state.ui, { collection, query: undefined })`); nada é colocado sobre o canvas.

@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:430` `'text.startEdit': startEdit,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é gravada ou respondida antes de o comando rodar.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é gravada ou respondida antes de o comando rodar.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto.
 4. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — [lê: EST-L01-031 via singleTextSelection] a disponibilidade do comando.
 5. `src/core/store/store.ts:418` `const refusal = predicate.refusal?.(state, layeredNow(at), args) ?? declared;` — a recusa do predicado, quando ele falha.
@@ -44,7 +44,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:104` `return { kind: 'change', ui: withEdit(state.ui, { ...state.ui.textEdit, node: node.id }), message: message('status.textEdit.editing') };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/canvas/text-edit.ts:97` `export const startEdit = registerHandler<'text.startEdit', EditorUi>('text.startEdit', ({ state }) => {` — o único tratador; as três portas do manifesto chamam a mesma linha `src/app/commands.ts:430` `'text.startEdit': startEdit,`.
 - G4: n/a — o tratador muda o estado do editor e não desenha nada sobre o canvas `src/editor/canvas/text-edit.ts:104`.
 - G5: n/a — o trecho não desenha painel nem barra `src/editor/canvas/text-edit.ts:104`; as famílias de defeito de painel são medidas na Fase 6.

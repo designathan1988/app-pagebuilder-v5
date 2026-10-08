@@ -8,7 +8,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Porta:** `manifest/commands/nodes.json:25` `"id": "key-f2-in-canvas",`
 - **Gatilho:** `manifest/commands/nodes.json:28` `"chord": "F2",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -17,7 +17,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** layers.startRename
 - **Porta:** `manifest/commands/nodes.json:45` `"id": "layers-row-name",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -26,7 +26,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** layers.startRename
 - **Porta:** `manifest/commands/nodes.json:72` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -35,7 +35,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** layers.startRename
 - **Porta:** `manifest/commands/nodes.json:92` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -45,7 +45,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Porta:** `manifest/commands/nodes.json:114` `"id": "key-f2-in-layers-tree",`
 - **Gatilho:** `manifest/commands/nodes.json:117` `"chord": "F2",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -54,7 +54,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** layers.startRename
 - **Porta:** `manifest/commands/nodes.json:134` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:334` `'layers.startRename': startRename,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1801
 
@@ -64,7 +64,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Porta:** `manifest/commands/nodes.json:173` `"id": "key-escape-in-rename-field",`
 - **Gatilho:** `manifest/commands/nodes.json:176` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:335` `'layers.cancelRename': cancelRename,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1802
 
@@ -82,7 +82,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleLock
 - **Porta:** `manifest/commands/nodes.json:288` `"id": "layers-row-lock",`
 - **Tratador:** `src/app/commands.ts:338` `'element.toggleLock': toggleLockCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1804
 
@@ -91,7 +91,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleLock
 - **Porta:** `manifest/commands/nodes.json:314` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:338` `'element.toggleLock': toggleLockCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1804
 
@@ -100,7 +100,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleLock
 - **Porta:** `manifest/commands/nodes.json:334` `"id": "menu-element-actions",`
 - **Tratador:** `src/app/commands.ts:338` `'element.toggleLock': toggleLockCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1804
 
@@ -109,7 +109,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleLock
 - **Porta:** `manifest/commands/nodes.json:356` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:338` `'element.toggleLock': toggleLockCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1804
 
@@ -118,7 +118,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleHidden
 - **Porta:** `manifest/commands/nodes.json:408` `"id": "layers-row-eye",`
 - **Tratador:** `src/app/commands.ts:339` `'element.toggleHidden': toggleHiddenCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1805
 
@@ -127,7 +127,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleHidden
 - **Porta:** `manifest/commands/nodes.json:434` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:339` `'element.toggleHidden': toggleHiddenCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1805
 
@@ -136,7 +136,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleHidden
 - **Porta:** `manifest/commands/nodes.json:454` `"id": "menu-element-actions",`
 - **Tratador:** `src/app/commands.ts:339` `'element.toggleHidden': toggleHiddenCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1805
 
@@ -145,7 +145,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.toggleHidden
 - **Porta:** `manifest/commands/nodes.json:476` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:339` `'element.toggleHidden': toggleHiddenCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1805
 
@@ -154,7 +154,7 @@ Fonte: `manifest/commands/nodes.json`. Uma porta por bloco, na ordem do manifest
 - **Comando:** element.setLayerColor
 - **Porta:** `manifest/commands/nodes.json:530` `"id": "layers-row-colour-dot",`
 - **Tratador:** `src/app/commands.ts:340` `'element.setLayerColor': setLayerColorCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-nodes-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1806
 

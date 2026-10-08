@@ -56,7 +56,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve as guias da página, fora de qualquer camada de estilo; o tratador só monta o remendo `src/core/page/guides.ts:67` `patches: [guidesPatch(state.document, page, list)]`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as portas de `guides.move` (o arraste da guia e as quatro teclas de seta no contexto da guia) chegam à tabela `src/app/commands.ts:470` `'guides.move': moveGuideCommand,` e enviam só o lugar ou o passo e o eixo `src/core/page/guides.ts:56` `({ state }, { guide, at, delta, along }): Outcome<never> => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador só monta o remendo `src/core/page/guides.ts:67` `return { kind: 'change', patches: [guidesPatch(state.document, page, list)], message: said };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a lista `src/core/page/guides.ts:66` `const list = guidesOf(state.document, page).map((g) => (g.id === guide ? { ...g, at: next } : g));`.

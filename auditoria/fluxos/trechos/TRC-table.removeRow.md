@@ -33,7 +33,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a linha da tabela, não um valor de estilo `src/core/elements/table.ts:159` `patches: [...releaseReferencesPatch(state.document, subtreeIds(at.row.node)), { op: 'remove', path: at.row.path }],`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/table.ts:146` `export const removeRowCommand = registerHandler('table.removeRow', ({ state }): Outcome<never> => {`
 - G4: n/a — a porta é o item do menu de contexto e da command bar, não um ponto do canvas `manifest/commands/elements.json:5621` `"kind": "context-menu",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/table.ts:159` `patches: [...releaseReferencesPatch(state.document, subtreeIds(at.row.node)), { op: 'remove', path: at.row.path }],`.

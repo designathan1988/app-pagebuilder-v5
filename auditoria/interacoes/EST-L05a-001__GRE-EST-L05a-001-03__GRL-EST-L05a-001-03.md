@@ -5,20 +5,20 @@
 ## Estados deixados por A
 - **V-gravada.** `src/editor/input/pending.ts:47` `  held = null;` — a digitação pendente é solta do registo e o campo a grava.
 - **V-sem-digitacao.** `src/editor/input/pending.ts:46` `  if (typing === null) return;` — sem digitação pendente nada é gravado.
-- **V-do-gesto.** `src/editor/store.ts:216` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
+- **V-do-gesto.** `src/editor/store.ts:217` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
 
 ## Casos
 ### C1 final
 - O escritor terminou: a digitação pendente é o `Typing` segurado (`src/editor/input/pending.ts:41` `export const heldTyping = (): Typing | null => held;`).
-- O leitor chega no despacho: `src/editor/store.ts:235` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente.
+- O leitor chega no despacho: `src/editor/store.ts:236` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente.
 - ok — devolve o `Typing` segurado, ou nulo.
 ### C2 intermediário
 - n/a — o registo é escrito numa atribuição só (`src/editor/input/pending.ts:32` `  held = typing;`).
 ### C3 em curso
-- O leitor corre no despacho antes do comando: `src/editor/store.ts:235` `      const edited = heldTyping() === null ? null : editedKey(store.getState());`.
+- O leitor corre no despacho antes do comando: `src/editor/store.ts:236` `      const edited = heldTyping() === null ? null : editedKey(store.getState());`.
 - ok — o leitor lê o registo já posto.
 ### C4 desmontagem
 - n/a — a leitura é de uma função pura (`src/editor/input/pending.ts:41` `export const heldTyping = (): Typing | null => held;`).
 
 ## Resultado
-- O leitor decide se o campo ainda edita o mesmo a partir do `Typing` segurado: `src/editor/store.ts:246` `      if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();`.
+- O leitor decide se o campo ainda edita o mesmo a partir do `Typing` segurado: `src/editor/store.ts:247` `      if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();`.

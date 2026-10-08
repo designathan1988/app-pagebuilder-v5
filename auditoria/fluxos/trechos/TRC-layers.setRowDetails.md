@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
 6. `src/editor/layers/tree.ts:126` `const now = rowDetailsOf(state.ui);` — os detalhes mostrados agora são lidos [lê: EST-L01-037 via rowDetailsOf].
@@ -37,7 +37,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:134`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:123` `export const setRowDetails: RegisteredHandler<'layers.setRowDetails', EditorUi> = registerHandler(` — as portas de menu (Tag, ID, Classes, Atributos) chegam ao mesmo tratador com só `detail`; a lista as manda sem `shown`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:134`).
 - G5: n/a — o encaixe da linha com o detalhe a mais, com nomes longos, é medido na Fase 6 (`src/editor/layers/tree.ts:134`).

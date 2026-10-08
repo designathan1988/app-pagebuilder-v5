@@ -7,7 +7,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.setMode
 - **Porta:** `manifest/commands/geometry.json:47` `"id": "inspector-position",`
 - **Tratador:** `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0001.md`
 - **Requisitos:** REQ-1301
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.setMode
 - **Porta:** `manifest/commands/geometry.json:80` `"id": "command-bar-set-property",`
 - **Tratador:** `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0002.md`
 - **Requisitos:** REQ-1301
 
@@ -156,7 +156,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:502` `"id": "key-arrow-left-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:505` `"chord": "ArrowLeft",` `manifest/commands/geometry.json:507` `"gesture": "nudge-keys",`
 - **Tratador:** `src/app/commands.ts:326` `'position.move': movePositionedCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0016.md`
 - **Requisitos:** REQ-1303
 
@@ -166,7 +166,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:525` `"id": "key-arrow-right-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:528` `"chord": "ArrowRight",` `manifest/commands/geometry.json:530` `"gesture": "nudge-keys",`
 - **Tratador:** `src/app/commands.ts:326` `'position.move': movePositionedCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0017.md`
 - **Requisitos:** REQ-1303
 
@@ -176,7 +176,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:548` `"id": "key-arrow-up-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:551` `"chord": "ArrowUp",` `manifest/commands/geometry.json:553` `"gesture": "nudge-keys",`
 - **Tratador:** `src/app/commands.ts:326` `'position.move': movePositionedCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0018.md`
 - **Requisitos:** REQ-1303
 
@@ -186,7 +186,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:571` `"id": "key-arrow-down-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:574` `"chord": "ArrowDown",` `manifest/commands/geometry.json:576` `"gesture": "nudge-keys",`
 - **Tratador:** `src/app/commands.ts:326` `'position.move': movePositionedCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0019.md`
 - **Requisitos:** REQ-1303
 
@@ -196,7 +196,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:642` `"id": "key-alt-shift-arrow-left-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:645` `"chord": "Alt+Shift+ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0020.md`
 - **Requisitos:** REQ-1304
 
@@ -206,7 +206,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:669` `"id": "key-alt-shift-arrow-right-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:672` `"chord": "Alt+Shift+ArrowRight",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0021.md`
 - **Requisitos:** REQ-1304
 
@@ -216,7 +216,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:696` `"id": "key-alt-shift-arrow-up-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:699` `"chord": "Alt+Shift+ArrowUp",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0022.md`
 - **Requisitos:** REQ-1304
 
@@ -226,7 +226,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:723` `"id": "key-alt-shift-arrow-down-in-canvas-positioned",`
 - **Gatilho:** `manifest/commands/geometry.json:726` `"chord": "Alt+Shift+ArrowDown",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0023.md`
 - **Requisitos:** REQ-1304
 
@@ -236,7 +236,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:750` `"id": "handle-anchor-left",`
 - **Gatilho:** `manifest/commands/geometry.json:754` `"gesture": "anchor-tab",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0024.md`
 - **Requisitos:** REQ-1304
 
@@ -246,7 +246,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:776` `"id": "handle-anchor-right",`
 - **Gatilho:** `manifest/commands/geometry.json:780` `"gesture": "anchor-tab",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0025.md`
 - **Requisitos:** REQ-1304
 
@@ -256,7 +256,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:802` `"id": "handle-anchor-top",`
 - **Gatilho:** `manifest/commands/geometry.json:806` `"gesture": "anchor-tab",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0026.md`
 - **Requisitos:** REQ-1304
 
@@ -266,7 +266,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:828` `"id": "handle-anchor-bottom",`
 - **Gatilho:** `manifest/commands/geometry.json:832` `"gesture": "anchor-tab",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0027.md`
 - **Requisitos:** REQ-1304
 
@@ -275,7 +275,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.setAnchors
 - **Porta:** `manifest/commands/geometry.json:854` `"id": "inspector-anchor-control",`
 - **Tratador:** `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0028.md`
 - **Requisitos:** REQ-1304
 
@@ -284,7 +284,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:928` `"id": "quick-panel-align-left",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0029.md`
 - **Requisitos:** REQ-1305
 
@@ -293,7 +293,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:953` `"id": "menu-arrange-left",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0030.md`
 - **Requisitos:** REQ-1305
 
@@ -302,7 +302,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:977` `"id": "command-bar-left",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0031.md`
 - **Requisitos:** REQ-1305
 
@@ -311,7 +311,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1000` `"id": "quick-panel-align-horizontal-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0032.md`
 - **Requisitos:** REQ-1305
 
@@ -320,7 +320,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1025` `"id": "menu-arrange-horizontal-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0033.md`
 - **Requisitos:** REQ-1305
 
@@ -329,7 +329,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1049` `"id": "command-bar-horizontal-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0034.md`
 - **Requisitos:** REQ-1305
 
@@ -338,7 +338,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1072` `"id": "quick-panel-align-right",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0035.md`
 - **Requisitos:** REQ-1305
 
@@ -347,7 +347,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1097` `"id": "menu-arrange-right",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0036.md`
 - **Requisitos:** REQ-1305
 
@@ -356,7 +356,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1121` `"id": "command-bar-right",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0037.md`
 - **Requisitos:** REQ-1305
 
@@ -365,7 +365,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1144` `"id": "quick-panel-align-top",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0038.md`
 - **Requisitos:** REQ-1305
 
@@ -374,7 +374,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1169` `"id": "menu-arrange-top",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0039.md`
 - **Requisitos:** REQ-1305
 
@@ -383,7 +383,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1193` `"id": "command-bar-top",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0040.md`
 - **Requisitos:** REQ-1305
 
@@ -392,7 +392,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1216` `"id": "quick-panel-align-vertical-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0041.md`
 - **Requisitos:** REQ-1305
 
@@ -401,7 +401,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1241` `"id": "menu-arrange-vertical-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0042.md`
 - **Requisitos:** REQ-1305
 
@@ -410,7 +410,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1265` `"id": "command-bar-vertical-center",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0043.md`
 - **Requisitos:** REQ-1305
 
@@ -419,7 +419,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1288` `"id": "quick-panel-align-bottom",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0044.md`
 - **Requisitos:** REQ-1305
 
@@ -428,7 +428,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1313` `"id": "menu-arrange-bottom",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0045.md`
 - **Requisitos:** REQ-1305
 
@@ -437,7 +437,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.align
 - **Porta:** `manifest/commands/geometry.json:1337` `"id": "command-bar-bottom",`
 - **Tratador:** `src/app/commands.ts:328` `'position.align': alignCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0046.md`
 - **Requisitos:** REQ-1305
 
@@ -446,7 +446,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1394` `"id": "quick-panel-distribute-horizontal",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0047.md`
 - **Requisitos:** REQ-1306
 
@@ -455,7 +455,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1419` `"id": "menu-arrange-horizontal",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0048.md`
 - **Requisitos:** REQ-1306
 
@@ -464,7 +464,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1443` `"id": "command-bar-horizontal",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0049.md`
 - **Requisitos:** REQ-1306
 
@@ -473,7 +473,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1466` `"id": "quick-panel-distribute-vertical",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0050.md`
 - **Requisitos:** REQ-1306
 
@@ -482,7 +482,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1491` `"id": "menu-arrange-vertical",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0051.md`
 - **Requisitos:** REQ-1306
 
@@ -491,7 +491,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** position.distribute
 - **Porta:** `manifest/commands/geometry.json:1515` `"id": "command-bar-vertical",`
 - **Tratador:** `src/app/commands.ts:329` `'position.distribute': distributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0052.md`
 - **Requisitos:** REQ-1306
 
@@ -501,7 +501,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:1574` `"id": "key-arrow-right-in-canvas-handle",`
 - **Gatilho:** `manifest/commands/geometry.json:1577` `"chord": "ArrowRight",` `manifest/commands/geometry.json:1579` `"gesture": "handle-keys",`
 - **Tratador:** `src/app/commands.ts:330` `'handle.step': stepHandle,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0053.md`
 - **Requisitos:** REQ-1307
 
@@ -511,7 +511,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:1596` `"id": "key-arrow-up-in-canvas-handle",`
 - **Gatilho:** `manifest/commands/geometry.json:1599` `"chord": "ArrowUp",` `manifest/commands/geometry.json:1601` `"gesture": "handle-keys",`
 - **Tratador:** `src/app/commands.ts:330` `'handle.step': stepHandle,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0054.md`
 - **Requisitos:** REQ-1307
 
@@ -521,7 +521,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:1618` `"id": "key-arrow-left-in-canvas-handle",`
 - **Gatilho:** `manifest/commands/geometry.json:1621` `"chord": "ArrowLeft",` `manifest/commands/geometry.json:1623` `"gesture": "handle-keys",`
 - **Tratador:** `src/app/commands.ts:330` `'handle.step': stepHandle,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0055.md`
 - **Requisitos:** REQ-1307
 
@@ -531,7 +531,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:1640` `"id": "key-arrow-down-in-canvas-handle",`
 - **Gatilho:** `manifest/commands/geometry.json:1643` `"chord": "ArrowDown",` `manifest/commands/geometry.json:1645` `"gesture": "handle-keys",`
 - **Tratador:** `src/app/commands.ts:330` `'handle.step': stepHandle,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0056.md`
 - **Requisitos:** REQ-1307
 
@@ -540,7 +540,7 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Comando:** canvas.setEditMode
 - **Porta:** `manifest/commands/geometry.json:1697` `"id": "quick-panel-edit-on-canvas",`
 - **Tratador:** `src/app/commands.ts:331` `'canvas.setEditMode': setEditMode,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0057.md`
 - **Requisitos:** REQ-1308
 
@@ -550,6 +550,6 @@ Fonte: `manifest/commands/geometry.json`. Um bloco por porta, na ordem do manife
 - **Porta:** `manifest/commands/geometry.json:1720` `"id": "key-escape-in-canvas-edit-mode",`
 - **Gatilho:** `manifest/commands/geometry.json:1723` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:331` `'canvas.setEditMode': setEditMode,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-geometry-0058.md`
 - **Requisitos:** REQ-1308

@@ -6,7 +6,7 @@
 3. `src/editor/shell/field.tsx:1269` `if (available) (store.dispatch as Dispatch)(command, { property, [valueArg]: value });` — a Início: o campo entrega a intenção direto à store do editor; a forma é `{ property, mode }`, porque o argumento além de `property` é o `mode` (`src/editor/shell/field.tsx:1267` `const valueArg = Object.keys(entry.command.args).find((name) => name !== 'property') ?? 'value';`). [lê: EST-L01-030 via useDoor] [lê: EST-L01-031 via useDoor]
 4. `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,` — a Chamada do trecho TRC-position.setMode: a tabela liga o id ao tratador.
 
-A porta do campo do inspector não passa pelo `run` do `useDoor` (o `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` do campo `position.setMode#inspector-position` não é despachado): o controle de palavras-chave despacha direto, na linha do passo 3.
+A porta do campo do inspector não passa pelo `run` do `useDoor` (o `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` do campo `position.setMode#inspector-position` não é despachado): o controle de palavras-chave despacha direto, na linha do passo 3.
 
 ## Ramos
 - R1 `src/editor/shell/field.tsx:1294` `if (!fits) {` — os valores não cabem na largura do campo: um menu é desenhado (`src/editor/shell/field.tsx:1336` `choose(value);`); cabem: os botões segmentados chamam `choose` (`src/editor/shell/field.tsx:1377` `onClick={() => choose(value)}`).
@@ -26,8 +26,8 @@ A porta do campo do inspector não passa pelo `run` do `useDoor` (o `src/editor/
 - **DOM do canvas:** o iframe redesenha os elementos com o `mode` novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o campo entrega a intenção pela store do editor, que grava antes a digitação pendente.
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o campo entrega a intenção pela store do editor, que grava antes a digitação pendente.
 - G3: ok `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,` — as duas portas do comando (`inspector-position` e `command-bar-set-property`) chamam o mesmo tratador com a mesma forma `{ property, mode }`.
 - G4: n/a — a porta do campo do inspector não desenha painel nem barra sobre o canvas (`src/editor/shell/field.tsx:1269`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/shell/field.tsx:1269`).

@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:182` `'assistant.editKey': editAssistantKey,` — a tabela de comandos liga o id ao tratador `editAssistantKey` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:46` `export const editAssistantKey = registerHandler('assistant.editKey', () => ({ kind: 'change' }));` — o tratador devolve uma mudança sem interface: não grava em lugar nenhum. `src/editor/assistant/state.ts:45` `// Secret drafts belong to the password control and credential vault, never the state or command history.`
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — sem a interface do tratador, o estado da interface fica como estava.

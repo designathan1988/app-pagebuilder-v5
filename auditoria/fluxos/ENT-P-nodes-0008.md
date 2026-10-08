@@ -6,11 +6,11 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 1. `src/editor/shell/sidebar/layers.tsx:79` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(LAYERS_NAME_FIELD.command.id as CommandId, { ...LAYERS_NAME_FIELD.door.args, target: node.id, name });` — o campo de nome despacha o id do comando com `{ target: node.id, name }` (o Início da porta).
 2. `src/editor/shell/sidebar/layers.tsx:81` `const submit = (event: FormEvent<HTMLFormElement>) => {` — o envio do formulário (`src/editor/shell/sidebar/layers.tsx:83` `keep(input.current?.value ?? node.name);`) e a saída do campo (`src/editor/shell/sidebar/layers.tsx:100` `onBlur={(event) => keep(event.currentTarget.value)}`) chamam `keep` com o texto do campo.
 3. `src/editor/shell/sidebar/layers.tsx:78` `if (!field.built || renamedNode(store.getState().ui) !== node.id) return;` — o campo só grava quando o seu comando está construído e o nó ainda é o que está a ser renomeado.
-4. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-5. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `element.rename` é undoable (`manifest/commands/nodes.json:223` `"undoable": true`), então `changesDocument` é verdadeiro.
-6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-7. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
-8. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
+4. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+5. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — `element.rename` é undoable (`manifest/commands/nodes.json:223` `"undoable": true`), então `changesDocument` é verdadeiro.
+6. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+7. `src/editor/store.ts:236` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
+8. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
 9. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 10. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 11. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos devolve a entrada do comando.
@@ -18,7 +18,7 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 
 ## Ramos
 - R1 `src/editor/shell/sidebar/layers.tsx:78` `if (!field.built || renamedNode(store.getState().ui) !== node.id) return;` — o nó já não está a ser renomeado ou o comando não está construído: nada despacha; caso contrário, segue.
-- R2 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, entraria na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R2 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, entraria na fila `waiting` (`src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R3 `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — a forma dos argumentos é conferida contra o manifesto antes de o tratador rodar; um par fora da forma seria recusado aqui.
 
 ## Fronteiras assíncronas
@@ -35,8 +35,8 @@ Fluxo de porta do domínio `nodes`. Rastreia o caminho próprio da porta — de 
 - **DOM do canvas:** o rótulo do elemento mostra o nome novo (`src/editor/canvas/chrome.tsx:1014` `<span className="chrome__name">{node.name}</span>`).
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da digitação é capturado aqui e entregue à store do núcleo em `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da digitação é capturado aqui e entregue à store do núcleo em `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/editor/shell/sidebar/layers.tsx:79` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(LAYERS_NAME_FIELD.command.id as CommandId, { ...LAYERS_NAME_FIELD.door.args, target: node.id, name });` — a porta envia só a intenção e o tratador único `src/app/commands.ts:336` `'element.rename': renameCommand,` decide.
 - G4: n/a — a porta é o campo de nome desenhado no painel Camadas, que ocupa a própria coluna; nada do editor é desenhado sobre o canvas (`src/editor/shell/sidebar/layers.tsx:79` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(LAYERS_NAME_FIELD.command.id as CommandId, { ...LAYERS_NAME_FIELD.door.args, target: node.id, name });`).
 - G5: n/a — o caminho da porta não desenha painel nem barra; só despacha o comando (`src/editor/shell/sidebar/layers.tsx:79` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(LAYERS_NAME_FIELD.command.id as CommandId, { ...LAYERS_NAME_FIELD.door.args, target: node.id, name });`).

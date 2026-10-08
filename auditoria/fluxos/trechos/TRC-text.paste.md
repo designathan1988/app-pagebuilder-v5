@@ -1,11 +1,11 @@
 # TRC-text.paste
 - **Chamada:** `src/app/commands.ts:437` `'text.paste': pasteText,`
-- **Argumentos:** o tratador recebe `{ clipboard }` (`src/generated/commands.ts:341` `"text.paste": { readonly clipboard: ClipboardContent };`). `ClipboardContent` é a união `{ status: 'read'; html; text; markup? }` ou `{ status: 'denied' }` (`src/generated/commands.ts:22` `export type ClipboardContent =`). O campo é lido pelo portão antes de despachar (`src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`), e pode chegar ausente numa execução que não leu.
+- **Argumentos:** o tratador recebe `{ clipboard }` (`src/generated/commands.ts:341` `"text.paste": { readonly clipboard: ClipboardContent };`). `ClipboardContent` é a união `{ status: 'read'; html; text; markup? }` ou `{ status: 'denied' }` (`src/generated/commands.ts:22` `export type ClipboardContent =`). O campo é lido pelo portão antes de despachar (`src/editor/input/keymap.ts:533` `else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`), e pode chegar ausente numa execução que não leu.
 - **Ramos que dependem dos argumentos:** R2 (`clipboard` ausente), R3 (leitura negada) e R4 (nada que leia como texto).
 
 ## Passos
 1. `src/app/commands.ts:437` `'text.paste': pasteText,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto (um argumento de tipo `clipboard` ausente passa: `src/core/store/args.ts:84` `if (arg.optional || arg.type === 'clipboard') continue;`).
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador.
 5. `src/editor/canvas/text-edit.ts:168` `export const pasteText = registerHandler<'text.paste', EditorUi>('text.paste', ({ state, rules }, { clipboard }) => {` — o tratador.
@@ -30,7 +30,7 @@
 - R4 `src/editor/canvas/text-edit.ts:174` `if (plainText(runs) === '') return { kind: 'refused', message: message('status.paste.empty') };` — nada que leia como texto: `refused` com `status.paste.empty`; com texto: a inserção é pedida (passo 12).
 
 ## Fronteiras assíncronas
-- a leitura da área de transferência do sistema acontece no portão, antes desta chamada: `src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`. No intervalo podem rodar as entradas de teclado do contexto de edição de texto; a aplicação está com a edição aberta (`ui.textEdit.node` não nulo), e o tratador só roda depois que o conteúdo chega (ou com o campo ausente, R2). O tratador de `src/editor/canvas/text-edit.ts:168` é síncrono.
+- a leitura da área de transferência do sistema acontece no portão, antes desta chamada: `src/editor/input/keymap.ts:533` `else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`. No intervalo podem rodar as entradas de teclado do contexto de edição de texto; a aplicação está com a edição aberta (`ui.textEdit.node` não nulo), e o tratador só roda depois que o conteúdo chega (ou com o campo ausente, R2). O tratador de `src/editor/canvas/text-edit.ts:168` é síncrono.
 
 ## Estado
 - lê: EST-L01-030 (o documento, via argumentRefusal), EST-L01-037 (o estado do editor, via handlerContext), EST-L05a-001 (a digitação pendente, via beforeCommand)
@@ -44,7 +44,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:135` `withEdit(ui, { ...ui.textEdit, changes: ui.textEdit.changes + 1, change, linkPrompt });`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/canvas/text-edit.ts:168` `export const pasteText = registerHandler<'text.paste', EditorUi>('text.paste', ({ state, rules }, { clipboard }) => {` — o único tratador; a porta do manifesto (Ctrl+V no texto editando) despacha a mesma linha `src/app/commands.ts:437` `'text.paste': pasteText,`.
 - G4: n/a — o tratador muda o estado do editor e não desenha nada sobre o canvas `src/editor/canvas/text-edit.ts:175`.
 - G5: n/a — o trecho não desenha painel nem barra `src/editor/canvas/text-edit.ts:175`; as famílias de defeito de painel são medidas na Fase 6.

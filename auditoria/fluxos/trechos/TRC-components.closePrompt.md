@@ -5,9 +5,9 @@
 
 ## Passos
 1. `src/app/commands.ts:235` `'components.closePrompt': closeComponentPrompt,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta de painel entrega a intenção.
-3. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta de atalho (Esc do prompt) entrega a intenção.
-4. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta de painel entrega a intenção.
+3. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta de atalho (Esc do prompt) entrega a intenção.
+4. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 5. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 7. `src/editor/shell/component-prompt.ts:21` `export const closeComponentPrompt = registerHandler<'components.closePrompt', EditorUi>('components.closePrompt', ({ state }) =>` — o tratador recebe o estado.
@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o comando não grava no documento nem numa camada (`src/editor/shell/component-prompt.ts:22`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:235` `'components.closePrompt': closeComponentPrompt,` — o botão e o Esc do prompt chegam ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/editor/shell/component-prompt.ts:22`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/editor/shell/component-prompt.ts:22`).

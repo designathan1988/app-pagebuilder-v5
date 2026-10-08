@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:189` `'assistant.selectSession': selectAssistantSession,` — a tabela de comandos liga o id ao tratador `selectAssistantSession` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:65` `export const selectAssistantSession = registerHandler<'assistant.selectSession', EditorUi>('assistant.selectSession', ({ state }) => ({ kind: 'change', ui: request(state.ui, 'select-session') }));` — grava o pedido `select-session`. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via request]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

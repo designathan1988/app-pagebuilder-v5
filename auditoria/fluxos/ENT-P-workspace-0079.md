@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta panel-control `manifest/commands/workspace.json:2372` `"kind": "panel-control",`
 - **Porta:** `manifest/commands/workspace.json:2371` `"id": "layers-caret",`
 - **Tratador:** `src/app/commands.ts:494` `'layers.setExpanded': setExpanded,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
-1. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
-2. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-3. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-4. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+1. `src/editor/doors/door.tsx:286` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle desenhado roda a porta (quando os toques da porta são do dono do ponteiro, é ele que a roda, só com `detail` 0)
+2. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+3. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+4. `src/editor/doors/door.tsx:144` `if (file === undefined) {` — sem argumento de arquivo nem de área de transferência: segue direto ao despacho
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:494` `'layers.setExpanded': setExpanded,` — a tabela liga o id ao tratador; o trecho TRC-layers.setExpanded começa aqui
 
 ## Ramos
@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:76`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:69` `export const setExpanded = registerHandler<'layers.setExpanded', EditorUi>('layers.setExpanded', ({ state }, { target, expanded }) => {` — as duas portas (o caret da linha e o repouso de um arraste sobre uma linha fechada) chegam ao mesmo tratador com só `target` e `expanded`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:76`).
 - G5: n/a — o encaixe da árvore com ramos abertos é medido na Fase 6 (`src/editor/layers/tree.ts:76`).

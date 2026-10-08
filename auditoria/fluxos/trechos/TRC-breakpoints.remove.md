@@ -76,7 +76,7 @@
 ## Regras
 
 - G1: n/a — a alteração escreve o documento (a tabela de breakpoints e os estilos dos elementos), fora das camadas (ponto de quebra, estado, classe, quadro-chave) que o contexto de edição nomeia `src/editor/view/breakpoint-table.ts:70` `const without = documentWithout(state.document as unknown as Readonly<Record<string, unknown>>, breakpoint, into?.id ?? null);`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` mantém a digitação pendente antes do comando que muda o documento, e `src/editor/input/pending.ts:82` `keepTyping();`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` mantém a digitação pendente antes do comando que muda o documento, e `src/editor/input/pending.ts:82` `keepTyping();`.
 - G3: ok `src/editor/view/breakpoint-table.ts:62` `export const removeBreakpoint = registerHandler<'breakpoints.remove', EditorUi>('breakpoints.remove', ({ state }, { breakpoint, styles }) => {` — um só tratador; a porta envia só o comando, `manifest/commands/breakpoints.json:256` `"kind": "panel-control",`.
 - G4: n/a — o trecho não age sobre um ponto do canvas; a porta é um controle de diálogo `manifest/commands/breakpoints.json:256` `"kind": "panel-control",`.
 - G5: n/a — o trecho não monta painel nem barra; grava o documento e, às vezes, o estado do editor `src/editor/view/breakpoint-table.ts:86` `return { kind: 'change', patches, ui: { ...ui, preferences }, message: said };`.

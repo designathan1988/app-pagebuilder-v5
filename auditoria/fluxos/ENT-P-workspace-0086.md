@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta menu `manifest/commands/workspace.json:2648` `"kind": "menu",`
 - **Porta:** `manifest/commands/workspace.json:2647` `"id": "menu-layers-row-details-id",`
 - **Tratador:** `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
 1. `src/editor/doors/menu.tsx:54` `onClick={() => {` — o clique do item do menu roda a porta (o menu fecha antes)
 2. `src/editor/doors/menu.tsx:59` `door.run();` — a porta é rodada
-3. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-4. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+3. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+4. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,` — a tabela liga o id ao tratador; o trecho TRC-layers.setRowDetails começa aqui
 
 ## Ramos
@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:134`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:123` `export const setRowDetails: RegisteredHandler<'layers.setRowDetails', EditorUi> = registerHandler(` — as portas de menu (Tag, ID, Classes, Atributos) chegam ao mesmo tratador com só `detail`; a lista as manda sem `shown`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:134`).
 - G5: n/a — o encaixe da linha com o detalhe a mais, com nomes longos, é medido na Fase 6 (`src/editor/layers/tree.ts:134`).

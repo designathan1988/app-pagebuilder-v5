@@ -1,5 +1,5 @@
 # TRC-data.setCell
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, item: string, field: string, value: string }`; a porta entrega o texto no contexto em que a digitação começou (G1/G2).
 - **Ramos que dependem dos argumentos:** R1 (o valor não é do tipo do campo), R2 (a linha ou o campo não existem mais).
 

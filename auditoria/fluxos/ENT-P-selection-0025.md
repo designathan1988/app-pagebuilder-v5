@@ -6,8 +6,8 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 1. `src/editor/input/pointer/drag.ts:34` `shared.open = store.gesture();` — cada desenho da faixa abre um gesto novo da store do editor. [escreve: EST-L05a-019 via store.gesture]
 2. `src/editor/input/pointer/drag.ts:35` `const rect = { x: from.x, y: from.y, width: to.x - from.x, height: to.y - from.y };` — o retângulo da faixa a partir do ponto de partida.
 3. `src/editor/input/pointer/drag.ts:36` `shared.open.dispatch(ps.marquee.entry.command.id as CommandId, { ...argsFor(ps.marquee.entry, ps.marquee.press, NOT_PICKING), rect, mode: ps.marquee.mode, ...(leavesNow(altHeld) ? { leaves: true } : {}) } as never);` — o desenho roda a porta da faixa dentro do gesto.
-4. `src/editor/store.ts:216` `keepTyping();` — a abertura do gesto grava a digitação pendente antes do comando (G2). [lê: EST-L05a-001 via keepTyping]
-5. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto do editor entrega a intenção ao gesto do núcleo.
+4. `src/editor/store.ts:217` `keepTyping();` — a abertura do gesto grava a digitação pendente antes do comando (G2). [lê: EST-L05a-001 via keepTyping]
+5. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto do editor entrega a intenção ao gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto do núcleo executa o tratador com o gesto aberto. [lê: EST-L01-007 via dispatch]
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador na tabela de comandos.
 8. `src/app/commands.ts:363` `'selection.marquee': marqueeCommand,` — a tabela liga o comando ao tratador (a Chamada do trecho).
@@ -32,7 +32,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 
 ## Regras
 - G1: n/a — o comando escreve `selection` e `message`, fora de qualquer camada de estilo (`src/core/selection/selection.ts:131` `        : [...base.filter((id) => !took.includes(id)), ...took.filter((id) => !base.includes(id))];`).
-- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
+- G2: ok `src/editor/store.ts:217` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
 - G3: ok `src/editor/input/pointer/drag.ts:36` `shared.open.dispatch(ps.marquee.entry.command.id as CommandId, { ...argsFor(ps.marquee.entry, ps.marquee.press, NOT_PICKING), rect, mode: ps.marquee.mode, ...(leavesNow(altHeld) ? { leaves: true } : {}) } as never);` — a porta envia só a intenção ao mesmo tratador do comando (`src/app/commands.ts:363` `'selection.marquee': marqueeCommand,`).
 - G4: n/a — o comando muda a seleção; a faixa é do desenho do canvas, não do trecho (`src/core/selection/selection.ts:131`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/selection/selection.ts:131`).

@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:234` `const ui = detachPanel(state.ui, panel);`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:230` `export const movePanel = registerHandler<'workspace.movePanel', EditorUi>(` — a porta de arraste envia `panel`, `to` e o lugar (`at`/`host`); o tratador é o mesmo de todas as portas do comando workspace.movePanel.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:239` `return { kind: 'change', ui: withLayout(ui, { ...layout, floating }), message: panelMessage('status.panel.floating', panel) };`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:238` `const floating = [...(layout.floating ?? []), { panel, x: Math.round(at.x), y: Math.round(at.y) }];`).

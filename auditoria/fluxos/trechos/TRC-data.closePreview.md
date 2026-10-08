@@ -1,5 +1,5 @@
 # TRC-data.closePreview
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** nenhum; a porta `data-preview-close` não manda campo algum.
 - **Ramos que dependem dos argumentos:** nenhum — o comando não tem argumentos; o ramo R1 depende do estado (há prévia ou não).
 

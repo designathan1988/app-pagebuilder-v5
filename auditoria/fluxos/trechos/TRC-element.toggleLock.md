@@ -7,7 +7,7 @@
 ## Passos
 
 1. `src/app/commands.ts:338` `'element.toggleLock': toggleLockCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
 3. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `targetOrSelection` é lida antes do tratador (`src/core/selection/selection.ts:16` `export const targetOrSelection = registerPredicate('targetOrSelection', (state, _rules, args) => {`) [lê: EST-L01-030 via run] [lê: EST-L01-031 via run].
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 5. `src/core/nodes/flags.ts:129` `export const toggleLockCommand = registerHandler(` — o tratador.
@@ -61,7 +61,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve o flag `locked` do nó, fora de qualquer camada de estilo (`src/core/nodes/flags.ts:110`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/nodes/flags.ts:129` `export const toggleLockCommand = registerHandler(` — o único tratador do comando; toda porta entrega só `{ target }`.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/nodes/flags.ts:139`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/nodes/flags.ts:139`); as famílias de defeito de painel são medidas em Fase 6.

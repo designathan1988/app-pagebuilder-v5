@@ -12,7 +12,7 @@
 4. `src/core/project/recovery.ts:8` `export const restoreVersion = registerHandler('project.restoreVersion', ({ rules, version }, args) => {` — o tratador.
 5. `src/core/project/recovery.ts:9` `const saved = version?.(args.version);` — a versão salva pela revisão. [lê: EST-L01-030 via version]
 6. `src/core/store/store.ts:387` `version: (revision) => options.version?.(revision),` — a porta da versão no contexto.
-7. `src/editor/store.ts:144` `version: (revision) => options.recovery?.find((v) => String(v.revision) === revision)?.document,` — as versões salvas do autosave.
+7. `src/editor/store.ts:145` `version: (revision) => options.recovery?.find((v) => String(v.revision) === revision)?.document,` — as versões salvas do autosave.
 8. `src/core/project/recovery.ts:10` `if (saved === undefined) throw new Error(` — R1, a versão não existe.
 9. `src/core/project/recovery.ts:11` `const read = readProject(saved, rules);` — a leitura pelo leitor único.
 10. `src/core/project/archive.ts:18` `export function readProject(parsed: unknown, rules: ModelRules): { readonly document: DocumentJson } | { readonly refused: Message } {` — o leitor.
@@ -57,7 +57,7 @@
 ## Regras
 
 - G1: n/a — o comando troca o documento inteiro, sem gravar estilo nem valor de camada (`src/core/project/recovery.ts:13` `return { kind: 'load' as const, document: read.document, message: message('status.save.restored') };`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/project/recovery.ts:8` `export const restoreVersion = registerHandler('project.restoreVersion', ({ rules, version }, args) => {` — o único tratador do comando.
 - G4: n/a — o comando troca o documento; não desenha nada sobre o canvas (`src/core/project/recovery.ts:13`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/recovery.ts:13`).

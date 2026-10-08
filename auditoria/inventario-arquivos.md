@@ -3957,11 +3957,11 @@
 
 ### `src/editor/doors/door.tsx`
 - **Lote:** L05b
-- **Linhas:** 328
-- **SHA1:** 6c3f2c33338c9379435c78cbab3fce7bb52fad75
-- **Partes lidas:** 1-328
+- **Linhas:** 329
+- **SHA1:** 8d947de469691b2bf0a1f867b6b26cf353d34498
+- **Partes lidas:** 1-329
 - **Propósito:** Desenho de uma porta do manifesto como o controle que drawnAs nomeia, com ícone, rótulo, atalho e estado indisponível, reunindo também os seletores de arquivo, de arquivos e de pasta que uma porta que lê arquivos usa.
-- **Âncora:** `src/editor/doors/door.tsx:38` `export function isDoorBuilt(entry: DoorEntry): boolean {`
+- **Âncora:** `src/editor/doors/door.tsx:39` `export function isDoorBuilt(entry: DoorEntry): boolean {`
 
 ### `src/editor/doors/menu-groups.test.ts`
 - **Lote:** L05b
@@ -4163,6 +4163,14 @@
 - **Propósito:** Embrulha o comando de importar HTML para escolher o destino num diálogo, mantendo os bytes dos arquivos uma vez no estado do editor.
 - **Âncora:** `src/editor/import/html-import.ts:6` `export function choosingImport(owner: RegisteredHandler<'project.importHtml', EditorUi>): RegisteredHandler<'project.importHtml', EditorUi> {`
 
+### `src/editor/input/after-read.ts`
+- **Lote:** L05a
+- **Linhas:** 19
+- **SHA1:** 1ac40d33fbeb8c9f3f7dde723930d1f28334834b
+- **Partes lidas:** 1-19
+- **Propósito:** Ponto único das portas que leem algo que chega tarde (a área de transferência): toma a seleção e o contexto de edição na entrada e só roda o comando se forem os mesmos quando a leitura chega; senão avisa status.stale (DEF-0513, DCS-019, G1).
+- **Âncora:** `src/editor/input/after-read.ts:7` `import { message } from '../../core/commands/registry.ts';`
+
 ### `src/editor/input/drafts.ts`
 - **Lote:** L05a
 - **Linhas:** 29
@@ -4221,11 +4229,11 @@
 
 ### `src/editor/input/keymap.ts`
 - **Lote:** L05a
-- **Linhas:** 599
-- **SHA1:** 0eff15f20d268b830f78531db63965ead25db060
-- **Partes lidas:** 1-599
+- **Linhas:** 600
+- **SHA1:** 9bf378c8e74815919b5b9d4581b4f58e8ae7dd65
+- **Partes lidas:** 1-600
 - **Propósito:** o dono único das teclas: lê o contexto do foco, decide quando um atalho roda, lê os argumentos que o controle focado representa e despacha pelo gesto, pela sequência de digitação ou pela store.
-- **Âncora:** `src/editor/input/keymap.ts:314` `export function installKeymap(store: EditorStore, target: Window = window): () => void {`
+- **Âncora:** `src/editor/input/keymap.ts:315` `export function installKeymap(store: EditorStore, target: Window = window): () => void {`
 
 ### `src/editor/input/modes.ts`
 - **Lote:** L05a
@@ -5709,9 +5717,9 @@
 
 ### `src/editor/store.ts`
 - **Lote:** L05a
-- **Linhas:** 276
-- **SHA1:** 1d71dacbbcc1c708ff9c60bac608c43bb8c4e5a9
-- **Partes lidas:** 1-276
+- **Linhas:** 277
+- **SHA1:** ea803c40a98dba465dc0216ae42bf575cac14a2d
+- **Partes lidas:** 1-277
 - **Propósito:** a ligação da store do editor: cria a store com a tabela, o manifesto, as portas e o estado do editor, expõe `editContextOf` e envolve tudo em `gestureSafe`, que grava a digitação pendente antes de cada comando.
 - **Âncora:** `src/editor/store.ts:104` `export function editContextOf(state: EditorState): EditContext {`
 
@@ -9501,11 +9509,11 @@
 
 ### `tools/runner/model/lifetime.test.ts`
 - **Lote:** L23
-- **Linhas:** 67
-- **SHA1:** a18a13d76e4e60fa3b5e35c074119f46f39c2c7b
-- **Partes lidas:** 1-67
+- **Linhas:** 109
+- **SHA1:** a2753a607e0a64f74956d2c9410414b65a73e673
+- **Partes lidas:** 1-109
 - **Propósito:** Grupo lifetime do modelo (MEC-07): cada rotina que agenda quadros ou timers, parada no meio, não deixa nada agendado e não roda o que esperava; hoje o boot de teste desenhado (DEF-0001).
-- **Âncora:** `tools/runner/model/lifetime.test.ts:6` `import { describe, expect, it } from 'vitest';`
+- **Âncora:** `tools/runner/model/lifetime.test.ts:7` `import { describe, expect, it, vi } from 'vitest';`
 
 ### `tools/runner/model/lint.test.ts`
 - **Lote:** L23
@@ -9538,6 +9546,14 @@
 - **Partes lidas:** 1-26
 - **Propósito:** Grupo do modelo para páginas e abertura de projeto (MEC-01): páginas acrescentadas, renomeadas, duplicadas, apagadas e trocadas, e project.open e project.newBlankPage, que esvaziam o histórico.
 - **Âncora:** `tools/runner/model/pages.test.ts:6` `import fc from 'fast-check';`
+
+### `tools/runner/model/races.test.ts`
+- **Lote:** L23
+- **Linhas:** 100
+- **SHA1:** 5f2d28f64b9ba624ac33641ab2c6bc525983e4f8
+- **Partes lidas:** 1-100
+- **Propósito:** Grupo races dos detectores (MEC-11): Ctrl+C e Ctrl+V pelo mapa de teclas real com a leitura da área de transferência retida pelo fc.scheduler, a seleção ou o breakpoint trocados em intercalação escolhida por ele; a colagem cai no lugar de sem corrida ou é recusada com aviso (M49, M50).
+- **Âncora:** `tools/runner/model/races.test.ts:8` `import fc from 'fast-check';`
 
 ### `tools/runner/model/structure.test.ts`
 - **Lote:** L23
@@ -9581,9 +9597,9 @@
 
 ### `tools/runner/mutants.ts`
 - **Lote:** L23
-- **Linhas:** 136
-- **SHA1:** 342a66e352de0969a41960c93bc68d09a1a65472
-- **Partes lidas:** 1-136
+- **Linhas:** 140
+- **SHA1:** bf3dbc755c680663b98b1457b10a4ab311b05c43
+- **Partes lidas:** 1-140
 - **Propósito:** Catálogo de mutantes plantados (MEC-02), cada um com o trecho trocado, a regra que quebra, a origem e os detectores que o alcançam, e o plugin do Vite que faz a troca na carga do módulo.
 - **Âncora:** `tools/runner/mutants.ts:9` `import fs from 'node:fs';`
 

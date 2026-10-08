@@ -6,10 +6,10 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 1. `src/editor/shell/sidebar/layers.tsx:255` `const held = modifierOf(event);` — a linha do nó lê o modificador da pressão.
 2. `src/editor/shell/sidebar/layers.tsx:261` `const entry = LAYERS_MODIFIED.find((d) => d.door.kind === 'panel-control' && d.door.modifier === held);` — com um modificador (Shift ou Ctrl), procura-se a porta daquele modificador.
 3. `src/editor/shell/sidebar/layers.tsx:262` `if (entry) (store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, target: node.id });` — a linha despacha o comando da porta com os argumentos do door e o nó da linha.
-4. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a `dispatch` da store do editor (gestureSafe), por onde todo comando do editor passa.
-5. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — lê do manifesto se o comando muda o documento; os comandos de seleção não são desfazíveis, então `changesDocument` é falso.
-6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de rodar, a store entrega ao comando o contexto da edição da digitação pendente. [lê: EST-L05a-001 via beforeCommand]
-7. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai ao `dispatch` da store do núcleo. [lê: EST-L05a-038 via dispatch]
+4. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — a `dispatch` da store do editor (gestureSafe), por onde todo comando do editor passa.
+5. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — lê do manifesto se o comando muda o documento; os comandos de seleção não são desfazíveis, então `changesDocument` é falso.
+6. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de rodar, a store entrega ao comando o contexto da edição da digitação pendente. [lê: EST-L05a-001 via beforeCommand]
+7. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai ao `dispatch` da store do núcleo. [lê: EST-L05a-038 via dispatch]
 8. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o `dispatch` do núcleo chama `run`.
 9. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador na tabela de comandos.
 10. `src/app/commands.ts:357` `'selection.toggle': toggleCommand,` — a tabela liga o comando ao tratador (a Chamada do trecho).
@@ -17,7 +17,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 ## Ramos
 - R1 `src/editor/shell/sidebar/layers.tsx:255` `const held = modifierOf(event);` — com um modificador (Shift ou Ctrl) o caminho não entra no ramo do clique simples.
 - R2 `src/editor/shell/sidebar/layers.tsx:261` `const entry = LAYERS_MODIFIED.find((d) => d.door.kind === 'panel-control' && d.door.modifier === held);` — achada a porta do modificador, o caminho segue; um modificador sem porta não despacha nada.
-- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo.
+- R3 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo.
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho é síncrono do Início até a Chamada do trecho; nenhum passo cita `await`, timer, quadro ou ouvinte.
@@ -34,7 +34,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 
 ## Regras
 - G1: n/a — o comando escreve `selection` e `message`, fora de qualquer camada de estilo (`src/core/selection/selection.ts:182` `  return several(state, state.selection.includes(target) ? state.selection.filter((id) => id !== target) : [...state.selection, target]);`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (o contexto dela é entregue ao comando).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (o contexto dela é entregue ao comando).
 - G3: ok `src/editor/shell/sidebar/layers.tsx:262` `if (entry) (store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, target: node.id });` — a porta envia só a intenção ao mesmo tratador do comando (`src/app/commands.ts:357` `'selection.toggle': toggleCommand,`).
 - G4: n/a — o comando muda a seleção; nada é desenhado sobre o ponto da ação no canvas (`src/core/selection/selection.ts:182`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/selection/selection.ts:182`).

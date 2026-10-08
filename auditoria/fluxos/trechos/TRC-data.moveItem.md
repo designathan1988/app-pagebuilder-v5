@@ -1,5 +1,5 @@
 # TRC-data.moveItem
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, item: string, to: integer }`; as duas portas (seta para cima e para baixo) mandam o item e o destino.
 - **Ramos que dependem dos argumentos:** R1 (o destino), R2 (o item não existe mais).
 

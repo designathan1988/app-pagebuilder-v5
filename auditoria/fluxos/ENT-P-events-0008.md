@@ -12,9 +12,9 @@
 4. `src/editor/input/pointer/press.ts:79` `    return picking.interaction === null ? { ...entry.door.args } : { ...entry.door.args, interaction: picking.interaction, changes: { target: press.node } };` — com um alvo sendo escolhido, os argumentos levam o índice da interação e o nó em `changes.target`.
 5. `src/editor/input/pointer/effects.ts:253` `      ps.pickAfter = null;` — no fim do gesto a escolha é retirada. [escreve: EST-L05a-034 via run]
 6. `src/editor/input/pointer/effects.ts:254` `      if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);` — a escolha despacha interactions.update com esses argumentos; esta é a linha de Início da porta. [lê: EST-L05a-034 via run]
-7. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
-8. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo. [escreve: EST-L01-030 via dispatch]
+7. `src/editor/store.ts:233` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
+8. `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo. [escreve: EST-L01-030 via dispatch]
 10. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho entra em `run`.
 11. `src/core/store/store.ts:400` `    const entry = table[id];` — o id resolve a entrada da tabela de comandos. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 12. `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,` — a tabela liga o id ao tratador; o trecho TRC-interactions.update continua daqui.
@@ -22,7 +22,7 @@
 ## Ramos
 - A porta que a pressão nomeia: `src/editor/input/pointer/effects.ts:57` `      const pickingDoor = entry !== null && entry.door.kind === 'canvas-click' && (entry.door.target === 'pick-target' || entry.door.target === 'pick-motion-target') ? entry : null;` — uma porta de escolher alvo guarda a escolha para o fim do gesto (passo 3) em vez de correr na pressão.
 - A escolha guardada: `src/editor/input/pointer/effects.ts:252` `      const picked = ps.pickAfter;` — a escolha da pressão, ou nada quando a pressão não escolheu alvo; com escolha, o caminho segue ao passo 6.
-- O gesto aberto na store do editor: `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue à store do núcleo; com gesto aberto e um comando que muda o documento (interactions.update é desfazível), a gravação é adiada em `src/editor/store.ts:243` `        waiting.push(() => void store.dispatch(id, args, asked));`.
+- O gesto aberto na store do editor: `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue à store do núcleo; com gesto aberto e um comando que muda o documento (interactions.update é desfazível), a gravação é adiada em `src/editor/store.ts:244` `        waiting.push(() => void store.dispatch(id, args, asked));`.
 
 ## Fronteiras assíncronas
 - nenhuma — o despacho da escolha é síncrono (`src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`); entre o fim do gesto e a entrega ao tratador não há await, timer nem quadro. A pressão e o fim do gesto são fases do mesmo `run` do dono do ponteiro, chamadas de forma síncrona (`src/editor/input/pointer/effects.ts:31` `  const run = (effect: Effect) => {`).
@@ -34,12 +34,12 @@
 ## Resultado
 - **Estado final:** o comando interactions.update corre no contexto da porta; a interação no índice escolhido passa a ter o alvo do nó em que a pressão caiu, pelo tratador (`src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`).
 - **Re-renderizado:** os assinantes da store são notificados (`src/core/store/store.ts:325` `    for (const listener of [...listeners]) listener();`).
-- **DOM do editor:** a aba de interações redescreve o cartão e o botão do alvo deixa de estar pressionado (`src/editor/store.ts:275` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
+- **DOM do editor:** a aba de interações redescreve o cartão e o botão do alvo deixa de estar pressionado (`src/editor/store.ts:276` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
 - **DOM do canvas:** o quadro aplica a mudança do documento ao renderizador (`src/editor/canvas/frame.tsx:81` `        renderer.apply(change.before, change.after, change.patches);`); a interação não é desenhada nem executada.
 
 ## Regras
 - G1: n/a — a porta envia o índice e o nó em `changes.target` e a gravação de `interactions` no nó é do tratador (`src/core/events/interactions.ts:357` `      patches: writeInteractions(found, interactions),`); nada lê ponto de quebra, estado, classe-alvo nem quadro-chave.
-- G2: ok `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — com rascunho pendente o registro grava antes; interactions.update é desfazível no manifesto (`manifest/commands/events.json:132` `      "undoable": true,`).
+- G2: ok `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — com rascunho pendente o registro grava antes; interactions.update é desfazível no manifesto (`manifest/commands/events.json:132` `      "undoable": true,`).
 - G3: ok `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,` — as nove portas chamam o mesmo tratador; esta manda o índice e o nó em `changes`.
 - G4: n/a — a ação nasce de uma pressão no canvas com a intenção do alvo; a porta vive na colocação do manifesto (`manifest/commands/events.json:323` `          "placement": "none",`).
 - G5: n/a — o comando muda o alvo de uma interação e não desenha controle que cresça painel ou barra (`manifest/commands/events.json:312` `          "kind": "canvas-click",`).

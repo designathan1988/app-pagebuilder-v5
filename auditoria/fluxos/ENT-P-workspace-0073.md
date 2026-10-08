@@ -3,14 +3,14 @@
 - **Tipo:** comando-porta menu `manifest/commands/workspace.json:2126` `"kind": "menu",`
 - **Porta:** `manifest/commands/workspace.json:2125` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 
 ## Passos
 1. `src/editor/doors/menu.tsx:54` `onClick={() => {` — o clique do item do menu roda a porta (o menu fecha antes)
 2. `src/editor/doors/menu.tsx:59` `door.run();` — a porta é rodada
-3. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-4. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+3. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+4. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:491` `'commandBar.open': openCommandBar,` — a tabela liga o id ao tratador; o trecho TRC-commandBar.open começa aqui
 
 ## Ramos
@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/command-bar/command-bar.ts:16`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/command-bar/command-bar.ts:16` `export const openCommandBar = registerHandler<'commandBar.open', EditorUi>('commandBar.open', ({ state }) => (state.ui.commandBar === true ? { kind: 'change' } : { kind: 'change', ui: { ...state.ui, commandBar: true } }));` — as portas (Ctrl+K, Ctrl+Shift+K global e na edição de texto, campo da barra de topo, menu Arquivo) chegam ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; a barra flutua sobre a área do editor e o seu cobrimento é medido na Fase 6 (`src/editor/command-bar/command-bar.ts:16`).
 - G5: n/a — o encaixe da barra de comandos é medido na Fase 6 (`src/editor/command-bar/command-bar.ts:16`).

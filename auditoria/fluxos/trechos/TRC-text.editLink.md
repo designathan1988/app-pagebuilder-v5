@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:436` `'text.editLink': editLink,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto (`href` é opcional, então ausente passa).
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador.
 5. `src/editor/canvas/text-edit.ts:152` `export const editLink = registerHandler<'text.editLink', EditorUi>('text.editLink', ({ state }, { href }) => {` — o tratador.
@@ -44,7 +44,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:162` `return { kind: 'change', ui: changed(state.ui, { kind: 'link', href: address === '' ? null : keptHref(address) }, null), message: message('status.textEdit.editing') };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/canvas/text-edit.ts:152` `export const editLink = registerHandler<'text.editLink', EditorUi>('text.editLink', ({ state }, { href }) => {` — o único tratador; as duas portas do manifesto (Ctrl+K no texto editando, botão Link da barra de texto) e o próprio prompt do endereço chamam a mesma linha `src/app/commands.ts:436` `'text.editLink': editLink,`.
 - G4: n/a — o tratador muda o estado do editor e não desenha nada sobre o canvas `src/editor/canvas/text-edit.ts:162`.
 - G5: n/a — o trecho não desenha painel nem barra `src/editor/canvas/text-edit.ts:162`; as famílias de defeito de painel são medidas na Fase 6.

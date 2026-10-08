@@ -53,7 +53,7 @@ As verificações sem navegador da área afetada por uma mudança ficam abaixo d
 **1. Situação atual.**
 - O projeto já gera um inventário a partir do manifesto e das fontes, em memória: `tools/inventory/generate.ts:1` `// The inventory: what the application is made of, derived from the manifest and the source, never written by hand:`. Ele cobre funcionalidades, comandos, portas, módulos donos e contagem de cenários; não cobre campos, estados, eventos nem elementos de interface.
 - O verificador do manifesto marca cada id registrado no código: `src/core/commands/registry.ts:116` `// manifest:check reads `.
-- Toda porta desenhada pelo componente de porta leva o id do manifesto no DOM: `src/editor/doors/door.tsx:273` `'data-door': entry.ref,`. Os controles locais declarados levam `data-local`, conferidos contra `manifest/layout.json`: `tools/inventory/local-controls.test.ts:8` `const DRAWN = /data-local="([a-z0-9-]+)"/gu;`.
+- Toda porta desenhada pelo componente de porta leva o id do manifesto no DOM: `src/editor/doors/door.tsx:274` `'data-door': entry.ref,`. Os controles locais declarados levam `data-local`, conferidos contra `manifest/layout.json`: `tools/inventory/local-controls.test.ts:8` `const DRAWN = /data-local="([a-z0-9-]+)"/gu;`.
 - Os registros de `auditoria/` (2.071 entradas em `entradas.md`, os itens de `estado.md`, 760 requisitos em `requisitos.md`) são um inventário completo, mas escrito por rastreamento, não gerado.
 
 **2. Lacunas.**
@@ -104,7 +104,7 @@ As verificações sem navegador da área afetada por uma mudança ficam abaixo d
 ### C2. Acusação automática de quebra
 
 **1. Situação atual.**
-- A store recusa todo estado que o modelo não aceita: `src/core/store/store.ts:273` `const problems = validateDocument(next.document, next.selection, rules);`, e congela o estado em desenvolvimento e teste: `src/editor/store.ts:149` `freeze: options.freeze ?? import.meta.env.DEV,`.
+- A store recusa todo estado que o modelo não aceita: `src/core/store/store.ts:273` `const problems = validateDocument(next.document, next.selection, rules);`, e congela o estado em desenvolvimento e teste: `src/editor/store.ts:150` `freeze: options.freeze ?? import.meta.env.DEV,`.
 - Já existe uma sonda de invariantes com fast-check sobre a store real, com semente fixa: `tools/runner/invariants.test.ts:162` `{ seed: 20261002, numRuns: 200 },`. Ela confere que desfazer tudo volta ao documento inicial: `tools/runner/invariants.test.ts:160` `if (!deepEqual(store.getState().document, initial)) throw new Error(`. Ela não confere seleção, refazer, fusão, gestos nem digitação pendente, e não confere cada passo de desfazer.
 - O executor rápido de cenários roda os 1.831 cenários do manifesto sem navegador onde o cenário permite (`tools/runner/headless.test.ts`).
 - A "prova do dente" desliga uma funcionalidade inteira por plugin do Vite e exige que os testes dela falhem: `tools/runner/tooth-plugin.ts:36` `return `. Ela roda no navegador, por funcionalidade.
@@ -262,7 +262,7 @@ Node calculou as 93.435 larguras em 86 ms; o Chrome mediu 31.145 em cerca de 0,4
 ### C5. Controlador global de entradas e saídas
 
 **1. Situação atual.**
-- O registro único de digitação pendente existe e é aplicado na store do editor: `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`. O campo registra a digitação com o contexto em que ela começou: `src/editor/shell/field.tsx:650` `holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, NUMBER_FIELD_CONTEXT, property), keep: keepNow });`.
+- O registro único de digitação pendente existe e é aplicado na store do editor: `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`. O campo registra a digitação com o contexto em que ela começou: `src/editor/shell/field.tsx:650` `holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, NUMBER_FIELD_CONTEXT, property), keep: keepNow });`.
 - Todas as portas de um passo de campo levam a mesma intenção ao mesmo tratador (G3): `src/editor/inspector/number-field.ts:82` `export const stepField = registerHandler('field.step', (context, { property, value, direction, size, modifier }) => {`, e o ponto de partida é decidido num lugar só: `src/editor/inspector/number-field.ts:55` `function startOf<Ui>(context: HandlerContext<Ui>, property: string, value: string): string {`.
 - A leitura de um valor digitado é única: `src/core/style/set.ts:235` `export function readValue<Ui>(context: HandlerContext<Ui>, property: string, typedText: string): ReadValue | null {`, com a vírgula decimal do pt-BR tratada: `src/core/style/set.ts:241` `const decimal = /^\s*[+-]?\d+,\d+\s*[a-z%]*\s*$/i.test(typedText) ? typedText.replace(',', '.') : typedText;`.
 - A escrita do número tem regra única de arredondamento: `src/core/style/codecs.ts:68` `export function writeNumber(n: number): string {`.
@@ -324,8 +324,8 @@ Node calculou as 93.435 larguras em 86 ms; o Chrome mediu 31.145 em cerca de 0,4
 - Há donos de entrada impostos por lint: `builder/pointer-owner`, `builder/gesture-owner`, `builder/keyboard-owner` e `builder/frame-owner` (registrados em `tools/lint/plugin.ts`, aplicados em `eslint.config.js`).
 - A máquina de gestos é pura e testável: `src/editor/input/pointer/machine.ts:79` `export function step(machine: Machine, event: MachineEvent, dragThreshold = DRAG_THRESHOLD): { readonly machine: Machine; readonly effect: Effect } {`.
 - O registro de digitação pendente grava antes de qualquer comando de fora do campo: `src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`.
-- O teclado ignora a composição de IME: `src/editor/input/keymap.ts:384` `if (event.isComposing || event.keyCode === 229) return;`.
-- Um despacho que chega com um gesto aberto espera o fim do gesto, no contexto em que foi pedido: `src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`.
+- O teclado ignora a composição de IME: `src/editor/input/keymap.ts:385` `if (event.isComposing || event.keyCode === 229) return;`.
+- Um despacho que chega com um gesto aberto espera o fim do gesto, no contexto em que foi pedido: `src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`.
 - A varredura P3 contou 90 chamadas a `addEventListener` em `src/` fora dos testes, e `auditoria/entradas.md` registra 2.071 entradas.
 
 **2. Lacunas.**
@@ -485,7 +485,7 @@ Catálogo de classes de defeito de editores visuais web, com a exposição do ap
 | Erros e error boundaries | `src/main.tsx:79` `onUncaughtError:`; limites por região: `src/editor/shell/region-boundary.tsx:54` `override componentDidCatch(error: unknown, info: ErrorInfo): void {`; rejeições: `src/editor/errors.ts:13` `target.addEventListener('unhandledrejection', (event) => {` | os guardas de `pageerror` e de incidentes que `tests/support/test.ts` já instala | sim |
 | Diagnóstico em produção | feed de incidentes com 50 entradas (`src/core/incidents.ts`) | o feed já existe; `ReportingObserver` (Baseline 2026) acrescenta intervenções e depreciações | sim |
 | Deriva de arquitetura | dependency-cruiser 18.5.0 instalado (`deps:check`); 6 supressões de lint em `src/`, por exemplo `src/editor/shell/preview.tsx:41` `// eslint-disable-next-line builder/frame-owner` | `deps:check` no seletor de impacto; contagem de supressões como pendência | não |
-| IME | teclado: `src/editor/input/keymap.ts:384` `event.keyCode === 229` | CDP `Input.imeSetComposition` no Playwright | sim |
+| IME | teclado: `src/editor/input/keymap.ts:385` `event.keyCode === 229` | CDP `Input.imeSetComposition` no Playwright | sim |
 | Caneta e toque | `src/editor/input/pointer/machine.ts:85` (outro ponteiro não entra no gesto) | `PointerEvent` sintético com `pointerType` pen e touch | sim |
 | Texto bidirecional | nenhuma regra | `dir="rtl"` com textos mistos no lote | sim |
 | Movimento reduzido | o export escreve `prefers-reduced-motion`; o runtime respeita por padrão | `emulateMedia({ reducedMotion })` no Playwright | sim |

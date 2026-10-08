@@ -2,15 +2,15 @@
 
 ## Passos
 1. `src/editor/doors/menu.tsx:59` `door.run();` — o item "Alinhar à esquerda" do menu Organizar roda a porta com os argumentos do manifesto (`manifest/commands/geometry.json:973` `"edge": "left"`).
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a Início: a porta entrega a intenção à store do editor; o `given` é composto em `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` e a guarda está em `src/editor/doors/door.tsx:93` `if (!built || !available) return;`. [lê: EST-L01-030 via useDoor] [lê: EST-L01-031 via useDoor]
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a Início: a porta entrega a intenção à store do editor; o `given` é composto em `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` e a guarda está em `src/editor/doors/door.tsx:94` `if (!built || !available) return;`. [lê: EST-L01-030 via useDoor] [lê: EST-L01-031 via useDoor]
 3. `src/app/commands.ts:328` `'position.align': alignCommand,` — a Chamada do trecho TRC-position.align: a tabela liga o id ao tratador.
 
 ## Ramos
-- R1 `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — o comando não está construído ou a predicação `positionedSelection` não vale: nada muda; vale: segue ao passo 2.
-- R2 `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não toma arquivo: o despacho direto no passo 2.
+- R1 `src/editor/doors/door.tsx:94` `if (!built || !available) return;` — o comando não está construído ou a predicação `positionedSelection` não vale: nada muda; vale: segue ao passo 2.
+- R2 `src/editor/doors/door.tsx:144` `if (file === undefined) {` — o comando não toma arquivo: o despacho direto no passo 2.
 
 ## Fronteiras assíncronas
-- nenhuma — o `run` da porta é síncrono para um comando sem arquivo nem área de transferência (`src/editor/doors/door.tsx:143` `if (file === undefined) {` leva direto ao passo 2).
+- nenhuma — o `run` da porta é síncrono para um comando sem arquivo nem área de transferência (`src/editor/doors/door.tsx:144` `if (file === undefined) {` leva direto ao passo 2).
 
 ## Estado
 - Lê: EST-L01-030 (documento, regras), EST-L01-031 (seleção), EST-L05a-001 (digitação pendente).
@@ -23,8 +23,8 @@
 - **DOM do canvas:** o iframe desenha os elementos alinhados pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/align.ts:47`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/align.ts:47`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:328` `'position.align': alignCommand,` — o painel rápido, o menu Organizar e a barra de comandos chamam o mesmo tratador com a mesma forma `{ edge }`.
 - G4: n/a — o fluxo de porta não desenha painel nem barra sobre o canvas no ponto da ação (`src/editor/doors/door.tsx:144`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/doors/door.tsx:144`).

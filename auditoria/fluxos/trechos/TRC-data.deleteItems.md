@@ -1,5 +1,5 @@
 # TRC-data.deleteItems
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ collection: string, items: json }`; a porta manda a lista de ids dos cartões escolhidos.
 - **Ramos que dependem dos argumentos:** R1 (lista vazia), R2 (um item não existe mais).
 

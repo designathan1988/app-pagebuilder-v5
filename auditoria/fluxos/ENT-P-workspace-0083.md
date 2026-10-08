@@ -4,13 +4,13 @@
 - **Porta:** `manifest/commands/workspace.json:2525` `"id": "key-arrow-right-in-layers-tree",`
 - **Gatilho:** `manifest/commands/workspace.json:2528` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:497` `'layers.expandOrFocusChild': expandOrFocusChild,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 
 ## Passos
-1. `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — de onde a intenção sai: o gesto aberto, a rajada de letras ou a store do editor
-2. `src/editor/input/keymap.ts:526` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do contexto e os da porta são unidos em `given`
-3. `src/editor/input/keymap.ts:527` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — um atalho com gesto escala o valor; sem gesto, os argumentos ficam como estão
-4. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — sem argumento de área de transferência: a intenção é despachada
+1. `src/editor/input/keymap.ts:526` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — de onde a intenção sai: o gesto aberto, a rajada de letras ou a store do editor
+2. `src/editor/input/keymap.ts:527` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do contexto e os da porta são unidos em `given`
+3. `src/editor/input/keymap.ts:528` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — um atalho com gesto escala o valor; sem gesto, os argumentos ficam como estão
+4. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — sem argumento de área de transferência: a intenção é despachada
 5. `src/app/commands.ts:497` `'layers.expandOrFocusChild': expandOrFocusChild,` — a tabela liga o id ao tratador; o trecho TRC-layers.expandOrFocusChild começa aqui
 
 ## Ramos
@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:89`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:84` `export const expandOrFocusChild = registerHandler<'layers.expandOrFocusChild', EditorUi>('layers.expandOrFocusChild', ({ state }, { target }) => {` — a única porta (a seta direita na árvore) chega ao mesmo tratador com o `target` da linha focada.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:90`).
 - G5: n/a — o encaixe da árvore é medido na Fase 6 (`src/editor/layers/tree.ts:90`).

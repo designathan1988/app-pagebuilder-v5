@@ -28,7 +28,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:75` `"id": "key-enter-in-layers-tree",`
 - **Gatilho:** `manifest/commands/selection.json:78` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:353` `'selection.select': selectCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0003.md`
 - **Requisitos:** REQ-2101
 
@@ -37,7 +37,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.select
 - **Porta:** `manifest/commands/selection.json:95` `"id": "status-bar-breadcrumb-item",`
 - **Tratador:** `src/app/commands.ts:353` `'selection.select': selectCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0004.md`
 - **Requisitos:** REQ-2101
 
@@ -46,7 +46,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.select
 - **Porta:** `manifest/commands/selection.json:121` `"id": "checks-issue",`
 - **Tratador:** `src/app/commands.ts:353` `'selection.select': selectCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0005.md`
 - **Requisitos:** REQ-2101
 
@@ -55,7 +55,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.select
 - **Porta:** `manifest/commands/selection.json:147` `"id": "code-panel-html-line",`
 - **Tratador:** `src/app/commands.ts:353` `'selection.select': selectCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0006.md`
 - **Requisitos:** REQ-2101
 
@@ -64,7 +64,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.select
 - **Porta:** `manifest/commands/selection.json:173` `"id": "command-bar-select-layer",`
 - **Tratador:** `src/app/commands.ts:353` `'selection.select': selectCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0007.md`
 - **Requisitos:** REQ-2101
 
@@ -74,7 +74,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:214` `"id": "key-escape-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:217` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:354` `'selection.clear': clearSelectionCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0008.md`
 - **Requisitos:** REQ-2102
 
@@ -93,7 +93,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.clear
 - **Porta:** `manifest/commands/selection.json:256` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:354` `'selection.clear': clearSelectionCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0010.md`
 - **Requisitos:** REQ-2102
 
@@ -102,7 +102,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.clear
 - **Porta:** `manifest/commands/selection.json:278` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:354` `'selection.clear': clearSelectionCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0011.md`
 - **Requisitos:** REQ-2102
 
@@ -152,7 +152,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:487` `"id": "key-arrow-right-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:490` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:358` `'selection.walkNextSibling': walkNextSiblingCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0016.md`
 - **Requisitos:** REQ-2106
 
@@ -162,7 +162,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:527` `"id": "key-arrow-left-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:530` `"chord": "ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:359` `'selection.walkPreviousSibling': walkPreviousSiblingCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0017.md`
 - **Requisitos:** REQ-2107
 
@@ -172,7 +172,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:567` `"id": "key-arrow-up-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:570` `"chord": "ArrowUp",`
 - **Tratador:** `src/app/commands.ts:360` `'selection.walkParent': walkParentCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0018.md`
 - **Requisitos:** REQ-2108
 
@@ -182,7 +182,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:607` `"id": "key-arrow-down-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:610` `"chord": "ArrowDown",`
 - **Tratador:** `src/app/commands.ts:361` `'selection.walkFirstChild': walkFirstChildCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0019.md`
 - **Requisitos:** REQ-2109
 
@@ -192,7 +192,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:645` `"id": "key-ctrl-a-in-canvas",`
 - **Gatilho:** `manifest/commands/selection.json:648` `"chord": "Ctrl+A",`
 - **Tratador:** `src/app/commands.ts:362` `'selection.selectAllInContainer': selectAllInContainerCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0020.md`
 - **Requisitos:** REQ-2110
 
@@ -202,7 +202,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/selection.json:665` `"id": "key-ctrl-a-in-global",`
 - **Gatilho:** `manifest/commands/selection.json:668` `"chord": "Ctrl+A",`
 - **Tratador:** `src/app/commands.ts:362` `'selection.selectAllInContainer': selectAllInContainerCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-selection-0021.md`
 - **Requisitos:** REQ-2110
 
@@ -211,7 +211,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.selectAllInContainer
 - **Porta:** `manifest/commands/selection.json:685` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:362` `'selection.selectAllInContainer': selectAllInContainerCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0022.md`
 - **Requisitos:** REQ-2110
 
@@ -220,7 +220,7 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** selection.selectAllInContainer
 - **Porta:** `manifest/commands/selection.json:707` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:362` `'selection.selectAllInContainer': selectAllInContainerCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0023.md`
 - **Requisitos:** REQ-2110
 
@@ -268,6 +268,6 @@ Fonte: `manifest/commands/selection.json`. Um bloco por porta, na ordem do manif
 - **Comando:** contextMenu.open
 - **Porta:** `manifest/commands/selection.json:884` `"id": "quick-panel-more-actions",`
 - **Tratador:** `src/app/commands.ts:364` `'contextMenu.open': contextMenuOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-selection-0028.md`
 - **Requisitos:** REQ-2112

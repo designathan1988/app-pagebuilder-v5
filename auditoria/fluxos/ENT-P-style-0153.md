@@ -2,24 +2,24 @@
 
 - **Comando:** style.set
 - **Porta:** key-enter-in-number-field (`manifest/commands/style.json:4917` `"id": "key-enter-in-number-field",`)
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Trecho:** TRC-style.set
 
 ## Passos
-1. `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — a tecla escolhe por qual porta o comando sai; sem gesto nem rajada, é a store do editor.
-2. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a tecla entrega a intenção à store do editor.
-3. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o comando.
-4. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — style.set é desfazível no manifesto, logo o comando muda o documento.
-5. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é considerada antes de rodar [lê: EST-L05a-001 via beforeCommand]; o Enter do campo é comando do próprio campo, então roda no contexto da digitação.
-6. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, a store do núcleo recebe.
+1. `src/editor/input/keymap.ts:526` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — a tecla escolhe por qual porta o comando sai; sem gesto nem rajada, é a store do editor.
+2. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a tecla entrega a intenção à store do editor.
+3. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — a store do editor recebe o comando.
+4. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — style.set é desfazível no manifesto, logo o comando muda o documento.
+5. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é considerada antes de rodar [lê: EST-L05a-001 via beforeCommand]; o Enter do campo é comando do próprio campo, então roda no contexto da digitação.
+6. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, a store do núcleo recebe.
 7. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — a store do núcleo recebe o comando.
 8. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o comando entra em `run` [lê: EST-L01-030 via run] [lê: EST-L01-031 via run].
 9. `src/core/store/store.ts:400` `const entry = table[id];` — o comando é lido na tabela de comandos.
 10. `src/app/commands.ts:389` `'style.set': setStyleCommand,` — a tabela liga style.set ao tratador; aqui começa o trecho TRC-style.set.
 
 ## Ramos
-- `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — style.set não toma a área de transferência: despacha na hora (este lado); um comando de colagem esperaria pela leitura.
-- `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o comando roda agora (este lado); com um gesto aberto e mudança de documento ele espera na fila (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — style.set não toma a área de transferência: despacha na hora (este lado); um comando de colagem esperaria pela leitura.
+- `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o comando roda agora (este lado); com um gesto aberto e mudança de documento ele espera na fila (`src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - `src/core/store/store.ts:408` `if (!isBuilt(entry)) return { status: 'not-available-yet' };` — construído: segue; não construído: "ainda não disponível".
 - `src/core/store/store.ts:411` `if (invalid !== null) {` — argumento que o comando não toma: recusado; tomado: segue.
 - `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade editableSelection vale: segue; não vale: recusado.
@@ -38,8 +38,8 @@
 - **DOM do canvas:** o caminho da porta não desenha nada; o canvas é redesenhado pelo trecho.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o Enter do campo grava no contexto em que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o comando do próprio campo roda no contexto da digitação, sem forçar gravação de outra.
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o Enter do campo grava no contexto em que a digitação começou.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o comando do próprio campo roda no contexto da digitação, sem forçar gravação de outra.
 - G3: ok `src/app/commands.ts:389` `'style.set': setStyleCommand,` — a tecla e o botão entregam a mesma intenção (a propriedade e o texto) ao mesmo tratador.
 - G4: n/a — o caminho da porta não desenha nada sobre o canvas (`src/editor/input/keymap.ts:531`).
 - G5: n/a — o caminho da porta não muda a geometria de painel nem de barra (`src/editor/input/keymap.ts:531`).

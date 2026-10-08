@@ -1,5 +1,5 @@
 # TRC-data.previewType
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ column: string, type: enum }`; a porta `data-preview-type` manda a coluna e o tipo escolhido.
 - **Ramos que dependem dos argumentos:** R1 (sem prévia ou coluna desconhecida), R2 (tipo fora da lista).
 

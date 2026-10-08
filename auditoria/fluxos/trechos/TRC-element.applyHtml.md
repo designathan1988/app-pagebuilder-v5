@@ -37,7 +37,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava tag, atributos, classes e texto do nó, não um valor de estilo `src/core/import/apply-html.ts:85` `return { kind: 'change' as const, patches: [{ op: 'replace', path: [...at.path], value: written }, ...released], message: said };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/import/apply-html.ts:45` `export const applyHtmlCommand = registerHandler('element.applyHtml', (context, { html }) => {`
 - G4: n/a — a porta é o botão Aplicar o HTML do painel de código, não um ponto do canvas `manifest/commands/elements.json:4773` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/import/apply-html.ts:85` `return { kind: 'change' as const, patches: [{ op: 'replace', path: [...at.path], value: written }, ...released], message: said };`.

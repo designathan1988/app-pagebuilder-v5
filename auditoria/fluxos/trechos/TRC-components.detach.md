@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:237` `'components.detach': detachInstanceCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção (o menu de contexto ou a command bar).
-3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção (o menu de contexto ou a command bar).
+3. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `instanceSelected` é lida antes do tratador [lê: EST-L01-031 via instanceSelected].
 5. `src/core/design/components.ts:345` `export const instanceSelected = registerPredicate('instanceSelected', (state) => {` — o predicado exige uma só seleção que é raiz de instância.
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
@@ -41,7 +41,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve um caminho fixo do documento (`src/core/design/components.ts:357`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:237` `'components.detach': detachInstanceCommand,` — o menu de contexto e a command bar chegam ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/components.ts:357`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/components.ts:357`).

@@ -212,7 +212,7 @@ A trava exige pesquisa para todos estes pacotes. A versão foi lida de `node_mod
 - Nenhum import de biblioteca de estado entre os 27 pacotes.
 - Dispatch da store do núcleo: `src/core/store/store.ts:122` `dispatch<Id extends CommandId>(id: Id, args: CommandArgs[Id], context?: EditContext): DispatchResult;`
 - Criação da store do editor: `src/main.tsx:64` `const store = createEditorStore({ restored, recovery, narrow: windowIsNarrow() });`
-- Ligação com o React: `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`
+- Ligação com o React: `src/editor/store.ts:276` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`
 - Stores de módulo: mais 15 chamadas de `useSyncExternalStore`, por exemplo `src/editor/shell/status-bar.tsx:283` `const current = useSyncExternalStore(saveState.subscribe, saveState.get);`
 - Estado local do React, contado por regex no código de produção:
   - `useState`: 92;
@@ -1298,7 +1298,7 @@ Na tabela, `\|` é só o escape da barra vertical. No `padroes.json`, o regex us
   - `src/editor/canvas/placement.ts`
 - **Nomes encontrados:**
   - `src/editor/store.ts:104` `export function editContextOf(state: EditorState): EditContext {`
-  - `src/editor/store.ts:185` `function gestureSafe(store: EditorStore): EditorStore {`
+  - `src/editor/store.ts:186` `function gestureSafe(store: EditorStore): EditorStore {`
   - `src/editor/inspector/number-field.ts:55` `function startOf<Ui>(context: HandlerContext<Ui>, property: string, value: string): string {`
   - `src/core/ports/layout.ts:25` `computed(node: NodeId, property: string): string | null;`
   - `src/editor/canvas/placement.ts:153` `export function clearedLabel(`

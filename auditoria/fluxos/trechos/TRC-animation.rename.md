@@ -1,5 +1,5 @@
 # TRC-animation.rename
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string; readonly name: string }`; a porta panel-control `timeline-animation-name-field` não declara argumentos próprios (`manifest/commands/animation.json:121` `          "args": {}`) e o campo do painel acrescenta o nome atual (`animation`) e o digitado (`name`).
 - **Ramos que dependem dos argumentos:** R2 (nome igual ao atual), R3 (nome que não é identificador), R4 (nome já tomado)
 

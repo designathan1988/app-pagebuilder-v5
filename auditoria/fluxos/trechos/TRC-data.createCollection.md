@@ -1,5 +1,5 @@
 # TRC-data.createCollection
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ name?: string }`; a porta `data-new-collection` manda `{}` (o nome nasce do catálogo).
 - **Ramos que dependem dos argumentos:** R1 (nome vazio), R2 (nome repetido).
 

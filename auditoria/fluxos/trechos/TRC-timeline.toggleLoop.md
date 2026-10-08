@@ -1,5 +1,5 @@
 # TRC-timeline.toggleLoop
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{}`; a porta panel-control `timeline-loop` não declara argumentos (`manifest/commands/animation.json:1031` `          "args": {}`).
 - **Ramos que dependem dos argumentos:** nenhum
 

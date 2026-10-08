@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:191` `'assistant.update': reportAssistant,` — a tabela de comandos liga o id ao tratador `reportAssistant` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:71` `export const reportAssistant: RegisteredHandler<'assistant.update', EditorUi> = registerHandler('assistant.update', ({ state }, { value }) => {` — o tratador recebe `{ value }`.
 5. `src/editor/assistant/state.ts:72` `const parsed = reportSchema.safeParse(typeof value === 'string' ? { draft: value } : value);` — aceita o texto digitado ou o relatório do turno.

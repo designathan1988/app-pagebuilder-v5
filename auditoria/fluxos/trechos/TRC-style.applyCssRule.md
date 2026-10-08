@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:423` `'style.applyCssRule': applyCssRuleCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 4. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `always` é lida [lê: EST-L01-031 via run].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
@@ -44,8 +44,8 @@
 - **DOM do canvas:** o iframe desenha o elemento com as declarações novas pelo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a escrita usa a camada do contexto captado (`src/core/style/css-rule.ts:24` `const { breakpoint, state: base } = context.rules.base;`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a escrita usa a camada do contexto captado (`src/core/style/css-rule.ts:24` `const { breakpoint, state: base } = context.rules.base;`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:423` `'style.applyCssRule': applyCssRuleCommand,` — a porta do painel de código entrega o texto ao tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/style/css-rule.ts:32`).
 - G5: n/a — o comando não altera a geometria de painel nem de barra (`src/core/style/css-rule.ts:32`).

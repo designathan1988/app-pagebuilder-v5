@@ -16,8 +16,8 @@
 5. `src/editor/input/file-drop.ts:156` `if (target === null && place === null) return;` — sem lugar não despacha.
 6. `src/editor/input/file-drop.ts:161` `void readUploadFile(file).then((payload: UploadedFile) => {` — o arquivo é lido como recurso; a leitura espera.
 7. `src/editor/input/file-drop.ts:172` `store.dispatch(door.command.id, args as never);` — a porta despacha `assets.insertImageFile` com o arquivo e o lugar (ou a imagem a substituir); esta é a linha de Início.
-8. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
-9. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+8. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
+9. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
 10. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o `dispatch` da store do núcleo.
 11. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — `dispatch` entrega o comando a `run`. [lê: EST-L01-030 via run]
 12. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -26,7 +26,7 @@
 ## Ramos
 - A soltura da imagem: `src/editor/input/file-drop.ts:156` `if (target === null && place === null) return;` — sem imagem sob o ponteiro e sem proposta não despacha; com uma ou outra segue.
 - O lugar contra a imagem: `src/editor/input/file-drop.ts:155` `const place = target === null ? fileDropProposal(store, at) : null;` — sobre uma imagem vão `replace` e o pai; fora dela vão `parent` e `index` (`src/editor/input/file-drop.ts:169` `const args = target === null`).
-- O gesto aberto na store do editor: `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- O gesto aberto na store do editor: `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:244` `waiting.push(() => void store.dispatch(id, args, asked));`).
 
 ## Fronteiras assíncronas
 - A leitura da imagem: `src/editor/input/file-drop.ts:161` `void readUploadFile(file).then((payload: UploadedFile) => {` — entre a soltura e o retorno da promessa o editor segue montado; entradas do editor podem rodar nesse intervalo (a lista em `auditoria/entradas.md`), com o documento como está.
@@ -44,7 +44,7 @@
 
 ## Regras
 - G1: n/a — os patches escrevem `files` e `children`, fora de qualquer camada de estilo (`src/core/files/assets.ts:56` `patches: [...held, { op: 'add' as const, path: [...at.parent.path, 'children', at.index], value: node }],`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:311` `'assets.insertImageFile': insertImageFileCommand,` — a porta chega a este único tratador e manda só a intenção.
 - G4: n/a — o caminho da porta não desenha nada sobre o canvas (`src/editor/input/file-drop.ts:172`).
 - G5: n/a — o caminho da porta não mede nem desenha painel ou barra (`src/editor/input/file-drop.ts:172`).

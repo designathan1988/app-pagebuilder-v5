@@ -8,9 +8,9 @@
 ## Passos
 1. `src/editor/canvas/quick-panel.tsx:280` `onClick: press,` — a alça do painel rápido (o chip) é um botão com este clique
 2. `src/editor/canvas/quick-panel.tsx:271` `if (door.available) door.run();` — a alça roda a porta se ela estiver disponível
-3. `src/editor/doors/door.tsx:92` `const run = () => {` — a porta abre o seu `run`
-4. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
-5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
+3. `src/editor/doors/door.tsx:93` `const run = () => {` — a porta abre o seu `run`
+4. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos declarados no manifesto e os que o controle acrescenta são unidos em `given`
+5. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a intenção (o id e `given`) entra na store do editor
 6. `src/app/commands.ts:488` `'quickPanel.setOpen': setOpen,` — a tabela liga o id ao tratador; o trecho TRC-quickPanel.setOpen começa aqui
 
 ## Ramos
@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/quick-panel/quick-panel.ts:54`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/quick-panel/quick-panel.ts:50` `export const setOpen = registerHandler<'quickPanel.setOpen', EditorUi>('quickPanel.setOpen', ({ state }, { open }) => {` — as portas (alça do painel, Ctrl+Shift+Q global e no painel, Esc no painel) chegam ao mesmo tratador com só `open`.
 - G4: n/a — o comando muda estado; o painel que ele abre fica ao lado do rótulo (`src/editor/quick-panel/quick-panel.ts:54`); a colocação é medida na Fase 6.
 - G5: n/a — o encaixe do painel rápido alto é medido na Fase 6 (`src/editor/quick-panel/quick-panel.ts:54`).

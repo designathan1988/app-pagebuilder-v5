@@ -1,5 +1,5 @@
 # TRC-animation.addKeyframe
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string; readonly offset: number }`; a porta panel-control `timeline-add-keyframe` não declara argumentos próprios (`manifest/commands/animation.json:240` `          "args": {}`) e o painel acrescenta a animação mostrada e o deslocamento pedido.
 - **Ramos que dependem dos argumentos:** R2 (deslocamento fora do intervalo), R3 (deslocamento já tomado)
 

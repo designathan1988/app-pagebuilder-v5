@@ -1,5 +1,5 @@
 # TRC-animation.setKeyframeEasing
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string; readonly keyframe: number; readonly easing: string }`; a porta panel-control `timeline-keyframe-easing` não declara argumentos próprios (`manifest/commands/animation.json:381` `          "args": {}`) e o campo do painel acrescenta a animação, o quadro-chave e o texto digitado.
 - **Ramos que dependem dos argumentos:** R3 (texto que não é valor da propriedade), R4 (valor igual ao atual)
 

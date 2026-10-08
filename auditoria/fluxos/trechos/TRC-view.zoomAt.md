@@ -54,7 +54,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava o zoom e a câmera `src/editor/view/camera.ts:83` `const ui: EditorUi = { ...state.ui, preferences: { ...state.ui.preferences, zoom: percent }, camera };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — a única porta de `view.zoomAt` (a roda com Ctrl sobre o canvas) chega à tabela `src/app/commands.ts:444` `'view.zoomAt': zoomAt,` e envia só o fator da roda e o ponto dela `src/editor/view/camera.ts:118` `({ state }, { factor, point }) => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/camera.ts:122` `return zoomTo(state, next, point);`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava o zoom `src/editor/view/camera.ts:83` `const ui: EditorUi = { ...state.ui, preferences: { ...state.ui.preferences, zoom: percent }, camera };`.

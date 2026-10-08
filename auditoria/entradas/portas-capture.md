@@ -7,7 +7,7 @@ Fonte: `manifest/commands/capture.json`. Um bloco por porta.
 - **Comando:** capture.edit
 - **Porta:** `manifest/commands/capture.json:66` `"id": "captured-value",`
 - **Tratador:** `src/app/commands.ts:217` `'capture.edit': editCaptureCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-capture-0001.md`
 - **Requisitos:** REQ-0401
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/capture.json`. Um bloco por porta.
 - **Comando:** capture.edit
 - **Porta:** `manifest/commands/capture.json:92` `"id": "captured-apply",`
 - **Tratador:** `src/app/commands.ts:217` `'capture.edit': editCaptureCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-capture-0002.md`
 - **Requisitos:** REQ-0401
 
@@ -26,7 +26,7 @@ Fonte: `manifest/commands/capture.json`. Um bloco por porta.
 - **Porta:** `manifest/commands/capture.json:118` `"id": "key-enter-in-captured-value",`
 - **Gatilho:** `manifest/commands/capture.json:121` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:217` `'capture.edit': editCaptureCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-capture-0003.md`
 - **Requisitos:** REQ-0401
 
@@ -35,7 +35,7 @@ Fonte: `manifest/commands/capture.json`. Um bloco por porta.
 - **Comando:** capture.select
 - **Porta:** `manifest/commands/capture.json:164` `"id": "captured-inspector-node",`
 - **Tratador:** `src/app/commands.ts:218` `'capture.select': selectCapturedCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-capture-0004.md`
 - **Requisitos:** REQ-0402
 

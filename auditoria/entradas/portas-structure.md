@@ -7,7 +7,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.insert
 - **Porta:** `manifest/commands/structure.json:53` `"id": "elements-tile",`
 - **Tratador:** `src/app/commands.ts:365` `'element.insert': insertCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2201
 
@@ -17,7 +17,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:79` `"id": "key-enter-in-palette",`
 - **Gatilho:** `manifest/commands/structure.json:82` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:365` `'element.insert': insertCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2201
 
@@ -27,7 +27,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:99` `"id": "key-space-in-palette",`
 - **Gatilho:** `manifest/commands/structure.json:102` `"chord": "Space",`
 - **Tratador:** `src/app/commands.ts:365` `'element.insert': insertCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2201
 
@@ -46,7 +46,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.insert
 - **Porta:** `manifest/commands/structure.json:139` `"id": "command-bar-insert",`
 - **Tratador:** `src/app/commands.ts:365` `'element.insert': insertCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2201
 
@@ -86,7 +86,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:267` `"id": "key-enter-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:270` `"chord": "Enter",`
 - **Tratador:** `src/app/commands.ts:366` `'element.moveTo': moveToCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2202
 
@@ -96,7 +96,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:307` `"id": "key-arrow-up-in-drag",`
 - **Gatilho:** `manifest/commands/structure.json:310` `"chord": "ArrowUp",`
 - **Tratador:** `src/app/commands.ts:367` `'drag.levelUp': levelUp,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2203
 
@@ -106,7 +106,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:345` `"id": "key-arrow-down-in-drag",`
 - **Gatilho:** `manifest/commands/structure.json:348` `"chord": "ArrowDown",`
 - **Tratador:** `src/app/commands.ts:368` `'drag.levelDown': levelDown,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2204
 
@@ -116,7 +116,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:383` `"id": "key-escape-in-drag",`
 - **Gatilho:** `manifest/commands/structure.json:386` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:369` `'drag.cancel': cancelDrag,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2205
 
@@ -126,7 +126,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:403` `"id": "key-escape-in-color-picker",`
 - **Gatilho:** `manifest/commands/structure.json:406` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:369` `'drag.cancel': cancelDrag,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2205
 
@@ -136,7 +136,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:451` `"id": "key-alt-arrow-up-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:454` `"chord": "Alt+ArrowUp",`
 - **Tratador:** `src/app/commands.ts:370` `'element.moveUp': moveUpCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2206
 
@@ -146,7 +146,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:471` `"id": "key-alt-arrow-up-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:474` `"chord": "Alt+ArrowUp",`
 - **Tratador:** `src/app/commands.ts:370` `'element.moveUp': moveUpCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2206
 
@@ -155,7 +155,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveUp
 - **Porta:** `manifest/commands/structure.json:491` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:370` `'element.moveUp': moveUpCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2206
 
@@ -164,7 +164,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveUp
 - **Porta:** `manifest/commands/structure.json:511` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:370` `'element.moveUp': moveUpCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2206
 
@@ -173,7 +173,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveUp
 - **Porta:** `manifest/commands/structure.json:533` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:370` `'element.moveUp': moveUpCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2206
 
@@ -183,7 +183,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:582` `"id": "key-alt-arrow-down-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:585` `"chord": "Alt+ArrowDown",`
 - **Tratador:** `src/app/commands.ts:371` `'element.moveDown': moveDownCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2207
 
@@ -193,7 +193,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:602` `"id": "key-alt-arrow-down-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:605` `"chord": "Alt+ArrowDown",`
 - **Tratador:** `src/app/commands.ts:371` `'element.moveDown': moveDownCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0020.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2207
 
@@ -202,7 +202,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveDown
 - **Porta:** `manifest/commands/structure.json:622` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:371` `'element.moveDown': moveDownCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2207
 
@@ -211,7 +211,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveDown
 - **Porta:** `manifest/commands/structure.json:642` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:371` `'element.moveDown': moveDownCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2207
 
@@ -220,7 +220,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.moveDown
 - **Porta:** `manifest/commands/structure.json:664` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:371` `'element.moveDown': moveDownCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0023.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2207
 
@@ -230,7 +230,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:722` `"id": "key-r-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:725` `"chord": "R",`
 - **Tratador:** `src/app/commands.ts:372` `'element.wrapRow': wrapRowCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0024.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2208
 
@@ -240,7 +240,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:742` `"id": "key-r-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:745` `"chord": "R",`
 - **Tratador:** `src/app/commands.ts:372` `'element.wrapRow': wrapRowCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0025.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2208
 
@@ -249,7 +249,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapRow
 - **Porta:** `manifest/commands/structure.json:762` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:372` `'element.wrapRow': wrapRowCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0026.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2208
 
@@ -258,7 +258,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapRow
 - **Porta:** `manifest/commands/structure.json:782` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:372` `'element.wrapRow': wrapRowCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0027.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2208
 
@@ -267,7 +267,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapRow
 - **Porta:** `manifest/commands/structure.json:804` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:372` `'element.wrapRow': wrapRowCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0028.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2208
 
@@ -277,7 +277,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:862` `"id": "key-c-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:865` `"chord": "C",`
 - **Tratador:** `src/app/commands.ts:373` `'element.wrapColumn': wrapColumnCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0029.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2209
 
@@ -287,7 +287,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:882` `"id": "key-c-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:885` `"chord": "C",`
 - **Tratador:** `src/app/commands.ts:373` `'element.wrapColumn': wrapColumnCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0030.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2209
 
@@ -296,7 +296,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapColumn
 - **Porta:** `manifest/commands/structure.json:902` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:373` `'element.wrapColumn': wrapColumnCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0031.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2209
 
@@ -305,7 +305,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapColumn
 - **Porta:** `manifest/commands/structure.json:922` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:373` `'element.wrapColumn': wrapColumnCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0032.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2209
 
@@ -314,7 +314,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapColumn
 - **Porta:** `manifest/commands/structure.json:944` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:373` `'element.wrapColumn': wrapColumnCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0033.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2209
 
@@ -343,7 +343,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.nestIntoPrevious
 - **Porta:** `manifest/commands/structure.json:1101` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:377` `'element.nestIntoPrevious': nestIntoPreviousCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0036.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2211
 
@@ -353,7 +353,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1121` `"id": "key-alt-arrow-right-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:1124` `"chord": "Alt+ArrowRight",`
 - **Tratador:** `src/app/commands.ts:377` `'element.nestIntoPrevious': nestIntoPreviousCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0037.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2211
 
@@ -363,7 +363,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1141` `"id": "key-alt-arrow-right-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:1144` `"chord": "Alt+ArrowRight",`
 - **Tratador:** `src/app/commands.ts:377` `'element.nestIntoPrevious': nestIntoPreviousCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0038.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2211
 
@@ -372,7 +372,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.nestIntoPrevious
 - **Porta:** `manifest/commands/structure.json:1161` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:377` `'element.nestIntoPrevious': nestIntoPreviousCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0039.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2211
 
@@ -381,7 +381,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.nestIntoPrevious
 - **Porta:** `manifest/commands/structure.json:1183` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:377` `'element.nestIntoPrevious': nestIntoPreviousCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0040.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2211
 
@@ -391,7 +391,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1239` `"id": "key-p-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:1242` `"chord": "P",`
 - **Tratador:** `src/app/commands.ts:378` `'element.promote': promoteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0041.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2212
 
@@ -401,7 +401,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1259` `"id": "key-p-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:1262` `"chord": "P",`
 - **Tratador:** `src/app/commands.ts:378` `'element.promote': promoteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0042.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2212
 
@@ -410,7 +410,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.promote
 - **Porta:** `manifest/commands/structure.json:1279` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:378` `'element.promote': promoteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0043.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2212
 
@@ -419,7 +419,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.promote
 - **Porta:** `manifest/commands/structure.json:1299` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:378` `'element.promote': promoteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0044.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2212
 
@@ -428,7 +428,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.promote
 - **Porta:** `manifest/commands/structure.json:1321` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:378` `'element.promote': promoteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0045.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2212
 
@@ -438,7 +438,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1369` `"id": "key-ctrl-d-in-global",`
 - **Gatilho:** `manifest/commands/structure.json:1372` `"chord": "Ctrl+D",`
 - **Tratador:** `src/app/commands.ts:379` `'element.duplicate': duplicateCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0046.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2213
 
@@ -447,7 +447,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.duplicate
 - **Porta:** `manifest/commands/structure.json:1389` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:379` `'element.duplicate': duplicateCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0047.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2213
 
@@ -456,7 +456,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.duplicate
 - **Porta:** `manifest/commands/structure.json:1409` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:379` `'element.duplicate': duplicateCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0048.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2213
 
@@ -465,7 +465,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.duplicate
 - **Porta:** `manifest/commands/structure.json:1431` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:379` `'element.duplicate': duplicateCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0049.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2213
 
@@ -485,7 +485,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1498` `"id": "key-delete-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:1501` `"chord": "Delete",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0051.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -495,7 +495,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1518` `"id": "key-backspace-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:1521` `"chord": "Backspace",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0052.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -505,7 +505,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1538` `"id": "key-delete-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:1541` `"chord": "Delete",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0053.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -515,7 +515,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1558` `"id": "key-backspace-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:1561` `"chord": "Backspace",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0054.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -524,7 +524,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.delete
 - **Porta:** `manifest/commands/structure.json:1578` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0055.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -533,7 +533,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.delete
 - **Porta:** `manifest/commands/structure.json:1598` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0056.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -542,7 +542,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.delete
 - **Porta:** `manifest/commands/structure.json:1620` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:380` `'element.delete': deleteCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0057.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2214
 
@@ -551,7 +551,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.unwrap
 - **Porta:** `manifest/commands/structure.json:1674` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:381` `'element.unwrap': unwrapCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0058.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2215
 
@@ -560,7 +560,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.unwrap
 - **Porta:** `manifest/commands/structure.json:1694` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:381` `'element.unwrap': unwrapCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0059.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2215
 
@@ -569,7 +569,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.unwrap
 - **Porta:** `manifest/commands/structure.json:1716` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:381` `'element.unwrap': unwrapCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0060.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2215
 
@@ -578,7 +578,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.createNaturalChild
 - **Porta:** `manifest/commands/structure.json:1763` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:382` `'element.createNaturalChild': createNaturalChildCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0061.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2216
 
@@ -587,7 +587,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.createNaturalChild
 - **Porta:** `manifest/commands/structure.json:1783` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:382` `'element.createNaturalChild': createNaturalChildCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0062.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2216
 
@@ -597,7 +597,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1826` `"id": "key-m-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:1829` `"chord": "M",`
 - **Tratador:** `src/app/commands.ts:383` `'hand.take': HAND.take,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0063.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2217
 
@@ -607,7 +607,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1846` `"id": "key-m-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:1849` `"chord": "M",`
 - **Tratador:** `src/app/commands.ts:383` `'hand.take': HAND.take,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0064.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2217
 
@@ -616,7 +616,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** hand.take
 - **Porta:** `manifest/commands/structure.json:1866` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:383` `'hand.take': HAND.take,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0065.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2217
 
@@ -625,7 +625,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** hand.take
 - **Porta:** `manifest/commands/structure.json:1886` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:383` `'hand.take': HAND.take,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0066.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2217
 
@@ -634,7 +634,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** hand.take
 - **Porta:** `manifest/commands/structure.json:1908` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:383` `'hand.take': HAND.take,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0067.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2217
 
@@ -644,7 +644,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1950` `"id": "key-arrow-down-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:1953` `"chord": "ArrowDown",`
 - **Tratador:** `src/app/commands.ts:384` `'hand.aimNext': HAND.aimNext,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0068.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2218
 
@@ -654,7 +654,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:1970` `"id": "key-arrow-right-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:1973` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:384` `'hand.aimNext': HAND.aimNext,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0069.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2218
 
@@ -664,7 +664,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2011` `"id": "key-shift-arrow-down-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:2014` `"chord": "Shift+ArrowDown",`
 - **Tratador:** `src/app/commands.ts:385` `'hand.aimPrevious': HAND.aimPrevious,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0070.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2219
 
@@ -674,7 +674,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2031` `"id": "key-shift-arrow-right-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:2034` `"chord": "Shift+ArrowRight",`
 - **Tratador:** `src/app/commands.ts:385` `'hand.aimPrevious': HAND.aimPrevious,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0071.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2219
 
@@ -684,7 +684,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2072` `"id": "key-arrow-up-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:2075` `"chord": "ArrowUp",`
 - **Tratador:** `src/app/commands.ts:386` `'hand.climb': HAND.climb,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0072.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2220
 
@@ -694,7 +694,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2113` `"id": "key-arrow-left-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:2116` `"chord": "ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:387` `'hand.descend': HAND.descend,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0073.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2221
 
@@ -704,7 +704,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2155` `"id": "key-escape-in-hand",`
 - **Gatilho:** `manifest/commands/structure.json:2158` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:388` `'hand.drop': HAND.drop,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0074.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2222
 
@@ -714,7 +714,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2212` `"id": "key-d-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:2215` `"chord": "D",`
 - **Tratador:** `src/app/commands.ts:374` `'element.wrapContainer': wrapContainerCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0075.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2223
 
@@ -724,7 +724,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2232` `"id": "key-d-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:2235` `"chord": "D",`
 - **Tratador:** `src/app/commands.ts:374` `'element.wrapContainer': wrapContainerCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0076.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2223
 
@@ -733,7 +733,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapContainer
 - **Porta:** `manifest/commands/structure.json:2252` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:374` `'element.wrapContainer': wrapContainerCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0077.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2223
 
@@ -742,7 +742,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapContainer
 - **Porta:** `manifest/commands/structure.json:2272` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:374` `'element.wrapContainer': wrapContainerCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0078.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2223
 
@@ -751,7 +751,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapContainer
 - **Porta:** `manifest/commands/structure.json:2294` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:374` `'element.wrapContainer': wrapContainerCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0079.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2223
 
@@ -761,7 +761,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2352` `"id": "key-g-in-canvas",`
 - **Gatilho:** `manifest/commands/structure.json:2355` `"chord": "G",`
 - **Tratador:** `src/app/commands.ts:375` `'element.wrapGrid': wrapGridCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0080.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2224
 
@@ -771,7 +771,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Porta:** `manifest/commands/structure.json:2372` `"id": "key-g-in-layers-tree",`
 - **Gatilho:** `manifest/commands/structure.json:2375` `"chord": "G",`
 - **Tratador:** `src/app/commands.ts:375` `'element.wrapGrid': wrapGridCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-structure-0081.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2224
 
@@ -780,7 +780,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapGrid
 - **Porta:** `manifest/commands/structure.json:2392` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:375` `'element.wrapGrid': wrapGridCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0082.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2224
 
@@ -789,7 +789,7 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapGrid
 - **Porta:** `manifest/commands/structure.json:2412` `"id": "menu-arrange",`
 - **Tratador:** `src/app/commands.ts:375` `'element.wrapGrid': wrapGridCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0083.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2224
 
@@ -798,6 +798,6 @@ Fonte: `manifest/commands/structure.json`. Uma porta por bloco, na ordem do mani
 - **Comando:** element.wrapGrid
 - **Porta:** `manifest/commands/structure.json:2434` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:375` `'element.wrapGrid': wrapGridCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-structure-0084.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2224

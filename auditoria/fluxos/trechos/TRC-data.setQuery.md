@@ -1,5 +1,5 @@
 # TRC-data.setQuery
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ part: 'filterField'|'filterOperator'|'filterValue'|'sortFirst'|'sortSecond'|'offset'|'limit'|'clear', value?: string }`.
 - **Ramos que dependem dos argumentos:** R1 (o `part` escolhe a parte da consulta), R5 (o `value` de `offset`/`limit`/`filterOperator`).
 

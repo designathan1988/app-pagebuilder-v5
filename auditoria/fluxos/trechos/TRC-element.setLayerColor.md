@@ -7,7 +7,7 @@
 ## Passos
 
 1. `src/app/commands.ts:340` `'element.setLayerColor': setLayerColorCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 5. `src/core/nodes/flags.ts:155` `export const setLayerColorCommand = registerHandler('element.setLayerColor', ({ state }, { target, color }): Outcome<never> => {` — o tratador.
@@ -67,7 +67,7 @@
 ## Regras
 
 - G1: n/a — a cor vive na raiz da página (`src/core/nodes/flags.ts:163`) e não numa camada de estilo (breakpoint, estado, classe).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/nodes/flags.ts:155` — o único tratador do comando; toda porta entrega o mesmo par `{ target, color }`.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/nodes/flags.ts:176`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/nodes/flags.ts:176`); as famílias de defeito de painel são medidas em Fase 6.

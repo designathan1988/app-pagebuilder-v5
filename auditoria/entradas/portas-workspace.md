@@ -8,7 +8,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:58` `"id": "menu-view-elements",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -17,7 +17,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:83` `"id": "menu-view-layers",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -26,7 +26,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:108` `"id": "menu-view-inspector",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -35,7 +35,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:133` `"id": "menu-view-explorer",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -44,7 +44,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:158` `"id": "menu-view-timeline",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -53,7 +53,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:183` `"id": "menu-view-motion",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -62,7 +62,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:208` `"id": "menu-view-variables",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -71,7 +71,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:233` `"id": "menu-view-checks",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -80,7 +80,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:258` `"id": "menu-view-workbench",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -89,7 +89,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:283` `"id": "menu-view-canvas-tools",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -98,7 +98,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:308` `"id": "toolbar-canvas-toolbar-canvas-tools",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -107,7 +107,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:333` `"id": "toolbar-activity-bar-explorer",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -116,7 +116,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:359` `"id": "toolbar-activity-bar-insert",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -125,7 +125,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:385` `"id": "toolbar-activity-bar-styles",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -134,7 +134,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:411` `"id": "toolbar-layers-header-toggle",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -143,7 +143,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:436` `"id": "panel-header-close",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -152,7 +152,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:464` `"id": "command-bar-open-panel",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -161,7 +161,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:488` `"id": "menu-help-shortcuts",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -170,7 +170,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:513` `"id": "workbench-tab-close",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -179,7 +179,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:541` `"id": "dock-strip-timeline",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0020.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -188,7 +188,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:566` `"id": "dock-strip-motion",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -197,7 +197,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:591` `"id": "dock-strip-checks",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -206,7 +206,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:616` `"id": "toolbar-activity-bar-assistant",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0023.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -215,7 +215,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:641` `"id": "toolbar-activity-bar-layout-composer",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0024.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -224,7 +224,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setPanelOpen
 - **Porta:** `manifest/commands/workspace.json:666` `"id": "toolbar-activity-bar-data",`
 - **Tratador:** `src/app/commands.ts:477` `'workspace.setPanelOpen': setPanelOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0025.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6201
 
@@ -234,7 +234,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:710` `"id": "key-ctrl-b-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:713` `"chord": "Ctrl+B",`
 - **Tratador:** `src/app/commands.ts:478` `'workspace.toggleLeftDock': toggleLeftDock,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0026.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6202
 
@@ -244,7 +244,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:730` `"id": "key-ctrl-b-in-field",`
 - **Gatilho:** `manifest/commands/workspace.json:733` `"chord": "Ctrl+B",`
 - **Tratador:** `src/app/commands.ts:478` `'workspace.toggleLeftDock': toggleLeftDock,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0027.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6202
 
@@ -253,7 +253,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.toggleLeftDock
 - **Porta:** `manifest/commands/workspace.json:750` `"id": "menu-view",`
 - **Tratador:** `src/app/commands.ts:478` `'workspace.toggleLeftDock': toggleLeftDock,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0028.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6202
 
@@ -263,7 +263,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:790` `"id": "key-ctrl-alt-b-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:793` `"chord": "Ctrl+Alt+B",`
 - **Tratador:** `src/app/commands.ts:479` `'workspace.toggleInspector': toggleInspector,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0029.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6203
 
@@ -273,7 +273,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:810` `"id": "key-ctrl-alt-b-in-field",`
 - **Gatilho:** `manifest/commands/workspace.json:813` `"chord": "Ctrl+Alt+B",`
 - **Tratador:** `src/app/commands.ts:479` `'workspace.toggleInspector': toggleInspector,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0030.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6203
 
@@ -282,7 +282,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.toggleInspector
 - **Porta:** `manifest/commands/workspace.json:830` `"id": "menu-view",`
 - **Tratador:** `src/app/commands.ts:479` `'workspace.toggleInspector': toggleInspector,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0031.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6203
 
@@ -292,7 +292,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:870` `"id": "key-ctrl-backslash-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:873` `"chord": "Ctrl+\\",`
 - **Tratador:** `src/app/commands.ts:480` `'workspace.collapseDocks': collapseDocks,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0032.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6204
 
@@ -302,7 +302,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:890` `"id": "key-ctrl-backslash-in-field",`
 - **Gatilho:** `manifest/commands/workspace.json:893` `"chord": "Ctrl+\\",`
 - **Tratador:** `src/app/commands.ts:480` `'workspace.collapseDocks': collapseDocks,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0033.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6204
 
@@ -311,7 +311,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.collapseDocks
 - **Porta:** `manifest/commands/workspace.json:910` `"id": "menu-view",`
 - **Tratador:** `src/app/commands.ts:480` `'workspace.collapseDocks': collapseDocks,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0034.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6204
 
@@ -320,7 +320,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.toggleDeveloperTools
 - **Porta:** `manifest/commands/workspace.json:950` `"id": "menu-view",`
 - **Tratador:** `src/app/commands.ts:481` `'workspace.toggleDeveloperTools': toggleDeveloperTools,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0035.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6205
 
@@ -329,7 +329,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.reset
 - **Porta:** `manifest/commands/workspace.json:990` `"id": "menu-view",`
 - **Tratador:** `src/app/commands.ts:482` `'workspace.reset': resetWorkspace,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0036.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6206
 
@@ -338,7 +338,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.reset
 - **Porta:** `manifest/commands/workspace.json:1012` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:482` `'workspace.reset': resetWorkspace,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0037.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6206
 
@@ -347,7 +347,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setWorkbenchState
 - **Porta:** `manifest/commands/workspace.json:1063` `"id": "toolbar-workbench-strip-toggle",`
 - **Tratador:** `src/app/commands.ts:483` `'workspace.setWorkbenchState': setWorkbenchState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0038.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6207
 
@@ -356,7 +356,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setWorkbenchState
 - **Porta:** `manifest/commands/workspace.json:1087` `"id": "toolbar-workbench-strip-maximize",`
 - **Tratador:** `src/app/commands.ts:483` `'workspace.setWorkbenchState': setWorkbenchState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0039.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6207
 
@@ -365,7 +365,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setActiveTab
 - **Porta:** `manifest/commands/workspace.json:1141` `"id": "inspector-tab-style",`
 - **Tratador:** `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0040.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6208
 
@@ -374,7 +374,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setActiveTab
 - **Porta:** `manifest/commands/workspace.json:1170` `"id": "inspector-tab-settings",`
 - **Tratador:** `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0041.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6208
 
@@ -383,7 +383,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setActiveTab
 - **Porta:** `manifest/commands/workspace.json:1199` `"id": "inspector-tab-interactions",`
 - **Tratador:** `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0042.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6208
 
@@ -392,7 +392,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setActiveTab
 - **Porta:** `manifest/commands/workspace.json:1228` `"id": "tab-strip-tab",`
 - **Tratador:** `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0043.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6208
 
@@ -401,7 +401,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.setActiveTab
 - **Porta:** `manifest/commands/workspace.json:1254` `"id": "sidebar-tab",`
 - **Tratador:** `src/app/commands.ts:484` `'workspace.setActiveTab': setActiveTab,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0044.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6208
 
@@ -421,7 +421,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:1347` `"id": "key-arrow-left-in-splitter",`
 - **Gatilho:** `manifest/commands/workspace.json:1350` `"chord": "ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0046.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -431,7 +431,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:1369` `"id": "key-arrow-right-in-splitter",`
 - **Gatilho:** `manifest/commands/workspace.json:1372` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0047.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -441,7 +441,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:1391` `"id": "key-arrow-up-in-splitter",`
 - **Gatilho:** `manifest/commands/workspace.json:1394` `"chord": "ArrowUp",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0048.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -451,7 +451,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:1413` `"id": "key-arrow-down-in-splitter",`
 - **Gatilho:** `manifest/commands/workspace.json:1416` `"chord": "ArrowDown",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0049.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -460,7 +460,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1435` `"id": "menu-view-sidebar-wider",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0050.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -469,7 +469,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1460` `"id": "menu-view-sidebar-narrower",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0051.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -478,7 +478,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1485` `"id": "menu-view-inspector-wider",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0052.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -487,7 +487,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1510` `"id": "menu-view-inspector-narrower",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0053.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -496,7 +496,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1535` `"id": "menu-view-layers-taller",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0054.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -505,7 +505,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.resizeSplitter
 - **Porta:** `manifest/commands/workspace.json:1560` `"id": "menu-view-layers-shorter",`
 - **Tratador:** `src/app/commands.ts:485` `'workspace.resizeSplitter': resizeSplitter,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0055.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6209
 
@@ -574,7 +574,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** workspace.movePanel
 - **Porta:** `manifest/commands/workspace.json:1768` `"id": "panel-header-dock",`
 - **Tratador:** `src/app/commands.ts:486` `'workspace.movePanel': movePanel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0062.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6210
 
@@ -593,7 +593,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** preferences.setLanguage
 - **Porta:** `manifest/commands/workspace.json:1877` `"id": "menu-language-pt-br",`
 - **Tratador:** `src/app/commands.ts:489` `'preferences.setLanguage': setLanguage,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0064.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6212
 
@@ -602,7 +602,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** preferences.setLanguage
 - **Porta:** `manifest/commands/workspace.json:1901` `"id": "menu-language-en",`
 - **Tratador:** `src/app/commands.ts:489` `'preferences.setLanguage': setLanguage,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0065.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6212
 
@@ -611,7 +611,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** preferences.setTheme
 - **Porta:** `manifest/commands/workspace.json:1953` `"id": "menu-theme-light",`
 - **Tratador:** `src/app/commands.ts:490` `'preferences.setTheme': setTheme,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0066.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6213
 
@@ -620,7 +620,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** preferences.setTheme
 - **Porta:** `manifest/commands/workspace.json:1977` `"id": "menu-theme-dark",`
 - **Tratador:** `src/app/commands.ts:490` `'preferences.setTheme': setTheme,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0067.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6213
 
@@ -629,7 +629,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** preferences.setTheme
 - **Porta:** `manifest/commands/workspace.json:2001` `"id": "menu-theme-system",`
 - **Tratador:** `src/app/commands.ts:490` `'preferences.setTheme': setTheme,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0068.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6213
 
@@ -639,7 +639,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:2043` `"id": "key-ctrl-k-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:2046` `"chord": "Ctrl+K",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0069.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6214
 
@@ -649,7 +649,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:2063` `"id": "key-ctrl-shift-k-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:2066` `"chord": "Ctrl+Shift+K",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0070.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6214
 
@@ -659,7 +659,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:2083` `"id": "key-ctrl-shift-k-in-text-editing",`
 - **Gatilho:** `manifest/commands/workspace.json:2086` `"chord": "Ctrl+Shift+K",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0071.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6214
 
@@ -668,7 +668,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** commandBar.open
 - **Porta:** `manifest/commands/workspace.json:2103` `"id": "toolbar-top-bar-search",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0072.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6214
 
@@ -677,7 +677,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** commandBar.open
 - **Porta:** `manifest/commands/workspace.json:2125` `"id": "menu-file",`
 - **Tratador:** `src/app/commands.ts:491` `'commandBar.open': openCommandBar,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0073.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6214
 
@@ -686,7 +686,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** palette.toggleGroup
 - **Porta:** `manifest/commands/workspace.json:2171` `"id": "elements-group-header",`
 - **Tratador:** `src/app/commands.ts:492` `'palette.toggleGroup': toggleGroup,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0074.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6215
 
@@ -695,7 +695,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** palette.setDensity
 - **Porta:** `manifest/commands/workspace.json:2226` `"id": "elements-density-list",`
 - **Tratador:** `src/app/commands.ts:493` `'palette.setDensity': setDensity,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0075.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6216
 
@@ -704,7 +704,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** palette.setDensity
 - **Porta:** `manifest/commands/workspace.json:2254` `"id": "elements-density-two-columns",`
 - **Tratador:** `src/app/commands.ts:493` `'palette.setDensity': setDensity,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0076.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6216
 
@@ -713,7 +713,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** palette.setDensity
 - **Porta:** `manifest/commands/workspace.json:2282` `"id": "elements-density-three-columns",`
 - **Tratador:** `src/app/commands.ts:493` `'palette.setDensity': setDensity,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0077.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6216
 
@@ -722,7 +722,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** palette.setDensity
 - **Porta:** `manifest/commands/workspace.json:2310` `"id": "elements-density-icons",`
 - **Tratador:** `src/app/commands.ts:493` `'palette.setDensity': setDensity,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0078.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6216
 
@@ -731,7 +731,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.setExpanded
 - **Porta:** `manifest/commands/workspace.json:2371` `"id": "layers-caret",`
 - **Tratador:** `src/app/commands.ts:494` `'layers.setExpanded': setExpanded,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0079.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6217
 
@@ -750,7 +750,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.collapseAll
 - **Porta:** `manifest/commands/workspace.json:2439` `"id": "toolbar-layers-header-collapse-all",`
 - **Tratador:** `src/app/commands.ts:495` `'layers.collapseAll': collapseAll,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0081.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6218
 
@@ -759,7 +759,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.expandAll
 - **Porta:** `manifest/commands/workspace.json:2479` `"id": "toolbar-layers-header-expand-all",`
 - **Tratador:** `src/app/commands.ts:496` `'layers.expandAll': expandAll,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0082.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6219
 
@@ -769,7 +769,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:2525` `"id": "key-arrow-right-in-layers-tree",`
 - **Gatilho:** `manifest/commands/workspace.json:2528` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:497` `'layers.expandOrFocusChild': expandOrFocusChild,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0083.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6220
 
@@ -779,7 +779,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:2569` `"id": "key-arrow-left-in-layers-tree",`
 - **Gatilho:** `manifest/commands/workspace.json:2572` `"chord": "ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:498` `'layers.collapseOrFocusParent': collapseOrFocusParent,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0084.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6221
 
@@ -788,7 +788,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.setRowDetails
 - **Porta:** `manifest/commands/workspace.json:2623` `"id": "menu-layers-row-details-tag",`
 - **Tratador:** `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0085.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6222
 
@@ -797,7 +797,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.setRowDetails
 - **Porta:** `manifest/commands/workspace.json:2647` `"id": "menu-layers-row-details-id",`
 - **Tratador:** `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0086.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6222
 
@@ -806,7 +806,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.setRowDetails
 - **Porta:** `manifest/commands/workspace.json:2671` `"id": "menu-layers-row-details-classes",`
 - **Tratador:** `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0087.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6222
 
@@ -815,7 +815,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.setRowDetails
 - **Porta:** `manifest/commands/workspace.json:2695` `"id": "menu-layers-row-details-attributes",`
 - **Tratador:** `src/app/commands.ts:499` `'layers.setRowDetails': setRowDetails,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0088.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6222
 
@@ -824,7 +824,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** layers.search
 - **Porta:** `manifest/commands/workspace.json:2743` `"id": "layers-search-field",`
 - **Tratador:** `src/app/commands.ts:500` `'layers.search': search,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0089.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6223
 
@@ -833,7 +833,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.toggleSection
 - **Porta:** `manifest/commands/workspace.json:2794` `"id": "inspector-section-header",`
 - **Tratador:** `src/app/commands.ts:501` `'inspector.toggleSection': toggleSection,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0090.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6224
 
@@ -842,7 +842,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.toggleRow
 - **Porta:** `manifest/commands/workspace.json:2845` `"id": "inspector-row-disclosure",`
 - **Tratador:** `src/app/commands.ts:502` `'inspector.toggleRow': toggleRow,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0091.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6225
 
@@ -851,7 +851,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.setMode
 - **Porta:** `manifest/commands/workspace.json:2898` `"id": "inspector-mode-essentials",`
 - **Tratador:** `src/app/commands.ts:503` `'inspector.setMode': setMode,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0092.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6226
 
@@ -860,7 +860,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.setMode
 - **Porta:** `manifest/commands/workspace.json:2926` `"id": "inspector-mode-all",`
 - **Tratador:** `src/app/commands.ts:503` `'inspector.setMode': setMode,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0093.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6226
 
@@ -869,7 +869,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.reveal
 - **Porta:** `manifest/commands/workspace.json:2984` `"id": "inspector-add-property-item",`
 - **Tratador:** `src/app/commands.ts:504` `'inspector.reveal': revealField,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0094.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6227
 
@@ -878,7 +878,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.reveal
 - **Porta:** `manifest/commands/workspace.json:3010` `"id": "command-bar-edit-property",`
 - **Tratador:** `src/app/commands.ts:504` `'inspector.reveal': revealField,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0095.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6227
 
@@ -897,7 +897,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** inspector.search
 - **Porta:** `manifest/commands/workspace.json:3079` `"id": "inspector-search-field",`
 - **Tratador:** `src/app/commands.ts:506` `'inspector.search': searchInspector,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0097.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6228
 
@@ -906,7 +906,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** codePanel.setPane
 - **Porta:** `manifest/commands/workspace.json:3133` `"id": "code-panel-tab-html",`
 - **Tratador:** `src/app/commands.ts:507` `'codePanel.setPane': setPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0098.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6229
 
@@ -915,7 +915,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** codePanel.setPane
 - **Porta:** `manifest/commands/workspace.json:3161` `"id": "code-panel-tab-css",`
 - **Tratador:** `src/app/commands.ts:507` `'codePanel.setPane': setPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0099.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6229
 
@@ -924,7 +924,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** codePanel.setPane
 - **Porta:** `manifest/commands/workspace.json:3189` `"id": "code-panel-tab-js",`
 - **Tratador:** `src/app/commands.ts:507` `'codePanel.setPane': setPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0100.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6229
 
@@ -933,7 +933,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** codePanel.copyPane
 - **Porta:** `manifest/commands/workspace.json:3235` `"id": "code-panel-copy",`
 - **Tratador:** `src/app/commands.ts:508` `'codePanel.copyPane': copyPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0101.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6230
 
@@ -942,7 +942,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** codePanel.downloadPane
 - **Porta:** `manifest/commands/workspace.json:3279` `"id": "code-panel-download",`
 - **Tratador:** `src/app/commands.ts:509` `'codePanel.downloadPane': downloadPane,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0102.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6231
 
@@ -951,7 +951,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.open
 - **Porta:** `manifest/commands/workspace.json:3347` `"id": "field-color-swatch",`
 - **Tratador:** `src/app/commands.ts:401` `'colorPicker.open': openColorPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0103.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6232
 
@@ -960,7 +960,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setFormat
 - **Porta:** `manifest/commands/workspace.json:3405` `"id": "color-picker-format-hsb",`
 - **Tratador:** `src/app/commands.ts:402` `'colorPicker.setFormat': setColorFormat,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0104.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6233
 
@@ -969,7 +969,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setFormat
 - **Porta:** `manifest/commands/workspace.json:3433` `"id": "color-picker-format-rgb",`
 - **Tratador:** `src/app/commands.ts:402` `'colorPicker.setFormat': setColorFormat,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0105.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6233
 
@@ -978,7 +978,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setFormat
 - **Porta:** `manifest/commands/workspace.json:3461` `"id": "color-picker-format-hex",`
 - **Tratador:** `src/app/commands.ts:402` `'colorPicker.setFormat': setColorFormat,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0106.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6233
 
@@ -987,7 +987,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setFormat
 - **Porta:** `manifest/commands/workspace.json:3489` `"id": "color-picker-format-oklch",`
 - **Tratador:** `src/app/commands.ts:402` `'colorPicker.setFormat': setColorFormat,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0107.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6233
 
@@ -996,7 +996,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setFormat
 - **Porta:** `manifest/commands/workspace.json:3517` `"id": "color-picker-format-oklab",`
 - **Tratador:** `src/app/commands.ts:402` `'colorPicker.setFormat': setColorFormat,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0108.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6233
 
@@ -1005,7 +1005,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.setChannel
 - **Porta:** `manifest/commands/workspace.json:3604` `"id": "color-picker-channel",`
 - **Tratador:** `src/app/commands.ts:403` `'colorPicker.setChannel': setColorChannel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0109.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6234
 
@@ -1014,7 +1014,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.cancel
 - **Porta:** `manifest/commands/workspace.json:3648` `"id": "color-picker-cancel",`
 - **Tratador:** `src/app/commands.ts:405` `'colorPicker.cancel': cancelColorPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0110.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6235
 
@@ -1023,7 +1023,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** colorPicker.apply
 - **Porta:** `manifest/commands/workspace.json:3692` `"id": "color-picker-apply",`
 - **Tratador:** `src/app/commands.ts:404` `'colorPicker.apply': applyColorPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0111.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6236
 
@@ -1032,7 +1032,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Comando:** quickPanel.setOpen
 - **Porta:** `manifest/commands/workspace.json:3734` `"id": "chip",`
 - **Tratador:** `src/app/commands.ts:488` `'quickPanel.setOpen': setOpen,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0112.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6237
 
@@ -1042,7 +1042,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:3762` `"id": "key-ctrl-shift-q-in-global",`
 - **Gatilho:** `manifest/commands/workspace.json:3764` `"chord": "Ctrl+Shift+Q",`
 - **Tratador:** `src/app/commands.ts:488` `'quickPanel.setOpen': setOpen,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0113.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6237
 
@@ -1052,7 +1052,7 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:3784` `"id": "key-escape-in-quick-panel",`
 - **Gatilho:** `manifest/commands/workspace.json:3786` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:488` `'quickPanel.setOpen': setOpen,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0114.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6237
 
@@ -1062,6 +1062,6 @@ Fonte: `manifest/commands/workspace.json`. Um bloco por porta, na ordem do manif
 - **Porta:** `manifest/commands/workspace.json:3806` `"id": "key-ctrl-shift-q-in-quick-panel",`
 - **Gatilho:** `manifest/commands/workspace.json:3808` `"chord": "Ctrl+Shift+Q",`
 - **Tratador:** `src/app/commands.ts:488` `'quickPanel.setOpen': setOpen,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-workspace-0115.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-6237

@@ -1,5 +1,5 @@
 # TRC-animation.create
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly name: string }`; a porta panel-control `timeline-new-animation` não declara argumentos próprios (`manifest/commands/animation.json:58` `          "args": {}`) e o campo do painel acrescenta `name`.
 - **Ramos que dependem dos argumentos:** R2 (nome que não é identificador), R3 (nome já tomado)
 

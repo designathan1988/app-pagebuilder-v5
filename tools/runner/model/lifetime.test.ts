@@ -2,12 +2,20 @@
 // @vitest-environment-options {"settings":{"disableCSSFileLoading":true,"handleDisabledFileLoadingAsSuccess":true,"disableJavaScriptFileLoading":true}}
 // What a routine leaves scheduled once it is stopped (the investigation's C6, options B and C): each routine that
 // schedules frames or timers, stopped part way, leaves nothing scheduled and never runs what it was still waiting to
-// run. The window is a counting stand-in, so the frames and timers are seen as the routine asks for them.
-import { describe, expect, it } from 'vitest';
+// run. The test boot's window is a counting stand-in, so the frames are seen as the routine asks for them; the
+// autosave runs on Vitest's fake timers, whose count says what is still scheduled.
+import { describe, expect, it, vi } from 'vitest';
 import { runDrawnTestBoot, type TestBootResult } from '../../../src/editor/test-boot.ts';
 import { createEditorStore } from '../../../src/editor/store.ts';
+import { startAutosave } from '../../../src/editor/persistence/autosave.ts';
 import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
+import type { CommandId } from '../../../src/generated/ids.ts';
+import { numberConstant } from '../../../src/manifest/runtime.ts';
+import { FIXTURES, fixture } from './harness.ts';
+
+// longer than the idle wait and the retry delay of the autosave (manifest constants autosave.idleWait and retryDelay)
+const IDLE_AND_RETRY = numberConstant('autosave.idleWait' as never) + numberConstant('autosave.retryDelay' as never) + 1;
 
 // a window whose frames wait until the test runs them, counting what is still scheduled
 function countingWindow(): { target: Window; pending: () => number; runFrames: () => void; fonts: () => Promise<void> } {
@@ -63,5 +71,39 @@ describe('o que fica agendado depois de parar', () => {
     expect(late.pending(), 'parado entre dois quadros, o quadro pendente é cancelado').toBe(0);
     late.runFrames();
     expect(results, 'parado, os comandos desenhados não rodam').toEqual([]);
+  });
+
+  it('o autosave, depois de uma troca de projeto com a gravação pendente, guarda só o projeto novo, e parado não deixa timer', async () => {
+    const [first, second] = FIXTURES;
+    expect(first !== undefined && second !== undefined, 'duas páginas de exemplo para trocar').toBe(true);
+    vi.useFakeTimers();
+    try {
+      window.localStorage.clear();
+      const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(0), ids: sequentialIds('a'), ports: { readOnly: () => false } });
+      const stop = startAutosave(store, null, false);
+      // a project opened as the person opens one: over unsaved work, the editor asks first, and the person confirms
+      const open = (name: string) => {
+        const result = (store.dispatch as (id: CommandId, args: unknown) => { readonly status: string })('project.open' as CommandId, { file: JSON.stringify(fixture(name)) });
+        if (result.status === 'confirm') store.answer(true);
+      };
+      // the first project, its write still waiting for the idle moment, and the second opened over it
+      open(first ?? '');
+      const before = store.getState().document;
+      open(second ?? '');
+      const opened = store.getState().document;
+      expect(JSON.stringify(opened) === JSON.stringify(before), 'o segundo projeto substituiu o primeiro').toBe(false);
+      await vi.advanceTimersByTimeAsync(IDLE_AND_RETRY);
+      const journal = JSON.parse(window.localStorage.getItem('work-journal') ?? 'null') as { document?: unknown } | null;
+      expect(journal?.document, 'o diário guarda o projeto aberto por último').toEqual(opened);
+      // with no IndexedDB here the write is refused and a retry waits: stopping leaves nothing scheduled
+      expect(vi.getTimerCount(), 'a nova tentativa espera agendada antes de parar').toBeGreaterThan(0);
+      stop();
+      expect(vi.getTimerCount(), 'parado, o autosave não deixa timer agendado').toBe(0);
+      const kept = window.localStorage.getItem('work-journal');
+      await vi.advanceTimersByTimeAsync(IDLE_AND_RETRY);
+      expect(window.localStorage.getItem('work-journal'), 'parado, nada mais é gravado').toBe(kept);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

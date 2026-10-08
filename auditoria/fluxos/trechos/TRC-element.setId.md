@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava um atributo do nó, não um valor de estilo `src/core/elements/attributes.ts:157` `const patch = attributePatch(at, 'id', typed === '' ? undefined : typed);`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/attributes.ts:146` `export const setIdCommand = registerHandler('element.setId', ({ state, rules, words }, { id, target }): Outcome<never> => {`
 - G4: n/a — a porta é o campo Definir o ID do inspetor, não um ponto do canvas `manifest/commands/elements.json:3747` `"id": "inspector-id",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/attributes.ts:159` `return patch === null ? { kind: 'change', message: said } : { kind: 'change', patches: [patch, ...followedReferences(state.document, at.node)], message: said };`.

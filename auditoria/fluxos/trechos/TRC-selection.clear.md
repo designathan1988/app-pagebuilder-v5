@@ -47,7 +47,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve `selection` e `message`, fora de qualquer camada de estilo (`src/core/selection/selection.ts:38` `export const clearSelectionCommand = registerHandler('selection.clear', () => ({ kind: 'change', selection: [], message: message('status.selection.cleared') }));`).
-- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
+- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
 - G3: ok `src/app/commands.ts:354` `  'selection.clear': clearSelectionCommand,` — as quatro portas convergem neste tratador.
 - G4: n/a — o comando muda a seleção; nada é desenhado sobre o ponto da ação no canvas (`src/core/selection/selection.ts:38`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/selection/selection.ts:38`).

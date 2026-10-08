@@ -1,12 +1,12 @@
 # TRC-animation.deleteKeyframe
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string; readonly keyframe: number }`; as duas portas não declaram argumentos próprios (`manifest/commands/animation.json:442` `          "args": {}` e `manifest/commands/animation.json:462` `          "args": {}`) e o painel (pela porta panel-control) e a tecla Delete no contexto `timeline` (pela porta shortcut) acrescentam a animação mostrada e o quadro-chave.
 - **Ramos que dependem dos argumentos:** R2 (o quadro-chave existe na animação)
 
 ## Passos
 1. `src/app/commands.ts:198` `  'animation.deleteKeyframe': deleteKeyframeCommand,` — a tabela liga o comando ao tratador. [nada muda]
-2. `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);` — a porta panel-control `timeline-keyframe-delete` (`manifest/commands/animation.json:419` `          "id": "timeline-keyframe-delete",`) despacha o comando. [nada muda]
-3. `src/editor/input/keymap.ts:531` `    if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta shortcut `key-delete-in-timeline` (`manifest/commands/animation.json:448` `          "chord": "Delete",`) despacha o mesmo comando pelo teclado no contexto `timeline`. [nada muda]
+2. `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);` — a porta panel-control `timeline-keyframe-delete` (`manifest/commands/animation.json:419` `          "id": "timeline-keyframe-delete",`) despacha o comando. [nada muda]
+3. `src/editor/input/keymap.ts:532` `    if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta shortcut `key-delete-in-timeline` (`manifest/commands/animation.json:448` `          "chord": "Delete",`) despacha o mesmo comando pelo teclado no contexto `timeline`. [nada muda]
 4. `src/core/animation/animation.ts:314` `export const deleteKeyframeCommand = registerHandler('animation.deleteKeyframe', (context, { animation, keyframe }): Outcome<never> => {` — o tratador é registrado; o manifesto pede o predicado `always` (`manifest/commands/animation.json:403` `        "predicate": "always",`). [nada muda]
 5. `src/core/animation/animation.ts:315` `  const found = targetNode(context);` — resolve o elemento único da seleção. [lê: EST-L01-031 via targetNode] [lê: EST-L01-030 via targetNode]
 6. `src/core/animation/animation.ts:316` `  const held = found === null ? null : named(found.node, animation);` — procura a animação pelo nome no nó. [lê: EST-L01-030 via named]
@@ -43,7 +43,7 @@
 ## Regras
 - G1: n/a — o tratador grava as animações do próprio nó (passo 11), não uma camada de estilo, e não lê o contexto de edição.
 - G2: n/a — o tratador não lê campo de digitação (`src/core/animation/animation.ts:314` `export const deleteKeyframeCommand = registerHandler('animation.deleteKeyframe', (context, { animation, keyframe }): Outcome<never> => {`).
-- G3: ok — as duas portas de `animation.deleteKeyframe` chegam ao mesmo tratador (`src/app/commands.ts:198` `  'animation.deleteKeyframe': deleteKeyframeCommand,`) com a mesma intenção (a animação mostrada e o quadro-chave), uma pelo botão (`src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`) e outra pela tecla Delete (`src/editor/input/keymap.ts:531` `    if (clipboard === undefined) dispatch(binding.command.id, args);`).
+- G3: ok — as duas portas de `animation.deleteKeyframe` chegam ao mesmo tratador (`src/app/commands.ts:198` `  'animation.deleteKeyframe': deleteKeyframeCommand,`) com a mesma intenção (a animação mostrada e o quadro-chave), uma pelo botão (`src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`) e outra pela tecla Delete (`src/editor/input/keymap.ts:532` `    if (clipboard === undefined) dispatch(binding.command.id, args);`).
 - G4: n/a — o tratador só devolve correções e mensagem (passo 11); nada é colocado sobre o canvas.
 - G5: n/a — o comando não desenha controle; as portas vivem na colocação do painel (`manifest/commands/animation.json:433` `            "region": "dock-timeline",`) e no mapa de teclas.
 - G6: n/a — o resultado não traz seleção, que fica como estava (`src/core/store/store.ts:522` `    const chosen = outcome.selection ?? before.selection;`).

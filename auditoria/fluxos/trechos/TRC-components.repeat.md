@@ -5,9 +5,9 @@
 
 ## Passos
 1. `src/app/commands.ts:238` `'components.repeat': repeatCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta de atalho (Ctrl+Shift+D) entrega a intenção.
-4. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+2. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
+3. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta de atalho (Ctrl+Shift+D) entrega a intenção.
+4. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `singleSelection` é lida antes do tratador [lê: EST-L01-031 via run].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 7. `src/core/design/components.ts:162` `export const repeatCommand = registerHandler('components.repeat', ({ state, ids, rules, words }): Outcome<never> => {` — o tratador recebe o contexto.
@@ -58,7 +58,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve um caminho fixo do documento (`src/core/design/components.ts:196`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:238` `'components.repeat': repeatCommand,` — o atalho, o menu de contexto, o menu de arranjo e a command bar chegam ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/components.ts:199`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/components.ts:199`).

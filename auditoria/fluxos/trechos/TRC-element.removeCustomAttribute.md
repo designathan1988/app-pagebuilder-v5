@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava atributos do nó, não um valor de estilo `src/core/elements/attributes.ts:306` `return { kind: 'change', patches: [Object.keys(custom).length === 0 ? { op: 'remove', path } : { op: 'replace', path, value: custom }], message: said };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/attributes.ts:297` `export const removeCustomAttributeCommand = registerHandler('element.removeCustomAttribute', ({ state }, { name }): Outcome<never> => {`
 - G4: n/a — a porta é um botão do inspetor, não um ponto do canvas `manifest/commands/elements.json:4588` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/attributes.ts:306` `return { kind: 'change', patches: [Object.keys(custom).length === 0 ? { op: 'remove', path } : { op: 'replace', path, value: custom }], message: said };`.

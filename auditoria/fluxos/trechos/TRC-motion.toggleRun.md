@@ -1,6 +1,6 @@
 # TRC-motion.toggleRun
 - **Chamada:** `src/app/commands.ts:293` `'motion.toggleRun': toggleRunCommand,`
-- **Argumentos:** `{}` — a porta de menu `menu-view-run-interactions` não declara argumento (`manifest/commands/motion.json:3293` `"id": "menu-view-run-interactions",`) e o tratador recebe só o contexto. A porta chama o tratador por `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`.
+- **Argumentos:** `{}` — a porta de menu `menu-view-run-interactions` não declara argumento (`manifest/commands/motion.json:3293` `"id": "menu-view-run-interactions",`) e o tratador recebe só o contexto. A porta chama o tratador por `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`.
 - **Ramos que dependem dos argumentos:** nenhum — não há campo cujo valor mude o caminho.
 
 ## Passos
@@ -22,7 +22,7 @@
 - R1: `src/editor/motion/state.ts:161` `  if (motion[key] === true) {` — com `running` já `true` o campo sai (desliga); com ele ausente o campo passa a `true` (liga).
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/editor/motion/state.ts:207`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o despacho da porta de menu (`src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/editor/motion/state.ts:207`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o despacho da porta de menu (`src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L08-019 (`ui.motion.running`).

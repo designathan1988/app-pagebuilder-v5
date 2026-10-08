@@ -91,7 +91,7 @@
 
 ## Regras
 - G1: n/a — a edição muda o nó em todas as larguras, fora das camadas que o contexto de edição nomeia `src/core/capture/edits.ts:57` `// An edit is the node's at every width: what it changes is changed in the node's own values and in every width's.`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é mantida antes do comando que muda o documento.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é mantida antes do comando que muda o documento.
 - G3: ok `src/core/capture/edits.ts:74` `export const editCaptureCommand = registerHandler('capture.edit', ({ state, ids }, { target, operation, name, value, parent, index }) => {` — um só tratador; as três portas enviam só a intenção.
 - G4: n/a — o trecho não age sobre um ponto do canvas; o contorno do elemento é de outra entrada `src/editor/canvas/chrome.tsx:591` `function CapturedSelection() {`.
 - G5: n/a — o trecho não monta painel nem barra; lê a árvore e devolve estado `src/core/capture/edits.ts:75` `const found = findCaptured(state.document, target);`.

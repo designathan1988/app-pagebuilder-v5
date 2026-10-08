@@ -7,7 +7,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.enter
 - **Porta:** `manifest/commands/layout-composer.json:37` `"id": "layout-compose",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0001.md`
 - **Requisitos:** REQ-1501
 
@@ -16,7 +16,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.enter
 - **Porta:** `manifest/commands/layout-composer.json:59` `"id": "layout-compose-menu",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0002.md`
 - **Requisitos:** REQ-1501
 
@@ -26,7 +26,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Porta:** `manifest/commands/layout-composer.json:79` `"id": "key-l-in-global",`
 - **Gatilho:** `manifest/commands/layout-composer.json:82` `"chord": "L",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0003.md`
 - **Requisitos:** REQ-1501
 
@@ -35,7 +35,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.enter
 - **Porta:** `manifest/commands/layout-composer.json:99` `"id": "toolbar-activity-bar-layout",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0004.md`
 - **Requisitos:** REQ-1501
 
@@ -44,7 +44,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.leave
 - **Porta:** `manifest/commands/layout-composer.json:145` `"id": "layout-done",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0005.md`
 - **Requisitos:** REQ-1502
 
@@ -54,7 +54,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Porta:** `manifest/commands/layout-composer.json:171` `"id": "layout-escape",`
 - **Gatilho:** `manifest/commands/layout-composer.json:174` `"chord": "Escape",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0006.md`
 - **Requisitos:** REQ-1502
 
@@ -154,7 +154,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Porta:** `manifest/commands/layout-composer.json:503` `"id": "layout-delete",`
 - **Gatilho:** `manifest/commands/layout-composer.json:506` `"chord": "Delete",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0016.md`
 - **Requisitos:** REQ-1505
 
@@ -163,7 +163,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.delete
 - **Porta:** `manifest/commands/layout-composer.json:523` `"id": "layout-delete-button",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0017.md`
 - **Requisitos:** REQ-1505
 
@@ -192,7 +192,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.merge
 - **Porta:** `manifest/commands/layout-composer.json:677` `"id": "layout-merge-button",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0020.md`
 - **Requisitos:** REQ-1507
 
@@ -201,7 +201,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:753` `"id": "layout-name",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0021.md`
 - **Requisitos:** REQ-1508
 
@@ -210,7 +210,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:781` `"id": "layout-semantic",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0022.md`
 - **Requisitos:** REQ-1508
 
@@ -219,7 +219,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:809` `"id": "layout-width",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0023.md`
 - **Requisitos:** REQ-1508
 
@@ -228,7 +228,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:837` `"id": "layout-height",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0024.md`
 - **Requisitos:** REQ-1508
 
@@ -237,7 +237,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:865` `"id": "layout-padding",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0025.md`
 - **Requisitos:** REQ-1508
 
@@ -246,7 +246,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:893` `"id": "layout-spacing",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0026.md`
 - **Requisitos:** REQ-1508
 
@@ -255,7 +255,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:921` `"id": "layout-repeat",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0027.md`
 - **Requisitos:** REQ-1508
 
@@ -264,7 +264,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:949` `"id": "layout-alignment",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0028.md`
 - **Requisitos:** REQ-1508
 
@@ -273,7 +273,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:977` `"id": "layout-distribution",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0029.md`
 - **Requisitos:** REQ-1508
 
@@ -282,7 +282,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:1005` `"id": "layout-equal-widths",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0030.md`
 - **Requisitos:** REQ-1508
 
@@ -291,7 +291,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.configure
 - **Porta:** `manifest/commands/layout-composer.json:1034` `"id": "layout-equal-gaps",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0031.md`
 - **Requisitos:** REQ-1508
 
@@ -300,7 +300,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.interpret
 - **Porta:** `manifest/commands/layout-composer.json:1104` `"id": "layout-strategy",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0032.md`
 - **Requisitos:** REQ-1509
 
@@ -309,7 +309,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.respond
 - **Porta:** `manifest/commands/layout-composer.json:1176` `"id": "layout-stack",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0033.md`
 - **Requisitos:** REQ-1510
 
@@ -318,7 +318,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.respond
 - **Porta:** `manifest/commands/layout-composer.json:1204` `"id": "layout-unstack",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0034.md`
 - **Requisitos:** REQ-1510
 
@@ -327,7 +327,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.respond
 - **Porta:** `manifest/commands/layout-composer.json:1232` `"id": "layout-columns",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0035.md`
 - **Requisitos:** REQ-1510
 
@@ -336,7 +336,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.respond
 - **Porta:** `manifest/commands/layout-composer.json:1260` `"id": "layout-hide",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0036.md`
 - **Requisitos:** REQ-1510
 
@@ -345,7 +345,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.respond
 - **Porta:** `manifest/commands/layout-composer.json:1288` `"id": "layout-show",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0037.md`
 - **Requisitos:** REQ-1510
 
@@ -354,7 +354,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.unrelate
 - **Porta:** `manifest/commands/layout-composer.json:1350` `"id": "layout-unrelate",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0038.md`
 - **Requisitos:** REQ-1511
 
@@ -363,7 +363,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.suggest
 - **Porta:** `manifest/commands/layout-composer.json:1412` `"id": "layout-suggest",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0039.md`
 - **Requisitos:** REQ-1512
 
@@ -372,7 +372,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.template
 - **Porta:** `manifest/commands/layout-composer.json:1480` `"id": "layout-template",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0040.md`
 - **Requisitos:** REQ-1513
 
@@ -381,7 +381,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.reference
 - **Porta:** `manifest/commands/layout-composer.json:1545` `"id": "layout-reference",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0041.md`
 - **Requisitos:** REQ-1514
 
@@ -390,7 +390,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.reference
 - **Porta:** `manifest/commands/layout-composer.json:1571` `"id": "layout-reference-opacity",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0042.md`
 - **Requisitos:** REQ-1514
 
@@ -399,7 +399,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.reference
 - **Porta:** `manifest/commands/layout-composer.json:1597` `"id": "layout-reference-clear",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0043.md`
 - **Requisitos:** REQ-1514
 
@@ -408,6 +408,6 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `layout-composer`
 - **Comando:** layout.trace
 - **Porta:** `manifest/commands/layout-composer.json:1659` `"id": "layout-trace",`
 - **Tratador:** `src/app/modules.ts:24` `export const MODULE_COMMANDS = { ...byCommand(LAYOUT_COMPOSER.handlers) } as const;`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-layout-composer-0044.md`
 - **Requisitos:** REQ-1515

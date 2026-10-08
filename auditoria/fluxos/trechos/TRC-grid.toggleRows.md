@@ -53,7 +53,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve os atributos da página, fora de qualquer camada de estilo; o tratador só monta o remendo do atributo `src/core/page/grid.ts:23` `patches: [{ op: 'add', path, value: true }]`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as duas portas de `grid.toggleRows` (o controle do painel de ferramentas e o interruptor do diálogo de guias e grelhas) chegam à tabela `src/app/commands.ts:465` `'grid.toggleRows': toggleRows,` e mandam só a intenção de inverter `src/core/page/grid.ts:33` `({ state }) => toggled(state, 'gridRows', 'status.grid.rowsShown', 'status.grid.rowsHidden'),`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador só monta o remendo `src/core/page/grid.ts:23` `patches: [{ op: 'add', path, value: true }]`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava o atributo `src/core/page/grid.ts:22` `const path = ['pages', at, 'tree', 'attributes', grid];`.

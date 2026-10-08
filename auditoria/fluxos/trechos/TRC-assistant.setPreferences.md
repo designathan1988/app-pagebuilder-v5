@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:179` `'assistant.setPreferences': setAssistantPreferences,` — a tabela de comandos liga o id ao tratador `setAssistantPreferences` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:26` `export const setAssistantPreferences = registerHandler<'assistant.setPreferences', EditorUi>('assistant.setPreferences', ({ state }, { open }) => ({ kind: 'change', ui: nextUi(state.ui, { preferences: open }) }));` — o tratador grava o booleano no campo `preferences`. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via nextUi]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

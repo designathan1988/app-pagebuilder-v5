@@ -4,26 +4,26 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 
 ## Passos
 1. `src/editor/assistant/panel.tsx:85` `<DoorControl entry={entryOf('assistant-close-preferences')} />` — o painel desenha o controle diretamente por `DoorControl`.
-2. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle roda `door.run`; o `pointerRuns` lido em `src/editor/doors/door.tsx:264` `const pointerRuns = pressedByPointer(entry);` é falso, porque `pressedByPointer` só é verdadeiro para um controle cujo `drawnAs` é `item` (`src/editor/input/pointer/common.ts:299`).
-3. `src/editor/doors/door.tsx:92` `const run = () => {` — a função que o clique chama.
-4. `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — comando não construído ou indisponível não roda.
-5. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos da porta juntam os do manifesto (`manifest/commands/assistant.json:145` `"open": false`) aos que o lugar acrescenta (nenhum aqui).
-6. `src/editor/doors/door.tsx:98` `const files = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'files' && !arg.optional && !(name in given))?.[0];` — o comando não declara argumento `files`, então o ramo do escolhedor de vários arquivos não é tomado.
-7. `src/editor/doors/door.tsx:107` `const file = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'file' && !arg.optional && !(name in given))?.[0];` — o comando não declara argumento `file`, então ele é `undefined`.
-8. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — sem arquivo, o caminho segue para a linha seguinte.
-9. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor. O `dispatch` é ligado em `src/editor/doors/door.tsx:94` `const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`.
-10. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-11. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.setPreferences` não é desfazível (`manifest/commands/assistant.json:89` `"undoable": false`).
-12. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
+2. `src/editor/doors/door.tsx:286` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique do controle roda `door.run`; o `pointerRuns` lido em `src/editor/doors/door.tsx:265` `const pointerRuns = pressedByPointer(entry);` é falso, porque `pressedByPointer` só é verdadeiro para um controle cujo `drawnAs` é `item` (`src/editor/input/pointer/common.ts:299`).
+3. `src/editor/doors/door.tsx:93` `const run = () => {` — a função que o clique chama.
+4. `src/editor/doors/door.tsx:94` `if (!built || !available) return;` — comando não construído ou indisponível não roda.
+5. `src/editor/doors/door.tsx:96` `const given = { ...entry.door.args, ...args };` — os argumentos da porta juntam os do manifesto (`manifest/commands/assistant.json:145` `"open": false`) aos que o lugar acrescenta (nenhum aqui).
+6. `src/editor/doors/door.tsx:99` `const files = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'files' && !arg.optional && !(name in given))?.[0];` — o comando não declara argumento `files`, então o ramo do escolhedor de vários arquivos não é tomado.
+7. `src/editor/doors/door.tsx:108` `const file = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'file' && !arg.optional && !(name in given))?.[0];` — o comando não declara argumento `file`, então ele é `undefined`.
+8. `src/editor/doors/door.tsx:144` `if (file === undefined) {` — sem arquivo, o caminho segue para a linha seguinte.
+9. `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor. O `dispatch` é ligado em `src/editor/doors/door.tsx:95` `const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`.
+10. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+11. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.setPreferences` não é desfazível (`manifest/commands/assistant.json:89` `"undoable": false`).
+12. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
 13. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 14. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 15. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela.
 16. `src/app/commands.ts:179` `'assistant.setPreferences': setAssistantPreferences,` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-assistant.setPreferences`).
 
 ## Ramos
-- R1 `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — controle indisponível não roda; disponível segue.
-- R2 `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não pede arquivo, então este lado é o tomado.
-- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
+- R1 `src/editor/doors/door.tsx:94` `if (!built || !available) return;` — controle indisponível não roda; disponível segue.
+- R2 `src/editor/doors/door.tsx:144` `if (file === undefined) {` — o comando não pede arquivo, então este lado é o tomado.
+- R3 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:241` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `assistant.setPreferences` tem tratador na tabela.
 
 ## Fronteiras assíncronas
@@ -42,7 +42,7 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 ## Regras
 - G1: n/a — o comando não grava no documento: `manifest/commands/assistant.json:89` `"undoable": false`
 - G2: n/a — o comando não altera o documento nem o estado antes de rodar: `manifest/commands/assistant.json:89` `"undoable": false`
-- G3: ok `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta envia só a intenção (o id do comando e o `open` do manifesto) e o tratador único decide; as duas portas chegam ao mesmo tratador (`manifest/commands/assistant.json:117` `"open": true` e `manifest/commands/assistant.json:145` `"open": false`).
+- G3: ok `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta envia só a intenção (o id do comando e o `open` do manifesto) e o tratador único decide; as duas portas chegam ao mesmo tratador (`manifest/commands/assistant.json:117` `"open": true` e `manifest/commands/assistant.json:145` `"open": false`).
 - G4: n/a — a porta é desenhada na barra lateral `manifest/commands/assistant.json:98` `"panel": "assistant",`, nada sobre o canvas.
 - G5: n/a — o caminho da porta não desenha painel nem barra: `src/editor/doors/door.tsx:144`.
 - G6: n/a — o caminho da porta não escreve a seleção: `src/editor/doors/door.tsx:144`.

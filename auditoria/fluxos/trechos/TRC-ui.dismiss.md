@@ -38,7 +38,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava o número de descartes `src/editor/menus/overlays.ts:21` `overlays: { dismissals: state.ui.overlays.dismissals + 1 }`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as seis portas de `ui.dismiss` (Escape no menu, no pano de fundo, na barra de comandos, nas sugestões do campo, no diálogo e o botão de fechar do diálogo) chegam à tabela `src/app/commands.ts:323` `'ui.dismiss': dismiss,` e mandam só a intenção de descartar `src/editor/menus/overlays.ts:21` `overlays: { dismissals: state.ui.overlays.dismissals + 1 }`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/menus/overlays.ts:21` `return { kind: 'change', ui: { ...rest, overlays: { dismissals: state.ui.overlays.dismissals + 1 } } };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava o número de descartes `src/editor/menus/overlays.ts:21` `overlays: { dismissals: state.ui.overlays.dismissals + 1 }`.

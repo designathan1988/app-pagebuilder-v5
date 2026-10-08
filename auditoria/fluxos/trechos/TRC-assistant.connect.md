@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:185` `'assistant.connect': connectAssistant,` — a tabela de comandos liga o id ao tratador `connectAssistant` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:61` `export const connectAssistant = registerHandler<'assistant.connect', EditorUi>('assistant.connect', ({ state }) => ({ kind: 'change', ui: request(state.ui, 'connect') }));` — grava o pedido `connect`. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via request]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

@@ -1,5 +1,5 @@
 # TRC-timeline.show
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ readonly animation: string }`; a porta panel-control `timeline-animation-row` não declara argumentos próprios (`manifest/commands/animation.json:806` `          "args": {}`) e a linha do painel acrescenta o nome da animação que ela mostra.
 - **Ramos que dependem dos argumentos:** R1 (nenhuma animação mostrada), R2 (a animação pedida já é a mostrada)
 

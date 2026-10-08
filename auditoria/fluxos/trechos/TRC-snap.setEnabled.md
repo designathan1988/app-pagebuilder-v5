@@ -47,7 +47,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava a preferência `src/editor/view/snap.ts:54` `preferences: on ? { ...rest, snap: true } : rest`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as três portas de `snap.setEnabled` (o botão da barra do canvas e os itens On/Off do menu do encaixe) chegam à tabela `src/app/commands.ts:474` `'snap.setEnabled': setSnapEnabled,` e enviam só o estado pedido `src/editor/view/snap.ts:49` `const on = enabled === 'toggle' ? !was : enabled === 'on';`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/snap.ts:54` `return { kind: 'change', ui: { ...state.ui, preferences: on ? { ...rest, snap: true } : rest }, message: said };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a preferência `src/editor/view/snap.ts:54` `preferences: on ? { ...rest, snap: true } : rest`.

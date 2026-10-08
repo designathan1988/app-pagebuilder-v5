@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:180` `'assistant.attachReference': attachAssistantReference,` — a tabela de comandos liga o id ao tratador `attachAssistantReference` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:33` `export const attachAssistantReference = registerHandler<'assistant.attachReference', EditorUi>('assistant.attachReference', ({ state }, { file }) => {` — o tratador recebe `{ file }`.
 5. `src/editor/assistant/state.ts:37` `const given: unknown = typeof file === 'string' ? JSON.parse(file) : file;` — aceita o texto JSON ou o registo já lido.

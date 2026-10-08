@@ -28,7 +28,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:750` `if (state !== before) publish(commit({ ...state, document: before.document, selection: before.selection, history: before.history }, 'a cancelled gesture'), current.inverses);` — o cancelamento devolve o documento e a seleção guardados no começo do gesto, sem gravar passo.
-- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:216` `keepTyping();`).
+- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:217` `keepTyping();`).
 - G3: ok `src/editor/inspector/color-picker.ts:100` `export const cancelColorPicker = registerHandler<'colorPicker.cancel', EditorUi>('colorPicker.cancel', ({ state }) =>` — a única porta (o botão Cancelar, também o Esc do seletor) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; o seletor abre sobre o painel e o cobrimento no ponto da ação é medido na Fase 6 (`src/editor/inspector/color-picker.ts:101`).
 - G5: n/a — o encaixe do seletor é medido na Fase 6 (`src/editor/inspector/color-picker.ts:101`).

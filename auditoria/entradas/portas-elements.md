@@ -7,7 +7,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setTag
 - **Porta:** `manifest/commands/elements.json:41` `"id": "inspector-tag",`
 - **Tratador:** `src/app/commands.ts:240` `'element.setTag': setTagCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0001.md`
 - **Requisitos:** REQ-0901
 
@@ -16,7 +16,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setTag
 - **Porta:** `manifest/commands/elements.json:69` `"id": "quick-panel-tag",`
 - **Tratador:** `src/app/commands.ts:240` `'element.setTag': setTagCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0002.md`
 - **Requisitos:** REQ-0901
 
@@ -25,7 +25,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:139` `"id": "inspector-title",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0003.md`
 - **Requisitos:** REQ-0902
 
@@ -34,7 +34,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:165` `"id": "inspector-src",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0004.md`
 - **Requisitos:** REQ-0902
 
@@ -43,7 +43,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:191` `"id": "inspector-alt",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0005.md`
 - **Requisitos:** REQ-0902
 
@@ -52,7 +52,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:217` `"id": "inspector-srcset",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0006.md`
 - **Requisitos:** REQ-0902
 
@@ -61,7 +61,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:243` `"id": "inspector-media",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0007.md`
 - **Requisitos:** REQ-0902
 
@@ -70,7 +70,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:269` `"id": "inspector-placeholder",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0008.md`
 - **Requisitos:** REQ-0902
 
@@ -79,7 +79,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:295` `"id": "inspector-value",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0009.md`
 - **Requisitos:** REQ-0902
 
@@ -88,7 +88,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:321` `"id": "inspector-name",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0010.md`
 - **Requisitos:** REQ-0902
 
@@ -97,7 +97,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:347` `"id": "inspector-required",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0011.md`
 - **Requisitos:** REQ-0902
 
@@ -106,7 +106,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:373` `"id": "inspector-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0012.md`
 - **Requisitos:** REQ-0902
 
@@ -115,7 +115,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:399` `"id": "inspector-min",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0013.md`
 - **Requisitos:** REQ-0902
 
@@ -124,7 +124,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:425` `"id": "inspector-max",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0014.md`
 - **Requisitos:** REQ-0902
 
@@ -133,7 +133,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:451` `"id": "inspector-step",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0015.md`
 - **Requisitos:** REQ-0902
 
@@ -142,7 +142,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:477` `"id": "inspector-autocomplete",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0016.md`
 - **Requisitos:** REQ-0902
 
@@ -151,7 +151,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:503` `"id": "inspector-disabled",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0017.md`
 - **Requisitos:** REQ-0902
 
@@ -160,7 +160,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:529` `"id": "inspector-readonly",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0018.md`
 - **Requisitos:** REQ-0902
 
@@ -169,7 +169,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:555` `"id": "inspector-checked",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0019.md`
 - **Requisitos:** REQ-0902
 
@@ -178,7 +178,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:581` `"id": "inspector-action",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0020.md`
 - **Requisitos:** REQ-0902
 
@@ -187,7 +187,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:607` `"id": "inspector-method",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0021.md`
 - **Requisitos:** REQ-0902
 
@@ -196,7 +196,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:633` `"id": "inspector-button-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0022.md`
 - **Requisitos:** REQ-0902
 
@@ -205,7 +205,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:659` `"id": "inspector-rows",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0023.md`
 - **Requisitos:** REQ-0902
 
@@ -214,7 +214,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:685` `"id": "inspector-group-label",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0024.md`
 - **Requisitos:** REQ-0902
 
@@ -223,7 +223,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:711` `"id": "inspector-selected",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0025.md`
 - **Requisitos:** REQ-0902
 
@@ -232,7 +232,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:737` `"id": "inspector-poster",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0026.md`
 - **Requisitos:** REQ-0902
 
@@ -241,7 +241,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:763` `"id": "inspector-controls",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0027.md`
 - **Requisitos:** REQ-0902
 
@@ -250,7 +250,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:789` `"id": "inspector-autoplay",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0028.md`
 - **Requisitos:** REQ-0902
 
@@ -259,7 +259,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:815` `"id": "inspector-loop",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0029.md`
 - **Requisitos:** REQ-0902
 
@@ -268,7 +268,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:841` `"id": "inspector-muted",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0030.md`
 - **Requisitos:** REQ-0902
 
@@ -277,7 +277,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:867` `"id": "inspector-track-kind",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0031.md`
 - **Requisitos:** REQ-0902
 
@@ -286,7 +286,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:893` `"id": "inspector-canvas-width",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0032.md`
 - **Requisitos:** REQ-0902
 
@@ -295,7 +295,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:919` `"id": "inspector-canvas-height",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0033.md`
 - **Requisitos:** REQ-0902
 
@@ -304,7 +304,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:945` `"id": "inspector-open",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0034.md`
 - **Requisitos:** REQ-0902
 
@@ -313,7 +313,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:971` `"id": "asset-picker-choose",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0035.md`
 - **Requisitos:** REQ-0902
 
@@ -322,7 +322,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:999` `"id": "inspector-cite",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0036.md`
 - **Requisitos:** REQ-0902
 
@@ -331,7 +331,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1025` `"id": "inspector-start",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0037.md`
 - **Requisitos:** REQ-0902
 
@@ -340,7 +340,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1051` `"id": "inspector-reversed",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0038.md`
 - **Requisitos:** REQ-0902
 
@@ -349,7 +349,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1077` `"id": "inspector-list-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0039.md`
 - **Requisitos:** REQ-0902
 
@@ -358,7 +358,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1103` `"id": "inspector-scope",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0040.md`
 - **Requisitos:** REQ-0902
 
@@ -367,7 +367,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1129` `"id": "inspector-accept",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0041.md`
 - **Requisitos:** REQ-0902
 
@@ -376,7 +376,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1155` `"id": "inspector-multiple",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0042.md`
 - **Requisitos:** REQ-0902
 
@@ -385,7 +385,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1181` `"id": "inspector-cols",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0043.md`
 - **Requisitos:** REQ-0902
 
@@ -394,7 +394,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1207` `"id": "inspector-max-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0044.md`
 - **Requisitos:** REQ-0902
 
@@ -403,7 +403,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1233` `"id": "inspector-min-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0045.md`
 - **Requisitos:** REQ-0902
 
@@ -412,7 +412,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1259` `"id": "inspector-low",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0046.md`
 - **Requisitos:** REQ-0902
 
@@ -421,7 +421,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1285` `"id": "inspector-high",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0047.md`
 - **Requisitos:** REQ-0902
 
@@ -430,7 +430,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1311` `"id": "inspector-optimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0048.md`
 - **Requisitos:** REQ-0902
 
@@ -439,7 +439,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1337` `"id": "inspector-allow",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0049.md`
 - **Requisitos:** REQ-0902
 
@@ -448,7 +448,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1363` `"id": "inspector-loading",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0050.md`
 - **Requisitos:** REQ-0902
 
@@ -457,7 +457,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1389` `"id": "inspector-plays-inline",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0051.md`
 - **Requisitos:** REQ-0902
 
@@ -466,7 +466,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1415` `"id": "inspector-preload",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0052.md`
 - **Requisitos:** REQ-0902
 
@@ -475,7 +475,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1441` `"id": "quick-panel-src",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0053.md`
 - **Requisitos:** REQ-0902
 
@@ -484,7 +484,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1466` `"id": "quick-panel-alt",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0054.md`
 - **Requisitos:** REQ-0902
 
@@ -493,7 +493,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1491` `"id": "quick-panel-button-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0055.md`
 - **Requisitos:** REQ-0902
 
@@ -502,7 +502,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1516` `"id": "inspector-role",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0056.md`
 - **Requisitos:** REQ-0902
 
@@ -511,7 +511,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1542` `"id": "inspector-aria-label",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0057.md`
 - **Requisitos:** REQ-0902
 
@@ -520,7 +520,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1568` `"id": "inspector-aria-hidden",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0058.md`
 - **Requisitos:** REQ-0902
 
@@ -529,7 +529,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1594` `"id": "forms-mask-kind",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0059.md`
 - **Requisitos:** REQ-0902
 
@@ -538,7 +538,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1620` `"id": "forms-mask-preset",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0060.md`
 - **Requisitos:** REQ-0902
 
@@ -547,7 +547,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1646` `"id": "forms-mask-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0061.md`
 - **Requisitos:** REQ-0902
 
@@ -556,7 +556,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1672` `"id": "forms-mask-alternative-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0062.md`
 - **Requisitos:** REQ-0902
 
@@ -565,7 +565,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1698` `"id": "forms-mask-alternative-max-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0063.md`
 - **Requisitos:** REQ-0902
 
@@ -574,7 +574,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1724` `"id": "forms-mask-block-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0064.md`
 - **Requisitos:** REQ-0902
 
@@ -583,7 +583,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1750` `"id": "forms-mask-block-name",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0065.md`
 - **Requisitos:** REQ-0902
 
@@ -592,7 +592,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1776` `"id": "forms-mask-locale",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0066.md`
 - **Requisitos:** REQ-0902
 
@@ -601,7 +601,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1802` `"id": "forms-mask-currency",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0067.md`
 - **Requisitos:** REQ-0902
 
@@ -610,7 +610,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1828` `"id": "forms-mask-precision",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0068.md`
 - **Requisitos:** REQ-0902
 
@@ -619,7 +619,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1854` `"id": "forms-mask-minimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0069.md`
 - **Requisitos:** REQ-0902
 
@@ -628,7 +628,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1880` `"id": "forms-mask-maximum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0070.md`
 - **Requisitos:** REQ-0902
 
@@ -637,7 +637,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1906` `"id": "forms-mask-negative",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0071.md`
 - **Requisitos:** REQ-0902
 
@@ -646,7 +646,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1932` `"id": "forms-mask-suffix",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0072.md`
 - **Requisitos:** REQ-0902
 
@@ -655,7 +655,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1958` `"id": "forms-mask-format",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0073.md`
 - **Requisitos:** REQ-0902
 
@@ -664,7 +664,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:1984` `"id": "forms-mask-autocorrect",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0074.md`
 - **Requisitos:** REQ-0902
 
@@ -673,7 +673,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2010` `"id": "forms-mask-submit",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0075.md`
 - **Requisitos:** REQ-0902
 
@@ -682,7 +682,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2036` `"id": "forms-preview-input",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0076.md`
 - **Requisitos:** REQ-0902
 
@@ -691,7 +691,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2062` `"id": "forms-when",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0077.md`
 - **Requisitos:** REQ-0902
 
@@ -700,7 +700,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2088` `"id": "forms-rules-required",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0078.md`
 - **Requisitos:** REQ-0902
 
@@ -709,7 +709,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2114` `"id": "forms-rules-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0079.md`
 - **Requisitos:** REQ-0902
 
@@ -718,7 +718,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2140` `"id": "forms-rules-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0080.md`
 - **Requisitos:** REQ-0902
 
@@ -727,7 +727,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2166` `"id": "forms-rules-min-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0081.md`
 - **Requisitos:** REQ-0902
 
@@ -736,7 +736,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2192` `"id": "forms-rules-max-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0082.md`
 - **Requisitos:** REQ-0902
 
@@ -745,7 +745,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2218` `"id": "forms-rules-minimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0083.md`
 - **Requisitos:** REQ-0902
 
@@ -754,7 +754,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2244` `"id": "forms-rules-maximum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0084.md`
 - **Requisitos:** REQ-0902
 
@@ -763,7 +763,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2270` `"id": "forms-rules-step",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0085.md`
 - **Requisitos:** REQ-0902
 
@@ -772,7 +772,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2296` `"id": "forms-rules-equal-to",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0086.md`
 - **Requisitos:** REQ-0902
 
@@ -781,7 +781,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2322` `"id": "forms-rules-allowed",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0087.md`
 - **Requisitos:** REQ-0902
 
@@ -790,7 +790,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2348` `"id": "forms-rules-password-enabled",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0088.md`
 - **Requisitos:** REQ-0902
 
@@ -799,7 +799,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2374` `"id": "forms-rules-password-min-length",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0089.md`
 - **Requisitos:** REQ-0902
 
@@ -808,7 +808,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2400` `"id": "forms-rules-password-uppercase",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0090.md`
 - **Requisitos:** REQ-0902
 
@@ -817,7 +817,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2426` `"id": "forms-rules-password-lowercase",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0091.md`
 - **Requisitos:** REQ-0902
 
@@ -826,7 +826,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2452` `"id": "forms-rules-password-digit",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0092.md`
 - **Requisitos:** REQ-0902
 
@@ -835,7 +835,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2478` `"id": "forms-rules-password-symbol",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0093.md`
 - **Requisitos:** REQ-0902
 
@@ -844,7 +844,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2504` `"id": "forms-rules-date-minimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0094.md`
 - **Requisitos:** REQ-0902
 
@@ -853,7 +853,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2530` `"id": "forms-rules-date-maximum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0095.md`
 - **Requisitos:** REQ-0902
 
@@ -862,7 +862,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2556` `"id": "forms-rules-file-accept",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0096.md`
 - **Requisitos:** REQ-0902
 
@@ -871,7 +871,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2582` `"id": "forms-rules-file-max-bytes",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0097.md`
 - **Requisitos:** REQ-0902
 
@@ -880,7 +880,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2608` `"id": "forms-rules-file-max-total-bytes",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0098.md`
 - **Requisitos:** REQ-0902
 
@@ -889,7 +889,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2634` `"id": "forms-error-id",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0099.md`
 - **Requisitos:** REQ-0902
 
@@ -898,7 +898,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2660` `"id": "forms-messages-locale",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0100.md`
 - **Requisitos:** REQ-0902
 
@@ -907,7 +907,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2686` `"id": "forms-address-enabled",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0101.md`
 - **Requisitos:** REQ-0902
 
@@ -916,7 +916,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2712` `"id": "forms-address-endpoint",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0102.md`
 - **Requisitos:** REQ-0902
 
@@ -925,7 +925,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2738` `"id": "forms-address-field",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0103.md`
 - **Requisitos:** REQ-0902
 
@@ -934,7 +934,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2764` `"id": "forms-address-key",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0104.md`
 - **Requisitos:** REQ-0902
 
@@ -943,7 +943,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2790` `"id": "forms-messages-required",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0105.md`
 - **Requisitos:** REQ-0902
 
@@ -952,7 +952,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2816` `"id": "forms-messages-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0106.md`
 - **Requisitos:** REQ-0902
 
@@ -961,7 +961,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2842` `"id": "forms-messages-pattern",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0107.md`
 - **Requisitos:** REQ-0902
 
@@ -970,7 +970,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2868` `"id": "forms-messages-too-short",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0108.md`
 - **Requisitos:** REQ-0902
 
@@ -979,7 +979,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2894` `"id": "forms-messages-too-long",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0109.md`
 - **Requisitos:** REQ-0902
 
@@ -988,7 +988,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2920` `"id": "forms-messages-minimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0110.md`
 - **Requisitos:** REQ-0902
 
@@ -997,7 +997,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2946` `"id": "forms-messages-maximum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0111.md`
 - **Requisitos:** REQ-0902
 
@@ -1006,7 +1006,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2972` `"id": "forms-messages-step",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0112.md`
 - **Requisitos:** REQ-0902
 
@@ -1015,7 +1015,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:2998` `"id": "forms-messages-preset",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0113.md`
 - **Requisitos:** REQ-0902
 
@@ -1024,7 +1024,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3024` `"id": "forms-messages-equal-to",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0114.md`
 - **Requisitos:** REQ-0902
 
@@ -1033,7 +1033,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3050` `"id": "forms-messages-password",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0115.md`
 - **Requisitos:** REQ-0902
 
@@ -1042,7 +1042,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3076` `"id": "forms-messages-allowed",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0116.md`
 - **Requisitos:** REQ-0902
 
@@ -1051,7 +1051,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3102` `"id": "forms-messages-date-minimum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0117.md`
 - **Requisitos:** REQ-0902
 
@@ -1060,7 +1060,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3128` `"id": "forms-messages-date-maximum",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0118.md`
 - **Requisitos:** REQ-0902
 
@@ -1069,7 +1069,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3154` `"id": "forms-messages-file-type",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0119.md`
 - **Requisitos:** REQ-0902
 
@@ -1078,7 +1078,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3180` `"id": "forms-messages-file-size",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0120.md`
 - **Requisitos:** REQ-0902
 
@@ -1087,7 +1087,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3206` `"id": "forms-messages-configuration",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0121.md`
 - **Requisitos:** REQ-0902
 
@@ -1096,7 +1096,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3232` `"id": "forms-submission-destination",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0122.md`
 - **Requisitos:** REQ-0902
 
@@ -1105,7 +1105,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3258` `"id": "forms-submission-endpoint",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0123.md`
 - **Requisitos:** REQ-0902
 
@@ -1114,7 +1114,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3284` `"id": "forms-submission-method",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0124.md`
 - **Requisitos:** REQ-0902
 
@@ -1123,7 +1123,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3310` `"id": "forms-submission-encoding",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0125.md`
 - **Requisitos:** REQ-0902
 
@@ -1132,7 +1132,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3336` `"id": "forms-submission-success-id",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0126.md`
 - **Requisitos:** REQ-0902
 
@@ -1141,7 +1141,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3362` `"id": "forms-submission-error-id",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0127.md`
 - **Requisitos:** REQ-0902
 
@@ -1150,7 +1150,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3388` `"id": "forms-submission-honeypot",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0128.md`
 - **Requisitos:** REQ-0902
 
@@ -1159,7 +1159,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3414` `"id": "forms-submission-redirect",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0129.md`
 - **Requisitos:** REQ-0902
 
@@ -1168,7 +1168,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3440` `"id": "forms-mask-alternative-add",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0130.md`
 - **Requisitos:** REQ-0902
 
@@ -1177,7 +1177,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3466` `"id": "forms-mask-alternative-remove",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0131.md`
 - **Requisitos:** REQ-0902
 
@@ -1186,7 +1186,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3492` `"id": "forms-mask-block-add",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0132.md`
 - **Requisitos:** REQ-0902
 
@@ -1195,7 +1195,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3518` `"id": "forms-mask-block-remove",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0133.md`
 - **Requisitos:** REQ-0902
 
@@ -1204,7 +1204,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3544` `"id": "forms-address-add",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0134.md`
 - **Requisitos:** REQ-0902
 
@@ -1213,7 +1213,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setAttribute
 - **Porta:** `manifest/commands/elements.json:3570` `"id": "forms-address-remove",`
 - **Tratador:** `src/app/commands.ts:241` `'element.setAttribute': closingAssetPicker(setAttributeCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0135.md`
 - **Requisitos:** REQ-0902
 
@@ -1222,7 +1222,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** assetPicker.open
 - **Porta:** `manifest/commands/elements.json:3620` `"id": "field-source-choose",`
 - **Tratador:** `src/app/commands.ts:399` `'assetPicker.open': openAssetPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0136.md`
 - **Requisitos:** REQ-0903
 
@@ -1231,7 +1231,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** assetPicker.close
 - **Porta:** `manifest/commands/elements.json:3664` `"id": "asset-picker-close",`
 - **Tratador:** `src/app/commands.ts:400` `'assetPicker.close': closeAssetPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0137.md`
 - **Requisitos:** REQ-0904
 
@@ -1241,7 +1241,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Porta:** `manifest/commands/elements.json:3690` `"id": "key-escape-in-asset-picker",`
 - **Gatilho:** `manifest/commands/elements.json:3693` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:400` `'assetPicker.close': closeAssetPicker,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-elements-0138.md`
 - **Requisitos:** REQ-0904
 
@@ -1250,7 +1250,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setId
 - **Porta:** `manifest/commands/elements.json:3747` `"id": "inspector-id",`
 - **Tratador:** `src/app/commands.ts:242` `'element.setId': setIdCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0139.md`
 - **Requisitos:** REQ-0905
 
@@ -1259,7 +1259,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setClasses
 - **Porta:** `manifest/commands/elements.json:3809` `"id": "inspector-classes",`
 - **Tratador:** `src/app/commands.ts:243` `'element.setClasses': setClassesCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0140.md`
 - **Requisitos:** REQ-0906
 
@@ -1268,7 +1268,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:3889` `"id": "inspector-href",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0141.md`
 - **Requisitos:** REQ-0907
 
@@ -1277,7 +1277,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:3915` `"id": "inspector-new-tab",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0142.md`
 - **Requisitos:** REQ-0907
 
@@ -1286,7 +1286,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:3941` `"id": "quick-panel-href",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0143.md`
 - **Requisitos:** REQ-0907
 
@@ -1295,7 +1295,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:3964` `"id": "quick-panel-new-tab",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0144.md`
 - **Requisitos:** REQ-0907
 
@@ -1304,7 +1304,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:3987` `"id": "link-picker-page-item",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0145.md`
 - **Requisitos:** REQ-0907
 
@@ -1313,7 +1313,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLink
 - **Porta:** `manifest/commands/elements.json:4013` `"id": "link-picker-anchor-item",`
 - **Tratador:** `src/app/commands.ts:244` `'element.setLink': closingPicker(setLinkCommand),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0146.md`
 - **Requisitos:** REQ-0907
 
@@ -1322,7 +1322,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.open
 - **Porta:** `manifest/commands/elements.json:4063` `"id": "field-href-choose",`
 - **Tratador:** `src/app/commands.ts:396` `'linkPicker.open': openLinkPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0147.md`
 - **Requisitos:** REQ-0908
 
@@ -1331,7 +1331,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.setKind
 - **Porta:** `manifest/commands/elements.json:4119` `"id": "link-picker-page",`
 - **Tratador:** `src/app/commands.ts:397` `'linkPicker.setKind': setLinkKind,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0148.md`
 - **Requisitos:** REQ-0909
 
@@ -1340,7 +1340,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.setKind
 - **Porta:** `manifest/commands/elements.json:4147` `"id": "link-picker-anchor",`
 - **Tratador:** `src/app/commands.ts:397` `'linkPicker.setKind': setLinkKind,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0149.md`
 - **Requisitos:** REQ-0909
 
@@ -1349,7 +1349,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.setKind
 - **Porta:** `manifest/commands/elements.json:4175` `"id": "link-picker-url",`
 - **Tratador:** `src/app/commands.ts:397` `'linkPicker.setKind': setLinkKind,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0150.md`
 - **Requisitos:** REQ-0909
 
@@ -1358,7 +1358,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.setKind
 - **Porta:** `manifest/commands/elements.json:4203` `"id": "link-picker-email",`
 - **Tratador:** `src/app/commands.ts:397` `'linkPicker.setKind': setLinkKind,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0151.md`
 - **Requisitos:** REQ-0909
 
@@ -1367,7 +1367,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.setKind
 - **Porta:** `manifest/commands/elements.json:4231` `"id": "link-picker-phone",`
 - **Tratador:** `src/app/commands.ts:397` `'linkPicker.setKind': setLinkKind,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0152.md`
 - **Requisitos:** REQ-0909
 
@@ -1376,7 +1376,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** linkPicker.close
 - **Porta:** `manifest/commands/elements.json:4277` `"id": "link-picker-close",`
 - **Tratador:** `src/app/commands.ts:398` `'linkPicker.close': closeLinkPicker,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0153.md`
 - **Requisitos:** REQ-0910
 
@@ -1386,7 +1386,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Porta:** `manifest/commands/elements.json:4303` `"id": "key-escape-in-link-picker",`
 - **Gatilho:** `manifest/commands/elements.json:4306` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:398` `'linkPicker.close': closeLinkPicker,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-elements-0154.md`
 - **Requisitos:** REQ-0910
 
@@ -1395,7 +1395,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setInputType
 - **Porta:** `manifest/commands/elements.json:4355` `"id": "inspector-input-type",`
 - **Tratador:** `src/app/commands.ts:245` `'element.setInputType': setInputTypeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0155.md`
 - **Requisitos:** REQ-0911
 
@@ -1404,7 +1404,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setInputType
 - **Porta:** `manifest/commands/elements.json:4381` `"id": "inspector-input-type-text-for-masks",`
 - **Tratador:** `src/app/commands.ts:245` `'element.setInputType': setInputTypeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0156.md`
 - **Requisitos:** REQ-0911
 
@@ -1413,7 +1413,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setLabelTarget
 - **Porta:** `manifest/commands/elements.json:4441` `"id": "inspector-label-for",`
 - **Tratador:** `src/app/commands.ts:246` `'element.setLabelTarget': setLabelTargetCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0157.md`
 - **Requisitos:** REQ-0912
 
@@ -1422,7 +1422,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setCustomAttribute
 - **Porta:** `manifest/commands/elements.json:4505` `"id": "inspector-custom-attribute-add",`
 - **Tratador:** `src/app/commands.ts:247` `'element.setCustomAttribute': setCustomAttributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0158.md`
 - **Requisitos:** REQ-0913
 
@@ -1431,7 +1431,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setCustomAttribute
 - **Porta:** `manifest/commands/elements.json:4531` `"id": "inspector-custom-attribute-value",`
 - **Tratador:** `src/app/commands.ts:247` `'element.setCustomAttribute': setCustomAttributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0159.md`
 - **Requisitos:** REQ-0913
 
@@ -1440,7 +1440,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.removeCustomAttribute
 - **Porta:** `manifest/commands/elements.json:4587` `"id": "inspector-custom-attribute-remove",`
 - **Tratador:** `src/app/commands.ts:248` `'element.removeCustomAttribute': removeCustomAttributeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0160.md`
 - **Requisitos:** REQ-0914
 
@@ -1449,7 +1449,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setSvgMarkup
 - **Porta:** `manifest/commands/elements.json:4647` `"id": "inspector-svg-markup",`
 - **Tratador:** `src/app/commands.ts:249` `'element.setSvgMarkup': setSvgMarkupCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0161.md`
 - **Requisitos:** REQ-0915
 
@@ -1458,7 +1458,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.setEmbedMarkup
 - **Porta:** `manifest/commands/elements.json:4709` `"id": "inspector-embed-markup",`
 - **Tratador:** `src/app/commands.ts:250` `'element.setEmbedMarkup': setEmbedMarkupCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0162.md`
 - **Requisitos:** REQ-0916
 
@@ -1467,7 +1467,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** element.applyHtml
 - **Porta:** `manifest/commands/elements.json:4772` `"id": "code-panel-html-apply",`
 - **Tratador:** `src/app/commands.ts:251` `'element.applyHtml': applyHtmlCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0163.md`
 - **Requisitos:** REQ-0917
 
@@ -1476,7 +1476,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.toggle
 - **Porta:** `manifest/commands/elements.json:4834` `"id": "inspector-table-caption-toggle",`
 - **Tratador:** `src/app/commands.ts:252` `'parts.toggle': togglePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0164.md`
 - **Requisitos:** REQ-0918
 
@@ -1485,7 +1485,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.toggle
 - **Porta:** `manifest/commands/elements.json:4862` `"id": "inspector-table-head-toggle",`
 - **Tratador:** `src/app/commands.ts:252` `'parts.toggle': togglePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0165.md`
 - **Requisitos:** REQ-0918
 
@@ -1494,7 +1494,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.toggle
 - **Porta:** `manifest/commands/elements.json:4890` `"id": "inspector-table-foot-toggle",`
 - **Tratador:** `src/app/commands.ts:252` `'parts.toggle': togglePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0166.md`
 - **Requisitos:** REQ-0918
 
@@ -1503,7 +1503,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:4963` `"id": "inspector-options-editor-add-option",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0167.md`
 - **Requisitos:** REQ-0919
 
@@ -1512,7 +1512,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:4991` `"id": "inspector-options-editor-add-option-group",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0168.md`
 - **Requisitos:** REQ-0919
 
@@ -1521,7 +1521,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5019` `"id": "inspector-picture-sources-add-source",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0169.md`
 - **Requisitos:** REQ-0919
 
@@ -1530,7 +1530,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5047` `"id": "inspector-media-sources-add-track",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0170.md`
 - **Requisitos:** REQ-0919
 
@@ -1539,7 +1539,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5075` `"id": "inspector-svg-shapes-add-rectangle",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0171.md`
 - **Requisitos:** REQ-0919
 
@@ -1548,7 +1548,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5103` `"id": "inspector-svg-shapes-add-ellipse",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0172.md`
 - **Requisitos:** REQ-0919
 
@@ -1557,7 +1557,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5131` `"id": "inspector-svg-shapes-add-line",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0173.md`
 - **Requisitos:** REQ-0919
 
@@ -1566,7 +1566,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.add
 - **Porta:** `manifest/commands/elements.json:5159` `"id": "inspector-media-sources-add-source",`
 - **Tratador:** `src/app/commands.ts:253` `'parts.add': addPartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0174.md`
 - **Requisitos:** REQ-0919
 
@@ -1575,7 +1575,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.move
 - **Porta:** `manifest/commands/elements.json:5222` `"id": "inspector-part-move-up",`
 - **Tratador:** `src/app/commands.ts:254` `'parts.move': movePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0175.md`
 - **Requisitos:** REQ-0920
 
@@ -1584,7 +1584,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.move
 - **Porta:** `manifest/commands/elements.json:5250` `"id": "inspector-part-move-down",`
 - **Tratador:** `src/app/commands.ts:254` `'parts.move': movePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0176.md`
 - **Requisitos:** REQ-0920
 
@@ -1593,7 +1593,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** parts.remove
 - **Porta:** `manifest/commands/elements.json:5308` `"id": "inspector-part-remove",`
 - **Tratador:** `src/app/commands.ts:255` `'parts.remove': removePartCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0177.md`
 - **Requisitos:** REQ-0921
 
@@ -1602,7 +1602,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addColumnAfter
 - **Porta:** `manifest/commands/elements.json:5358` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:256` `'table.addColumnAfter': addColumnAfterCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0178.md`
 - **Requisitos:** REQ-0922
 
@@ -1611,7 +1611,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addColumnAfter
 - **Porta:** `manifest/commands/elements.json:5378` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:256` `'table.addColumnAfter': addColumnAfterCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0179.md`
 - **Requisitos:** REQ-0922
 
@@ -1620,7 +1620,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addColumnEnd
 - **Porta:** `manifest/commands/elements.json:5423` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:257` `'table.addColumnEnd': addColumnEndCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0180.md`
 - **Requisitos:** REQ-0923
 
@@ -1629,7 +1629,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addColumnEnd
 - **Porta:** `manifest/commands/elements.json:5443` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:257` `'table.addColumnEnd': addColumnEndCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0181.md`
 - **Requisitos:** REQ-0923
 
@@ -1638,7 +1638,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.removeColumn
 - **Porta:** `manifest/commands/elements.json:5489` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:258` `'table.removeColumn': removeColumnCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0182.md`
 - **Requisitos:** REQ-0924
 
@@ -1647,7 +1647,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.removeColumn
 - **Porta:** `manifest/commands/elements.json:5509` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:258` `'table.removeColumn': removeColumnCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0183.md`
 - **Requisitos:** REQ-0924
 
@@ -1656,7 +1656,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addRowAfter
 - **Porta:** `manifest/commands/elements.json:5554` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:259` `'table.addRowAfter': addRowAfterCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0184.md`
 - **Requisitos:** REQ-0925
 
@@ -1665,7 +1665,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.addRowAfter
 - **Porta:** `manifest/commands/elements.json:5574` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:259` `'table.addRowAfter': addRowAfterCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0185.md`
 - **Requisitos:** REQ-0925
 
@@ -1674,7 +1674,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.removeRow
 - **Porta:** `manifest/commands/elements.json:5620` `"id": "context-menu",`
 - **Tratador:** `src/app/commands.ts:260` `'table.removeRow': removeRowCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0186.md`
 - **Requisitos:** REQ-0926
 
@@ -1683,7 +1683,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** table.removeRow
 - **Porta:** `manifest/commands/elements.json:5640` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:260` `'table.removeRow': removeRowCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-elements-0187.md`
 - **Requisitos:** REQ-0926
 

@@ -1,5 +1,5 @@
 # TRC-data.previewSheet
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ sheet: string }`; a porta `data-preview-sheet` manda o nome da planilha escolhida.
 - **Ramos que dependem dos argumentos:** R1 (sem prévia ou planilha desconhecida).
 

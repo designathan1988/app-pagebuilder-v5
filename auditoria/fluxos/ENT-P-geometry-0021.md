@@ -1,19 +1,19 @@
 # ENT-P-geometry-0021 — position.setAnchors pela porta position.setAnchors#key-alt-shift-arrow-right-in-canvas-positioned
 
 ## Passos
-1. `src/editor/input/keymap.ts:380` `const onKeyDown = (event: KeyboardEvent) => {` — o keymap recebe a tecla `Alt+Shift+ArrowRight`.
-2. `src/editor/input/keymap.ts:476` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — a ligação do acorde no contexto `canvas-positioned`.
-3. `src/editor/input/keymap.ts:526` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do manifesto (`manifest/commands/geometry.json:691` `"edge": "right",`) sobre os do controle focado.
-4. `src/editor/input/keymap.ts:527` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — este `gesture` é nulo (`manifest/commands/geometry.json:674` `"gesture": null,`), então `args` é `given`.
-5. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a Início: a tecla entrega a intenção à store do editor. [lê: EST-L01-030 via positionedContext] [lê: EST-L01-031 via positionedContext]
+1. `src/editor/input/keymap.ts:381` `const onKeyDown = (event: KeyboardEvent) => {` — o keymap recebe a tecla `Alt+Shift+ArrowRight`.
+2. `src/editor/input/keymap.ts:477` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — a ligação do acorde no contexto `canvas-positioned`.
+3. `src/editor/input/keymap.ts:527` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do manifesto (`manifest/commands/geometry.json:691` `"edge": "right",`) sobre os do controle focado.
+4. `src/editor/input/keymap.ts:528` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — este `gesture` é nulo (`manifest/commands/geometry.json:674` `"gesture": null,`), então `args` é `given`.
+5. `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a Início: a tecla entrega a intenção à store do editor. [lê: EST-L01-030 via positionedContext] [lê: EST-L01-031 via positionedContext]
 6. `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,` — a Chamada do trecho TRC-position.setAnchors: a tabela liga o id ao tratador.
 
 ## Ramos
-- R1 `src/editor/input/keymap.ts:505` `if (!shortcutRunsNow(binding)) return;` — a porta não corre agora: nada; corre: segue ao passo 5.
-- R2 `src/editor/input/keymap.ts:530` `const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — um argumento de área de transferência faria a tecla aguardar; este comando não tem: o passo 5 despacha direto.
+- R1 `src/editor/input/keymap.ts:506` `if (!shortcutRunsNow(binding)) return;` — a porta não corre agora: nada; corre: segue ao passo 5.
+- R2 `src/editor/input/keymap.ts:531` `const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — um argumento de área de transferência faria a tecla aguardar; este comando não tem: o passo 5 despacha direto.
 
 ## Fronteiras assíncronas
-- nenhuma — o keymap despacha de forma síncrona; a leitura da área de transferência (`src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`) só vale para um argumento de área de transferência, que este comando não tem.
+- nenhuma — o keymap despacha de forma síncrona; a leitura da área de transferência (`src/editor/input/keymap.ts:533` `else if (gesture === null) afterRead(store, readClipboard(), (content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`) só vale para um argumento de área de transferência, que este comando não tem.
 
 ## Estado
 - Lê: EST-L01-030 (documento, regras), EST-L01-031 (seleção), EST-L05a-001 (digitação pendente).
@@ -26,8 +26,8 @@
 - **DOM do canvas:** o iframe desenha o elemento com as âncoras novas pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144` `patches: writeDeclarations(found.node, found.path, rules.base, writes),`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144` `patches: writeDeclarations(found.node, found.path, rules.base, writes),`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,` — as setas, as abas do canvas e o controle do inspector chamam o mesmo tratador com a mesma forma `{ edge, mode }`.
 - G4: n/a — o fluxo de porta não desenha painel nem barra sobre o canvas (`src/editor/input/keymap.ts:531`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/input/keymap.ts:531`).

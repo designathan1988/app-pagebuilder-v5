@@ -7,7 +7,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.select
 - **Porta:** `manifest/commands/content.json:28` `"id": "data-collection-tab",`
 - **Tratador:** `src/app/commands.ts:152` `'data.select': selectCollection,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0701
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:98` `"id": "data-filter-field",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -25,7 +25,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:126` `"id": "data-filter-operator",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -34,7 +34,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:154` `"id": "data-filter-value",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -43,7 +43,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:182` `"id": "data-sort-first",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -52,7 +52,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:210` `"id": "data-sort-second",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -61,7 +61,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:238` `"id": "data-offset",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -70,7 +70,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:266` `"id": "data-limit",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -79,7 +79,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setQuery
 - **Porta:** `manifest/commands/content.json:294` `"id": "data-query-clear",`
 - **Tratador:** `src/app/commands.ts:153` `'data.setQuery': setQuery,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0702
 
@@ -88,7 +88,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.createCollection
 - **Porta:** `manifest/commands/content.json:353` `"id": "data-new-collection",`
 - **Tratador:** `src/app/commands.ts:154` `'data.createCollection': createCollectionCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0703
 
@@ -97,7 +97,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.renameCollection
 - **Porta:** `manifest/commands/content.json:416` `"id": "data-collection-name",`
 - **Tratador:** `src/app/commands.ts:155` `'data.renameCollection': renameCollectionCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0704
 
@@ -106,7 +106,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.deleteCollection
 - **Porta:** `manifest/commands/content.json:475` `"id": "data-collection-delete",`
 - **Tratador:** `src/app/commands.ts:156` `'data.deleteCollection': deleteCollectionCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0705
 
@@ -115,7 +115,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.addField
 - **Porta:** `manifest/commands/content.json:546` `"id": "data-field-add",`
 - **Tratador:** `src/app/commands.ts:157` `'data.addField': addFieldCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0706
 
@@ -124,7 +124,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setField
 - **Porta:** `manifest/commands/content.json:635` `"id": "data-field-label",`
 - **Tratador:** `src/app/commands.ts:158` `'data.setField': setFieldCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0707
 
@@ -133,7 +133,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setField
 - **Porta:** `manifest/commands/content.json:661` `"id": "data-field-type",`
 - **Tratador:** `src/app/commands.ts:158` `'data.setField': setFieldCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0707
 
@@ -142,7 +142,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.removeField
 - **Porta:** `manifest/commands/content.json:724` `"id": "data-field-remove",`
 - **Tratador:** `src/app/commands.ts:159` `'data.removeField': removeFieldCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0708
 
@@ -151,7 +151,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.addItem
 - **Porta:** `manifest/commands/content.json:788` `"id": "data-item-add",`
 - **Tratador:** `src/app/commands.ts:160` `'data.addItem': addItemCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0709
 
@@ -160,7 +160,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.setCell
 - **Porta:** `manifest/commands/content.json:867` `"id": "data-cell",`
 - **Tratador:** `src/app/commands.ts:161` `'data.setCell': setCellCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0710
 
@@ -169,7 +169,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.deleteItems
 - **Porta:** `manifest/commands/content.json:936` `"id": "data-item-delete",`
 - **Tratador:** `src/app/commands.ts:162` `'data.deleteItems': deleteItemsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0711
 
@@ -178,7 +178,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.moveItem
 - **Porta:** `manifest/commands/content.json:1010` `"id": "data-item-up",`
 - **Tratador:** `src/app/commands.ts:163` `'data.moveItem': moveItemCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0020.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0712
 
@@ -187,7 +187,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.moveItem
 - **Porta:** `manifest/commands/content.json:1036` `"id": "data-item-down",`
 - **Tratador:** `src/app/commands.ts:163` `'data.moveItem': moveItemCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0712
 
@@ -196,7 +196,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.preview
 - **Porta:** `manifest/commands/content.json:1100` `"id": "data-import",`
 - **Tratador:** `src/app/commands.ts:164` `'data.preview': previewFile,`
-- **Início:** `src/editor/doors/door.tsx:123` `dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`
+- **Início:** `src/editor/doors/door.tsx:124` `dispatch(entry.command.id, { ...given, [file]: await readPickedDataFile(one) });`
 - **Fluxo:** `fluxos/ENT-P-content-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0713
 
@@ -205,7 +205,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.previewSheet
 - **Porta:** `manifest/commands/content.json:1151` `"id": "data-preview-sheet",`
 - **Tratador:** `src/app/commands.ts:165` `'data.previewSheet': choosePreviewSheet,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0023.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0714
 
@@ -214,7 +214,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.previewType
 - **Porta:** `manifest/commands/content.json:1214` `"id": "data-preview-type",`
 - **Tratador:** `src/app/commands.ts:166` `'data.previewType': setPreviewType,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0024.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0715
 
@@ -223,7 +223,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.closePreview
 - **Porta:** `manifest/commands/content.json:1258` `"id": "data-preview-close",`
 - **Tratador:** `src/app/commands.ts:167` `'data.closePreview': closePreview,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0025.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0716
 
@@ -232,7 +232,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.importNew
 - **Porta:** `manifest/commands/content.json:1338` `"id": "data-import-new",`
 - **Tratador:** `src/app/commands.ts:168` `'data.importNew': importNew,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0026.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0717
 
@@ -241,7 +241,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.importInto
 - **Porta:** `manifest/commands/content.json:1429` `"id": "data-import-append",`
 - **Tratador:** `src/app/commands.ts:169` `'data.importInto': importInto,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0027.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0718
 
@@ -250,7 +250,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.importInto
 - **Porta:** `manifest/commands/content.json:1457` `"id": "data-import-replace",`
 - **Tratador:** `src/app/commands.ts:169` `'data.importInto': importInto,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0028.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0718
 
@@ -259,7 +259,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.importInto
 - **Porta:** `manifest/commands/content.json:1485` `"id": "data-import-update",`
 - **Tratador:** `src/app/commands.ts:169` `'data.importInto': importInto,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0029.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0718
 
@@ -268,7 +268,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.bindElement
 - **Porta:** `manifest/commands/content.json:1568` `"id": "data-bind-field",`
 - **Tratador:** `src/app/commands.ts:170` `'data.bindElement': bindElementCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0030.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0719
 
@@ -287,7 +287,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.fill
 - **Porta:** `manifest/commands/content.json:1672` `"id": "data-fill",`
 - **Tratador:** `src/app/commands.ts:171` `'data.fill': fillCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0032.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0720
 
@@ -296,7 +296,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** data.unbind
 - **Porta:** `manifest/commands/content.json:1730` `"id": "data-unbind",`
 - **Tratador:** `src/app/commands.ts:172` `'data.unbind': unbindCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0033.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0721
 
@@ -305,7 +305,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** pages.fromNames
 - **Porta:** `manifest/commands/content.json:1794` `"id": "data-pages-from-names",`
 - **Tratador:** `src/app/commands.ts:173` `'pages.fromNames': pagesFromNamesCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0034.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0722
 
@@ -314,7 +314,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** pages.fromCollection
 - **Porta:** `manifest/commands/content.json:1865` `"id": "data-pages-from-collection",`
 - **Tratador:** `src/app/commands.ts:174` `'pages.fromCollection': pagesFromCollectionCommand<EditorUi>(),`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0035.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0723
 
@@ -323,7 +323,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** regions.share
 - **Porta:** `manifest/commands/content.json:1934` `"id": "data-share",`
 - **Tratador:** `src/app/commands.ts:175` `'regions.share': shareRegionCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0036.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0724
 
@@ -332,7 +332,7 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** regions.detach
 - **Porta:** `manifest/commands/content.json:1992` `"id": "data-shared-detach",`
 - **Tratador:** `src/app/commands.ts:176` `'regions.detach': detachRegionCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0037.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0725
 
@@ -341,6 +341,6 @@ Fonte: `manifest/commands/content.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** regions.stopSharing
 - **Porta:** `manifest/commands/content.json:2049` `"id": "data-shared-stop",`
 - **Tratador:** `src/app/commands.ts:177` `'regions.stopSharing': stopSharingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-content-0038.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-0726

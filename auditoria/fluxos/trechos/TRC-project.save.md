@@ -49,7 +49,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava estilo nem valor de camada (`src/core/project/archive.ts:41` `const document = new TextEncoder().encode(`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/project/archive.ts:40` `export const saveProject = registerHandler('project.save', ({ state, clock }) => {` — o único tratador do comando.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/project/archive.ts:43`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/archive.ts:43`).

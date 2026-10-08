@@ -6,7 +6,7 @@
 - **Porta:** `manifest/commands/view.json:23` `"id": "key-ctrl-equals-in-global",`
 - **Gatilho:** `manifest/commands/view.json:26` `"chord": "Ctrl+=",`
 - **Tratador:** `src/app/commands.ts:439` `'view.zoomIn': zoomIn,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0001.md`
 - **Requisitos:** REQ-2501
 
@@ -16,7 +16,7 @@
 - **Porta:** `manifest/commands/view.json:43` `"id": "key-ctrl-plus-in-global",`
 - **Gatilho:** `manifest/commands/view.json:46` `"chord": "Ctrl++",`
 - **Tratador:** `src/app/commands.ts:439` `'view.zoomIn': zoomIn,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0002.md`
 - **Requisitos:** REQ-2501
 
@@ -25,7 +25,7 @@
 - **Comando:** view.zoomIn
 - **Porta:** `manifest/commands/view.json:63` `"id": "toolbar-status-bar-zoom-in",`
 - **Tratador:** `src/app/commands.ts:439` `'view.zoomIn': zoomIn,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0003.md`
 - **Requisitos:** REQ-2501
 
@@ -34,7 +34,7 @@
 - **Comando:** view.zoomIn
 - **Porta:** `manifest/commands/view.json:85` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:439` `'view.zoomIn': zoomIn,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0004.md`
 - **Requisitos:** REQ-2501
 
@@ -44,7 +44,7 @@
 - **Porta:** `manifest/commands/view.json:126` `"id": "key-ctrl-minus-in-global",`
 - **Gatilho:** `manifest/commands/view.json:129` `"chord": "Ctrl+-",`
 - **Tratador:** `src/app/commands.ts:440` `'view.zoomOut': zoomOut,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0005.md`
 - **Requisitos:** REQ-2502
 
@@ -53,7 +53,7 @@
 - **Comando:** view.zoomOut
 - **Porta:** `manifest/commands/view.json:146` `"id": "toolbar-status-bar-zoom-out",`
 - **Tratador:** `src/app/commands.ts:440` `'view.zoomOut': zoomOut,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0006.md`
 - **Requisitos:** REQ-2502
 
@@ -62,7 +62,7 @@
 - **Comando:** view.zoomOut
 - **Porta:** `manifest/commands/view.json:168` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:440` `'view.zoomOut': zoomOut,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0007.md`
 - **Requisitos:** REQ-2502
 
@@ -72,7 +72,7 @@
 - **Porta:** `manifest/commands/view.json:207` `"id": "key-ctrl-0-in-global",`
 - **Gatilho:** `manifest/commands/view.json:210` `"chord": "Ctrl+0",`
 - **Tratador:** `src/app/commands.ts:441` `'view.zoomReset': zoomReset,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0008.md`
 - **Requisitos:** REQ-2503
 
@@ -81,7 +81,7 @@
 - **Comando:** view.zoomReset
 - **Porta:** `manifest/commands/view.json:227` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:441` `'view.zoomReset': zoomReset,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0009.md`
 - **Requisitos:** REQ-2503
 
@@ -90,7 +90,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:273` `"id": "menu-zoom-10",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0010.md`
 - **Requisitos:** REQ-2504
 
@@ -99,7 +99,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:297` `"id": "menu-zoom-25",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0011.md`
 - **Requisitos:** REQ-2504
 
@@ -108,7 +108,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:321` `"id": "menu-zoom-50",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0012.md`
 - **Requisitos:** REQ-2504
 
@@ -117,7 +117,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:345` `"id": "menu-zoom-100",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0013.md`
 - **Requisitos:** REQ-2504
 
@@ -126,7 +126,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:369` `"id": "menu-zoom-200",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0014.md`
 - **Requisitos:** REQ-2504
 
@@ -135,7 +135,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:393` `"id": "menu-zoom-400",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0015.md`
 - **Requisitos:** REQ-2504
 
@@ -144,7 +144,7 @@
 - **Comando:** view.zoomTo
 - **Porta:** `manifest/commands/view.json:417` `"id": "menu-zoom-800",`
 - **Tratador:** `src/app/commands.ts:442` `'view.zoomTo': zoomToLevel,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0016.md`
 - **Requisitos:** REQ-2504
 
@@ -154,7 +154,7 @@
 - **Porta:** `manifest/commands/view.json:459` `"id": "key-shift-1-in-global",`
 - **Gatilho:** `manifest/commands/view.json:462` `"chord": "Shift+1",`
 - **Tratador:** `src/app/commands.ts:443` `'view.zoomFit': zoomFit,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0017.md`
 - **Requisitos:** REQ-2505
 
@@ -163,7 +163,7 @@
 - **Comando:** view.zoomFit
 - **Porta:** `manifest/commands/view.json:479` `"id": "toolbar-status-bar-fit",`
 - **Tratador:** `src/app/commands.ts:443` `'view.zoomFit': zoomFit,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0018.md`
 - **Requisitos:** REQ-2505
 
@@ -172,7 +172,7 @@
 - **Comando:** view.zoomFit
 - **Porta:** `manifest/commands/view.json:501` `"id": "menu-zoom",`
 - **Tratador:** `src/app/commands.ts:443` `'view.zoomFit': zoomFit,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0019.md`
 - **Requisitos:** REQ-2505
 
@@ -181,7 +181,7 @@
 - **Comando:** view.zoomFit
 - **Porta:** `manifest/commands/view.json:523` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:443` `'view.zoomFit': zoomFit,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0020.md`
 - **Requisitos:** REQ-2505
 
@@ -240,7 +240,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:728` `"id": "toolbar-breakpoint-tabs-desktop",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0026.md`
 - **Requisitos:** REQ-2508
 
@@ -249,7 +249,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:752` `"id": "toolbar-breakpoint-tabs-laptop",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0027.md`
 - **Requisitos:** REQ-2508
 
@@ -258,7 +258,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:776` `"id": "toolbar-breakpoint-tabs-tablet",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0028.md`
 - **Requisitos:** REQ-2508
 
@@ -267,7 +267,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:800` `"id": "toolbar-breakpoint-tabs-phone",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0029.md`
 - **Requisitos:** REQ-2508
 
@@ -276,7 +276,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:824` `"id": "toolbar-breakpoint-tabs-project",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0030.md`
 - **Requisitos:** REQ-2508
 
@@ -285,7 +285,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:846` `"id": "toolbar-preview-bar-desktop",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0031.md`
 - **Requisitos:** REQ-2508
 
@@ -294,7 +294,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:870` `"id": "toolbar-preview-bar-laptop",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0032.md`
 - **Requisitos:** REQ-2508
 
@@ -303,7 +303,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:894` `"id": "toolbar-preview-bar-tablet",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0033.md`
 - **Requisitos:** REQ-2508
 
@@ -312,7 +312,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:918` `"id": "toolbar-preview-bar-phone",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0034.md`
 - **Requisitos:** REQ-2508
 
@@ -321,7 +321,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:942` `"id": "toolbar-preview-bar-project",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0035.md`
 - **Requisitos:** REQ-2508
 
@@ -330,7 +330,7 @@
 - **Comando:** view.setBreakpoint
 - **Porta:** `manifest/commands/view.json:964` `"id": "side-by-side-frame",`
 - **Tratador:** `src/app/commands.ts:446` `'view.setBreakpoint': setBreakpoint,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0036.md`
 - **Requisitos:** REQ-2508
 
@@ -339,7 +339,7 @@
 - **Comando:** view.setEditorView
 - **Porta:** `manifest/commands/view.json:1014` `"id": "toolbar-canvas-toolbar-canvas",`
 - **Tratador:** `src/app/commands.ts:455` `'view.setEditorView': setEditorView,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0037.md`
 - **Requisitos:** REQ-2509
 
@@ -348,7 +348,7 @@
 - **Comando:** view.setEditorView
 - **Porta:** `manifest/commands/view.json:1038` `"id": "toolbar-canvas-toolbar-split",`
 - **Tratador:** `src/app/commands.ts:455` `'view.setEditorView': setEditorView,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0038.md`
 - **Requisitos:** REQ-2509
 
@@ -357,7 +357,7 @@
 - **Comando:** view.setEditorView
 - **Porta:** `manifest/commands/view.json:1062` `"id": "toolbar-canvas-toolbar-code",`
 - **Tratador:** `src/app/commands.ts:455` `'view.setEditorView': setEditorView,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0039.md`
 - **Requisitos:** REQ-2509
 
@@ -366,7 +366,7 @@
 - **Comando:** view.setEditorView
 - **Porta:** `manifest/commands/view.json:1086` `"id": "menu-view-code",`
 - **Tratador:** `src/app/commands.ts:455` `'view.setEditorView': setEditorView,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0040.md`
 - **Requisitos:** REQ-2509
 
@@ -375,7 +375,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1137` `"id": "menu-style-state-base",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0041.md`
 - **Requisitos:** REQ-2510
 
@@ -384,7 +384,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1161` `"id": "menu-style-state-hover",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0042.md`
 - **Requisitos:** REQ-2510
 
@@ -393,7 +393,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1185` `"id": "menu-style-state-focus",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0043.md`
 - **Requisitos:** REQ-2510
 
@@ -402,7 +402,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1209` `"id": "menu-style-state-active",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0044.md`
 - **Requisitos:** REQ-2510
 
@@ -411,7 +411,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1233` `"id": "menu-style-state-disabled",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0045.md`
 - **Requisitos:** REQ-2510
 
@@ -420,7 +420,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1257` `"id": "menu-style-state-invalid",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0046.md`
 - **Requisitos:** REQ-2510
 
@@ -429,7 +429,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1281` `"id": "menu-style-state-placeholder-shown",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0047.md`
 - **Requisitos:** REQ-2510
 
@@ -438,7 +438,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1305` `"id": "menu-style-state-focus-visible",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0048.md`
 - **Requisitos:** REQ-2510
 
@@ -447,7 +447,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1329` `"id": "menu-style-state-visited",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0049.md`
 - **Requisitos:** REQ-2510
 
@@ -456,7 +456,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1353` `"id": "menu-style-state-first-child",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0050.md`
 - **Requisitos:** REQ-2510
 
@@ -465,7 +465,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1377` `"id": "menu-style-state-last-child",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0051.md`
 - **Requisitos:** REQ-2510
 
@@ -474,7 +474,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1401` `"id": "menu-style-state-before",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0052.md`
 - **Requisitos:** REQ-2510
 
@@ -483,7 +483,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1425` `"id": "menu-style-state-after",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0053.md`
 - **Requisitos:** REQ-2510
 
@@ -492,7 +492,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1449` `"id": "menu-style-state-user-invalid",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0054.md`
 - **Requisitos:** REQ-2510
 
@@ -501,7 +501,7 @@
 - **Comando:** view.setStyleState
 - **Porta:** `manifest/commands/view.json:1473` `"id": "menu-style-state-user-valid",`
 - **Tratador:** `src/app/commands.ts:456` `'view.setStyleState': setStyleState,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0055.md`
 - **Requisitos:** REQ-2510
 
@@ -511,7 +511,7 @@
 - **Porta:** `manifest/commands/view.json:1515` `"id": "key-ctrl-p-in-global",`
 - **Gatilho:** `manifest/commands/view.json:1518` `"chord": "Ctrl+P",`
 - **Tratador:** `src/app/commands.ts:457` `'view.enterPreview': enterPreview,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0056.md`
 - **Requisitos:** REQ-2511
 
@@ -521,7 +521,7 @@
 - **Porta:** `manifest/commands/view.json:1535` `"id": "key-ctrl-enter-in-global",`
 - **Gatilho:** `manifest/commands/view.json:1538` `"chord": "Ctrl+Enter",`
 - **Tratador:** `src/app/commands.ts:457` `'view.enterPreview': enterPreview,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0057.md`
 - **Requisitos:** REQ-2511
 
@@ -530,7 +530,7 @@
 - **Comando:** view.enterPreview
 - **Porta:** `manifest/commands/view.json:1555` `"id": "toolbar-top-bar-preview",`
 - **Tratador:** `src/app/commands.ts:457` `'view.enterPreview': enterPreview,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0058.md`
 - **Requisitos:** REQ-2511
 
@@ -539,7 +539,7 @@
 - **Comando:** view.enterPreview
 - **Porta:** `manifest/commands/view.json:1577` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:457` `'view.enterPreview': enterPreview,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0059.md`
 - **Requisitos:** REQ-2511
 
@@ -549,7 +549,7 @@
 - **Porta:** `manifest/commands/view.json:1616` `"id": "key-escape-in-preview",`
 - **Gatilho:** `manifest/commands/view.json:1619` `"chord": "Escape",`
 - **Tratador:** `src/app/commands.ts:458` `'view.exitPreview': exitPreview,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0060.md`
 - **Requisitos:** REQ-2512
 
@@ -559,7 +559,7 @@
 - **Porta:** `manifest/commands/view.json:1636` `"id": "key-ctrl-enter-in-preview",`
 - **Gatilho:** `manifest/commands/view.json:1639` `"chord": "Ctrl+Enter",`
 - **Tratador:** `src/app/commands.ts:458` `'view.exitPreview': exitPreview,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0061.md`
 - **Requisitos:** REQ-2512
 
@@ -568,7 +568,7 @@
 - **Comando:** view.exitPreview
 - **Porta:** `manifest/commands/view.json:1656` `"id": "toolbar-preview-bar-exit",`
 - **Tratador:** `src/app/commands.ts:458` `'view.exitPreview': exitPreview,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0062.md`
 - **Requisitos:** REQ-2512
 
@@ -577,7 +577,7 @@
 - **Comando:** view.toggleOutlines
 - **Porta:** `manifest/commands/view.json:1696` `"id": "canvas-tools-outlines",`
 - **Tratador:** `src/app/commands.ts:459` `'view.toggleOutlines': toggleOutlines,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0063.md`
 - **Requisitos:** REQ-2513
 
@@ -586,7 +586,7 @@
 - **Comando:** view.toggleZones
 - **Porta:** `manifest/commands/view.json:1740` `"id": "canvas-tools-zones",`
 - **Tratador:** `src/app/commands.ts:460` `'view.toggleZones': toggleZones,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0064.md`
 - **Requisitos:** REQ-2514
 
@@ -595,7 +595,7 @@
 - **Comando:** view.toggleRulers
 - **Porta:** `manifest/commands/view.json:1784` `"id": "guides-grids-rulers",`
 - **Tratador:** `src/app/commands.ts:461` `'view.toggleRulers': toggleRulers,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0065.md`
 - **Requisitos:** REQ-2515
 
@@ -604,7 +604,7 @@
 - **Comando:** view.toggleSmartGuides
 - **Porta:** `manifest/commands/view.json:1828` `"id": "guides-grids-smart-guides",`
 - **Tratador:** `src/app/commands.ts:462` `'view.toggleSmartGuides': toggleSmartGuides,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0066.md`
 - **Requisitos:** REQ-2516
 
@@ -613,7 +613,7 @@
 - **Comando:** view.toggleEqualSpacing
 - **Porta:** `manifest/commands/view.json:1872` `"id": "guides-grids-equal-spacing",`
 - **Tratador:** `src/app/commands.ts:463` `'view.toggleEqualSpacing': toggleEqualSpacing,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0067.md`
 - **Requisitos:** REQ-2517
 
@@ -623,7 +623,7 @@
 - **Porta:** `manifest/commands/view.json:1920` `"id": "key-ctrl-quote-in-global",`
 - **Gatilho:** `manifest/commands/view.json:1923` `"chord": "Ctrl+'",`
 - **Tratador:** `src/app/commands.ts:464` `'grid.toggleColumns': toggleColumns,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0068.md`
 - **Requisitos:** REQ-2518
 
@@ -632,7 +632,7 @@
 - **Comando:** grid.toggleColumns
 - **Porta:** `manifest/commands/view.json:1940` `"id": "canvas-tools-column-grid",`
 - **Tratador:** `src/app/commands.ts:464` `'grid.toggleColumns': toggleColumns,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0069.md`
 - **Requisitos:** REQ-2518
 
@@ -641,7 +641,7 @@
 - **Comando:** grid.toggleColumns
 - **Porta:** `manifest/commands/view.json:1966` `"id": "guides-grids-column-grid",`
 - **Tratador:** `src/app/commands.ts:464` `'grid.toggleColumns': toggleColumns,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0070.md`
 - **Requisitos:** REQ-2518
 
@@ -650,7 +650,7 @@
 - **Comando:** grid.toggleRows
 - **Porta:** `manifest/commands/view.json:2014` `"id": "canvas-tools-row-grid",`
 - **Tratador:** `src/app/commands.ts:465` `'grid.toggleRows': toggleRows,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0071.md`
 - **Requisitos:** REQ-2519
 
@@ -659,7 +659,7 @@
 - **Comando:** grid.toggleRows
 - **Porta:** `manifest/commands/view.json:2040` `"id": "guides-grids-row-grid",`
 - **Tratador:** `src/app/commands.ts:465` `'grid.toggleRows': toggleRows,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0072.md`
 - **Requisitos:** REQ-2519
 
@@ -668,7 +668,7 @@
 - **Comando:** grid.toggleDots
 - **Porta:** `manifest/commands/view.json:2088` `"id": "canvas-tools-dot-grid",`
 - **Tratador:** `src/app/commands.ts:466` `'grid.toggleDots': toggleDots,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0073.md`
 - **Requisitos:** REQ-2520
 
@@ -677,7 +677,7 @@
 - **Comando:** grid.toggleDots
 - **Porta:** `manifest/commands/view.json:2114` `"id": "guides-grids-dot-grid",`
 - **Tratador:** `src/app/commands.ts:466` `'grid.toggleDots': toggleDots,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0074.md`
 - **Requisitos:** REQ-2520
 
@@ -686,7 +686,7 @@
 - **Comando:** grid.toggleFolds
 - **Porta:** `manifest/commands/view.json:2162` `"id": "guides-grids-fold-lines",`
 - **Tratador:** `src/app/commands.ts:467` `'grid.toggleFolds': toggleFolds,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0075.md`
 - **Requisitos:** REQ-2521
 
@@ -695,7 +695,7 @@
 - **Comando:** grid.setSettings
 - **Porta:** `manifest/commands/view.json:2239` `"id": "guides-grids-columns-settings",`
 - **Tratador:** `src/app/commands.ts:468` `'grid.setSettings': setGridSettings,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0076.md`
 - **Requisitos:** REQ-2522
 
@@ -704,7 +704,7 @@
 - **Comando:** grid.setSettings
 - **Porta:** `manifest/commands/view.json:2267` `"id": "guides-grids-rows-settings",`
 - **Tratador:** `src/app/commands.ts:468` `'grid.setSettings': setGridSettings,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0077.md`
 - **Requisitos:** REQ-2522
 
@@ -713,7 +713,7 @@
 - **Comando:** grid.setSettings
 - **Porta:** `manifest/commands/view.json:2295` `"id": "guides-grids-dots-settings",`
 - **Tratador:** `src/app/commands.ts:468` `'grid.setSettings': setGridSettings,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0078.md`
 - **Requisitos:** REQ-2522
 
@@ -742,7 +742,7 @@
 - **Comando:** guides.create
 - **Porta:** `manifest/commands/view.json:2401` `"id": "guides-grids-add-guide",`
 - **Tratador:** `src/app/commands.ts:469` `'guides.create': createGuideCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0081.md`
 - **Requisitos:** REQ-2523
 
@@ -762,7 +762,7 @@
 - **Porta:** `manifest/commands/view.json:2503` `"id": "key-arrow-up-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2506` `"chord": "ArrowUp",`
 - **Tratador:** `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0083.md`
 - **Requisitos:** REQ-2524
 
@@ -772,7 +772,7 @@
 - **Porta:** `manifest/commands/view.json:2526` `"id": "key-arrow-down-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2529` `"chord": "ArrowDown",`
 - **Tratador:** `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0084.md`
 - **Requisitos:** REQ-2524
 
@@ -782,7 +782,7 @@
 - **Porta:** `manifest/commands/view.json:2549` `"id": "key-arrow-left-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2552` `"chord": "ArrowLeft",`
 - **Tratador:** `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0085.md`
 - **Requisitos:** REQ-2524
 
@@ -792,7 +792,7 @@
 - **Porta:** `manifest/commands/view.json:2572` `"id": "key-arrow-right-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2575` `"chord": "ArrowRight",`
 - **Tratador:** `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0086.md`
 - **Requisitos:** REQ-2524
 
@@ -812,7 +812,7 @@
 - **Porta:** `manifest/commands/view.json:2644` `"id": "key-delete-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2647` `"chord": "Delete",`
 - **Tratador:** `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0088.md`
 - **Requisitos:** REQ-2525
 
@@ -822,7 +822,7 @@
 - **Porta:** `manifest/commands/view.json:2664` `"id": "key-backspace-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2667` `"chord": "Backspace",`
 - **Tratador:** `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0089.md`
 - **Requisitos:** REQ-2525
 
@@ -831,7 +831,7 @@
 - **Comando:** guides.delete
 - **Porta:** `manifest/commands/view.json:2684` `"id": "guides-grids-remove-guide",`
 - **Tratador:** `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0090.md`
 - **Requisitos:** REQ-2525
 
@@ -841,7 +841,7 @@
 - **Porta:** `manifest/commands/view.json:2739` `"id": "key-l-in-guide",`
 - **Gatilho:** `manifest/commands/view.json:2742` `"chord": "L",`
 - **Tratador:** `src/app/commands.ts:472` `'guides.toggleLock': toggleGuideLockCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0091.md`
 - **Requisitos:** REQ-2526
 
@@ -850,7 +850,7 @@
 - **Comando:** guides.toggleVisible
 - **Porta:** `manifest/commands/view.json:2777` `"id": "guides-grids-manual-guides",`
 - **Tratador:** `src/app/commands.ts:473` `'guides.toggleVisible': toggleGuidesVisible,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0092.md`
 - **Requisitos:** REQ-2527
 
@@ -859,7 +859,7 @@
 - **Comando:** snap.setEnabled
 - **Porta:** `manifest/commands/view.json:2831` `"id": "toolbar-canvas-toolbar-snap",`
 - **Tratador:** `src/app/commands.ts:474` `'snap.setEnabled': setSnapEnabled,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0093.md`
 - **Requisitos:** REQ-2528
 
@@ -868,7 +868,7 @@
 - **Comando:** snap.setEnabled
 - **Porta:** `manifest/commands/view.json:2855` `"id": "menu-snap-on",`
 - **Tratador:** `src/app/commands.ts:474` `'snap.setEnabled': setSnapEnabled,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0094.md`
 - **Requisitos:** REQ-2528
 
@@ -877,7 +877,7 @@
 - **Comando:** snap.setEnabled
 - **Porta:** `manifest/commands/view.json:2879` `"id": "menu-snap-off",`
 - **Tratador:** `src/app/commands.ts:474` `'snap.setEnabled': setSnapEnabled,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0095.md`
 - **Requisitos:** REQ-2528
 
@@ -886,7 +886,7 @@
 - **Comando:** snap.setSettings
 - **Porta:** `manifest/commands/view.json:2943` `"id": "snap-settings-apply",`
 - **Tratador:** `src/app/commands.ts:475` `'snap.setSettings': setSnapSettings,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0096.md`
 - **Requisitos:** REQ-2529
 
@@ -895,7 +895,7 @@
 - **Comando:** workspace.openDialog
 - **Porta:** `manifest/commands/view.json:3000` `"id": "menu-view-guides-grids",`
 - **Tratador:** `src/app/commands.ts:476` `'workspace.openDialog': openDialog,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0097.md`
 - **Requisitos:** REQ-2530
 
@@ -904,7 +904,7 @@
 - **Comando:** workspace.openDialog
 - **Porta:** `manifest/commands/view.json:3024` `"id": "menu-snap-snap-settings",`
 - **Tratador:** `src/app/commands.ts:476` `'workspace.openDialog': openDialog,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0098.md`
 - **Requisitos:** REQ-2530
 
@@ -913,7 +913,7 @@
 - **Comando:** workspace.openDialog
 - **Porta:** `manifest/commands/view.json:3048` `"id": "menu-view-breakpoints",`
 - **Tratador:** `src/app/commands.ts:476` `'workspace.openDialog': openDialog,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0099.md`
 - **Requisitos:** REQ-2530
 
@@ -922,7 +922,7 @@
 - **Comando:** workspace.openDialog
 - **Porta:** `manifest/commands/view.json:3072` `"id": "context-menu-batch-rename",`
 - **Tratador:** `src/app/commands.ts:476` `'workspace.openDialog': openDialog,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0100.md`
 - **Requisitos:** REQ-2530
 
@@ -931,7 +931,7 @@
 - **Comando:** workspace.openDialog
 - **Porta:** `manifest/commands/view.json:3094` `"id": "menu-file-capture-url",`
 - **Tratador:** `src/app/commands.ts:476` `'workspace.openDialog': openDialog,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0101.md`
 - **Requisitos:** REQ-2530
 
@@ -940,7 +940,7 @@
 - **Comando:** view.setViewportWidth
 - **Porta:** `manifest/commands/view.json:3144` `"id": "viewport-width",`
 - **Tratador:** `src/app/commands.ts:447` `'view.setViewportWidth': setViewportWidth,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0102.md`
 - **Requisitos:** REQ-2531
 
@@ -959,7 +959,7 @@
 - **Comando:** view.toggleSideBySide
 - **Porta:** `manifest/commands/view.json:3237` `"id": "menu-view-side-by-side",`
 - **Tratador:** `src/app/commands.ts:449` `'view.toggleSideBySide': toggleSideBySide,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0104.md`
 - **Requisitos:** REQ-2533
 
@@ -968,7 +968,7 @@
 - **Comando:** view.selectTool
 - **Porta:** `manifest/commands/view.json:3277` `"id": "toolbar-canvas-toolbar-select",`
 - **Tratador:** `src/app/commands.ts:450` `'view.selectTool': selectTool,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-view-0105.md`
 - **Requisitos:** REQ-2534
 
@@ -978,6 +978,6 @@
 - **Porta:** `manifest/commands/view.json:3299` `"id": "key-v-in-global",`
 - **Gatilho:** `manifest/commands/view.json:3302` `"chord": "V",`
 - **Tratador:** `src/app/commands.ts:450` `'view.selectTool': selectTool,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-view-0106.md`
 - **Requisitos:** REQ-2534

@@ -69,8 +69,8 @@
 
 ## Regras
 
-- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o comando é desfazível, então `changesDocument` é verdadeiro e a digitação pendente é gravada no contexto da digitação antes (`src/editor/input/pending.ts:82` `keepTyping();`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o comando é desfazível, então `changesDocument` é verdadeiro e a digitação pendente é gravada no contexto da digitação antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/import/html-import.ts:7` `return { ...owner, run(context, args) {` — o único tratador do comando envolve o do núcleo.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/editor/import/html-import.ts:18`).
 - G5: n/a — o comando não desenha painel nem controle (`src/editor/import/html-import.ts:18`).

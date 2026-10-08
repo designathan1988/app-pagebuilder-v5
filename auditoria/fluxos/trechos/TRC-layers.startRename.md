@@ -7,7 +7,7 @@
 ## Passos
 
 1. `src/app/commands.ts:334` `'layers.startRename': startRename,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de outro campo é gravada antes.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de outro campo é gravada antes.
 3. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `singleSelection` é lida antes do tratador (`src/core/selection/selection.ts:23` `export const singleSelection = registerPredicate('singleSelection', (state) => state.selection.length === 1);`) [lê: EST-L01-031 via run].
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 5. `src/editor/layers/rename.ts:38` `export const startRename = registerHandler<'layers.startRename', EditorUi>('layers.startRename', ({ state }) => {` — o tratador.
@@ -55,7 +55,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve `ui.rename`, fora de qualquer camada de estilo (`src/editor/layers/rename.ts:51`).
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/editor/layers/rename.ts:38` — o único tratador do comando; toda porta entrega só a intenção (sem argumento).
 - G4: n/a — o campo é desenhado no painel Camadas, que ocupa a própria coluna; nada do editor é desenhado sobre o canvas (`src/editor/layers/rename.ts:50`).
 - G5: n/a — o comando não desenha painel nem controle além do que `showPanel` abre (`src/editor/layers/rename.ts:50`); as famílias de defeito de painel são medidas em Fase 6.

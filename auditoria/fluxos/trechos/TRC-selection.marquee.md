@@ -69,7 +69,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve `selection` e `message`, fora de qualquer camada de estilo (`src/core/selection/selection.ts:131` `        : [...base.filter((id) => !took.includes(id)), ...took.filter((id) => !base.includes(id))];`).
-- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
+- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
 - G3: ok `src/app/commands.ts:363` `  'selection.marquee': marqueeCommand,` — as duas portas convergem neste tratador e enviam só o retângulo e o modo (`src/editor/input/pointer/drag.ts:36` `shared.open.dispatch(ps.marquee.entry.command.id as CommandId, { ...argsFor(ps.marquee.entry, ps.marquee.press, NOT_PICKING), rect, mode: ps.marquee.mode, ...(leavesNow(altHeld) ? { leaves: true } : {}) } as never);`).
 - G4: n/a — o comando muda a seleção; a faixa é do desenho do canvas, não do trecho (`src/core/selection/selection.ts:131`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/selection/selection.ts:131`).

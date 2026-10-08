@@ -11,10 +11,10 @@ O campo Início do bloco da porta (`src/editor/doors/door.tsx:285`) não é a li
 4. `src/editor/assistant/panel.tsx:31` `const keep = () => {` — o campo grava o que ele mostra quando o formulário o submete ou o campo perde o foco.
 5. `src/editor/assistant/panel.tsx:32` `if (!field.current || busy) return;` — sem elemento de campo ou com o assistente ocupado, nada é despachado.
 6. `src/editor/assistant/panel.tsx:33` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id, { value: field.current.value });` — a porta entrega a intenção: o id do comando e o texto do campo como `value`.
-7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-8. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.setModel` não é desfazível (`manifest/commands/assistant.json:31` `"undoable": false`), então `changesDocument` é falso.
-9. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição. [lê: EST-L05a-001 via beforeCommand]
-10. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
+7. `src/editor/store.ts:233` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+8. `src/editor/store.ts:234` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.setModel` não é desfazível (`manifest/commands/assistant.json:31` `"undoable": false`), então `changesDocument` é falso.
+9. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição. [lê: EST-L05a-001 via beforeCommand]
+10. `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
 11. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 12. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 13. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela de comandos.
@@ -23,7 +23,7 @@ O campo Início do bloco da porta (`src/editor/doors/door.tsx:285`) não é a li
 ## Ramos
 - R1 `src/editor/assistant/panel.tsx:32` `if (!field.current || busy) return;` — com o assistente ocupado (`busy` verdadeiro) nada é despachado; livre, segue.
 - R2 `src/editor/assistant/panel.tsx:35` `const props = { className: 'input', 'aria-label': label, disabled: busy || !door.available, defaultValue: value, onBlur: keep, onInput: live ? keep : undefined, 'data-key-context': multiline ? 'assistant-input' : 'command-field' };` — o campo do modelo tem `live` falso, então `onInput` é `undefined` e a gravação vem do `onBlur` ou da submissão.
-- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
+- R3 `src/editor/store.ts:238` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:241` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `assistant.setModel` tem tratador na tabela; sem ele o `run` lançaria um erro de comando desconhecido.
 
 ## Fronteiras assíncronas

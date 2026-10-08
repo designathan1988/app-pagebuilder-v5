@@ -47,7 +47,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava a preferência `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — a única porta de `view.toggleZones` (o controle do painel de ferramentas do canvas) chega à tabela `src/app/commands.ts:460` `'view.toggleZones': toggleZones,` e manda só a intenção de inverter `src/editor/view/overlays.ts:34` `({ state }) => flip(state.ui, 'zones', toggleZones.command),`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/overlays.ts:23` `return { kind: 'change' as const, ui: next, message: switched(command, NEGATIVE.includes(which) ? !set : set) };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a preferência `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`.

@@ -7,7 +7,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.create
 - **Porta:** `manifest/commands/animation.json:35` `"id": "timeline-new-animation",`
 - **Tratador:** `src/app/commands.ts:192` `'animation.create': createAnimationCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0001.md`
 - **Requisitos:** REQ-0101
 
@@ -16,7 +16,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.rename
 - **Porta:** `manifest/commands/animation.json:98` `"id": "timeline-animation-name-field",`
 - **Tratador:** `src/app/commands.ts:193` `'animation.rename': renameAnimationCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0002.md`
 - **Requisitos:** REQ-0102
 
@@ -25,7 +25,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.delete
 - **Porta:** `manifest/commands/animation.json:154` `"id": "timeline-animation-delete",`
 - **Tratador:** `src/app/commands.ts:194` `'animation.delete': deleteAnimationCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0003.md`
 - **Requisitos:** REQ-0103
 
@@ -34,7 +34,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.addKeyframe
 - **Porta:** `manifest/commands/animation.json:217` `"id": "timeline-add-keyframe",`
 - **Tratador:** `src/app/commands.ts:195` `'animation.addKeyframe': addKeyframeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0004.md`
 - **Requisitos:** REQ-0104
 
@@ -53,7 +53,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setKeyframeEasing
 - **Porta:** `manifest/commands/animation.json:351` `"id": "timeline-keyframe-easing",`
 - **Tratador:** `src/app/commands.ts:197` `'animation.setKeyframeEasing': setKeyframeEasingCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0006.md`
 - **Requisitos:** REQ-0106
 
@@ -62,7 +62,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.deleteKeyframe
 - **Porta:** `manifest/commands/animation.json:419` `"id": "timeline-keyframe-delete",`
 - **Tratador:** `src/app/commands.ts:198` `'animation.deleteKeyframe': deleteKeyframeCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0007.md`
 - **Requisitos:** REQ-0107
 
@@ -72,7 +72,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Porta:** `manifest/commands/animation.json:445` `"id": "key-delete-in-timeline",`
 - **Gatilho:** `manifest/commands/animation.json:448` `"chord": "Delete",`
 - **Tratador:** `src/app/commands.ts:198` `'animation.deleteKeyframe': deleteKeyframeCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-animation-0008.md`
 - **Requisitos:** REQ-0107
 
@@ -81,7 +81,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:514` `"id": "timeline-setting-duration",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0009.md`
 - **Requisitos:** REQ-0108
 
@@ -90,7 +90,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:549` `"id": "timeline-setting-delay",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0010.md`
 - **Requisitos:** REQ-0108
 
@@ -99,7 +99,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:584` `"id": "timeline-setting-iterations",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0011.md`
 - **Requisitos:** REQ-0108
 
@@ -108,7 +108,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:619` `"id": "timeline-setting-direction",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0012.md`
 - **Requisitos:** REQ-0108
 
@@ -117,7 +117,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:654` `"id": "timeline-setting-fill",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0013.md`
 - **Requisitos:** REQ-0108
 
@@ -126,7 +126,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:689` `"id": "timeline-setting-timing",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0014.md`
 - **Requisitos:** REQ-0108
 
@@ -135,7 +135,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** animation.setSettings
 - **Porta:** `manifest/commands/animation.json:724` `"id": "timeline-setting-play-state",`
 - **Tratador:** `src/app/commands.ts:199` `'animation.setSettings': setAnimationSettingsCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0015.md`
 - **Requisitos:** REQ-0108
 
@@ -144,7 +144,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** timeline.show
 - **Porta:** `manifest/commands/animation.json:783` `"id": "timeline-animation-row",`
 - **Tratador:** `src/app/commands.ts:201` `'timeline.show': showAnimationCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0016.md`
 - **Requisitos:** REQ-0109
 
@@ -163,7 +163,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** timeline.play
 - **Porta:** `manifest/commands/animation.json:876` `"id": "timeline-play",`
 - **Tratador:** `src/app/commands.ts:202` `'timeline.play': playCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0018.md`
 - **Requisitos:** REQ-0111
 
@@ -172,7 +172,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** timeline.pause
 - **Porta:** `manifest/commands/animation.json:920` `"id": "timeline-pause",`
 - **Tratador:** `src/app/commands.ts:203` `'timeline.pause': pauseCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0019.md`
 - **Requisitos:** REQ-0112
 
@@ -181,7 +181,7 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** timeline.stop
 - **Porta:** `manifest/commands/animation.json:964` `"id": "timeline-stop",`
 - **Tratador:** `src/app/commands.ts:204` `'timeline.stop': stopCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0020.md`
 - **Requisitos:** REQ-0113
 
@@ -190,6 +190,6 @@ Fonte: `manifest/commands/animation.json`. Um bloco por porta.
 - **Comando:** timeline.toggleLoop
 - **Porta:** `manifest/commands/animation.json:1008` `"id": "timeline-loop",`
 - **Tratador:** `src/app/commands.ts:205` `'timeline.toggleLoop': toggleLoopCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-animation-0021.md`
 - **Requisitos:** REQ-0114

@@ -1,5 +1,5 @@
 # TRC-regions.share
-- **Chamada:** `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);`
+- **Chamada:** `src/editor/doors/door.tsx:145` `      dispatch(entry.command.id, given);`
 - **Argumentos:** `{ pages: json }`; a porta `data-share` manda a lista de arquivos das páginas escolhidas (com `new` para as futuras). O elemento é a seleção da store.
 - **Ramos que dependem dos argumentos:** R3 (nenhuma página e sem `new`). Os demais dependem do estado (R1 seleção não única, R2 elemento fora do nível de página, R4 elemento que não pode virar componente, R5 elemento travado).
 

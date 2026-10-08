@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:434` `'text.toggleBold': toggleBold,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
+2. `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada ou respondida antes de o comando rodar.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto.
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador.
 5. `src/editor/canvas/text-edit.ts:139` `export const toggleBold = registerHandler<'text.toggleBold', EditorUi>('text.toggleBold', ({ state }) =>` — o tratador.
@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/canvas/text-edit.ts:135` `withEdit(ui, { ...ui.textEdit, changes: ui.textEdit.changes + 1, change, linkPrompt });`.
-- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada ou respondida antes (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/canvas/text-edit.ts:139` `export const toggleBold = registerHandler<'text.toggleBold', EditorUi>('text.toggleBold', ({ state }) =>` — o único tratador; as duas portas do manifesto (Ctrl+B no texto editando, botão Bold da barra de texto) chamam a mesma linha `src/app/commands.ts:434` `'text.toggleBold': toggleBold,`.
 - G4: n/a — o tratador muda o estado do editor e não desenha nada sobre o canvas `src/editor/canvas/text-edit.ts:135`.
 - G5: n/a — o trecho não desenha painel nem barra `src/editor/canvas/text-edit.ts:135`; as famílias de defeito de painel são medidas na Fase 6.

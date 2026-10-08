@@ -8,7 +8,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Porta:** `manifest/commands/history.json:21` `"id": "key-ctrl-z-in-global",`
 - **Gatilho:** `manifest/commands/history.json:24` `"chord": "Ctrl+Z",`
 - **Tratador:** `src/app/commands.ts:332` `'history.undo': undoCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-history-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1401
 
@@ -17,7 +17,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.undo
 - **Porta:** `manifest/commands/history.json:41` `"id": "toolbar-top-bar",`
 - **Tratador:** `src/app/commands.ts:332` `'history.undo': undoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1401
 
@@ -26,7 +26,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.undo
 - **Porta:** `manifest/commands/history.json:63` `"id": "toast-undo",`
 - **Tratador:** `src/app/commands.ts:332` `'history.undo': undoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1401
 
@@ -35,7 +35,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.undo
 - **Porta:** `manifest/commands/history.json:89` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:332` `'history.undo': undoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1401
 
@@ -44,7 +44,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.undo
 - **Porta:** `manifest/commands/history.json:111` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:332` `'history.undo': undoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1401
 
@@ -54,7 +54,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Porta:** `manifest/commands/history.json:150` `"id": "key-ctrl-shift-z-in-global",`
 - **Gatilho:** `manifest/commands/history.json:153` `"chord": "Ctrl+Shift+Z",`
 - **Tratador:** `src/app/commands.ts:333` `'history.redo': redoCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-history-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1402
 
@@ -64,7 +64,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Porta:** `manifest/commands/history.json:170` `"id": "key-ctrl-y-in-global",`
 - **Gatilho:** `manifest/commands/history.json:173` `"chord": "Ctrl+Y",`
 - **Tratador:** `src/app/commands.ts:333` `'history.redo': redoCommand,`
-- **Início:** `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`
+- **Início:** `src/editor/input/keymap.ts:532` `if (clipboard === undefined) dispatch(binding.command.id, args);`
 - **Fluxo:** `fluxos/ENT-P-history-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1402
 
@@ -73,7 +73,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.redo
 - **Porta:** `manifest/commands/history.json:190` `"id": "toolbar-top-bar",`
 - **Tratador:** `src/app/commands.ts:333` `'history.redo': redoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1402
 
@@ -82,7 +82,7 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.redo
 - **Porta:** `manifest/commands/history.json:212` `"id": "menu-edit",`
 - **Tratador:** `src/app/commands.ts:333` `'history.redo': redoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1402
 
@@ -91,6 +91,6 @@ Fonte: `manifest/commands/history.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** history.redo
 - **Porta:** `manifest/commands/history.json:234` `"id": "command-bar",`
 - **Tratador:** `src/app/commands.ts:333` `'history.redo': redoCommand,`
-- **Início:** `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`
+- **Início:** `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`
 - **Fluxo:** `fluxos/ENT-P-history-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1402
