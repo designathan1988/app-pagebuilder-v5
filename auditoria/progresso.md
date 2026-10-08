@@ -4,7 +4,9 @@ Este arquivo é a memória do trabalho e a única fonte para retomar. A seção 
 
 ## Estado atual (2026-10-08)
 
-Instrução em vigor: a "Execução final" do dono — construir os mecanismos de `auditoria/investigacao/relatorio.md` (seção 4 e C1 a C8) e executar as Fases 8 e 9, sem perguntar; cada mecanismo entra em `auditoria/mecanismos.md` antes de qualquer arquivo dele existir. Revisão do dono em 2026-10-08 (quatro pontos, nesta ordem, antes da etapa 4): (1) este arquivo com um estado só; (2) DEF-0512 com reprodução ou pendente do lote da etapa 4; (3) os 8 elementos classificados como "porta faltando" rastreados pela G2 e pela G3 e a categoria registrada em DCS nova; (4) nos relatos, defeito só "corrigido" com o detector que acusa antes e não acusa depois citado.
+**Decisão do dono (2026-10-08), registrada em `deepseek-tarefa.md`:** a manutenção dos registros de `auditoria/` — citações, inventário, fluxos, matriz, pares, `check.mjs` — para. Não se rodam mais `recitar.mjs`, `inventariar.mjs`, `matriz.mjs`, `renumerar.mjs`, `esqueletos.mjs` nem `check.mjs`; não se atualizam citações, fluxos, pares, `estado.md`, `entradas.md` nem `inventario-arquivos.md`. A prova de que o app funciona passa a ser: os detectores (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`. Continuam em uso: este arquivo (andamento), `auditoria/defeitos.md` (cada defeito, com a correção e o mutante) e `auditoria/mecanismos.md` (cada mecanismo novo).
+
+Instrução em vigor: a "Tarefa do DeepSeek" — item 1, os 8 elementos classificados como "porta faltando" (conferir `aria-controls` pela G2 e a mesma intenção ao mesmo tratador pela G3; achado vira DEF- com mutante ou passo de modelo que acusa antes e não acusa depois da correção); item 2, a parte sem navegador do C8 (`auditoria/investigacao/relatorio.md`: chaves de i18n dos dois idiomas, corpus de importação contra XSS, corrupção e migração do que é salvo, ReDoS, poluição de protótipo, compatibilidade, contadores de render em happy-dom). Sem nada visual nem de navegador; a etapa 4 inteira e as partes de navegador da etapa 5 estão na seção "Para o Claude", no fim deste arquivo.
 
 | etapa | conteúdo | estado |
 |---|---|---|
@@ -25,20 +27,23 @@ Instrução em vigor: a "Execução final" do dono — construir os mecanismos d
 
 **Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos).
 
-**Próximo passo:** ponto 3 do dono — rastrear pela G2 e pela G3 os 8 elementos que a classificação deu como "porta faltando" (o form de `src/editor/canvas/edit-handles.tsx`, o corpo de `src/editor/canvas/side-frame.tsx`, os 2 forms de `src/editor/shell/class-bar.tsx`, os 3 elementos de `src/editor/shell/easing-curve.tsx`, o form de `src/editor/shell/guides-grids.tsx`): conferir com citação se cada popover em portal está ligado ao campo por `aria-controls` (`src/editor/input/pending.ts`, limite do campo) e se cada um envia a mesma intenção ao mesmo tratador que a porta com `data-door`; achado vira DEF- com detector, correção e mutante; depois a categoria em DCS nova. Só então a etapa 4.
-
-**Lote único do navegador da etapa 4 (lista a cumprir):**
-- guarda de tela (off-window, covered, sideways) nas duas configurações da seção 8 do CLAUDE.md;
-- controles montados contra `manifest/generated/inventory.json`;
-- larguras fluidas;
-- para cada comando desfazível: DOM do canvas incremental, o mesmo documento aberto do zero e a exportação (DCS-002);
-- o que ficar pendente dos pontos 2 e 3 do dono.
+**Próximo passo:** item 1 da Tarefa do DeepSeek — os 8 elementos que a classificação deu como "porta faltando" (o form de `src/editor/canvas/edit-handles.tsx`, o corpo de `src/editor/canvas/side-frame.tsx`, os 2 forms de `src/editor/shell/class-bar.tsx`, os 3 elementos de `src/editor/shell/easing-curve.tsx`, o form de `src/editor/shell/guides-grids.tsx`): conferir com citação se cada popover em portal está ligado ao campo por `aria-controls` (`src/editor/input/pending.ts`, limite do campo) e se cada um envia a mesma intenção ao mesmo tratador que a porta com `data-door`; achado vira DEF- com detector, correção e mutante.
 
 ### Procedimentos
-- **Depois de toda mudança de código, nesta ordem:** `node tools/audit/recitar.mjs` (citações pelo diff exato contra `.cache/audit/base/`); conferir as citações perdidas e trocá-las só onde o trecho citado é o da linha mudada (uma linha de número igual pode ter outro trecho depois de um deslocamento); `node tools/audit/inventariar.mjs <arquivos>` (arquivo novo exige propósito em JSON); `node tools/inventory/write.ts` (o inventário gerado conta módulos e linhas); `node tools/audit/check.mjs --resumo`.
-- **Depois de mudar uma marca `[lê:]`/`[escreve:]` de fluxo:** `node tools/audit/matriz.mjs`, `node tools/audit/renumerar.mjs` (os ids `GRE-`/`GRL-` saem da posição do nome da função na lista ordenada), `node tools/audit/esqueletos.mjs <EST>` e só então o preenchimento.
+- **Depois de alterar:** rode os detectores da área (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`; todo defeito corrigido ganha um mutante no catálogo que o detector acusa antes da correção e não acusa depois.
 - **Detectores:** `npx vitest run --config tools/runner/model/vitest.config.ts` (todos os grupos); `BUILDER_MUTANT=<id>` com o mesmo comando para um mutante; `node tools/runner/mutants-run.ts` para o catálogo inteiro.
-- Não use `sed` em arquivos do escopo (a trava exige reler o arquivo inteiro depois); no Git Bash, escreva scripts com barra invertida pela ferramenta de escrita, nunca por heredoc.
+- Não use `sed` em arquivos do escopo; no Git Bash, escreva scripts com barra invertida pela ferramenta de escrita, nunca por heredoc.
+
+### Para o Claude (nada visual, nada de navegador — fora desta tarefa)
+- **A etapa 4 inteira:** a fonte empacotada (DCS-012), a medição de texto com a fonte (C4) e o lote único do navegador.
+- **As partes de navegador da etapa 5:** Long Animation Frames, memória pelo CDP (sonda WeakRef com `HeapProfiler.collectGarbage`) e as classes de navegador do C8.
+- **O lote único do navegador (lista a cumprir quando ele for feito):**
+  - guarda de tela (off-window, covered, sideways) nas duas configurações da seção 8 do CLAUDE.md;
+  - controles montados contra `manifest/generated/inventory.json`;
+  - larguras fluidas;
+  - para cada comando desfazível: DOM do canvas incremental, o mesmo documento aberto do zero e a exportação (DCS-002);
+  - o que ficar pendente dos pontos 2 e 3 da revisão do dono (DEF-0512 e os 8 elementos "porta faltando").
+
 
 ### Lições
 - Um caso de detector precisa provar que passou pelo caminho que confere: o caso do autosave passava sem trocar de projeto, porque a troca pedia confirmação, e o M48 sobrevivente mostrou; o grupo `races` exige os dois desfechos.

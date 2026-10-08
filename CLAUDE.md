@@ -2,7 +2,7 @@
 
 Page builder com editor visual. O canvas é renderizado em iframe e há breakpoints, estados, classes e quadros-chave. A interface tem dois idiomas: pt-BR e inglês.
 
-Este arquivo contém **requisitos e regras de trabalho**. Ele não descreve o estado atual do código. O que está verificado consta em `auditoria/` e só vale com `node tools/audit/check.mjs` sem pendências.
+Este arquivo contém **requisitos e regras de trabalho**. Ele não descreve o estado atual do código. A prova de que o app funciona são os detectores (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`.
 
 ## 0. Memória do trabalho (obrigatória)
 O trabalho tem memória em disco, e ela é a única fonte de retomada. A memória da conversa não conta: uma compactação de contexto, uma sessão nova ou uma retomada depois de horas não a preservam, e o que não estiver gravado perdeu-se.
@@ -37,21 +37,16 @@ O trabalho tem memória em disco, e ela é a única fonte de retomada. A memóri
    - leia por inteiro os arquivos envolvidos;
    - identifique em `auditoria/estado.md` os itens de estado que a alteração toca.
 2. **Alterar:** corrija no ponto único que garante a regra (seção 4), nunca em cada componente que manifesta o defeito.
-3. **Depois de alterar:**
-   - re-rastreie todas as entradas e todos os pares de `auditoria/matriz.md` que escrevem ou leem os itens tocados;
-   - atualize `fluxos/`, `interacoes/` e `defeitos.md`.
-
-   Estado ou entrada nova entra nos inventários e é rastreado, com todos os seus pares.
-4. **Fechar:** `npm run typecheck`, `npm run lint` e `node tools/audit/check.mjs` devem terminar com zero erros e zero pendências.
-5. **Comportamento:** toda conclusão sobre comportamento vem de rastreamento registrado com citação no formato:
+3. **Depois de alterar:** rode os detectores da área (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`; todo defeito corrigido ganha um mutante no catálogo que o detector acusa antes da correção e não acusa depois.
+4. **Comportamento:** toda conclusão sobre comportamento vem de rastreamento registrado com citação no formato:
 
    `` `caminho/arquivo.ts:LINHA` `trecho exato daquela linha` ``
 
    Nunca deduza o comportamento pelo nome de uma função. Abra a função.
-6. **Gravação em disco:** grave à medida que avança. Antes de retomar, releia do disco. Nunca escreva de memória.
+5. **Gravação em disco:** grave à medida que avança. Antes de retomar, releia do disco. Nunca escreva de memória.
 
 ## 3. Conduta
-- **Linguagem de conclusão:** proibido escrever "funciona", "corrigido", "garantido", "100%", "sem erros" ou equivalente sem citar a saída de `node tools/audit/check.mjs` sem pendências.
+- **Linguagem de conclusão:** proibido escrever "funciona", "corrigido", "garantido", "100%", "sem erros" ou equivalente sem citar a saída dos detectores (`npx vitest run --config tools/runner/model/vitest.config.ts`), de `npm run typecheck` e de `npm run lint` sem falha.
 - **Palavras proibidas em `auditoria/`:** "etc.", "e assim por diante", "similar", "mesmo padrão", "análogo", "presumivelmente", "provavelmente", "deve funcionar", "aparentemente".
 - **Proibido silenciar erros:**
   - `@ts-ignore` e `eslint-disable`;
@@ -158,7 +153,7 @@ Confirme na auditoria e corrija esta seção se algo estiver errado.
 | Shell e workspace | `src/editor/shell/`, `src/editor/workspace/` |
 | Mensagens | `src/i18n/locales/en.json`, `src/i18n/locales/pt-BR.json` |
 | Geradores | `tools/gen/generate.ts` |
-| Verificador da auditoria | `tools/audit/check.mjs` (`node tools/audit/check.mjs`) |
+| Detectores | `tools/runner/model/vitest.config.ts` (`npx vitest run --config tools/runner/model/vitest.config.ts`) |
 
 ## 7. Registros da auditoria (`auditoria/`)
 | Arquivo | Conteúdo |
@@ -195,17 +190,7 @@ São eles: dimensão, posição, quebra de linha, rolagem, zoom do iframe, estil
 6. **Um editor por página:** nunca abra um segundo editor na mesma página. O perfil guarda o que o primeiro salvou.
 7. **Registro:** grave o valor e o script em `auditoria/medicoes/` e cite a medição no passo do fluxo.
 
-## 9. Travas automáticas (`.claude/`, do dono)
-Hooks em `.claude/settings.json` impõem as regras acima. Ninguém além do dono altera `.claude/`; comandos que tocam a pasta são bloqueados.
-- **Leitura integral:** cada Read fica registrado com o hash do arquivo. Edição em código da aplicação só é liberada quando todo arquivo do escopo foi lido por inteiro na versão atual. Arquivo alterado depois (por comando ou gerador) volta a exigir leitura. Grep e buscas não contam; leitura em partes só conta quando as partes cobrem todas as linhas.
-- **Registro antes da edição:** o arquivo editado precisa estar citado em `auditoria/defeitos.md` ou `auditoria/otimizacoes.md`.
-- **Pesquisa:** cada pacote externo importado pelo arquivo precisa de um WebFetch da documentação oficial com o nome do pacote e a versão instalada (completa, major.minor ou major) na URL ou no prompt.
-- **Registros:** escrita em `auditoria/` é recusada com palavra proibida; citação que não confere com o código é apontada na hora.
-- **Encerramento:** cada resposta só termina com leitura integral, pesquisa completa, registros válidos e `node tools/audit/check.mjs`, `npm run typecheck` e `npm run lint` aprovados.
-- **Escopo:** `git ls-files` menos `ignorar` de `.claude/vistoria.config.json` (a lista `ignorar` já deixa de fora os gerados, `vendor` e `.xlsx`). Read sem offset/limit só conta para arquivo de até 34.000 caracteres, com o prefixo de linha. Arquivo maior é lido com offset e limit explícitos, em partes de até 60.000 caracteres; se o Read recusar uma parte, use partes menores.
-- **Livres das travas:** `auditoria/`, `tools/audit/` e `CLAUDE.md`. `PROMPT.md`, `node_modules/` e `dist/` não podem ser editados.
-
-## 10. Ambiente e armadilhas
+## 9. Ambiente e armadilhas
 - **Sistema:** Windows com PowerShell. Rode processos pesados com prioridade baixa (`Start-Process` e `PriorityClass = 'BelowNormal'`).
 - **Finais de linha:** convivem arquivos CRLF e LF. Ao editar por script, preserve o final de linha de cada arquivo.
 - **Ids do manifesto:** nunca se escrevem à mão (regra de lint `builder/no-manifest-id`). Leia do manifesto.
