@@ -29,7 +29,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:29`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:27` `export const search = registerHandler<'layers.search', EditorUi>('layers.search', ({ state }, { query }) => {` — a única porta (o campo de busca das Camadas) chega ao mesmo tratador com só `query`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:31`).
 - G5: n/a — a rolagem da árvore filtrada é medida na Fase 6 (`src/editor/layers/tree.ts:31`).

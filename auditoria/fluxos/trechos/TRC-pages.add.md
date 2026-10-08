@@ -54,7 +54,7 @@
 ## Regras
 
 - G1: n/a — os patches escrevem `pages` e `pages[].tree`, fora de qualquer camada de estilo (`src/core/project/pages.ts:97` `patches: [{ op: 'add', path: ['pages', document.pages.length], value: made }]`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/project/pages.ts:88` `return registerHandler<'pages.add', Ui>('pages.add', ({ state, ids, rules, words }, { name }) => {` — o único tratador do comando; a porta envia só a intenção.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/project/pages.ts:97` `ui: { ...state.ui, page: made.id }`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/pages.ts:97`); as famílias de defeito de painel são medidas em Fase 6.

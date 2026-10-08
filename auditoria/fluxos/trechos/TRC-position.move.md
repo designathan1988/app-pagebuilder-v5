@@ -7,7 +7,7 @@
 1. `src/app/commands.ts:326` `'position.move': movePositionedCommand,` — a tabela de comandos liga o id ao tratador.
 2. `src/editor/input/pointer/resize.ts:73` `shared.open.dispatch(FREE_DRAG.command.id as CommandId, { ...FREE_DRAG.door.args, dx, dy } as never);` — o arraste livre entrega `dx` e `dy` a cada movimento do ponteiro.
 3. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — as setas do contexto `canvas-positioned` entregam `dx`/`dy` iguais a `-1`, `0` ou `1`.
-4. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
+4. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
 5. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 6. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `positionedSelection` é testada.
 7. `src/core/geometry/position.ts:63` `return nodes.length > 0 && nodes.every((node) => node !== undefined && valuePredicateHolds(node, POSITIONED, rules, state.document.classes));` — todo elemento selecionado é `absolute` ou `fixed` [lê: EST-L01-030 via valuePredicateHolds].
@@ -47,8 +47,8 @@
 - **DOM do canvas:** o iframe desenha o elemento na posição nova pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/position.ts:118`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/position.ts:118`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:326` `'position.move': movePositionedCommand,` — o arraste (`src/editor/input/pointer/resize.ts:73`) e as setas (`src/editor/input/keymap.ts:531`) chamam o mesmo tratador com a mesma forma de intenção `dx`/`dy`.
 - G4: n/a — o trecho não desenha painel nem barra sobre o canvas (`src/core/geometry/position.ts:120`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/core/geometry/position.ts:118`).

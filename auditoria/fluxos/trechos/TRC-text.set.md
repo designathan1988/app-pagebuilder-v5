@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:431` `'text.set': setTextCommand,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes; `text.set` é desfazível (`manifest/commands/text.json:117` `"undoable": true,`), então a digitação pendente de um campo é gravada primeiro.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente é gravada antes; `text.set` é desfazível (`manifest/commands/text.json:117` `"undoable": true,`), então a digitação pendente de um campo é gravada primeiro.
 3. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — [lê: EST-L01-030 via argumentRefusal] os argumentos são lidos contra o manifesto.
 4. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador.
 5. `src/core/text/text.ts:18` `export const setTextCommand = registerHandler('text.set', ({ state, rules }, { target, content }) => {` — o tratador.
@@ -28,7 +28,7 @@
 22. `src/core/store/store.ts:500` `own = applyPatches(before.document, outcome.patches ?? []);` — [escreve: EST-L01-030 via applyPatches] os patches entram no documento.
 23. `src/core/store/store.ts:504` `derived = own.applied.length > 0 && options.derive !== undefined ? options.derive(before.document, own.document, handlerContext(confirmed)) : null;` — o que segue a mudança (as coleções e as regiões compartilhadas) junta-se na mesma transação.
 24. `src/core/store/store.ts:531` `history = record(before.history, tx, key !== null && key === previousMergeable ? within : null, applied.document);` — [escreve: EST-L01-032 via record] o passo de desfazer.
-25. `src/editor/store.ts:163` `return styleStateFollows({ ...followed, ui: endRenameOnUndoable({ ...followed, ui: endOnUndoable(followed, command) }, command) });` — um comando desfazível encerra a edição de texto.
+25. `src/editor/store.ts:165` `return styleStateFollows({ ...followed, ui: endRenameOnUndoable({ ...followed, ui: endOnUndoable(followed, command) }, command) });` — um comando desfazível encerra a edição de texto.
 26. `src/editor/canvas/text-edit.ts:187` `return command.history.undoable ? ended(state.ui) : state.ui;` — [escreve: EST-L01-037 via endOnUndoable] o `ui.textEdit` fica com `node` nulo e sem prompt de link.
 27. `src/core/store/store.ts:567` `publish(committed, documentChanged ? applied.applied : []);` — [escreve: EST-L01-030 via publish] [escreve: EST-L01-033 via publish] publica a mudança.
 28. `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);` — [lê: EST-L01-030 via publish] os assinantes de documento são chamados.
@@ -58,7 +58,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava o texto do nó, fora de qualquer camada de estilo `src/core/text/text.ts:35` `if (found.node.text !== text) patches.push({ op: 'replace', path: [...found.path, 'text'], value: text });`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/text/text.ts:18` `export const setTextCommand = registerHandler('text.set', ({ state, rules }, { target, content }) => {` — o único tratador; as portas do manifesto (Enter e Escape no texto editando, clique fora, campo do inspector, Enter no campo, painel rápido) chamam a mesma linha `src/app/commands.ts:431` `'text.set': setTextCommand,`.
 - G4: n/a — o tratador muda estado e não desenha nada sobre o canvas `src/core/text/text.ts:41`.
 - G5: n/a — o trecho não desenha painel nem barra `src/core/text/text.ts:41`; as famílias de defeito de painel são medidas na Fase 6.

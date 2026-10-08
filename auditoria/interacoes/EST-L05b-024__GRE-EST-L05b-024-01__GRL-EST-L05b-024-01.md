@@ -19,6 +19,6 @@
 - A leitura relê o estado `src/editor/preferences/preferences.ts:237` `const state = store.getState();` e vê o documento já publicado.
 - ok — no meio da publicação o leitor lê o estado fixado.
 ### C4 desmontagem
-- n/a — a inscrição criada em `src/editor/store.ts:166` `persistPreferences(store, storage);` vive enquanto a store do editor viver; o retorno ali não é guardado e nada desmonta o componente que a usa.
+- n/a — a inscrição criada em `src/editor/store.ts:168` `persistPreferences(store, storage);` vive enquanto a store do editor viver; o retorno ali não é guardado e nada desmonta o componente que a usa.
 ## Resultado
 - O leitor decide se grava as preferências comparando o documento da store com o guardado: `src/editor/preferences/preferences.ts:241` `const documentChanged = state.document !== lastDocument;`.

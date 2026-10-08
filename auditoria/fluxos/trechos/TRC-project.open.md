@@ -61,7 +61,7 @@
 ## Regras
 
 - G1: n/a — o comando troca o documento inteiro, sem gravar estilo nem valor de camada (`src/core/project/archive.ts:76` `return { kind: 'load' as const, document: read.document, message: message('status.open.opened') };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/project/archive.ts:63` `export const openProject = registerHandler('project.open', ({ rules, state, confirmed }, args) => {` — o único tratador do comando.
 - G4: n/a — o comando troca o documento; não desenha nada sobre o canvas (`src/core/project/archive.ts:76`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/archive.ts:76`).

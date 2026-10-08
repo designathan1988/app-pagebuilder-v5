@@ -11,15 +11,15 @@
 ## Casos
 ### C1 final
 - O escritor terminou: a digitação pendente foi gravada e o registo voltou a nulo (`src/editor/input/pending.ts:47` `  held = null;`).
-- O leitor chega quando um gesto abre: `src/editor/store.ts:205` `      keepTyping();` — o gesto lê e grava a digitação pendente antes de servir.
+- O leitor chega quando um gesto abre: `src/editor/store.ts:216` `      keepTyping();` — o gesto lê e grava a digitação pendente antes de servir.
 - ok — a digitação é gravada uma vez e o registo fica vazio.
 ### C2 intermediário
 - n/a — a gravação é uma chamada só (`src/editor/input/pending.ts:44` `export function keepTyping(): void {`).
 ### C3 em curso
-- O leitor corre no começo do gesto, antes de a store despachar: `src/editor/store.ts:205` `      keepTyping();`.
+- O leitor corre no começo do gesto, antes de a store despachar: `src/editor/store.ts:216` `      keepTyping();`.
 - ok — o leitor lê o registo antes de o comando correr.
 ### C4 desmontagem
-- n/a — a leitura é de uma função do store do editor (`src/editor/store.ts:204` `    gesture: () => {`).
+- n/a — a leitura é de uma função do store do editor (`src/editor/store.ts:215` `    gesture: () => {`).
 
 ## Resultado
-- O leitor grava a digitação pendente antes de o gesto servir: `src/editor/store.ts:205` `      keepTyping();`.
+- O leitor grava a digitação pendente antes de o gesto servir: `src/editor/store.ts:216` `      keepTyping();`.

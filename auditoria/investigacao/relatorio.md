@@ -104,7 +104,7 @@ As verificações sem navegador da área afetada por uma mudança ficam abaixo d
 ### C2. Acusação automática de quebra
 
 **1. Situação atual.**
-- A store recusa todo estado que o modelo não aceita: `src/core/store/store.ts:273` `const problems = validateDocument(next.document, next.selection, rules);`, e congela o estado em desenvolvimento e teste: `src/editor/store.ts:147` `freeze: options.freeze ?? import.meta.env.DEV,`.
+- A store recusa todo estado que o modelo não aceita: `src/core/store/store.ts:273` `const problems = validateDocument(next.document, next.selection, rules);`, e congela o estado em desenvolvimento e teste: `src/editor/store.ts:149` `freeze: options.freeze ?? import.meta.env.DEV,`.
 - Já existe uma sonda de invariantes com fast-check sobre a store real, com semente fixa: `tools/runner/invariants.test.ts:162` `{ seed: 20261002, numRuns: 200 },`. Ela confere que desfazer tudo volta ao documento inicial: `tools/runner/invariants.test.ts:160` `if (!deepEqual(store.getState().document, initial)) throw new Error(`. Ela não confere seleção, refazer, fusão, gestos nem digitação pendente, e não confere cada passo de desfazer.
 - O executor rápido de cenários roda os 1.831 cenários do manifesto sem navegador onde o cenário permite (`tools/runner/headless.test.ts`).
 - A "prova do dente" desliga uma funcionalidade inteira por plugin do Vite e exige que os testes dela falhem: `tools/runner/tooth-plugin.ts:36` `return `. Ela roda no navegador, por funcionalidade.
@@ -262,7 +262,7 @@ Node calculou as 93.435 larguras em 86 ms; o Chrome mediu 31.145 em cerca de 0,4
 ### C5. Controlador global de entradas e saídas
 
 **1. Situação atual.**
-- O registro único de digitação pendente existe e é aplicado na store do editor: `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`. O campo registra a digitação com o contexto em que ela começou: `src/editor/shell/field.tsx:650` `holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, NUMBER_FIELD_CONTEXT, property), keep: keepNow });`.
+- O registro único de digitação pendente existe e é aplicado na store do editor: `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`. O campo registra a digitação com o contexto em que ela começou: `src/editor/shell/field.tsx:650` `holdTyping({ field: element, region: regionOf(element), context: typing.context, owns: ownsProperty(command, NUMBER_FIELD_CONTEXT, property), keep: keepNow });`.
 - Todas as portas de um passo de campo levam a mesma intenção ao mesmo tratador (G3): `src/editor/inspector/number-field.ts:82` `export const stepField = registerHandler('field.step', (context, { property, value, direction, size, modifier }) => {`, e o ponto de partida é decidido num lugar só: `src/editor/inspector/number-field.ts:55` `function startOf<Ui>(context: HandlerContext<Ui>, property: string, value: string): string {`.
 - A leitura de um valor digitado é única: `src/core/style/set.ts:235` `export function readValue<Ui>(context: HandlerContext<Ui>, property: string, typedText: string): ReadValue | null {`, com a vírgula decimal do pt-BR tratada: `src/core/style/set.ts:241` `const decimal = /^\s*[+-]?\d+,\d+\s*[a-z%]*\s*$/i.test(typedText) ? typedText.replace(',', '.') : typedText;`.
 - A escrita do número tem regra única de arredondamento: `src/core/style/codecs.ts:68` `export function writeNumber(n: number): string {`.
@@ -325,7 +325,7 @@ Node calculou as 93.435 larguras em 86 ms; o Chrome mediu 31.145 em cerca de 0,4
 - A máquina de gestos é pura e testável: `src/editor/input/pointer/machine.ts:79` `export function step(machine: Machine, event: MachineEvent, dragThreshold = DRAG_THRESHOLD): { readonly machine: Machine; readonly effect: Effect } {`.
 - O registro de digitação pendente grava antes de qualquer comando de fora do campo: `src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`.
 - O teclado ignora a composição de IME: `src/editor/input/keymap.ts:384` `if (event.isComposing || event.keyCode === 229) return;`.
-- Um despacho que chega com um gesto aberto espera o fim do gesto, no contexto em que foi pedido: `src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`.
+- Um despacho que chega com um gesto aberto espera o fim do gesto, no contexto em que foi pedido: `src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`.
 - A varredura P3 contou 90 chamadas a `addEventListener` em `src/` fora dos testes, e `auditoria/entradas.md` registra 2.071 entradas.
 
 **2. Lacunas.**

@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/inspector/sections.ts:316`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/inspector/sections.ts:312` `export const revealField = registerHandler<'inspector.reveal', EditorUi>('inspector.reveal', ({ state }, { property, attribute }) => {` — as portas (o item Adicionar propriedade, a barra de comandos, o duplo clique num controle do canvas) chegam ao mesmo tratador com só `property` ou `attribute`.
 - G4: n/a — o comando muda estado; a coluna do inspector ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/inspector/sections.ts:315`).
 - G5: n/a — o encaixe do campo revelado é medido na Fase 6 (`src/editor/inspector/sections.ts:315`).

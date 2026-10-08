@@ -83,7 +83,7 @@
 
 ## Regras
 - G1: ok `src/editor/checks/fix.ts:27` `  const on = (selection: readonly NodeId[]) => ({ ...context, state: { ...state, selection: [...selection] } });`
-- G2: ok `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` com `src/editor/store.ts:222` `      const changesDocument = UNDOABLE.get(id) === true;` e `manifest/commands/checks.json:47` `        "undoable": true,`
+- G2: ok `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` com `src/editor/store.ts:233` `      const changesDocument = UNDOABLE.get(id) === true;` e `manifest/commands/checks.json:47` `        "undoable": true,`
 - G3: ok `src/app/commands.ts:505` `  'checks.applyFix': fixCheck,`
 - G4: n/a — o comando é acionado pelo painel Checks, não por um ponto do canvas `manifest/commands/checks.json:60` `          "panel": "checks",`
 - G5: n/a — o tratador não desenha painel nem barra; devolve só um resultado `src/editor/checks/fix.ts:21` `export const fixCheck = registerHandler<'checks.applyFix', EditorUi>('checks.applyFix', (context, { target, rule }): Outcome<EditorUi> => {`

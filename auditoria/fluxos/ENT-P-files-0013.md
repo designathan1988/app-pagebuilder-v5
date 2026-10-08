@@ -9,14 +9,14 @@
 - **Trecho:** TRC-files.move
 
 ## Passos
-1. `src/editor/input/pointer/common.ts:509` `if (typeof stands.path === 'string' && stands.path !== '') return { on: 'explorer', entry, args: stands, path: stands.path };` — o toque na área principal da linha vira um toque `explorer`, com os argumentos da linha (o `path` e o `to` do desenho, `src/editor/shell/sidebar/explorer.tsx:301` `data-args={JSON.stringify({ path: row.path, to: folderOf(row.path) })}`).
+1. `src/editor/input/pointer/common.ts:491` `if (typeof stands.path === 'string' && stands.path !== '') return { on: 'explorer', entry, args: stands, path: stands.path };` — o toque na área principal da linha vira um toque `explorer`, com os argumentos da linha (o `path` e o `to` do desenho, `src/editor/shell/sidebar/explorer.tsx:301` `data-args={JSON.stringify({ path: row.path, to: folderOf(row.path) })}`).
 2. `src/editor/input/pointer/effects.ts:85` `if (press.on === 'explorer') ps.exploring = { press, over: null };` — o toque começa o arraste de linha.
 3. `src/editor/input/pointer/effects.ts:41` `shared.open = store.gesture();` — o toque abre o gesto na store do editor. [escreve: EST-L01-007 via store.gesture]
 4. `src/editor/input/pointer/panels.ts:96` `ps.exploring = { ...ps.exploring, over };` — os movimentos marcam a pasta sob o ponteiro (`src/editor/input/pointer/panels.ts:94` `const over = p.folderUnder(at)?.getAttribute('data-folder') ?? null;`).
 5. `src/editor/input/pointer/effects.ts:189` `if (ps.exploring !== null && effect === 'commit' && ps.exploring.press.path !== '') {` — a liberação com caminho não vazio entra no ramo do arraste de linha.
 6. `src/editor/input/pointer/effects.ts:190` `const into = ps.exploring.over;` — `into` é a pasta marcada.
 7. `src/editor/input/pointer/effects.ts:193` `if (into !== null) closing?.dispatch(exploringNow.entry.command.id as CommandId, { ...exploringNow.entry.door.args, ...exploringNow.args, to: into } as never);` — a porta despacha `files.move` com o caminho da linha e a pasta sob o ponteiro; esta é a linha de Início.
-8. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
+8. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
 9. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o despacho.
 10. `src/core/store/store.ts:720` `return run(id, args, current);` — chama a regra única de execução dentro do gesto.
 11. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -41,7 +41,7 @@
 
 ## Regras
 - G1: n/a — os patches escrevem `files`, `folders` e `pages[].file`, fora de qualquer camada de estilo (`src/core/files/files.ts:481` `const patches = pathMovePatches(state.document, rules, from, wanted);`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada antes de o gesto abrir (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada antes de o gesto abrir (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:305` `'files.move': moveFileCommand,` — as três portas chegam ao mesmo tratador; esta manda só a intenção.
 - G4: n/a — o caminho da porta não desenha nada sobre o canvas (`src/editor/input/pointer/effects.ts:193`).
 - G5: n/a — o caminho da porta não mede nem desenha painel ou barra (`src/editor/input/pointer/effects.ts:193`).

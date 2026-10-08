@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/code-panel/code-panel.ts:139`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/code-panel/code-panel.ts:137` `export const setPane = registerHandler<'codePanel.setPane', EditorUi>(` — as três abas (HTML, CSS, JS) chegam ao mesmo tratador com só `pane`.
 - G4: n/a — o comando muda estado; o painel de código ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/code-panel/code-panel.ts:139`).
 - G5: n/a — o encaixe do painel de código é medido na Fase 6 (`src/editor/code-panel/code-panel.ts:139`).

@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/panels.ts:148` `return { kind: 'change', ui: withDock(hidden, 'collapsed'), message: message('status.docks.collapsed') };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/panels.ts:136` `export const collapseDocks = registerHandler<'workspace.collapseDocks', EditorUi>('workspace.collapseDocks', ({ state }) => {` — a porta envia só a intenção sem argumentos; o tratador é o mesmo de todas as portas do comando workspace.collapseDocks.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/panels.ts:148` `return { kind: 'change', ui: withDock(hidden, 'collapsed'), message: message('status.docks.collapsed') };`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/panels.ts:148` `return { kind: 'change', ui: withDock(hidden, 'collapsed'), message: message('status.docks.collapsed') };`).

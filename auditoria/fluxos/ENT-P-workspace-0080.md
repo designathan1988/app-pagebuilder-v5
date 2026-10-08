@@ -10,7 +10,7 @@
 1. `src/editor/input/pointer/drag.ts:176` `const rest = (row: { readonly node: NodeId; readonly folded: boolean } | null) => {` — a função que trata o repouso numa linha fechada durante um arraste
 2. `src/editor/input/pointer/drag.ts:186` `ps.unfold = setTimeout(() => {` — um temporizador é armado para o repouso
 3. `src/editor/input/pointer/drag.ts:189` `shared.open?.dispatch(dwell.command.id as CommandId, { ...dwell.door.args, target: folded } as never);` — o temporizador roda a porta do repouso, no gesto do arraste, com o nó em `target`
-4. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o gesto do editor leva a intenção ao gesto do núcleo
+4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo
 5. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador
 6. `src/app/commands.ts:494` `'layers.setExpanded': setExpanded,` — a tabela liga o id ao tratador; o trecho TRC-layers.setExpanded começa aqui
 
@@ -34,7 +34,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:76`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
 - G3: ok `src/editor/layers/tree.ts:69` `export const setExpanded = registerHandler<'layers.setExpanded', EditorUi>('layers.setExpanded', ({ state }, { target, expanded }) => {` — as duas portas (o caret da linha e o repouso de um arraste sobre uma linha fechada) chegam ao mesmo tratador com só `target` e `expanded`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:76`).
 - G5: n/a — o encaixe da árvore com ramos abertos é medido na Fase 6 (`src/editor/layers/tree.ts:76`).

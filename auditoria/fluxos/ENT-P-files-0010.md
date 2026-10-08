@@ -12,9 +12,9 @@
 2. `src/editor/shell/sidebar/explorer.tsx:198` `const path = typed.trim();` — o caminho é o texto podado nas pontas.
 3. `src/editor/shell/sidebar/explorer.tsx:199` `if (path === '' || !field.built) return;` — campo vazio ou não construído não despacha.
 4. `src/editor/shell/sidebar/explorer.tsx:200` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(door.command.id as CommandId, { ...door.door.args, path });` — a porta despacha `files.createFile` com o caminho digitado; esta é a linha de Início.
-5. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
-6. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
-7. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto o comando segue para a store do núcleo.
+5. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
+6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+7. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto o comando segue para a store do núcleo.
 8. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o `dispatch` da store do núcleo.
 9. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — `dispatch` entrega o comando a `run`. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 10. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -22,7 +22,7 @@
 
 ## Ramos
 - A guarda do campo: `src/editor/shell/sidebar/explorer.tsx:199` `if (path === '' || !field.built) return;` — caminho vazio não despacha; não vazio segue ao passo 4.
-- O gesto aberto na store do editor: `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- O gesto aberto na store do editor: `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho da porta é síncrono (`src/app/commands.ts:302` `'files.createFile': createFileCommand,`); não há `await`, timer, quadro nem ouvinte nos passos.
@@ -39,7 +39,7 @@
 
 ## Regras
 - G1: n/a — o patch escreve `files`, fora de qualquer camada de estilo (`src/core/files/files.ts:458`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:302` `'files.createFile': createFileCommand,` — a porta chega a este único tratador e manda só a intenção.
 - G4: n/a — o caminho da porta não desenha nada sobre o canvas (`src/editor/shell/sidebar/explorer.tsx:200`).
 - G5: n/a — o caminho da porta não mede nem desenha painel ou barra (`src/editor/shell/sidebar/explorer.tsx:200`).

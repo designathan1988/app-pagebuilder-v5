@@ -211,6 +211,34 @@
           "why": "another pointer does not end the gesture"
         }
       ]
+    },
+    "modes": {
+      "source": "src/editor/input/modes.ts",
+      "modes": [
+        "pointer-gesture",
+        "picker-session",
+        "typing",
+        "context-menu",
+        "command-bar",
+        "dialog",
+        "picker",
+        "rename",
+        "text-edit",
+        "preview",
+        "confirmation"
+      ],
+      "refusedWhile": {
+        "pointer-gesture": [
+          "context-menu",
+          "command-bar",
+          "dialog",
+          "picker",
+          "rename",
+          "text-edit",
+          "preview",
+          "confirmation"
+        ]
+      }
     }
   }
 }

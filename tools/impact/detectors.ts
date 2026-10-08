@@ -66,8 +66,12 @@ function graphOf(group: Detector): ReadonlySet<string> {
   return seen;
 }
 // the files a group reads from the disk besides what it imports: the inventory scans every source file of src/ and
-// compares manifest/generated/inventory.json, built from the manifest (tools/runner/model/inventory.test.ts)
-const READ_FROM_DISK: Partial<Record<Detector, RegExp>> = { inventory: /^(src\/.*(?<!\.test)\.tsx?|manifest\/.*\.json)$/ };
+// compares manifest/generated/inventory.json, built from the manifest (tools/runner/model/inventory.test.ts); the lint
+// loads the project's configuration and its rules (tools/runner/model/lint.test.ts)
+const READ_FROM_DISK: Partial<Record<Detector, RegExp>> = {
+  inventory: /^(src\/.*(?<!\.test)\.tsx?|manifest\/.*\.json)$/,
+  lint: /^(src\/.*(?<!\.test)\.tsx?|eslint\.config\.js|tools\/lint\/.*\.ts)$/,
+};
 export const graphReaches = (group: Detector, file: string): boolean => {
   const posixFile = file.replaceAll('\\', '/');
   return graphOf(group).has(posixFile) || (READ_FROM_DISK[group]?.test(posixFile) ?? false);

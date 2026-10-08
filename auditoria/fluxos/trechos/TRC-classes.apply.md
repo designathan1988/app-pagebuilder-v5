@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:228` `'classes.apply': applyClassCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção (a de `inspector-class-add` ou a de `command-bar-apply-class`).
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 6. `src/core/design/classes.ts:86` `export const applyClassCommand = registerHandler('classes.apply', (context, { className }): Outcome<never> => {` — o tratador recebe o contexto e o argumento `className`.
@@ -47,7 +47,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve caminhos do documento a partir da seleção (`src/core/design/classes.ts:100`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:228` `'classes.apply': applyClassCommand,` — uma porta de painel e uma da command bar chegam ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/classes.ts:102`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/classes.ts:102`).

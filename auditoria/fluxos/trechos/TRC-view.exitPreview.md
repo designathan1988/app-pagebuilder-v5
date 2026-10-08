@@ -45,7 +45,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só tira a previsão e devolve a seleção guardada `src/editor/view/preview.ts:21` `ui, selection: held.selection, message: message('status.preview.off')`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as três portas de `view.exitPreview` (Escape em previsão, Ctrl+Enter em previsão e o botão Sair da barra de previsão) chegam à tabela `src/app/commands.ts:458` `'view.exitPreview': exitPreview,` e mandam só a intenção de sair `src/editor/view/preview.ts:21` `return { kind: 'change', ui, selection: held.selection, message: message('status.preview.off') };`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/preview.ts:21` `return { kind: 'change', ui, selection: held.selection, message: message('status.preview.off') };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só tira a previsão e devolve a seleção `src/editor/view/preview.ts:21` `ui, selection: held.selection`.

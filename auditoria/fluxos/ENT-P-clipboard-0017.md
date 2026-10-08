@@ -13,11 +13,11 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 8. `src/editor/clipboard.ts:66` `if (own === null) return read;` — sem conteúdo do sistema e sem cópia própria, vale a leitura do sistema. [lê: EST-L05b-001 via readClipboard]
 9. `src/editor/clipboard.ts:67` `return { status: 'read', html: null, text: own, markup: null };` — com cópia própria, ela é o resultado. [lê: EST-L05b-001 via readClipboard]
 10. `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — o `dispatch` que a retomada chama é o da store do editor.
-11. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-12. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `clipboard.pasteStyle` é reversível no manifesto, então `changesDocument` é verdadeiro.
-13. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-14. `src/editor/store.ts:224` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o alvo da digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
-15. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch] [escreve: EST-L01-033 via dispatch]
+11. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+12. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `clipboard.pasteStyle` é reversível no manifesto, então `changesDocument` é verdadeiro.
+13. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+14. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o alvo da digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
+15. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch] [escreve: EST-L01-033 via dispatch]
 16. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 17. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 18. `src/core/store/store.ts:399` `const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {` — a função que roda um comando.
@@ -28,7 +28,7 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 - R1 `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — `clipboard.pasteStyle` tem um argumento do tipo `clipboard` (o nome `clipboard`), então a variável não é `undefined` e o caminho segue pelo `else` de `src/editor/input/keymap.ts:532`; o despacho imediato de 531 não é tomado.
 - R2 `src/editor/input/keymap.ts:487` `if (!binding) return;` — a tecla não tem ligação no contexto do foco: nada roda; com ligação, o caminho segue.
 - R3 `src/editor/input/keymap.ts:505` `if (!shortcutRunsNow(binding)) return;` — o comando não construído ou a funcionalidade não registrada: a porta não roda; construído e registrado, segue.
-- R4 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo; com um gesto aberto, `clipboard.pasteStyle` é reversível, então entraria na fila `waiting` (`src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R4 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo; com um gesto aberto, `clipboard.pasteStyle` é reversível, então entraria na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R5 `src/core/store/store.ts:400` `const entry = table[id];` — o id é um comando do manifesto, então a tabela devolve a entrada `src/app/commands.ts:210` `'clipboard.pasteStyle': pasteStyleCommand,`.
 
 ## Fronteiras assíncronas
@@ -47,8 +47,8 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 - **DOM do canvas:** nada muda neste caminho.
 
 ## Regras
-- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando.
+- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando.
 - G3: ok — a porta chega à tabela `src/app/commands.ts:210` `'clipboard.pasteStyle': pasteStyleCommand,` e envia só a intenção, o conteúdo lido no argumento.
 - G4: n/a — a porta não desenha elemento sobre o canvas `src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`.
 - G5: n/a — a porta não desenha nem mede painel ou barra `src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`.

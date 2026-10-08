@@ -65,7 +65,7 @@
 ## Regras
 
 - G1: n/a — a alteração escreve a tabela de breakpoints do documento, fora das camadas (ponto de quebra, estado, classe, quadro-chave) que o contexto de edição nomeia `src/editor/view/breakpoint-table.ts:17` `const tablePatch = (document: DocumentJson, table: readonly ProjectBreakpoint[]): Patch => ({ op: document.breakpoints === undefined ? 'add' : 'replace', path: ['breakpoints'], value: table });`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` mantém a digitação pendente antes do comando que muda o documento, e `src/editor/input/pending.ts:82` `keepTyping();`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` mantém a digitação pendente antes do comando que muda o documento, e `src/editor/input/pending.ts:82` `keepTyping();`.
 - G3: ok `src/editor/view/breakpoint-table.ts:21` `export const addBreakpoint = registerHandler<'breakpoints.add', EditorUi>('breakpoints.add', ({ state, words }, { width, name }) => {` — um só tratador; as duas portas enviam só o comando, `manifest/commands/breakpoints.json:41` `"kind": "menu",` e `manifest/commands/breakpoints.json:63` `"kind": "panel-control",`.
 - G4: n/a — o trecho não age sobre um ponto do canvas; a porta é um controle de diálogo `manifest/commands/breakpoints.json:63` `"kind": "panel-control",`.
 - G5: n/a — o trecho não monta painel nem barra; grava o documento e as preferências `src/editor/view/breakpoint-table.ts:31` `ui: { ...ui, preferences: choosing(state.ui, made.added) },`.

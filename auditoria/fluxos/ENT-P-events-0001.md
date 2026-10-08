@@ -12,9 +12,9 @@
 4. `src/editor/shell/interactions.tsx:220` `            if (single) add();` — sem seleção única o toque não faz nada; com ela chama `add`.
 5. `src/editor/shell/interactions.tsx:194` `    if (ADD === null) return;` — sem a porta no manifesto, nada despacha.
 6. `src/editor/shell/interactions.tsx:195` `    (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(ADD.command.id as CommandId, { ...ADD.door.args });` — o botão despacha interactions.add com os argumentos da porta; esta é a linha de Início da porta.
-7. `src/editor/store.ts:221` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
-8. `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo. [escreve: EST-L01-030 via dispatch]
+7. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
+8. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo. [escreve: EST-L01-030 via dispatch]
 10. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho entra em `run`.
 11. `src/core/store/store.ts:400` `    const entry = table[id];` — o id resolve a entrada da tabela de comandos. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 12. `src/app/commands.ts:261` `'interactions.add': addInteractionCommand,` — a tabela liga o id ao tratador; o trecho TRC-interactions.add continua daqui.
@@ -22,7 +22,7 @@
 ## Ramos
 - Seleção única: `src/editor/shell/interactions.tsx:220` `            if (single) add();` — lado falso (nenhum ou vários selecionados): nada despacha; lado verdadeiro: chama `add`.
 - A porta existe: `src/editor/shell/interactions.tsx:194` `    if (ADD === null) return;` — lado verdadeiro (sem a porta no manifesto): nada despacha; lado falso: segue ao passo 6.
-- O gesto aberto na store do editor: `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue à store do núcleo (o lado desta porta); com gesto aberto e um comando que muda o documento (interactions.add é desfazível), a gravação é adiada em `src/editor/store.ts:230` `        waiting.push(() => void store.dispatch(id, args, asked));`.
+- O gesto aberto na store do editor: `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue à store do núcleo (o lado desta porta); com gesto aberto e um comando que muda o documento (interactions.add é desfazível), a gravação é adiada em `src/editor/store.ts:243` `        waiting.push(() => void store.dispatch(id, args, asked));`.
 
 ## Fronteiras assíncronas
 - nenhuma — a porta e o despacho são síncronos (`src/app/commands.ts:261` `'interactions.add': addInteractionCommand,`); entre a leitura do estado e a entrega ao tratador não há await, timer nem quadro.
@@ -34,12 +34,12 @@
 ## Resultado
 - **Estado final:** o comando interactions.add corre no contexto da porta; a interação nova entra no documento pelo tratador (`src/app/commands.ts:261` `'interactions.add': addInteractionCommand,`).
 - **Re-renderizado:** os assinantes da store são notificados (`src/core/store/store.ts:325` `    for (const listener of [...listeners]) listener();`).
-- **DOM do editor:** a aba de interações do inspetor redescreve os cartões do elemento, pelo mesmo aviso ao editor (`src/editor/store.ts:253` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
+- **DOM do editor:** a aba de interações do inspetor redescreve os cartões do elemento, pelo mesmo aviso ao editor (`src/editor/store.ts:275` `  return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
 - **DOM do canvas:** o quadro aplica a mudança do documento ao renderizador (`src/editor/canvas/frame.tsx:81` `        renderer.apply(change.before, change.after, change.patches);`); a interação não é desenhada nem executada.
 
 ## Regras
 - G1: n/a — a porta envia os argumentos fixos da porta e a gravação de `interactions` no nó é do tratador (`src/core/events/interactions.ts:242` `      patches: writeInteractions(found, [...interactionsOf(found.node), interaction]),`); nada lê ponto de quebra, estado, classe-alvo nem quadro-chave.
-- G2: ok `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — com rascunho pendente o registro grava antes; `interactions.add` é desfazível no manifesto (`manifest/commands/events.json:55` `      "undoable": true,`).
+- G2: ok `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — com rascunho pendente o registro grava antes; `interactions.add` é desfazível no manifesto (`manifest/commands/events.json:55` `      "undoable": true,`).
 - G3: ok `src/app/commands.ts:261` `'interactions.add': addInteractionCommand,` — a única porta do comando (`manifest/commands/events.json:63` `          "id": "inspector-interaction-add",`) envia só a intenção a este tratador.
 - G4: n/a — a porta é um controle do inspetor, na própria coluna, fora do canvas (`manifest/commands/events.json:77` `            "region": "inspector-interactions",`).
 - G5: n/a — o comando acrescenta uma interação e não desenha controle que cresça painel ou barra (`manifest/commands/events.json:65` `          "drawnAs": "button",`).

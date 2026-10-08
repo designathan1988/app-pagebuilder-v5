@@ -18,6 +18,7 @@ import type { Press } from './machine.ts';
 import { modifierOf, type Picking } from './press.ts';
 import { CONTAINERS, layersDrag, ROW_DROP, ROW_SELECT } from '../drop-proposals.ts';
 import { pointerViews, type Inserting, type PressRegion } from './views.ts';
+import { sharedOf, type PointerShared } from './shared.ts';
 
 // a shadow handle that moves the offset (canvas/edit-handles.tsx data-shadow)
 export const SHADOW_OFFSET = 'offset';
@@ -247,28 +248,9 @@ export function pressRegionOf(target: EventTarget | null): PressRegion {
   if (element.closest('[data-key-context="layers-tree"]') !== null) return 'layers';
   return element.closest('[data-key-context="canvas"]') !== null ? 'canvas' : 'elsewhere';
 }
-// The pointer state of one editor that outlives a gesture (the plan's T7: one per editor, by its store, never shared):
-// the pan (Space held, the pointer over the stage, the pan going on and the door it runs), the gesture open now, and
-// the colour picker's session with what ends it.
-export interface PointerShared {
-  spaceDown: boolean;
-  overStage: boolean;
-  panning: { pointer: number; last: Point; moved: Point; entry: DoorEntry } | null;
-  panDispatch: ((entry: DoorEntry, args: Readonly<Record<string, unknown>>) => void) | null;
-  open: Gesture | null;
-  session: Gesture | null;
-  sessionDispatch: ((id: CommandId, args: unknown) => DispatchResult) | null;
-  pendingPickerEnd: (() => void) | null;
-}
-const SHARED = new WeakMap<EditorStore, PointerShared>();
-export function sharedOf(store: EditorStore): PointerShared {
-  let shared = SHARED.get(store);
-  if (shared === undefined) {
-    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };
-    SHARED.set(store, shared);
-  }
-  return shared;
-}
+// The pointer state of one editor that outlives a gesture lives in a module of its own (pointer/shared.ts), which the
+// modes of interaction read without loading these parts.
+export { sharedOf, type PointerShared };
 // Space went down or up (the keymap, which owns the keys): held over the stage it arms the pan; true when it did
 export function holdSpace(store: EditorStore, down: boolean): boolean {
   const shared = sharedOf(store);

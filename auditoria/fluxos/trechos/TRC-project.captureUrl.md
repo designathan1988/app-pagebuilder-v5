@@ -48,13 +48,13 @@
 
 - **Estado final:** EST-L01-037 — no ramo `change` o estado do editor perde `ui.dialog` e ganha `ui.capture` com o endereço, a contagem e as páginas (`src/editor/import/capture.ts:54`); nos ramos de recusa só EST-L01-033, EST-L01-035 e EST-L01-036 são escritas (`src/core/store/store.ts:451`).
 - **Re-renderizado:** todo assinante da store é chamado (`src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`).
-- **DOM do editor:** o painel de captura lê `ui.capture` pelo caminho da store (`src/editor/store.ts:253` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
+- **DOM do editor:** o painel de captura lê `ui.capture` pelo caminho da store (`src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`).
 - **DOM do canvas:** nada muda — o documento não é tocado (`src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);`).
 
 ## Regras
 
 - G1: n/a — o comando grava o estado do editor, sem gravar estilo nem valor de camada (`src/editor/import/capture.ts:54`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/import/capture.ts:48` `export const captureUrlCommand = registerHandler<'project.captureUrl', EditorUi>('project.captureUrl', ({ state }, { url, pages = 1 }) => {` — o único tratador do comando.
 - G4: n/a — a porta é o controle do diálogo de captura, não um ponto do canvas (`manifest/commands/project.json` `"panel": "capture-url",`).
 - G5: n/a — o comando escreve só o estado do editor; o diálogo é desenhado pela view (`src/editor/import/capture.ts:52` `const { dialog: _dialog, ...ui } = state.ui;`).

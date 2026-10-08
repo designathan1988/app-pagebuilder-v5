@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/palette/palette.ts:37`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/palette/palette.ts:33` `export const setDensity: RegisteredHandler<'palette.setDensity', EditorUi> = registerHandler(` — as quatro portas (lista, duas colunas, três colunas, ícones) chegam ao mesmo tratador com só `density`.
 - G4: n/a — o comando muda estado; o painel Insert ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/palette/palette.ts:37`).
 - G5: n/a — o encaixe do painel Insert em cada densidade é medido na Fase 6 (`src/editor/palette/palette.ts:37`).

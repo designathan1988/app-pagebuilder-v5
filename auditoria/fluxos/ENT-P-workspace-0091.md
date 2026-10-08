@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/inspector/concept-rows.ts:103`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/inspector/concept-rows.ts:88` `export const toggleRow = registerHandler<'inspector.toggleRow', EditorUi>('inspector.toggleRow', ({ state }, { row }) => {` — a única porta (o triângulo da linha) chega ao mesmo tratador com só `row`.
 - G4: n/a — o comando muda estado; a coluna do inspector ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/inspector/concept-rows.ts:103`).
 - G5: n/a — o encaixe dos detalhes da linha abertos é medido na Fase 6 (`src/editor/inspector/concept-rows.ts:103`).

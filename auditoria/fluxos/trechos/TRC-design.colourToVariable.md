@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:224` `'design.colourToVariable': colourToVariableCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 6. `src/core/design/site-colours.ts:163` `export const colourToVariableCommand = registerHandler('design.colourToVariable', (context, { colour, name }): Outcome<never> => {` — o tratador recebe o contexto e os dois argumentos.
@@ -45,7 +45,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve caminhos fixos do documento (`src/core/design/site-colours.ts:173`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:224` `'design.colourToVariable': colourToVariableCommand,`
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/site-colours.ts:176`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/site-colours.ts:176`).

@@ -12,9 +12,9 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 7. `src/editor/doors/door.tsx:127` `if (file !== undefined && entry.door.adapter.fileReading === 'upload') {` — a porta lê o arquivo como registo de upload (`manifest/commands/assistant.json:203` `"fileReading": "upload"`), então este ramo é o tomado.
 8. `src/editor/doors/door.tsx:128` `void chooseFiles().then(async (chosen) => {` — o escolhedor do navegador abre e a leitura segue em promessa.
 9. `src/editor/doors/door.tsx:131` `dispatch(entry.command.id, { ...given, [file]: records });` — a porta entrega a intenção com a lista de registos lida (`src/editor/doors/door.tsx:130` `const records = await Promise.all(chosen.map((one) => readUploadFile(one)));`).
-10. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-11. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.attachReference` não é desfazível (`manifest/commands/assistant.json:177` `"undoable": false`).
-12. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
+10. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+11. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.attachReference` não é desfazível (`manifest/commands/assistant.json:177` `"undoable": false`).
+12. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
 13. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 14. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 15. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela.
@@ -24,7 +24,7 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 - R1 `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — controle indisponível não roda; disponível segue.
 - R2 `src/editor/doors/door.tsx:119` `if (file !== undefined && entry.door.adapter.fileReading === 'data') {` — a leitura desta porta não é `data` (é `upload`), então este ramo não é tomado.
 - R3 `src/editor/doors/door.tsx:129` `if (chosen.length === 0) return;` — nada escolhido no seletor: o caminho para; escolhido: segue para a entrega.
-- R4 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`.
+- R4 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 
 ## Fronteiras assíncronas
 - F1 `src/editor/doors/door.tsx:128` `void chooseFiles().then(async (chosen) => {` — a entrega não espera o seletor; entradas que podem rodar no intervalo: outra porta do painel (as demais `ENT-P-assistant-*`) e as entradas de teclado e ponteiro do editor; estado da aplicação: EST-L01-030 sem a referência ainda.

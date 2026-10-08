@@ -14,7 +14,7 @@
 6. `src/core/store/store.ts:449` `if (options.readOnly?.() === true && (outcome.kind === 'load' || outcome.kind === 'confirm' || (outcome.kind === 'change' && (outcome.patches?.length ?? 0) > 0))) {` — R1, a aba somente-leitura.
 7. `src/core/store/store.ts:548` `const changed = documentChanged || !deepEqual(before.selection, next.selection) || next.ui !== before.ui || next.message !== before.message;` — R2.
 8. `src/core/store/store.ts:574` `if (outcome.editing === 'take-over') options.editing?.takeOver();` — a tomada da trava de edição. [lê: EST-L01-037 via takeOver]
-9. `src/editor/store.ts:145` `editing: { takeOver },` — a porta da trava de edição do editor.
+9. `src/editor/store.ts:147` `editing: { takeOver },` — a porta da trava de edição do editor.
 
 ## Ramos
 
@@ -41,7 +41,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava estilo nem valor de camada (`src/core/project/tab-guard.ts:6` `export const takeOverEditing = registerHandler('project.takeOverEditing', () => ({ kind: 'change' as const, editing: 'take-over' as const }));`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/project/tab-guard.ts:6` `export const takeOverEditing = registerHandler('project.takeOverEditing', () => ({ kind: 'change' as const, editing: 'take-over' as const }));` — o único tratador do comando.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/project/tab-guard.ts:6`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/tab-guard.ts:6`).

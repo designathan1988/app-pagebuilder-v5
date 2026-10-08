@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a estrutura do nó, não um valor de estilo `src/core/elements/parts.ts:116` `return { kind: 'change', patches: [...released, { op: 'remove', path: at.path }], selection: [at.parent.id], message: message('status.parts.removed', { part: at.node.name, name: at.parent.name }) };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/parts.ts:108` `export const removePartCommand = registerHandler('parts.remove', ({ state }, { target }): Outcome<never> => {`
 - G4: n/a — a porta é o botão de remover do inspetor, não um ponto do canvas `manifest/commands/elements.json:5309` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/parts.ts:116` `return { kind: 'change', patches: [...released, { op: 'remove', path: at.path }], selection: [at.parent.id], message: message('status.parts.removed', { part: at.node.name, name: at.parent.name }) };`.

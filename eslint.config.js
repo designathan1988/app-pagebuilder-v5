@@ -131,6 +131,15 @@ export default defineConfig(
     rules: { 'builder/interactive-owner': 'error' },
   },
   {
+    // Every listener, interval and observer declares how it ends (the investigation's C6): a signal or once, its
+    // removal in the function that adds it, an object that function creates, its handle closed in the file, or an
+    // entry with its reason in tools/lint/listener-allowed.ts. The motion runtime is the page's own script.
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/editor/motion/runtime/**'],
+    plugins: { builder },
+    rules: { 'builder/listener-scope': 'error' },
+  },
+  {
     // Every stylesheet but the generated tokens reads its colours, spacing, sizes, radii, shadows and font values
     // from the tokens.
     files: ['src/**/*.css'],

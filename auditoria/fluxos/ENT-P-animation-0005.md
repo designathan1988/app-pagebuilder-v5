@@ -8,10 +8,10 @@ Fluxo de porta do domínio `animation`. Rastreia o caminho próprio da porta —
 3. `src/editor/input/pointer/panels.ts:83` `const offset = offsetFromTrackX(at.x - press.track.left);` — o deslocamento sob o ponteiro, a partir da trilha do arrasto.
 4. `src/editor/input/pointer/panels.ts:84` `shared.open?.cancel();` — o gesto aberto no quadro anterior é cancelado (volta ao que o quadro-chave guardava antes da press).
 5. `src/editor/input/pointer/panels.ts:85` `shared.open = store.gesture();` — abre um gesto novo, cujo despacho corre dentro dele. [escreve: EST-L01-007 via store.gesture]
-6. `src/editor/store.ts:204` `gesture: () => {` — o `store.gesture` da store do editor é o embrulho `gestureSafe`.
-7. `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada antes de o gesto servir. [lê: EST-L05a-001 via keepTyping]
-8. `src/editor/store.ts:207` `const gesture = store.gesture();` — a store do núcleo abre o gesto de verdade.
-9. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o despacho devolvido encaminha ao gesto do núcleo.
+6. `src/editor/store.ts:215` `gesture: () => {` — o `store.gesture` da store do editor é o embrulho `gestureSafe`.
+7. `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada antes de o gesto servir. [lê: EST-L05a-001 via keepTyping]
+8. `src/editor/store.ts:218` `const gesture = store.gesture();` — a store do núcleo abre o gesto de verdade.
+9. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho devolvido encaminha ao gesto do núcleo.
 10. `src/core/store/store.ts:712` `open = current;` — o gesto fica aberto na store do núcleo. [escreve: EST-L01-007 via gesture]
 11. `src/editor/input/pointer/panels.ts:86` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, offset, distance: at.x - startX } as never);` — o arrasto despacha o comando com o deslocamento sob o ponteiro e a medida do arrasto (a `Chamada` do trecho).
 12. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o despacho do gesto do núcleo.
@@ -21,7 +21,7 @@ Fluxo de porta do domínio `animation`. Rastreia o caminho próprio da porta —
 
 ## Ramos
 - R1 `src/editor/input/pointer/panels.ts:81` `if (ps.keyframing === null) return;` — sem arrasto de quadro-chave em curso, nada roda; com um, segue ao passo 2.
-- R2 `src/editor/store.ts:206` `if (store.commandGroupOpen()) return { dispatch: (id, args) => store.dispatch(id, args), commit: () => undefined, cancel: () => undefined };` — com um grupo de comandos aberto, o despacho do arrasto vai ao `dispatch` do núcleo em vez do gesto (`src/core/store/store.ts:685` `dispatch: (id, args, context) => {`); sem grupo, segue ao passo 8 (o gesto comum).
+- R2 `src/editor/store.ts:217` `if (store.commandGroupOpen()) return { dispatch: (id, args) => store.dispatch(id, args), commit: () => undefined, cancel: () => undefined };` — com um grupo de comandos aberto, o despacho do arrasto vai ao `dispatch` do núcleo em vez do gesto (`src/core/store/store.ts:685` `dispatch: (id, args, context) => {`); sem grupo, segue ao passo 8 (o gesto comum).
 - R3 `src/editor/input/pointer/panels.ts:84` `shared.open?.cancel();` — com um gesto já aberto, ele é cancelado antes de abrir o novo; sem gesto, nada a cancelar.
 
 ## Fronteiras assíncronas
@@ -38,8 +38,8 @@ Fluxo de porta do domínio `animation`. Rastreia o caminho próprio da porta —
 - **DOM do canvas:** o quadro redesenha a folha `@keyframes` pelo mesmo aviso de documento em `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada no contexto dela ao abrir o gesto, antes de o arrasto despachar.
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado ao abrir o gesto; o gesto grava antes.
+- G1: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada no contexto dela ao abrir o gesto, antes de o arrasto despachar.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado ao abrir o gesto; o gesto grava antes.
 - G3: ok `src/editor/input/pointer/panels.ts:86` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, offset, distance: at.x - startX } as never);` — a porta envia só a intenção (o id do comando, o deslocamento e a medida) e o tratador único decide.
 - G4: n/a — a porta é um arrasto de painel, não um ponto do canvas (`manifest/commands/animation.json:291` `"kind": "panel-drag",`).
 - G5: n/a — o caminho da porta não desenha painel nem barra (`src/editor/input/pointer/panels.ts:86` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, offset, distance: at.x - startX } as never);`).

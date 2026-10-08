@@ -5,7 +5,7 @@
 ## Estados deixados por A
 - **V-gravada.** `src/editor/input/pending.ts:47` `  held = null;` — a digitação pendente é solta do registo e o campo a grava.
 - **V-sem-digitacao.** `src/editor/input/pending.ts:46` `  if (typing === null) return;` — sem digitação pendente nada é gravado.
-- **V-do-gesto.** `src/editor/store.ts:205` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
+- **V-do-gesto.** `src/editor/store.ts:216` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
 
 ## Casos
 ### C1 final

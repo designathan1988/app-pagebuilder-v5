@@ -10,14 +10,14 @@
 ## Casos
 ### C1 final
 - O escritor já terminou e deixou as visões guardadas: `src/editor/input/pointer/views.ts:226` `VIEWS.set(store, views);`.
-- O leitor é a vista `duplicating`, que lê o item em `src/editor/input/pointer/common.ts:65` `const { altHeld, measuring } = pointerViews(store);`: `pointerViews` encontra a entrada para a store em `src/editor/input/pointer/views.ts:223` `let views = VIEWS.get(store);` e devolve as mesmas visões, de que o leitor toma a célula `measuring`.
+- O leitor é a vista `duplicating`, que lê o item em `src/editor/input/pointer/common.ts:66` `const { altHeld, measuring } = pointerViews(store);`: `pointerViews` encontra a entrada para a store em `src/editor/input/pointer/views.ts:223` `let views = VIEWS.get(store);` e devolve as mesmas visões, de que o leitor toma a célula `measuring`.
 - ok — o leitor recebe as visões que o escritor guardou.
 ### C2 intermediário
 - n/a — a criação escreve o item numa só atribuição (`src/editor/input/pointer/views.ts:226` `VIEWS.set(store, views);`); entre `src/editor/input/pointer/views.ts:225` `views = createPointerViews();` e a escrita nenhum leitor corre.
 ### C3 em curso
-- O leitor chama `pointerViews` em `src/editor/input/pointer/common.ts:65` `const { altHeld, measuring } = pointerViews(store);`, que lê em `src/editor/input/pointer/views.ts:223` `let views = VIEWS.get(store);` e escreve em `src/editor/input/pointer/views.ts:226` `VIEWS.set(store, views);` na mesma passagem; a leitura devolve sempre o objecto inteiro das visões.
+- O leitor chama `pointerViews` em `src/editor/input/pointer/common.ts:66` `const { altHeld, measuring } = pointerViews(store);`, que lê em `src/editor/input/pointer/views.ts:223` `let views = VIEWS.get(store);` e escreve em `src/editor/input/pointer/views.ts:226` `VIEWS.set(store, views);` na mesma passagem; a leitura devolve sempre o objecto inteiro das visões.
 - ok — a leitura em curso devolve as visões inteiras.
 ### C4 desmontagem
 - n/a — o item é uma `WeakMap` sem remoção explícita (`src/editor/input/pointer/views.ts:221` `const VIEWS = new WeakMap<object, PointerViews>();`); o leitor não depende de o item ser apagado para parar.
 ## Resultado
-- O leitor toma a célula `measuring` das visões da store: `src/editor/input/pointer/common.ts:65` `const { altHeld, measuring } = pointerViews(store);`.
+- O leitor toma a célula `measuring` das visões da store: `src/editor/input/pointer/common.ts:66` `const { altHeld, measuring } = pointerViews(store);`.

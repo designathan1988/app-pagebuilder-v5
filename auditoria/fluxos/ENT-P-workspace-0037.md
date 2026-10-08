@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:272` `export const resetWorkspace = registerHandler<'workspace.reset', EditorUi>('workspace.reset', ({ state }) => {` — a porta envia só a intenção sem argumentos; o tratador é o mesmo de todas as portas do comando workspace.reset.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:278` `ui: { ...state.ui, panels: INITIAL_PANELS, layout: INITIAL_LAYOUT, preferences },`).

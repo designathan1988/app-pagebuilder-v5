@@ -52,7 +52,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve as guias da página, fora de qualquer camada de estilo; o tratador só monta o remendo `src/core/page/guides.ts:89` `patches: [guidesPatch(state.document, page, list)]`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — a única porta de `guides.toggleLock` (a tecla L no contexto da guia) chega à tabela `src/app/commands.ts:472` `'guides.toggleLock': toggleGuideLockCommand,` e manda só o id da guia `src/core/page/guides.ts:76` `({ state }, { guide }): Outcome<never> => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador só monta o remendo `src/core/page/guides.ts:89` `return { kind: 'change', patches: [guidesPatch(state.document, page, list)], message: message(held.locked === true ? 'status.guides.unlocked' : 'status.guides.lockedNow') };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a lista `src/core/page/guides.ts:80` `const list = guidesOf(state.document, page).map((g): Guide => {`.

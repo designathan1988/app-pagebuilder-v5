@@ -4,7 +4,7 @@
 - **Ramos que dependem dos argumentos:** R7 (o `parent` decide o receptor e as recusas de destino) e R8 (o `index` decide a posição entre os filhos).
 
 ## Passos
-1. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+1. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
 2. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são conferidos contra o manifesto. [lê: EST-L01-030 via argumentRefusal]
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador sob `'element.moveTo'`. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext]
 4. `src/core/structure/move.ts:35` `export const moveToCommand = registerHandler('element.moveTo', ({ state, rules, layout }, { parent, index }): Outcome<never> => moveSelectionTo(state, rules, layout, parent, index));` — o tratador chama a regra única de movimento. [lê: EST-L01-030 via moveSelectionTo] [lê: EST-L01-031 via moveSelectionTo]
@@ -55,7 +55,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador escreve pela camada do contexto capturado (`at`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
 - G3: ok `src/core/structure/move.ts:35` `export const moveToCommand = registerHandler('element.moveTo', ({ state, rules, layout }, { parent, index }): Outcome<never> => moveSelectionTo(state, rules, layout, parent, index));` — cada porta manda só a intenção (o pai e o índice) e a mesma regra `moveSelectionTo` decide.
 - G4: n/a — o comando não desenha sobre o canvas; devolve remendos (`src/core/structure/move.ts:122`).
 - G5: n/a — o comando não mede nem desenha painel ou barra (`src/core/structure/move.ts:168`).

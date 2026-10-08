@@ -39,7 +39,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava atributos do nó, não um valor de estilo `src/core/elements/inputs.ts:148` `return { kind: 'change', patches, message: message('status.label.target', { name: label.node.name, control: target.node.name }) };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/inputs.ts:129` `export const setLabelTargetCommand = registerHandler('element.setLabelTarget', ({ state }, { control }): Outcome<never> => {`
 - G4: n/a — a porta é o campo for do rótulo no inspetor, não um ponto do canvas `manifest/commands/elements.json:4442` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/inputs.ts:148` `return { kind: 'change', patches, message: message('status.label.target', { name: label.node.name, control: target.node.name }) };`.

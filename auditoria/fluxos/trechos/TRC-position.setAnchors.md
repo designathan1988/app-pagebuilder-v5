@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,` — a tabela de comandos liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `positionedSelection` é testada.
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
@@ -51,8 +51,8 @@
 - **DOM do canvas:** o iframe desenha o elemento com as âncoras novas pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,` — as setas e as abas do canvas chamam o mesmo tratador com a mesma forma `{ edge, mode }`.
 - G4: n/a — o trecho não desenha painel nem barra sobre o canvas (`src/core/geometry/anchors.ts:144`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/core/geometry/anchors.ts:144`).

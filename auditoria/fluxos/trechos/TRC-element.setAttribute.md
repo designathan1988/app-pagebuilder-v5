@@ -44,7 +44,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava um atributo do nó, não um valor de estilo; nenhum passo lê a camada `src/core/elements/attributes.ts:241` `const patch = attributePatch(at, attribute, stored);`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/attributes.ts:205` `export const setAttributeCommand = registerHandler('element.setAttribute', ({ state, rules, words }, { attribute, value, target }): Outcome<never> => {`
 - G4: n/a — as portas são campos do inspetor e do painel rápido, não um ponto do canvas `manifest/commands/elements.json:140` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/attributes.ts:263` `return patches.length === 0 ? { kind: 'change', message: said } : { kind: 'change', patches, message: said };`.

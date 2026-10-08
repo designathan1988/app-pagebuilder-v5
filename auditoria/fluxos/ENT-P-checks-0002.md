@@ -9,11 +9,11 @@ Fluxo de porta do domínio `checks`. Rastreia o caminho próprio da porta — de
 4. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos são os do manifesto da porta (`rule`) sobre os que o painel acrescenta (`target`).
 5. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não lê arquivo nem área de transferência, então a chamada é direta.
 6. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega o id e os argumentos ao despacho da store do editor.
-7. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-8. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `checks.applyFix` é desfazível (`manifest/commands/checks.json:47` `"undoable": true,`), então `changesDocument` é `true`.
-9. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar. [lê: EST-L05a-001 via beforeCommand]
-10. `src/editor/store.ts:224` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
-11. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch] [escreve: EST-L01-031 via dispatch] [escreve: EST-L01-037 via dispatch]
+7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+8. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `checks.applyFix` é desfazível (`manifest/commands/checks.json:47` `"undoable": true,`), então `changesDocument` é `true`.
+9. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar. [lê: EST-L05a-001 via beforeCommand]
+10. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
+11. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch] [escreve: EST-L01-031 via dispatch] [escreve: EST-L01-037 via dispatch]
 12. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — a store do núcleo recebe o despacho.
 13. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 14. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id (`src/app/commands.ts:505` `'checks.applyFix': fixCheck,`).
@@ -23,7 +23,7 @@ Fluxo de porta do domínio `checks`. Rastreia o caminho próprio da porta — de
 ## Ramos
 - R1 `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — construído e disponível: o caminho segue ao despacho; não construído ou indisponível: nada é despachado.
 - R2 `src/editor/doors/door.tsx:143` `if (file === undefined) {` — esta porta não manda arquivo (`file`, `files` e `clipboard` indefinidos), então o caminho toma o despacho direto; um comando que lê arquivo seguiria pelos ramos das linhas 99 a 142.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, ele entraria na fila `waiting` (`src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, ele entraria na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R4 `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — argumentos dentro da declaração do manifesto: o caminho segue ao tratador; fora dela: o despacho para na recusa.
 
 ## Fronteiras assíncronas
@@ -40,8 +40,8 @@ Fluxo de porta do domínio `checks`. Rastreia o caminho próprio da porta — de
 - **DOM do canvas:** nada muda por esta porta.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e um comando que muda o documento grava a digitação antes.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e um comando que muda o documento grava a digitação antes.
 - G3: ok `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta envia só a intenção (o id do comando e os argumentos) e o tratador único decide.
 - G4: n/a — a porta é um controle do painel Checks, não um ponto do canvas (`manifest/commands/checks.json:84` `"kind": "panel-control",`).
 - G5: n/a — o caminho da porta não desenha painel nem barra (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`).

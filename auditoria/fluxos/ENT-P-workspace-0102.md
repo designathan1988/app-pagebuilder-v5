@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando não escreve no documento, só entrega um arquivo à porta de descarga (`src/editor/code-panel/code-panel.ts:163`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/code-panel/code-panel.ts:160` `export const downloadPane = registerHandler<'codePanel.downloadPane', EditorUi>('codePanel.downloadPane', ({ state, rules }) => {` — a única porta (o botão Descarregar do painel) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/code-panel/code-panel.ts:163`).
 - G5: n/a — o encaixe do painel de código é medido na Fase 6 (`src/editor/code-panel/code-panel.ts:163`).

@@ -14,7 +14,7 @@
 - ok — o leitor lê o estado de medição que o escritor deixou.
 ### C2 intermediário
 - O estado intermediário é o Alt segurado a meio de um gesto: `src/editor/input/keymap.ts:409` `if (event.key === ALT) views.holdAlt(true);` guarda o valor em `src/editor/input/pointer/views.ts:99` `value = next;`.
-- O leitor lê `src/editor/input/pointer/views.ts:92` `get: () => value,` e devolve o valor, que a vista `duplicating` usa em `src/editor/input/pointer/common.ts:66` `return { get: () => DUPLICATE_DRAG !== null && DUPLICATE_KEY === 'Alt' && altHeld(), subscribe: measuring.subscribe };`.
+- O leitor lê `src/editor/input/pointer/views.ts:92` `get: () => value,` e devolve o valor, que a vista `duplicating` usa em `src/editor/input/pointer/common.ts:67` `return { get: () => DUPLICATE_DRAG !== null && DUPLICATE_KEY === 'Alt' && altHeld(), subscribe: measuring.subscribe };`.
 - ok — o leitor lê o Alt segurado a meio do gesto.
 ### C3 em curso
 - Os ouvintes da célula correm em `src/editor/input/pointer/views.ts:100` `for (const listener of [...listeners]) listener();`, depois de o valor ser guardado em `src/editor/input/pointer/views.ts:99` `value = next;`; um ouvinte que leia pelo `get` vê o valor novo.

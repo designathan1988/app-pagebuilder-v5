@@ -24,13 +24,13 @@
 
 ## Resultado
 - **Estado final:** EST-L01-037 com `ui.linkPicker` em `{ node, kind }` por `src/editor/shell/link-picker.ts:26` `return { kind: 'change', ui: { ...state.ui, linkPicker: { node, kind: linkKindOf(state.document, href === undefined ? '' : String(href)) } } };`, ou inalterado no ramo R3.
-- **Re-renderizado:** o painel do seletor de links, que lê `ui.linkPicker` pelo caminho de `src/editor/store.ts:253` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
+- **Re-renderizado:** o painel do seletor de links, que lê `ui.linkPicker` pelo caminho de `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
 - **DOM do editor:** o painel do seletor de links passa a ser desenhado no tipo do link guardado.
 - **DOM do canvas:** nada muda — o seletor não altera o documento.
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/shell/link-picker.ts:26` `return { kind: 'change', ui: { ...state.ui, linkPicker: { node, kind: linkKindOf(state.document, href === undefined ? '' : String(href)) } } };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/shell/link-picker.ts:21` `export const openLinkPicker = registerHandler<'linkPicker.open', EditorUi>('linkPicker.open', ({ state }, { target }) => {`
 - G4: n/a — a porta é o controle do campo de endereço, não um ponto do canvas `manifest/commands/elements.json:4064` `"kind": "panel-control",`.
 - G5: n/a — o trecho escreve só o estado do editor; o painel é desenhado pela view `src/editor/shell/link-picker.ts:26` `return { kind: 'change', ui: { ...state.ui, linkPicker: { node, kind: linkKindOf(state.document, href === undefined ? '' : String(href)) } } };`.

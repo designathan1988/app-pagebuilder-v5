@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:478` `'workspace.toggleLeftDock': toggleLeftDock,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext].
 6. `src/editor/workspace/panels.ts:98` `const sidebar = !state.ui.panels.sidebar;` — o estado da barra lateral é invertido [lê: EST-L01-037 via handlerContext].
@@ -34,7 +34,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/panels.ts:99`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/panels.ts:95` `export const toggleLeftDock = registerHandler<'workspace.toggleLeftDock', EditorUi>(` — as três portas (Ctrl+B global, Ctrl+B no campo, menu View) chegam ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/panels.ts:99`); o cobrimento pela barra em janela estreita é medido na Fase 6.
 - G5: n/a — o encaixe da barra lateral é medido na Fase 6 (`src/editor/workspace/panels.ts:99`).

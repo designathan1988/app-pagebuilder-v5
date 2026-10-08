@@ -7,7 +7,7 @@
 ## Passos
 
 1. `src/app/commands.ts:335` `'layers.cancelRename': cancelRename,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de outro campo é gravada antes.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de outro campo é gravada antes.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 4. `src/editor/layers/rename.ts:36` `export const cancelRename = registerHandler<'layers.cancelRename', EditorUi>('layers.cancelRename', ({ state }) => ({ kind: 'change', ui: ended(state.ui) }));` — o tratador devolve `change` com a interface que `ended` calcula.
 5. `src/editor/layers/rename.ts:32` `const ended = (ui: EditorUi): EditorUi => (ui.rename.node === null ? ui : { ...ui, rename: INITIAL_RENAME });` — R1: com nó em renomear, `ui.rename` volta ao inicial; [lê: EST-L01-037 via ended].
@@ -40,7 +40,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve `ui.rename`, fora de qualquer camada de estilo (`src/editor/layers/rename.ts:32`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`); o Esc do próprio campo é a exceção da especificação.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`); o Esc do próprio campo é a exceção da especificação.
 - G3: ok `src/editor/layers/rename.ts:36` — o único tratador do comando; a porta de Esc entrega só a intenção (sem argumento).
 - G4: n/a — o comando encerra um campo no painel Camadas; nada do editor é desenhado sobre o canvas (`src/editor/layers/rename.ts:36`).
 - G5: n/a — o comando não desenha painel nem controle (`src/editor/layers/rename.ts:36`); as famílias de defeito de painel são medidas em Fase 6.

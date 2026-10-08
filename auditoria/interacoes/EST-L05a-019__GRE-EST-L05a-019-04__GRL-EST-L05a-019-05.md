@@ -3,10 +3,10 @@
 - **Escritor:** GRE-EST-L05a-019-04 (holdSpace): ENT-L05a-0029, ENT-L05a-0030
 - **Leitor:** GRL-EST-L05a-019-05 (shared.open): ENT-P-text-0001
 ## Estados deixados por A
-- **V1 o objecto da criação.** `src/editor/input/pointer/common.ts:267` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
-- **V2 `spaceDown` verdadeiro, com o pan armado.** `src/editor/input/pointer/common.ts:282` `  shared.spaceDown = true;` — Space segurado sobre o palco (ENT-L05a-0029); a leitura que decide é `src/editor/input/pointer/common.ts:281` `  if (!shared.overStage && shared.panning === null) return false;`.
-- **V1 de novo, com o pan desarmado.** `src/editor/input/pointer/common.ts:277` `    shared.spaceDown = false;` — Space largado desarma o pan (ENT-L05a-0030).
-- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:281` `  if (!shared.overStage && shared.panning === null) return false;` — fora do palco e sem pan, `holdSpace` não liga o Space.
+- **V1 o objecto da criação.** `src/editor/input/pointer/shared.ts:25` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
+- **V2 `spaceDown` verdadeiro, com o pan armado.** `src/editor/input/pointer/common.ts:264` `  shared.spaceDown = true;` — Space segurado sobre o palco (ENT-L05a-0029); a leitura que decide é `src/editor/input/pointer/common.ts:263` `  if (!shared.overStage && shared.panning === null) return false;`.
+- **V1 de novo, com o pan desarmado.** `src/editor/input/pointer/common.ts:259` `    shared.spaceDown = false;` — Space largado desarma o pan (ENT-L05a-0030).
+- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:263` `  if (!shared.overStage && shared.panning === null) return false;` — fora do palco e sem pan, `holdSpace` não liga o Space.
 
 ## Casos
 ### C1 final

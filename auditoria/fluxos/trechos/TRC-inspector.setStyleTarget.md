@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:232` `'inspector.setStyleTarget': setStyleTarget,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 6. `src/editor/inspector/style-target.ts:29` `export const setStyleTarget = registerHandler<'inspector.setStyleTarget', EditorUi>(` — o tratador é registrado para o estado do editor.
@@ -44,8 +44,8 @@
 - **DOM do canvas:** nada muda (o comando não muda estilos nem a geometria da página).
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o dispatch carrega o contexto da edição, que os campos de estilo leem a seguir.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o dispatch carrega o contexto da edição, que os campos de estilo leem a seguir.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:232` `'inspector.setStyleTarget': setStyleTarget,`
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/editor/inspector/style-target.ts:44`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/editor/inspector/style-target.ts:44`).

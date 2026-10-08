@@ -3,9 +3,9 @@
 1. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta key-arrow-up-in-drag despacha o comando e os argumentos quando não há área de transferência — o Início da porta.
 2. `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — há um gesto aberto (o arraste, ou a sessão do seletor de cor), então `dispatch` é o do gesto.
 3. `src/editor/input/keymap.ts:411` `const gesture = openGesture(store);` — `openGesture` dá o gesto aberto agora.
-4. `src/editor/input/pointer/common.ts:373` `export function openGesture(store: EditorStore): { readonly context: KeyContextId; readonly gesture: Gesture } | null {` — `openGesture` devolve o contexto e o gesto aberto da store do editor.
-5. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
-6. `src/editor/store.ts:207` `const gesture = store.gesture();` — o gesto do núcleo foi aberto por `store.gesture()`.
+4. `src/editor/input/pointer/common.ts:355` `export function openGesture(store: EditorStore): { readonly context: KeyContextId; readonly gesture: Gesture } | null {` — `openGesture` devolve o contexto e o gesto aberto da store do editor.
+5. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
+6. `src/editor/store.ts:218` `const gesture = store.gesture();` — o gesto do núcleo foi aberto por `store.gesture()`.
 7. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o despacho.
 8. `src/core/store/store.ts:720` `return run(id, args, current);` — chama a regra única de execução dentro do gesto.
 9. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -25,7 +25,7 @@
 - **DOM do canvas:** nada muda — o resultado não leva `patches` e `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);` é falso.
 ## Regras
 - G1: n/a — o comando não grava no documento nem num contexto de edição; escreve `ui` (`src/app/commands.ts:367` `'drag.levelUp': levelUp,`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada antes do gesto.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada antes do gesto.
 - G3: ok `src/app/commands.ts:367` `'drag.levelUp': levelUp,` — um só tratador; esta porta manda só a intenção e chega à mesma linha da Chamada do trecho.
 - G4: n/a — o caminho da porta e o tratador não desenham sobre o canvas (`src/app/commands.ts:367` `'drag.levelUp': levelUp,`).
 - G5: n/a — o caminho da porta e o tratador não medem nem desenham painel ou barra (`src/app/commands.ts:367` `'drag.levelUp': levelUp,`).

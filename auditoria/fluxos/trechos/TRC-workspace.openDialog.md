@@ -48,7 +48,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava o diálogo aberto `src/editor/workspace/dialogs.ts:22` `return { kind: 'change', ui: { ...state.ui, dialog } };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as cinco portas de `workspace.openDialog` (os itens dos menus Ver e Arquivo e o item do menu de contexto) chegam à tabela `src/app/commands.ts:476` `'workspace.openDialog': openDialog,` e enviam só o nome do diálogo `src/editor/workspace/dialogs.ts:14` `(context, { dialog }) => {`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/workspace/dialogs.ts:22` `return { kind: 'change', ui: { ...state.ui, dialog } };`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava o diálogo `src/editor/workspace/dialogs.ts:22` `ui: { ...state.ui, dialog }`.

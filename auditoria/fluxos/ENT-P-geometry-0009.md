@@ -27,8 +27,8 @@
 - **DOM do canvas:** o iframe desenha o elemento no tamanho novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é a ativa (`src/core/geometry/resize.ts:56` `const { breakpoint, state: base } = rules.base;`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto no primeiro passo do arraste.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é a ativa (`src/core/geometry/resize.ts:56` `const { breakpoint, state: base } = rules.base;`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto no primeiro passo do arraste.
 - G3: ok `src/app/commands.ts:325` `'geometry.resize': resizeCommand,` — as doze alças de redimensionamento chamam o mesmo tratador com a mesma forma de intenção.
 - G4: n/a — a alça é desenhada pelo chrome do canvas (`src/editor/input/pointer/events.ts:179`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/input/pointer/events.ts:377`).

@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:502` `'inspector.toggleRow': toggleRow,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
 6. `src/editor/inspector/concept-rows.ts:90` `const found = CONCEPT_ROWS.find((r) => r.id === row);` — a linha é achada no catálogo do manifesto.
@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/inspector/concept-rows.ts:103`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/inspector/concept-rows.ts:88` `export const toggleRow = registerHandler<'inspector.toggleRow', EditorUi>('inspector.toggleRow', ({ state }, { row }) => {` — a única porta (o triângulo da linha) chega ao mesmo tratador com só `row`.
 - G4: n/a — o comando muda estado; a coluna do inspector ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/inspector/concept-rows.ts:103`).
 - G5: n/a — o encaixe dos detalhes da linha abertos é medido na Fase 6 (`src/editor/inspector/concept-rows.ts:103`).

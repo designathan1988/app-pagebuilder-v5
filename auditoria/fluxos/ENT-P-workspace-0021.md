@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/panels.ts:87` `return { kind: 'change', ui, message: panelMessage(args.panel, open) };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/panels.ts:81` `export const setPanelOpen = registerHandler<'workspace.setPanelOpen', EditorUi>(` — a porta envia só `panel` e `open`; o tratador é o mesmo de todas as portas do comando workspace.setPanelOpen.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/panels.ts:85` `const shown = open ? showPanel(state.ui, args.panel) : withPanel(state.ui, args.panel, false);`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/panels.ts:85` `const shown = open ? showPanel(state.ui, args.panel) : withPanel(state.ui, args.panel, false);`).

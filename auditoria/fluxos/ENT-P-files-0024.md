@@ -14,9 +14,9 @@
 4. `src/editor/input/keymap.ts:172` `const control = target instanceof Element ? target.closest('[data-door]') : null;` — com o campo em foco, a tecla procura o controle `data-door` mais próximo.
 5. `src/editor/input/keymap.ts:173` `const drawn = manifest.doorByRef.get((control?.getAttribute('data-door') ?? '') as DoorId);` — o controle lido é o campo desta porta (o mesmo comando), e seus `data-args` e o texto do campo dão os argumentos.
 6. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — a tecla do campo despacha `files.saveContent` com o caminho e o texto do campo (o `content`, tomado do valor do `textarea`).
-7. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
-8. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto o comando segue para a store do núcleo.
+7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no guarda da store do editor.
+8. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` põe em dia a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto o comando segue para a store do núcleo.
 10. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o `dispatch` da store do núcleo.
 11. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — `dispatch` entrega o comando a `run`. [lê: EST-L01-030 via run]
 12. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -25,7 +25,7 @@
 ## Ramos
 - O controle em foco: `src/editor/input/keymap.ts:172` `const control = target instanceof Element ? target.closest('[data-door]') : null;` — só com um campo `data-door` em foco o comando toma os argumentos do controle; sem controle, `focusedArgs` devolve `{}` e o comando rodaria com o que o manifesto dá.
 - A guarda do clipboard: `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — sem argumento de tipo `clipboard`, o comando roda já.
-- O gesto aberto na store do editor: `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- O gesto aberto na store do editor: `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue já; com gesto e um comando que muda o documento, a gravação é adiada (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho da porta é síncrono (`src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`); a tecla do contexto do campo despacha no mesmo evento.
@@ -42,7 +42,7 @@
 
 ## Regras
 - G1: n/a — o patch escreve `files[].bytes`, fora de qualquer camada de estilo (`src/core/files/files.ts:525`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente do campo é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente do campo é gravada antes do comando (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:310` `'files.saveContent': saveFileContentCommand,` — as três portas chegam ao mesmo tratador; esta manda só a intenção.
 - G4: n/a — o caminho da porta não desenha nada sobre o canvas (`src/editor/shell/code-pane.tsx:146`).
 - G5: n/a — o caminho da porta não mede nem desenha painel ou barra (`src/editor/shell/code-pane.tsx:146`).

@@ -26,8 +26,8 @@
 - **DOM do canvas:** o iframe desenha o valor novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o valor entra na camada ativa pelo tratador delegado (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o valor entra na camada ativa pelo tratador delegado (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:330` `'handle.step': stepHandle,` — as quatro setas das alças chamam o mesmo tratador com a mesma forma `{ direction, handle }`.
 - G4: n/a — a alça é desenhada pelo chrome do canvas, fora do canvas no ponto da ação (`src/editor/input/keymap.ts:531`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/input/keymap.ts:531`).

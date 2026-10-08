@@ -4,7 +4,7 @@ Fluxo de porta do domínio `capture`. Rastreia o caminho próprio da porta — d
 
 ## Passos
 1. `src/editor/input/pointer/effects.ts:61` `if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);` — o toque roda a porta dentro do gesto que a pressão abriu em `src/editor/input/pointer/effects.ts:41` `shared.open = store.gesture();`, com a porta resolvida em `src/editor/input/pointer/effects.ts:47` `const entry = clickDoor(press, ps.buttons.button, ps.buttons.count, clickModifier, p.factsOf(press), picking);`. [escreve: EST-L05a-019 via store.gesture] [lê: EST-L01-007 via dispatch]
-2. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto do núcleo executa o tratador com o gesto aberto, depois de a store do editor gravar a digitação pendente em `src/editor/store.ts:205` `keepTyping();`. [lê: EST-L05a-001 via keepTyping] [lê: EST-L01-007 via run]
+2. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto do núcleo executa o tratador com o gesto aberto, depois de a store do editor gravar a digitação pendente em `src/editor/store.ts:216` `keepTyping();`. [lê: EST-L05a-001 via keepTyping] [lê: EST-L01-007 via run]
 3. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id (`src/app/commands.ts:218` `'capture.select': selectCapturedCommand,`).
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — o argumento declarado é conferido antes do tratador. [lê: EST-L01-030 via argumentRefusal]
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-capture.select`).
@@ -30,7 +30,7 @@ Fluxo de porta do domínio `capture`. Rastreia o caminho próprio da porta — d
 
 ## Regras
 - G1: n/a — o comando não tem digitação de campo; o único argumento é o nó capturado sob o ponteiro (`src/editor/input/pointer/press.ts:84` `return entry.door.adapter.selection === 'target' && (press.on === 'node' || press.on === 'captured') ? { ...entry.door.args, target: press.node } : { ...entry.door.args };`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
 - G3: ok `src/editor/input/pointer/effects.ts:61` `if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);` — a porta envia só a intenção (o id e o argumento) e o tratador único decide.
 - G4: n/a — o comando muda a seleção; nada é desenhado sobre o ponto da ação no canvas (`src/editor/capture/selection.ts:11` `return { kind: 'change', ui: { ...state.ui, capturedNode: target }, selection: [], message: message('status.selected', { name }) };`).
 - G5: n/a — o caminho da porta não desenha painel nem barra (`src/editor/input/pointer/effects.ts:61` `if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);`).

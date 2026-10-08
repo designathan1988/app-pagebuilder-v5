@@ -9,10 +9,10 @@
 1. `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/shell/field.tsx:1665` `return filled === undefined ? null : { args: { [named]: attribute, ...forNode }, filled, stored, suggestions: keywordsOf(attribute) };` — o campo monta os argumentos: `named` é o argumento de tipo `attribute` (`setting`) e `filled` o outro (`value`).
 3. `src/editor/shell/field.tsx:1768` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(command, { ...args, [filled]: text });` — a porta entrega a intenção.
-4. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho da store do editor entra aqui.
-5. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — o comando é undoável (`manifest/commands/page.json:98` `"undoable": true,`), `changesDocument` é verdadeiro.
-6. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand]
-7. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho segue para a store do núcleo.
+4. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho da store do editor entra aqui.
+5. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — o comando é undoável (`manifest/commands/page.json:98` `"undoable": true,`), `changesDocument` é verdadeiro.
+6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand]
+7. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho segue para a store do núcleo.
 8. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 9. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — [lê: EST-L01-030 via run] [lê: EST-L01-037 via run]
 10. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — o argumento `setting` é lido contra os atributos do modelo (`src/core/store/args.ts:48` `return typeof value === 'string' && rules.attributeValues.has(value) ? 'fits' : 'invalid';`); um atributo que o modelo não tem é `status.args.invalid`.
@@ -109,7 +109,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve um caminho fixo do documento (`src/core/page/settings.ts:74` `const path = ['pages', at, 'tree', 'attributes', setting];`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — com `changesDocument` verdadeiro a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/app/commands.ts:342` `'page.setSetting': setPageSettingCommand,` — as dez portas inspector-page-* chegam ao mesmo tratador e cada uma envia só a intenção (`setting` e `value`).
 - G4: n/a — o comando muda o documento; não desenha nada sobre o canvas (`src/core/page/settings.ts:98`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/page/settings.ts:98`); as famílias de defeito de painel são medidas em Fase 6.

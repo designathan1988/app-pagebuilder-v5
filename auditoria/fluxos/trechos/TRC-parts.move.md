@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a ordem dos filhos, não um valor de estilo `src/core/elements/parts.ts:105` `return { kind: 'change', patches: [{ op: 'remove', path: at.path }, { op: 'add', path: [...parentPath, to], value: at.node }], selection: [at.parent.id], message: said };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/parts.ts:96` `export const movePartCommand = registerHandler('parts.move', ({ state }, { target, delta }): Outcome<never> => {`
 - G4: n/a — a porta são as setas do inspetor, não um ponto do canvas `manifest/commands/elements.json:5223` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/parts.ts:105` `return { kind: 'change', patches: [{ op: 'remove', path: at.path }, { op: 'add', path: [...parentPath, to], value: at.node }], selection: [at.parent.id], message: said };`.

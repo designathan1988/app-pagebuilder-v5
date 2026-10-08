@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -92,6 +92,9 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M42', file: 'src/editor/test-boot.ts', from: '    if (!stopped) frame = target.requestAnimationFrame(settle);', to: '    frame = target.requestAnimationFrame(settle);', breaks: 'parado antes das fontes, o boot de teste desenhado ainda pede um quadro', source: 'DEF-0001', detectors: ['lifetime'] },
   { id: 'M27', file: 'src/editor/store.ts', from: '      if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();\n', to: '', breaks: 'um comando que muda o que o campo edita deixa a digitação pendente (G1, G2)', source: 'C2', detectors: ['style'] },
   { id: 'M43', file: 'src/editor/canvas/side-frame.tsx', from: ' data-door={entry.ref} data-args={JSON.stringify({ breakpoint: breakpoint.id })}', to: ' data-args={JSON.stringify({ breakpoint: breakpoint.id })}', breaks: 'um botão que roda um comando do manifesto sem dono: nem porta, nem controle local, nem exceção com motivo', source: 'C1', detectors: ['inventory'] },
+  { id: 'M44', file: 'src/editor/shell/field-origin.tsx', from: "      document.removeEventListener('focusin', update);\n", to: '', breaks: 'um addEventListener sem remoção num efeito de componente', source: 'C6', detectors: ['lint'] },
+  { id: 'M45', file: 'src/editor/doors/menu.tsx', from: '    return () => sizes.disconnect();', to: '    return () => undefined;', breaks: 'um ResizeObserver que não desconecta ao fechar o menu', source: 'C6', detectors: ['lint'] },
+  { id: 'M46', file: 'src/editor/input/keymap.ts', from: '    const context = gesture?.context ?? (previewing(', to: '    const context = (previewing(', breaks: 'um menu que abre durante um arraste: com o gesto do ponteiro aberto, os atalhos globais chegam', source: 'C6', detectors: ['modes'] },
 ];
 
 export const ALL_DETECTORS = ALL;

@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:405` `'colorPicker.cancel': cancelColorPicker,` — a tabela liga o id ao tratador.
 2. `src/editor/shell/color.tsx:51` `dispatchInSession(store, entry.command.id as CommandId, { ...entry.door.args, ...args });` — o botão Cancelar entrega a intenção à sessão.
-3. `src/editor/input/pointer/common.ts:389` `const result = shared.sessionDispatch === null ? null : shared.sessionDispatch(id, args);` — o despacho vai pela sessão do ponteiro.
+3. `src/editor/input/pointer/common.ts:371` `const result = shared.sessionDispatch === null ? null : shared.sessionDispatch(id, args);` — o despacho vai pela sessão do ponteiro.
 4. `src/editor/input/pointer.ts:146` `return through !== null ? through.dispatch(id as never, args as never) : (store.dispatch as (i: CommandId, a: unknown) => DispatchResult)(id, args);` — a intenção entra no gesto aberto.
 5. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador [lê: EST-L01-030 via run] [lê: EST-L01-031 via run] [lê: EST-L01-037 via run].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:750` `if (state !== before) publish(commit({ ...state, document: before.document, selection: before.selection, history: before.history }, 'a cancelled gesture'), current.inverses);` — o cancelamento devolve o documento e a seleção guardados no começo do gesto, sem gravar passo.
-- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:205` `keepTyping();`).
+- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:216` `keepTyping();`).
 - G3: ok `src/editor/inspector/color-picker.ts:100` `export const cancelColorPicker = registerHandler<'colorPicker.cancel', EditorUi>('colorPicker.cancel', ({ state }) =>` — a única porta (o botão Cancelar, também o Esc do seletor) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; o seletor abre sobre o painel e o cobrimento no ponto da ação é medido na Fase 6 (`src/editor/inspector/color-picker.ts:101`).
 - G5: n/a — o encaixe do seletor é medido na Fase 6 (`src/editor/inspector/color-picker.ts:101`).

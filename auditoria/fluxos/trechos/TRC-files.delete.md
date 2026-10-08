@@ -61,7 +61,7 @@
 ## Regras
 
 - G1: n/a — os patches escrevem `files` e `folders`, fora de qualquer camada de estilo (`src/core/files/files.ts:507` `const patches: Patch[] = [{ op: 'replace', path: ['files'], value: files }];`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/files/files.ts:491` `export const deleteFileCommand = registerHandler('files.delete', ({ state, confirmed }, { path }) => {` — o único tratador; a porta envia só a intenção.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/files/files.ts:509`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/files/files.ts:509`); as famílias de defeito de painel são medidas em Fase 6.

@@ -8,6 +8,7 @@ import { relative, resolve } from 'node:path';
 import process from 'node:process';
 import { isInteractive, keyOf } from '../inventory/ui-scan.ts';
 import { INTERACTIVE_ALLOWED } from './interactive-allowed.ts';
+import { LISTENER_ALLOWED } from './listener-allowed.ts';
 import type { RuleDefinition, RuleVisitor } from '@eslint/core';
 import type { CSSRuleDefinition } from '@eslint/css';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -355,6 +356,9 @@ type TsVisitor = RuleVisitor & {
   Literal?: (node: TSESTree.Literal) => void;
   TemplateLiteral?: (node: TSESTree.TemplateLiteral) => void;
   CallExpression?: (node: TSESTree.CallExpression) => void;
+  NewExpression?: (node: TSESTree.NewExpression) => void;
+  VariableDeclarator?: (node: TSESTree.VariableDeclarator) => void;
+  'Program:exit'?: () => void;
   AssignmentExpression?: (node: TSESTree.AssignmentExpression) => void;
   MemberExpression?: (node: TSESTree.MemberExpression) => void;
   ImportSpecifier?: (node: TSESTree.ImportSpecifier) => void;
@@ -640,6 +644,104 @@ const interactiveOwner: TsRuleDefinition<'owner'> = {
   },
 };
 
+// builder/listener-scope: everything a file starts that outlives the call declares how it ends (the investigation's C6,
+// option F): an addEventListener carries a signal or once, or the function that adds it removes it (the same type and
+// the same handler, in the effect or the cleanup it returns), or it listens to an object that function creates; a
+// setInterval and a ResizeObserver, MutationObserver or IntersectionObserver keep their handle, and the file closes it
+// (clearInterval or clearTimeout, which clear the same list of timers, or disconnect). What ends some other way on
+// purpose is listed with its reason in tools/lint/listener-allowed.ts.
+const OBSERVERS = new Set(['ResizeObserver', 'MutationObserver', 'IntersectionObserver']);
+const ALLOWED_LISTENERS: ReadonlySet<string> = new Set(LISTENER_ALLOWED.map((entry) => entry.key));
+type Scoped = TSESTree.CallExpression | TSESTree.NewExpression;
+const calleeName = (node: Scoped): string | null =>
+  node.callee.type === 'Identifier' ? node.callee.name : node.callee.type === 'MemberExpression' ? memberName(node.callee) : null;
+const isFunction = (node: TSESTree.Node): boolean => node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression';
+// the function a node is written in, or the program
+function enclosing(node: TSESTree.Node): TSESTree.Node {
+  let up: TSESTree.Node | undefined = node.parent;
+  while (up !== undefined && up.parent !== undefined && !isFunction(up)) up = up.parent;
+  return up ?? node;
+}
+const within = (node: TSESTree.Node, outer: TSESTree.Node): boolean => node.range[0] >= outer.range[0] && node.range[1] <= outer.range[1];
+// the last name of where a handle is kept: frame for frame, timer for hold.timer
+const lastName = (text: string): string => text.split('.').at(-1) ?? text;
+const listenerScope: TsRuleDefinition<'listener' | 'handle'> = {
+  meta: {
+    type: 'problem',
+    docs: { description: 'Every listener, interval and observer declares how it ends' },
+    messages: {
+      listener: '{{what}} is never removed: pass a signal or once, remove it in the function that adds it (its cleanup), listen to an object that function creates, or list it with its reason in tools/lint/listener-allowed.ts ({{key}}).',
+      handle: '{{what}} is never closed: keep its handle and close it in this file (clearInterval, disconnect), or list it with its reason in tools/lint/listener-allowed.ts ({{key}}).',
+    },
+    schema: [],
+  },
+  create(context) {
+    const file = relative(process.cwd(), context.filename).replaceAll('\\', '/');
+    const text = (node: TSESTree.Node | undefined): string => (node === undefined ? '' : context.sourceCode.getText(node as never));
+    const calls: Scoped[] = [];
+    const declared: TSESTree.VariableDeclarator[] = [];
+    const seen = new Map<string, number>();
+    const keyFor = (what: string): string => {
+      const nth = (seen.get(what) ?? 0) + 1;
+      seen.set(what, nth);
+      return `${file}|${what}|${nth}`;
+    };
+    const report = (node: Scoped, messageId: 'listener' | 'handle', what: string) => {
+      const key = keyFor(what);
+      if (!ALLOWED_LISTENERS.has(key)) context.report({ node, messageId, data: { what, key } });
+    };
+    const listenerEnds = (add: TSESTree.CallExpression): boolean => {
+      if (/\b(signal|once)\b/.test(text(add.arguments[2]))) return true;
+      const scope = enclosing(add);
+      const [type, handler] = [text(add.arguments[0]), text(add.arguments[1])];
+      if (calls.some((c) => within(c, scope) && calleeName(c) === 'removeEventListener' && text(c.arguments[0]) === type && text(c.arguments[1]) === handler)) return true;
+      const target = add.callee.type === 'MemberExpression' && add.callee.object.type === 'Identifier' ? add.callee.object.name : null;
+      return target !== null && declared.some((d) => within(d, scope) && d.id.type === 'Identifier' && d.id.name === target && d.init !== null);
+    };
+    // where the handle of an interval or an observer is kept: the variable or the member it is assigned to
+    const keptIn = (node: Scoped): string | null => {
+      const parent = node.parent;
+      if (parent?.type === 'VariableDeclarator' && parent.id.type === 'Identifier') return parent.id.name;
+      if (parent?.type === 'AssignmentExpression') return text(parent.left);
+      return null;
+    };
+    const handleEnds = (node: Scoped, closers: readonly string[]): boolean => {
+      const kept = keptIn(node);
+      if (kept === null) return false;
+      const name = lastName(kept);
+      return calls.some((c) => {
+        const callee = calleeName(c);
+        if (callee === null || !closers.includes(callee)) return false;
+        const closed = callee === 'disconnect' || callee === 'unobserve' ? (c.callee.type === 'MemberExpression' ? text(c.callee.object) : '') : text(c.arguments[0]);
+        return lastName(closed) === name;
+      });
+    };
+    return {
+      CallExpression(node) {
+        calls.push(node);
+      },
+      NewExpression(node) {
+        calls.push(node);
+      },
+      VariableDeclarator(node) {
+        declared.push(node);
+      },
+      'Program:exit'() {
+        for (const node of calls) {
+          const callee = calleeName(node);
+          if (node.type === 'CallExpression' && callee === 'addEventListener' && node.callee.type === 'MemberExpression') {
+            if (!listenerEnds(node)) report(node, 'listener', `${text(node.callee.object)}.addEventListener(${text(node.arguments[0])})`);
+          } else if (node.type === 'CallExpression' && callee === 'setInterval') {
+            if (!handleEnds(node, ['clearInterval', 'clearTimeout'])) report(node, 'handle', 'setInterval');
+          } else if (node.type === 'NewExpression' && callee !== null && OBSERVERS.has(callee)) {
+            if (!handleEnds(node, ['disconnect'])) report(node, 'handle', `new ${callee}`);
+          }
+        }
+      },
+    };
+  },
+};
+
 const plugin = {
   meta: { name: 'builder' },
   rules: {
@@ -652,6 +754,7 @@ const plugin = {
     'keyboard-owner': keyboardOwner,
     'no-manifest-id': noManifestId,
     'interactive-owner': interactiveOwner,
+    'listener-scope': listenerScope,
   },
 };
 

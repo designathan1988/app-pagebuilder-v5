@@ -20,10 +20,10 @@
 10. `src/editor/input/keymap.ts:238` `'guide-keys': { step: numberConstant('guides.keyStep'), shiftStep: numberConstant('guides.keyShiftStep'), args: ['delta'] },` — a tabela dos passos da tecla guide-keys: multiplica o delta por guides.keyStep
 11. `src/editor/input/keymap.ts:476` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — o acorde liga a porta no contexto
 12. `src/editor/input/keymap.ts:505` `if (!shortcutRunsNow(binding)) return;` — a porta corre quando o seu comando está construído e a funcionalidade o introduz
-13. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o `dispatch` da store do editor
-14. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — se o comando grava no documento, pela tabela do manifesto
-15. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store guarda a digitação pendente antes do comando, no contexto em que foi feita [lê: EST-L05a-001 via beforeCommand] [escreve: EST-L05a-001 via keepTyping]
-16. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho passa à store do núcleo
+13. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o `dispatch` da store do editor
+14. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — se o comando grava no documento, pela tabela do manifesto
+15. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store guarda a digitação pendente antes do comando, no contexto em que foi feita [lê: EST-L05a-001 via beforeCommand] [escreve: EST-L05a-001 via keepTyping]
+16. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho passa à store do núcleo
 17. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo entra no `run`
 18. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` resolve o id na entrada da tabela de comandos
 19. `src/app/commands.ts:470` `'guides.move': moveGuideCommand,` — a entrada da tabela onde o id nomeia o tratador (a Chamada do trecho)
@@ -35,7 +35,7 @@
 - R3 `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — nenhum argumento do tipo área de transferência: o despacho é imediato; havendo um, espera a leitura `src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`.
 - R4 `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — qual despacho: o do gesto aberto, o da rajada de letras ou o da store do editor.
 - R5 `src/editor/input/keymap.ts:187` `if (entry.door.kind === 'shortcut' && control.getAttribute('data-key-context') === entry.door.context) return Object.fromEntries(Object.entries(stands).filter(([name]) => name in entry.command.args));` — o controle focado é o próprio contexto da tecla (uma guia focada): entrega o seu id filtrado pelos argumentos do comando; outro controle entrega o que representa.
-- R6 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho passa à store do núcleo; com um gesto aberto e um comando que não muda o documento, vai pelo gesto `src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`.
+- R6 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho passa à store do núcleo; com um gesto aberto e um comando que não muda o documento, vai pelo gesto `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R7 `src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {` — a digitação pendente: sem digitação, devolve nada `src/editor/input/pending.ts:78` `if (typing === null) return undefined;`; sendo o comando do próprio campo, devolve o contexto da digitação `src/editor/input/pending.ts:79` `if (typing.owns(id, (args ?? {}) as Readonly<Record<string, unknown>>)) return typing.context;`; guarda-a antes nas demais `src/editor/input/pending.ts:82` `keepTyping();`.
 
 ## Fronteiras assíncronas
@@ -57,7 +57,7 @@
 ## Regras
 
 - G1: n/a — o fluxo de porta para na chamada do tratador `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`; a gravação no contexto em que a digitação começou é do tratador e está no trecho.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as 5 portas de guides.move chegam à mesma tabela `src/app/commands.ts:470` `'guides.move': moveGuideCommand,` e enviam só a intenção.
 - G4: n/a — a porta não desenha elemento algum sobre o canvas; `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` não toca o DOM.
 - G5: n/a — a porta não desenha nem mede painel, barra ou rótulo; `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` só despacha o comando.

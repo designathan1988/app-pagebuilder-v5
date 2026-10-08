@@ -33,7 +33,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:329` `const preferences = { ...state.ui.preferences, splitterSizes: { ...state.ui.preferences.splitterSizes, [splitter]: next } };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:314` `export const resizeSplitter = registerHandler<'workspace.resizeSplitter', EditorUi>(` — a porta envia `splitter` e a sua intenção (`size`/`distance` no arraste, `direction` na seta e no menu); o tratador é o mesmo de todas as portas do comando workspace.resizeSplitter.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:330` `return { kind: 'change', ui: { ...state.ui, preferences } };`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:327` `const next = clamped(data, wanted);`).

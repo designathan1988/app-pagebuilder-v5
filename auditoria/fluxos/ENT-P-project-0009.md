@@ -6,11 +6,11 @@ Fluxo de porta do domínio `project`. Rastreia o caminho próprio da porta — d
 1. `src/editor/doors/door.tsx:137` `if (file !== undefined && entry.door.adapter.fileReading === 'folder') {` — o comando declara o argumento `folder` do tipo `file` (`manifest/commands/project.json:306` `"folder": {`) e a porta é marcada com `"fileReading": "folder"` (`manifest/commands/project.json:349` `"fileReading": "folder"`), então o caminho entra no ramo da pasta.
 2. `src/editor/doors/door.tsx:138` `void chooseFolder().then((chosen) => {` — a porta abre o seletor de pasta do navegador (`chooseFolder`) e continua num `then`; só despacha depois que a pasta chega.
 3. `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });` — a linha de Início: com uma pasta escolhida, o nome e os arquivos dela entram em `file` e o comando é despachado; esse `dispatch` é `store.dispatch` ligado em `src/editor/doors/door.tsx:94` `const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`.
-4. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-5. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `project.openFolder` tem `"undoable": false` (`manifest/commands/project.json:327` `"undoable": false`), então `changesDocument` é `false`.
-6. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de o comando rodar, o registro da digitação pendente é consultado. [lê: EST-L05a-001 via beforeCommand]
-7. `src/editor/store.ts:224` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store do editor. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
-8. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
+4. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+5. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `project.openFolder` tem `"undoable": false` (`manifest/commands/project.json:327` `"undoable": false`), então `changesDocument` é `false`.
+6. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de o comando rodar, o registro da digitação pendente é consultado. [lê: EST-L05a-001 via beforeCommand]
+7. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê-se a digitação pendente e o estado da store do editor. [lê: EST-L05a-001 via heldTyping] [lê: EST-L05a-036 via getState]
+8. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
 9. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho do núcleo chama `run`.
 10. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o comando na tabela de comandos (`wiring().commands`).
 11. `src/app/commands.ts:350` `'project.openFolder': openFolderCommand,` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-project.openFolder`).
@@ -18,8 +18,8 @@ Fluxo de porta do domínio `project`. Rastreia o caminho próprio da porta — d
 ## Ramos
 - R1 `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });` — com uma pasta escolhida (`chosen` não nulo) o comando é despachado; sem escolha (cancelamento) nada é despachado.
 - R2 `src/editor/doors/door.tsx:211` `if (chosen.length === 0) return null;` — o seletor de pasta sem arquivos devolve `null`, então a porta não despacha com pasta vazia.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com um gesto aberto e um comando que não muda o documento, ele roda pelo gesto (`src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`).
-- R4 `src/editor/store.ts:233` `if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();` — com uma digitação pendente cujo alvo mudou depois do comando, ela é gravada de novo; sem digitação pendente, nada roda aqui.
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com um gesto aberto e um comando que não muda o documento, ele roda pelo gesto (`src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`).
+- R4 `src/editor/store.ts:246` `if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();` — com uma digitação pendente cujo alvo mudou depois do comando, ela é gravada de novo; sem digitação pendente, nada roda aqui.
 
 ## Fronteiras assíncronas
 - `src/editor/doors/door.tsx:138` `void chooseFolder().then((chosen) => {` — a escolha da pasta é uma promessa; quem retoma o caminho é ENT-L05b-0014; enquanto ela espera, o estado da aplicação é o do editor intacto, com o seletor do navegador aberto.
@@ -41,8 +41,8 @@ Fluxo de porta do domínio `project`. Rastreia o caminho próprio da porta — d
 - **DOM do canvas:** no ramo `load` o quadro passa a mostrar a página do documento da pasta (`src/editor/canvas/frame.tsx:48` `const page = useEditorState((s) => openedPage(s));`).
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado antes de o comando rodar.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente (`src/editor/input/pending.ts:27` `let held: Typing | null = null;`) é consultado antes de o comando rodar.
 - G3: ok `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });` — a porta envia só a intenção (o id do comando e a pasta lida) e o tratador único `src/app/commands.ts:350` `'project.openFolder': openFolderCommand,` decide.
 - G4: n/a — a porta é o item do menu File, não um ponto do canvas (`manifest/commands/project.json:332` `"kind": "menu",`).
 - G5: n/a — o caminho da porta não desenha painel nem barra; ele só despacha o comando `src/editor/doors/door.tsx:139` `if (chosen !== null) dispatch(entry.command.id, { ...given, [file]: chosen });`.

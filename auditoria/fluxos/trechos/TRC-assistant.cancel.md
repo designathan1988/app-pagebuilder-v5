@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:184` `'assistant.cancel': cancelAssistant,` — a tabela de comandos liga o id ao tratador `cancelAssistant` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:60` `export const cancelAssistant = registerHandler<'assistant.cancel', EditorUi>('assistant.cancel', ({ state }) => ({ kind: 'change', ui: request(state.ui, 'cancel') }));` — grava o pedido `cancel`. [lê: EST-L06-050 via assistantOf] [escreve: EST-L06-050 via request]
 5. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a interface do tratador entra no estado novo. [escreve: EST-L06-050 via run]

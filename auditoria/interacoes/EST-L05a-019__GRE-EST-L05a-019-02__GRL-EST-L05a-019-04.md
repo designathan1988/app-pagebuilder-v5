@@ -3,13 +3,13 @@
 - **Escritor:** GRE-EST-L05a-019-02 (finishPickerSession): ENT-L05a-0059
 - **Leitor:** GRL-EST-L05a-019-04 (ps.keeping): ENT-P-text-0006
 ## Estados deixados por A
-- **V1 o objecto da criação.** `src/editor/input/pointer/common.ts:267` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
-- **V2 `pendingPickerEnd` de volta a nulo.** `src/editor/input/pointer/common.ts:395` `  shared.pendingPickerEnd = null;` — `finishPickerSession` retira o fim guardado antes de o correr; a leitura do valor retirado é `src/editor/input/pointer/common.ts:394` `  const finish = shared.pendingPickerEnd;`; é a escrita da ENT-L05a-0059.
-- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:396` `  finish?.();` — `finishPickerSession` corre o fim guardado se existir e escreve o item sempre do mesmo modo.
+- **V1 o objecto da criação.** `src/editor/input/pointer/shared.ts:25` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
+- **V2 `pendingPickerEnd` de volta a nulo.** `src/editor/input/pointer/common.ts:377` `  shared.pendingPickerEnd = null;` — `finishPickerSession` retira o fim guardado antes de o correr; a leitura do valor retirado é `src/editor/input/pointer/common.ts:376` `  const finish = shared.pendingPickerEnd;`; é a escrita da ENT-L05a-0059.
+- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:378` `  finish?.();` — `finishPickerSession` corre o fim guardado se existir e escreve o item sempre do mesmo modo.
 
 ## Casos
 ### C1 final
-- n/a — a linha deste grupo lê `ps.keeping`, um campo da sessão do dono do ponteiro (EST-L05a-034; `src/editor/input/pointer/effects.ts:40` `      ps.keeping = ending && endArgs ? { entry: ending, args: endArgs } : null;`), e não um campo do estado partilhado por store deste par (`src/editor/input/pointer/common.ts:263` `const SHARED = new WeakMap<EditorStore, PointerShared>();`): o item EST-L05a-019 não é lido em `src/editor/input/pointer/effects.ts:249` `      const kept = ps.keeping;`.
+- n/a — a linha deste grupo lê `ps.keeping`, um campo da sessão do dono do ponteiro (EST-L05a-034; `src/editor/input/pointer/effects.ts:40` `      ps.keeping = ending && endArgs ? { entry: ending, args: endArgs } : null;`), e não um campo do estado partilhado por store deste par (`src/editor/input/pointer/shared.ts:21` `const SHARED = new WeakMap<EditorStore, PointerShared>();`): o item EST-L05a-019 não é lido em `src/editor/input/pointer/effects.ts:249` `      const kept = ps.keeping;`.
 ### C2 intermediário
 - n/a — o grupo não lê o item do par: `src/editor/input/pointer/effects.ts:249` `      const kept = ps.keeping;` lê a sessão (EST-L05a-034), não o estado partilhado.
 ### C3 em curso

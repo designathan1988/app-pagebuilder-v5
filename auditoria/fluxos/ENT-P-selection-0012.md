@@ -6,8 +6,8 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 1. `src/editor/input/pointer/effects.ts:41` `shared.open = store.gesture();` — a pressão abre o gesto da store do editor. [escreve: EST-L05a-019 via store.gesture]
 2. `src/editor/input/pointer/effects.ts:47` `const entry = clickDoor(press, ps.buttons.button, ps.buttons.count, clickModifier, p.factsOf(press), picking);` — o toque resolve a porta do controle sob o ponteiro.
 3. `src/editor/input/pointer/effects.ts:61` `if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);` — o toque roda a porta dentro do gesto.
-4. `src/editor/store.ts:205` `keepTyping();` — a abertura do gesto grava a digitação pendente antes do comando (G2). [lê: EST-L05a-001 via keepTyping]
-5. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o `dispatch` do gesto do editor entrega a intenção ao gesto do núcleo.
+4. `src/editor/store.ts:216` `keepTyping();` — a abertura do gesto grava a digitação pendente antes do comando (G2). [lê: EST-L05a-001 via keepTyping]
+5. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto do editor entrega a intenção ao gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto do núcleo executa o tratador com o gesto aberto. [lê: EST-L01-007 via run]
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador na tabela de comandos.
 8. `src/app/commands.ts:355` `'selection.add': addCommand,` — a tabela liga o comando ao tratador (a Chamada do trecho).
@@ -32,7 +32,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 
 ## Regras
 - G1: n/a — o comando escreve `selection` e `message`, fora de qualquer camada de estilo (`src/core/selection/selection.ts:175` `  return several(state, state.selection.includes(target) ? state.selection : [...state.selection, target]);`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
 - G3: ok `src/editor/input/pointer/effects.ts:61` `if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);` — a porta envia só a intenção ao mesmo tratador do comando (`src/app/commands.ts:355` `'selection.add': addCommand,`).
 - G4: n/a — o comando muda a seleção; nada é desenhado sobre o ponto da ação no canvas (`src/core/selection/selection.ts:175`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/selection/selection.ts:175`).

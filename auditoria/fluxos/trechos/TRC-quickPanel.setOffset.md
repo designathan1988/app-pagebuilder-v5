@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:487` `'quickPanel.setOffset': setOffset,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
 6. `src/editor/quick-panel/quick-panel.ts:58` `const x = Math.round(offset.x);` — a coordenada é arredondada a px inteiro.
@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/quick-panel/quick-panel.ts:62`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/quick-panel/quick-panel.ts:57` `export const setOffset = registerHandler<'quickPanel.setOffset', EditorUi>('quickPanel.setOffset', ({ state }, { target, offset }) => {` — a única porta (o arraste da alça do painel) chega ao mesmo tratador com o `target` e o `offset` que o gesto leu.
 - G4: n/a — o comando muda estado; o painel que ele posiciona fica ao lado do rótulo e nada cobre o canvas no ponto da ação (`src/editor/quick-panel/quick-panel.ts:62`); a colocação é medida na Fase 6.
 - G5: n/a — a colocação do painel rápido é medida na Fase 6 (`src/editor/quick-panel/quick-panel.ts:62`).

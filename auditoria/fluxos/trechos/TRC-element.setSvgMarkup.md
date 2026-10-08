@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava um atributo do nó, não um valor de estilo `src/core/elements/svg.ts:206` `return { kind: 'change', patches: [{ op: held === undefined ? 'add' : 'replace', path, value: parsed.markup }], message: said };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/svg.ts:190` `export const setSvgMarkupCommand = registerHandler('element.setSvgMarkup', ({ state, rules }, { markup }): Outcome<never> => {`
 - G4: n/a — a porta é o campo de marcação do inspetor, não um ponto do canvas `manifest/commands/elements.json:4648` `"kind": "inspector-field",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/svg.ts:206` `return { kind: 'change', patches: [{ op: held === undefined ? 'add' : 'replace', path, value: parsed.markup }], message: said };`.

@@ -4,7 +4,7 @@
 - **Ramos que dependem dos argumentos:** nenhum — não há campo cujo valor mude o caminho.
 
 ## Passos
-1. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
+1. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando. [lê: EST-L05a-001 via beforeCommand]
 2. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade é `hasNaturalChild` (`manifest/commands/structure.json:1746` `"predicate": "hasNaturalChild",`). [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador sob `'element.createNaturalChild'`. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext]
 4. `src/core/structure/insert.ts:104` `({ state, rules, ids, words }): Outcome<never> => {` — o tratador recebe o estado e as regras. [lê: EST-L01-030 via handlerContext] [lê: EST-L01-031 via handlerContext]
@@ -43,7 +43,7 @@
 
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador escreve pela camada do contexto capturado (`at`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes.
 - G3: ok `src/app/commands.ts:382` `'element.createNaturalChild': createNaturalChildCommand,` — um só tratador; as portas mandam só a intenção vazia.
 - G4: n/a — o comando não desenha sobre o canvas; devolve remendos (`src/core/structure/insert.ts:114`).
 - G5: n/a — o comando não mede nem desenha painel ou barra (`src/core/structure/insert.ts:116`).

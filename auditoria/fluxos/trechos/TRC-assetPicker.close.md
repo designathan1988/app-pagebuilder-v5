@@ -20,13 +20,13 @@
 
 ## Resultado
 - **Estado final:** EST-L01-037 com `ui.assetPicker` em `null` por `src/editor/shell/asset-picker.ts:14` `state.ui.assetPicker === null ? { kind: 'change' } : { kind: 'change', ui: { ...state.ui, assetPicker: null } },`, ou inalterado no ramo sem seletor aberto.
-- **Re-renderizado:** o painel do seletor de arquivos, pelo caminho de `src/editor/store.ts:253` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
+- **Re-renderizado:** o painel do seletor de arquivos, pelo caminho de `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));`.
 - **DOM do editor:** o painel do seletor de arquivos deixa de ser desenhado.
 - **DOM do canvas:** nada muda — o comando não altera o documento.
 
 ## Regras
 - G1: n/a — o trecho não grava estilo nem valor de camada `src/editor/shell/asset-picker.ts:14` `state.ui.assetPicker === null ? { kind: 'change' } : { kind: 'change', ui: { ...state.ui, assetPicker: null } },`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/shell/asset-picker.ts:13` `export const closeAssetPicker = registerHandler<'assetPicker.close', EditorUi>('assetPicker.close', ({ state }) =>`
 - G4: n/a — a porta é o botão de fechar do painel do seletor, não um ponto do canvas `manifest/commands/elements.json:3665` `"kind": "panel-control",`.
 - G5: n/a — o trecho escreve só o estado do editor; o fechar do painel é desenhado pela view `src/editor/shell/asset-picker.ts:14` `state.ui.assetPicker === null ? { kind: 'change' } : { kind: 'change', ui: { ...state.ui, assetPicker: null } },`.

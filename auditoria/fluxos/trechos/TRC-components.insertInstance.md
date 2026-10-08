@@ -7,7 +7,7 @@
 1. `src/app/commands.ts:236` `'components.insertInstance': insertInstanceCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta da telha de componente entrega a intenção.
 3. `src/editor/input/pointer/effects.ts:219` `closing?.dispatch(dropDoorOf.command.id, { ...dropDoorOf.door.args, ...press.args, parent: dropped.parent, index: dropped.index } as never);` — a porta do arraste entrega a intenção, com `parent` e `index` propostos.
-4. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+4. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 5. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos; um `component` que o projeto não tem é `status.stale` [lê: EST-L01-030 via argumentRefusal].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
 7. `src/core/design/components.ts:132` `export const insertInstanceCommand = registerHandler('components.insertInstance', ({ state, ids, rules, words }, { component, parent, index }): Outcome<never> => {` — o tratador recebe o contexto e os três argumentos.
@@ -50,7 +50,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve o caminho que `placement` decide (`src/core/design/components.ts:156`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:236` `'components.insertInstance': insertInstanceCommand,` — a telha e o arraste chegam ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/components.ts:158`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/components.ts:158`).

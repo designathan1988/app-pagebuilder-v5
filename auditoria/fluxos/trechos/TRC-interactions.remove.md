@@ -38,12 +38,12 @@
 ## Resultado
 - **Estado final:** `src/core/store/store.ts:535` `const ran: StoreState<Ui> = {` — o documento deixa de listar a interação removida no nó selecionado; a seleção não muda.
 - **Re-renderizado:** `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();` — os assinantes da store são notificados.
-- **DOM do editor:** `src/editor/store.ts:253` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));` — o inspetor redescreve os cartões restantes do elemento.
+- **DOM do editor:** `src/editor/store.ts:275` `return useSyncExternalStore(store.subscribe, () => select(store.getState()));` — o inspetor redescreve os cartões restantes do elemento.
 - **DOM do canvas:** `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);` — o canvas é notificado da mudança do documento; a interação não é desenhada nem executada.
 
 ## Regras
 - G1: n/a — o trecho grava `interactions` no caminho do próprio nó e não lê ponto de quebra, estado, classe-alvo nem quadro-chave (`src/core/events/interactions.ts:112`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `interactions.remove` é desfazível no manifesto (`manifest/commands/events.json:413` `"undoable": true,`), então a digitação pendente é gravada antes.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `interactions.remove` é desfazível no manifesto (`manifest/commands/events.json:413` `"undoable": true,`), então a digitação pendente é gravada antes.
 - G3: ok `src/app/commands.ts:263` `'interactions.remove': removeInteractionCommand,` — a única porta do comando (`manifest/commands/events.json:421` `"id": "inspector-interaction-remove",`) despacha só a intenção para este tratador.
 - G4: n/a — a ação nasce no painel do inspetor, na própria coluna, fora do canvas (`manifest/commands/events.json:77` `"region": "inspector-interactions",`).
 - G5: n/a — o comando remove uma interação e não desenha controle que cresça painel ou barra (`manifest/commands/events.json:423` `"drawnAs": "icon-button",`).

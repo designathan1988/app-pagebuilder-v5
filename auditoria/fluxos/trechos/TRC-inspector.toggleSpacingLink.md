@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:395` `'inspector.toggleSpacingLink': toggleSpacingLink,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta do elo entrega a intenção.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `always` é lida [lê: EST-L01-030 via run].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
@@ -42,7 +42,7 @@
 
 ## Regras
 - G1: n/a — o trecho não grava no documento por um campo de digitação; escreve só o estado do editor (`src/editor/inspector/spacing.ts:36`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:395` `'inspector.toggleSpacingLink': toggleSpacingLink,` — as portas entregam a mesma caixa ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/editor/inspector/spacing.ts:36`).
 - G5: n/a — o comando não altera a geometria de painel nem de barra (`src/editor/inspector/spacing.ts:36`).

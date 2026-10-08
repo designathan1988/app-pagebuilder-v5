@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:118`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:118` `export const expandAll = registerHandler<'layers.expandAll', EditorUi>('layers.expandAll', ({ state }) => ({ kind: 'change', ui: withCollapsed(state.ui, []), message: message('status.layers.expandedAll') }));` — a única porta (o botão do cabeçalho das Camadas) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:118`).
 - G5: n/a — a rolagem da árvore depois de abrir todos os ramos é medida na Fase 6 (`src/editor/layers/tree.ts:118`).

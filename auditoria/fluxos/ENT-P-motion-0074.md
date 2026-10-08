@@ -9,9 +9,9 @@
 1. `src/editor/doors/door.tsx:92` `  const run = () => {` — o controlo da porta de menu corre pelo `run` da porta.
 2. `src/editor/doors/door.tsx:93` `    if (!built || !available) return;` — porta não construída ou indisponível não despacha.
 3. `src/editor/doors/door.tsx:144` `      dispatch(entry.command.id, given);` — o `run` despacha motion.toggleRun com os argumentos da porta e os do desenho; esta é a linha de Início da porta.
-4. `src/editor/store.ts:221` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
-5. `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-6. `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo.
+4. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
+5. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+6. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo.
 7. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho entra em `run`.
 8. `src/core/store/store.ts:400` `    const entry = table[id];` — o id resolve a entrada da tabela de comandos. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 9. `src/app/commands.ts:293` `'motion.toggleRun': toggleRunCommand,` — a tabela liga o id ao tratador; o trecho TRC-motion.toggleRun continua daqui.

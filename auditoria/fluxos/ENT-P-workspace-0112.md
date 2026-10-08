@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/quick-panel/quick-panel.ts:54`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/quick-panel/quick-panel.ts:50` `export const setOpen = registerHandler<'quickPanel.setOpen', EditorUi>('quickPanel.setOpen', ({ state }, { open }) => {` — as portas (alça do painel, Ctrl+Shift+Q global e no painel, Esc no painel) chegam ao mesmo tratador com só `open`.
 - G4: n/a — o comando muda estado; o painel que ele abre fica ao lado do rótulo (`src/editor/quick-panel/quick-panel.ts:54`); a colocação é medida na Fase 6.
 - G5: n/a — o encaixe do painel rápido alto é medido na Fase 6 (`src/editor/quick-panel/quick-panel.ts:54`).

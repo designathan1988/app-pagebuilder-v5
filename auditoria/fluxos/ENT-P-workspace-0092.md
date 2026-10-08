@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/inspector/sections.ts:151`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/inspector/sections.ts:146` `export const setMode: RegisteredHandler<'inspector.setMode', EditorUi> = registerHandler(` — as duas portas (Essenciais, Todas) chegam ao mesmo tratador com só `mode`.
 - G4: n/a — o comando muda estado; a coluna do inspector ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/inspector/sections.ts:151`).
 - G5: n/a — o encaixe da aba Estilo em cada modo é medido na Fase 6 (`src/editor/inspector/sections.ts:151`).

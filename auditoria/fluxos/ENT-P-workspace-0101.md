@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando não escreve no documento, só entrega texto à área de transferência (`src/editor/code-panel/code-panel.ts:157`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/code-panel/code-panel.ts:154` `export const copyPane = registerHandler<'codePanel.copyPane', EditorUi>('codePanel.copyPane', ({ state, rules }) => {` — a única porta (o botão Copiar do painel) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/code-panel/code-panel.ts:157`).
 - G5: n/a — o encaixe do painel de código é medido na Fase 6 (`src/editor/code-panel/code-panel.ts:157`).

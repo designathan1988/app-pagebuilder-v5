@@ -3,23 +3,23 @@
 - **Escritor:** GRE-EST-L05a-019-03 (followPicker): ENT-L05a-0031, ENT-L05a-0059
 - **Leitor:** GRL-EST-L05a-019-06 (sharedOf): ENT-L05a-0060, ENT-P-project-0023
 ## Estados deixados por A
-- **V1 o objecto da criação.** `src/editor/input/pointer/common.ts:267` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
+- **V1 o objecto da criação.** `src/editor/input/pointer/shared.ts:25` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
 - **V2 a sessão do seletor aberta.** `src/editor/input/pointer/tools.ts:21` `      shared.session = store.gesture();` e `src/editor/input/pointer/tools.ts:22` `      shared.open = shared.session;` — a sessão abre quando o seletor de cor abre (ENT-L05a-0031).
 - **V3 a sessão e o gesto largados, com o fim guardado.** `src/editor/input/pointer/tools.ts:33` `    shared.session = null;`, `src/editor/input/pointer/tools.ts:34` `    shared.open = null;` e `src/editor/input/pointer/tools.ts:36` `    shared.pendingPickerEnd = () => {` — o fim do seletor guarda o commit ou o cancel para a microtarefa (ENT-L05a-0059).
 - **Sem estado de recusa.** `src/editor/input/pointer/tools.ts:30` `    if (!ended && !escaped) return;` — sem o seletor fechado nem o Escape, a sessão continua e nada é largado.
 
 ## Casos
 ### C1 final
-- Chega depois de o escritor ter criado o item e lê-o em `src/editor/input/pointer/common.ts:265` `  let shared = SHARED.get(store);`: encontra o objecto guardado em `src/editor/input/pointer/common.ts:268` `    SHARED.set(store, shared);`.
+- Chega depois de o escritor ter criado o item e lê-o em `src/editor/input/pointer/shared.ts:23` `  let shared = SHARED.get(store);`: encontra o objecto guardado em `src/editor/input/pointer/shared.ts:26` `    SHARED.set(store, shared);`.
 - ok — o leitor devolve o mesmo estado partilhado da store.
 ### C2 intermediário
-- A meio de um gesto o objecto guarda os campos do gesto aberto; o leitor lê-o em `src/editor/input/pointer/common.ts:265` `  let shared = SHARED.get(store);` e devolve o objecto com os campos a meio do gesto.
+- A meio de um gesto o objecto guarda os campos do gesto aberto; o leitor lê-o em `src/editor/input/pointer/shared.ts:23` `  let shared = SHARED.get(store);` e devolve o objecto com os campos a meio do gesto.
 - ok — o leitor devolve o estado a meio do gesto.
 ### C3 em curso
-- A leitura em `src/editor/input/pointer/common.ts:265` `  let shared = SHARED.get(store);` devolve sempre o objecto inteiro; o escritor troca campos dele, nunca o objecto — `src/editor/input/pointer/common.ts:268` `    SHARED.set(store, shared);` só corre na criação.
+- A leitura em `src/editor/input/pointer/shared.ts:23` `  let shared = SHARED.get(store);` devolve sempre o objecto inteiro; o escritor troca campos dele, nunca o objecto — `src/editor/input/pointer/shared.ts:26` `    SHARED.set(store, shared);` só corre na criação.
 - ok — a leitura em curso devolve o objecto inteiro.
 ### C4 desmontagem
-- n/a — o item é uma `WeakMap` sem remoção explícita (`src/editor/input/pointer/common.ts:263` `const SHARED = new WeakMap<EditorStore, PointerShared>();`); a entrada cai quando a store deixa de ser referenciada.
+- n/a — o item é uma `WeakMap` sem remoção explícita (`src/editor/input/pointer/shared.ts:21` `const SHARED = new WeakMap<EditorStore, PointerShared>();`); a entrada cai quando a store deixa de ser referenciada.
 
 ## Resultado
-- O leitor devolve o estado partilhado da store: `src/editor/input/pointer/common.ts:265` `  let shared = SHARED.get(store);`.
+- O leitor devolve o estado partilhado da store: `src/editor/input/pointer/shared.ts:23` `  let shared = SHARED.get(store);`.

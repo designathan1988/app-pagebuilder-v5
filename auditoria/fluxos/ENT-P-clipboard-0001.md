@@ -8,11 +8,11 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 3. `src/editor/input/keymap.ts:526` `const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos da ligação; a porta `key-ctrl-c-in-global` declara `"args": {}`, então `given` é o objeto vazio.
 4. `src/editor/input/keymap.ts:527` `const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — sem gesto no atalho, `args` é o `given`.
 5. `src/editor/input/keymap.ts:476` `const binding = held?.entry ?? bindingIn(chain, chordOf(event));` — a ligação da tecla na cadeia de contextos.
-6. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-7. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `clipboard.copy` não é reversível no manifesto, então `changesDocument` é falso.
-8. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:224` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o alvo da digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
-10. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-033 via dispatch]
+6. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+7. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `clipboard.copy` não é reversível no manifesto, então `changesDocument` é falso.
+8. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — o alvo da digitação pendente. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
+10. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-033 via dispatch]
 11. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 12. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 13. `src/core/store/store.ts:399` `const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {` — a função que roda um comando.
@@ -24,7 +24,7 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 - R2 `src/editor/input/keymap.ts:505` `if (!shortcutRunsNow(binding)) return;` — o comando não construído ou a funcionalidade não registrada: a porta não roda; construído e registrado, segue.
 - R3 `src/editor/input/keymap.ts:530` `const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — `clipboard.copy` não tem argumento do tipo `clipboard`, então `clipboard` é `undefined` e o caminho segue para a linha 531; o lado que espera a área de transferência (`src/editor/input/keymap.ts:532` `else if (gesture === null) void readClipboard().then((content) => dispatch(binding.command.id, { ...args, [clipboard]: content }));`) não é tomado.
 - R4 `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — sem gesto e sem rajada de letras, o despacho é o da store do editor; com um gesto aberto, seria o do gesto.
-- R5 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo; com um gesto aberto e um comando que não muda o documento, iria pelo gesto (`src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`).
+- R5 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo; com um gesto aberto e um comando que não muda o documento, iria pelo gesto (`src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`).
 - R6 `src/core/store/store.ts:400` `const entry = table[id];` — o id é um comando do manifesto, então a tabela devolve a entrada `src/app/commands.ts:206` `'clipboard.copy': copyCommand,`.
 
 ## Fronteiras assíncronas
@@ -41,8 +41,8 @@ Fluxo de porta do domínio `clipboard`. Rastreia o caminho próprio da porta —
 - **DOM do canvas:** nada muda neste caminho.
 
 ## Regras
-- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` e o tratador só devolve a escrita da área de transferência.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando.
+- G1: n/a — a porta não grava no documento nem num contexto de edição; o contexto é capturado em `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` e o tratador só devolve a escrita da área de transferência.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor grava a digitação pendente antes do comando.
 - G3: ok — a porta chega à tabela `src/app/commands.ts:206` `'clipboard.copy': copyCommand,` e envia só a intenção, os argumentos vazios.
 - G4: n/a — a porta não desenha elemento sobre o canvas `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`.
 - G5: n/a — a porta não desenha nem mede painel ou barra `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);`.

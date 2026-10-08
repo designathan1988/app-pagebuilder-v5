@@ -52,7 +52,7 @@
 ## Regras
 
 - G1: n/a — o comando escreve `ui.contextMenu.opened` e a seleção, fora de qualquer camada de estilo (`src/editor/menus/context-menu.ts:30` `  const ui: EditorUi = { ...state.ui, contextMenu: { opened: { count: (state.ui.contextMenu.opened?.count ?? 0) + 1, dismissals: state.ui.overlays.dismissals } } };`).
-- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
+- G2: ok `src/editor/input/pending.ts:82` `  keepTyping();` — a digitação pendente é gravada antes (`src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);`).
 - G3: ok `src/app/commands.ts:364` `  'contextMenu.open': contextMenuOpen,` — as três portas convergem neste tratador (`src/editor/shell/sidebar/layers.tsx:272` `secondary.run();`).
 - G4: n/a — o comando muda estado; o menu é do desenho do canvas, e o trecho não o cobre no ponto da ação (`src/editor/menus/context-menu.ts:32`).
 - G5: n/a — o comando não desenha painel nem controle (`src/editor/menus/context-menu.ts:32`).

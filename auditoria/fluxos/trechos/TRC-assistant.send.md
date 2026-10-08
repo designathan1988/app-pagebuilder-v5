@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:183` `'assistant.send': sendAssistant,` — a tabela de comandos liga o id ao tratador `sendAssistant` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
+2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador.
 4. `src/editor/assistant/state.ts:52` `export const sendAssistant = registerHandler<'assistant.send', EditorUi>('assistant.send', ({ state }) => {` — o tratador recebe só o estado.
 5. `src/editor/assistant/state.ts:53` `const current = assistantOf(state.ui);` — lê o assistente corrente. [lê: EST-L06-050 via assistantOf]

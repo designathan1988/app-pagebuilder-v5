@@ -25,8 +25,8 @@
 - **DOM do canvas:** o iframe redesenha os elementos com o `mode` novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a entrada da barra despacha pela store do editor.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a entrada da barra despacha pela store do editor.
 - G3: ok `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,` — as duas portas do comando (`inspector-position` e `command-bar-set-property`) chamam o mesmo tratador com a mesma forma `{ property, mode }`.
 - G4: n/a — a barra de comandos é um painel próprio; o fluxo de porta não cobre o canvas no ponto da ação (`src/editor/doors/door.tsx:144`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/doors/door.tsx:144`).

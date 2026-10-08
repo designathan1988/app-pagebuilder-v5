@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:495` `'layers.collapseAll': collapseAll,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
 6. `src/editor/layers/tree.ts:108` `for (const page of state.document.pages) {` — cada página é percorrida [lê: EST-L01-030 via handlerContext].
@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:115`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:106` `export const collapseAll = registerHandler<'layers.collapseAll', EditorUi>('layers.collapseAll', ({ state }) => {` — a única porta (o botão do cabeçalho das Camadas) chega ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:115`).
 - G5: n/a — a rolagem da árvore depois de fechar todos os ramos é medida na Fase 6 (`src/editor/layers/tree.ts:115`).

@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:151` `ui: withDock(state.ui, nextDock(state.ui.layout.dock, args.state)),`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:147` `export const setWorkbenchState = registerHandler<'workspace.setWorkbenchState', EditorUi>(` — a porta envia só `state`; o tratador é o mesmo de todas as portas do comando workspace.setWorkbenchState.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:96` `export function withDock(ui: EditorUi, dock: DockState): EditorUi {`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:96` `export function withDock(ui: EditorUi, dock: DockState): EditorUi {`).

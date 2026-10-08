@@ -26,8 +26,8 @@ A porta do campo do inspector não passa pelo `run` do `useDoor` (o `src/editor/
 - **DOM do canvas:** o iframe redesenha os elementos com o `mode` novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o campo entrega a intenção pela store do editor, que grava antes a digitação pendente.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto da edição é captado na store; a camada escrita é a ativa (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o campo entrega a intenção pela store do editor, que grava antes a digitação pendente.
 - G3: ok `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,` — as duas portas do comando (`inspector-position` e `command-bar-set-property`) chamam o mesmo tratador com a mesma forma `{ property, mode }`.
 - G4: n/a — a porta do campo do inspector não desenha painel nem barra sobre o canvas (`src/editor/shell/field.tsx:1269`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/shell/field.tsx:1269`).

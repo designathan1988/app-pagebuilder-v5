@@ -5,20 +5,20 @@
 ## Estados deixados por A
 - **V-gravada.** `src/editor/input/pending.ts:47` `  held = null;` — a digitação pendente é solta do registo e o campo a grava.
 - **V-sem-digitacao.** `src/editor/input/pending.ts:46` `  if (typing === null) return;` — sem digitação pendente nada é gravado.
-- **V-do-gesto.** `src/editor/store.ts:205` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
+- **V-do-gesto.** `src/editor/store.ts:216` `      keepTyping();` — a abertura de um gesto grava a digitação pendente pelo mesmo ponto.
 
 ## Casos
 ### C1 final
 - O escritor terminou: a resposta é entregue; o estado é o do comando confirmado (`src/core/store/store.ts:697` `        publish(commit({ ...state, confirmation: null }, waiting.command));`).
-- O leitor chega ao responder à confirmação: `src/editor/store.ts:201` `      keepTyping();` — a digitação pendente é posta em dia antes de responder.
+- O leitor chega ao responder à confirmação: `src/editor/store.ts:212` `      keepTyping();` — a digitação pendente é posta em dia antes de responder.
 - ok — a resposta grava a digitação antes de correr o comando.
 ### C2 intermediário
 - n/a — a digitação é gravada numa chamada só (`src/editor/input/pending.ts:47` `  held = null;`).
 ### C3 em curso
-- O leitor corre antes de a store responder: `src/editor/store.ts:201` `      keepTyping();`.
+- O leitor corre antes de a store responder: `src/editor/store.ts:212` `      keepTyping();`.
 - ok — no meio do caminho o leitor lê e grava a digitação pendente.
 ### C4 desmontagem
-- n/a — a leitura é de uma função do store do editor, sem assinatura de componente (`src/editor/store.ts:200` `    answer: (confirmed) => {`).
+- n/a — a leitura é de uma função do store do editor, sem assinatura de componente (`src/editor/store.ts:211` `    answer: (confirmed) => {`).
 
 ## Resultado
-- O leitor grava a digitação pendente antes de responder à confirmação: `src/editor/store.ts:201` `      keepTyping();`.
+- O leitor grava a digitação pendente antes de responder à confirmação: `src/editor/store.ts:212` `      keepTyping();`.

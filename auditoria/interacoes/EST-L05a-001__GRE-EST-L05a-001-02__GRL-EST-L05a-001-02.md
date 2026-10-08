@@ -9,12 +9,12 @@
 ## Casos
 ### C1 final
 - O escritor terminou: o comando correu e o estado é o resultado, ou o de antes na recusa (`src/core/store/store.ts:544` `      ui: outcome.ui ?? before.ui,`).
-- O leitor chega no despacho: `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é consultada antes do comando.
+- O leitor chega no despacho: `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é consultada antes do comando.
 - ok — um comando que muda o documento grava a digitação primeiro (`src/editor/input/pending.ts:82` `  keepTyping();`).
 ### C2 intermediário
 - n/a — a digitação é gravada numa chamada só (`src/editor/input/pending.ts:47` `  held = null;`).
 ### C3 em curso
-- O leitor corre no começo de cada despacho: `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);`.
+- O leitor corre no começo de cada despacho: `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);`.
 - ok — o leitor lê a digitação pendente antes de o comando correr.
 ### C4 desmontagem
 - n/a — a leitura é de uma função do store do editor (`src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).

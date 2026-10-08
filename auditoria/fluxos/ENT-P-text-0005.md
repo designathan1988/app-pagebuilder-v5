@@ -11,11 +11,11 @@ Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `
 6. `src/editor/canvas/text-edit.ts:222` `    if (names.includes('target')) args.target = node;` — o id do nó editado entra em `target`; `src/editor/canvas/text-edit.ts:227` `    args.content = marked || hasMarks(reading.runs) ? canonical(reading.runs) : plainText(reading.runs);` — o texto entra em `content`. [lê: EST-L01-030 via editArgs] [lê: EST-L01-037 via editArgs]
 7. `src/editor/input/keymap.ts:526` `    const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos do campo e da porta da tecla são juntados; a porta declara `{}` (`manifest/commands/text.json:162` `          "args": {}`).
 8. `src/editor/input/keymap.ts:530` `    const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — `text.set` não toma a área de transferência, então `clipboard` é `undefined` e o despacho é o da linha 531.
-9. `src/editor/store.ts:221` `    dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-10. `src/editor/store.ts:222` `      const changesDocument = UNDOABLE.get(id) === true;` — `text.set` é desfazível (`manifest/commands/text.json:117` `        "undoable": true,`), então `changesDocument` é `true`.
-11. `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é gravada antes do comando que muda o documento.
-12. `src/editor/store.ts:224` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via getState] [lê: EST-L01-037 via getState].
-13. `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
+9. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+10. `src/editor/store.ts:233` `      const changesDocument = UNDOABLE.get(id) === true;` — `text.set` é desfazível (`manifest/commands/text.json:117` `        "undoable": true,`), então `changesDocument` é `true`.
+11. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — [lê: EST-L05a-001 via beforeCommand] a digitação pendente de um campo é gravada antes do comando que muda o documento.
+12. `src/editor/store.ts:235` `      const edited = heldTyping() === null ? null : editedKey(store.getState());` — [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via getState] [lê: EST-L01-037 via getState].
+13. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo.
 14. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho do núcleo chama `run`.
 15. `src/core/store/store.ts:400` `    const entry = table[id];` — `run` busca o comando na tabela (`wiring().commands`).
 16. `src/app/commands.ts:431` `  'text.set': setTextCommand,` — a linha que despacha o comando ao tratador (a `Chamada` do trecho `TRC-text.set`).
@@ -24,7 +24,7 @@ Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `
 - R1 `src/editor/input/keymap.ts:487` `    if (!binding) return;` — nenhum acorde do contexto casa: nada roda; Escape no contexto `text-editing` casa a porta desta entrada.
 - R2 `src/editor/input/keymap.ts:505` `    if (!shortcutRunsNow(binding)) return;` — com o comando construído, a porta roda; sem isso o teclado para aqui.
 - R3 `src/editor/input/keymap.ts:515` `    if (own === null) return;` — `own` nulo quando o texto editado não guarda leitura; com o texto presente, `editArgs` devolve os argumentos e o caminho segue.
-- R4 `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com gesto aberto e comando desfazível, o despacho entra na fila `waiting` (`src/editor/store.ts:230` `        waiting.push(() => void store.dispatch(id, args, asked));`).
+- R4 `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai direto à store do núcleo, o lado tomado por esta porta; com gesto aberto e comando desfazível, o despacho entra na fila `waiting` (`src/editor/store.ts:243` `        waiting.push(() => void store.dispatch(id, args, asked));`).
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho é síncrono de `src/editor/input/keymap.ts:531` a `src/app/commands.ts:431`; nenhum passo cita `await`, timer, quadro ou ouvinte.
@@ -41,7 +41,7 @@ Fluxo de porta do domínio `text`. Rastreia o caminho próprio da porta — de `
 
 ## Regras
 - G1: n/a — o trecho grava o texto do nó, fora de qualquer camada de estilo `src/core/text/text.ts:35` `  if (found.node.text !== text) patches.push({ op: 'replace', path: [...found.path, 'text'], value: text });`.
-- G2: ok `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (o registro é `src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
+- G2: ok `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (o registro é `src/editor/input/pending.ts:76` `export function beforeCommand(id: CommandId, args: unknown, changesDocument: boolean): EditContext | undefined {`).
 - G3: ok `src/editor/input/keymap.ts:531` `    if (clipboard === undefined) dispatch(binding.command.id, args);` — a porta envia só a intenção (o id do comando e o texto do campo) e o tratador único decide; as portas do manifesto chamam a mesma linha `src/app/commands.ts:431` `  'text.set': setTextCommand,`.
 - G4: n/a — a porta é uma tecla no contexto do texto editado, não um ponto do canvas `manifest/commands/text.json:146` `      "kind": "shortcut",`.
 - G5: n/a — o caminho da porta não desenha painel nem barra `src/editor/input/keymap.ts:531`; as famílias de defeito de painel são medidas na Fase 6.

@@ -3,9 +3,9 @@
 - **Escritor:** GRE-EST-L05a-019-02 (finishPickerSession): ENT-L05a-0059
 - **Leitor:** GRL-EST-L05a-019-01 (followPicker): ENT-L05a-0059
 ## Estados deixados por A
-- **V1 o objecto da criação.** `src/editor/input/pointer/common.ts:267` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
-- **V2 `pendingPickerEnd` de volta a nulo.** `src/editor/input/pointer/common.ts:395` `  shared.pendingPickerEnd = null;` — `finishPickerSession` retira o fim guardado antes de o correr; a leitura do valor retirado é `src/editor/input/pointer/common.ts:394` `  const finish = shared.pendingPickerEnd;`; é a escrita da ENT-L05a-0059.
-- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:396` `  finish?.();` — `finishPickerSession` corre o fim guardado se existir e escreve o item sempre do mesmo modo.
+- **V1 o objecto da criação.** `src/editor/input/pointer/shared.ts:25` `    shared = { spaceDown: false, overStage: false, panning: null, panDispatch: null, open: null, session: null, sessionDispatch: null, pendingPickerEnd: null };` — a primeira chamada de `sharedOf` cria o estado com todos os campos vazios.
+- **V2 `pendingPickerEnd` de volta a nulo.** `src/editor/input/pointer/common.ts:377` `  shared.pendingPickerEnd = null;` — `finishPickerSession` retira o fim guardado antes de o correr; a leitura do valor retirado é `src/editor/input/pointer/common.ts:376` `  const finish = shared.pendingPickerEnd;`; é a escrita da ENT-L05a-0059.
+- **Sem estado de recusa.** `src/editor/input/pointer/common.ts:378` `  finish?.();` — `finishPickerSession` corre o fim guardado se existir e escreve o item sempre do mesmo modo.
 
 ## Casos
 ### C1 final

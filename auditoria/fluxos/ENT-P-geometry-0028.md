@@ -23,8 +23,8 @@
 - **DOM do canvas:** o iframe desenha o elemento com as âncoras novas pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144` `patches: writeDeclarations(found.node, found.path, rules.base, writes),`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/anchors.ts:144` `patches: writeDeclarations(found.node, found.path, rules.base, writes),`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:327` `'position.setAnchors': setAnchorsCommand,` — as setas, as abas do canvas e o controle do inspector chamam o mesmo tratador com a mesma forma `{ edge, mode }`.
 - G4: n/a — o fluxo de porta não desenha painel nem barra sobre o canvas; o controle vive na coluna do inspector (`src/editor/doors/door.tsx:144`).
 - G5: n/a — o fluxo de porta não altera a geometria de painel nem de barra (`src/editor/doors/door.tsx:144`).

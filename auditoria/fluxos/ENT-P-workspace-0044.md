@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:131` `return { kind: 'change', ui: withLayout(ui, { ...ui.layout, tabActive: { ...ui.layout.tabActive, [host]: tab } }) };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:107` `export const setActiveTab = registerHandler<'workspace.setActiveTab', EditorUi>(` — a porta envia só `group` e `panel`; o tratador é o mesmo de todas as portas do comando workspace.setActiveTab.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:131` `return { kind: 'change', ui: withLayout(ui, { ...ui.layout, tabActive: { ...ui.layout.tabActive, [host]: tab } }) };`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/layout.ts:131` `return { kind: 'change', ui: withLayout(ui, { ...ui.layout, tabActive: { ...ui.layout.tabActive, [host]: tab } }) };`).

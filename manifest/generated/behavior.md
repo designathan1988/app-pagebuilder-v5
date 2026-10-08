@@ -33,3 +33,11 @@ Ignored on purpose:
 - dragging + move(p1, at the threshold): the drag follows the pointer through its owner, which draws it; the machine stays dragging
 - dragging + move(p2): another pointer does not join the gesture
 - dragging + up(p2): another pointer does not end the gesture
+
+## The modes of interaction (src/editor/input/modes.ts)
+
+Modes: pointer-gesture, picker-session, typing, context-menu, command-bar, dialog, picker, rename, text-edit, preview, confirmation.
+
+| While | Never opens |
+|---|---|
+| pointer-gesture | context-menu, command-bar, dialog, picker, rename, text-edit, preview, confirmation |

@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:134`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:123` `export const setRowDetails: RegisteredHandler<'layers.setRowDetails', EditorUi> = registerHandler(` — as portas de menu (Tag, ID, Classes, Atributos) chegam ao mesmo tratador com só `detail`; a lista as manda sem `shown`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:134`).
 - G5: n/a — o encaixe da linha com o detalhe a mais, com nomes longos, é medido na Fase 6 (`src/editor/layers/tree.ts:134`).

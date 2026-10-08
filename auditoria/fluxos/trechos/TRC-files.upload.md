@@ -54,7 +54,7 @@
 ## Regras
 
 - G1: n/a — os patches escrevem `files`, fora de qualquer camada de estilo (`src/core/files/files.ts:214`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/files/files.ts:207` `export const uploadCommand = registerHandler('files.upload', ({ state }, { files, folder }) => {` — as duas portas chegam ao mesmo tratador.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/files/files.ts:214`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/files/files.ts:214`); as famílias de defeito de painel são medidas em Fase 6.

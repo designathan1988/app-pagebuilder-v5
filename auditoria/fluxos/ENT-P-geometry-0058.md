@@ -27,7 +27,7 @@
 
 ## Regras
 - G1: n/a — o comando grava só o estado do editor (`src/editor/canvas/edit-mode.ts:39`), não uma camada de estilo de elemento.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:331` `'canvas.setEditMode': setEditMode,` — o item do painel rápido e o Esc do canvas chamam o mesmo tratador com a mesma forma `{ mode }`.
 - G4: ok `src/editor/canvas/edit-mode.ts:37` `const { quickPanelOpen: _folded, ...clear } = rest;` — o modo recolhe o painel rápido ao chip, para nenhuma alça ficar sob ele.
 - G5: n/a — o comando não redimensiona painel nem barra; só troca o modo do canvas (`src/editor/canvas/edit-mode.ts:39`).

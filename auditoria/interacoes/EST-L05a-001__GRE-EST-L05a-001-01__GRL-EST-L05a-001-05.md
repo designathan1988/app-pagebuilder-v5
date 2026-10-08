@@ -3,7 +3,7 @@
 - **Escritor:** GRE-EST-L05a-001-01 (gesture): ENT-P-view-0079, ENT-P-view-0080, ENT-P-view-0082, ENT-P-view-0087, ENT-P-view-0103
 - **Leitor:** GRL-EST-L05a-001-05 (keepTypingBefore): ENT-L05a-0040
 ## Estados deixados por A
-- **V-gravada-ao-abrir-gesto.** `src/editor/store.ts:205` `      keepTyping();` — a abertura do gesto grava a digitação pendente antes de o gesto servir.
+- **V-gravada-ao-abrir-gesto.** `src/editor/store.ts:216` `      keepTyping();` — a abertura do gesto grava a digitação pendente antes de o gesto servir.
 - **V-antes-da-medida.** `src/editor/input/pointer/events.ts:58` `    keepTypingBefore(event.target);` — a pressão grava a digitação antes de medir a caixa da seleção.
 - **V-sem-digitacao.** `src/editor/input/pending.ts:46` `  if (typing === null) return;` — sem digitação pendente nada é gravado.
 

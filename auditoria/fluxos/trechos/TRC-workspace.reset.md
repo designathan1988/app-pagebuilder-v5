@@ -5,8 +5,8 @@
 
 ## Passos
 1. `src/app/commands.ts:482` `'workspace.reset': resetWorkspace,` — a tabela liga o id ao tratador.
-2. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
-3. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
+2. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho entra na store do núcleo.
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext].
 6. `src/editor/workspace/layout.ts:273` `const { splitterSizes: _sizes, collapsedSections: _sections, ...preferences } = state.ui.preferences;` — as preferências de tamanho e secção são deixadas de fora [lê: EST-L01-037 via handlerContext].
@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/layout.ts:278`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/layout.ts:272` `export const resetWorkspace = registerHandler<'workspace.reset', EditorUi>('workspace.reset', ({ state }) => {` — as duas portas (menu View, barra de comandos) chegam ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/layout.ts:278`).
 - G5: n/a — o encaixe dos painéis repostos é medido na Fase 6 (`src/editor/workspace/layout.ts:278`).

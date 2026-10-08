@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:330` `'handle.step': stepHandle,` — a tabela de comandos liga o id ao tratador.
 2. `src/editor/input/keymap.ts:531` `if (clipboard === undefined) dispatch(binding.command.id, args);` — as setas do contexto `canvas-handle` entregam `direction` e o `handle` da alça focada.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
 6. `src/editor/canvas/handles.ts:97` `export const stepHandle = registerHandler<'handle.step', EditorUi>('handle.step', (context, { direction, handle }) => {` — o tratador recebe o contexto, a direção e a alça.
@@ -48,8 +48,8 @@
 - **DOM do canvas:** o iframe desenha o valor novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o valor entra na camada ativa pelo tratador delegado (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o valor entra na camada ativa pelo tratador delegado (`src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:330` `'handle.step': stepHandle,` — as quatro setas entre camadas e alças chamam o mesmo tratador com a mesma forma `{ direction, handle }`.
 - G4: n/a — o trecho não desenha painel nem barra sobre o canvas (`src/editor/canvas/handles.ts:117`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/editor/canvas/handles.ts:114`).

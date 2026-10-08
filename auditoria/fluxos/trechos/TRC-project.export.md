@@ -57,7 +57,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava estilo nem valor de camada (`src/core/export/export.ts:540` `const site = siteFiles(state.document, rules, true, siteScripts);`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/export/export.ts:538` `export const exportProject = registerHandler('project.export', ({ state, rules, siteScripts }) => {` — o único tratador do comando.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/export/export.ts:562`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/export/export.ts:562`).

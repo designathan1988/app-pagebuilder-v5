@@ -5,7 +5,7 @@
 
 ## Passos
 1. `src/app/commands.ts:178` `'assistant.setModel': setAssistantModel,` — a tabela de comandos liga o id ao tratador `setAssistantModel` (`src/editor/assistant/state.ts`).
-2. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor, que captura o contexto da digitação antes do comando.
+2. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — o despacho passa pela store do editor, que captura o contexto da digitação antes do comando.
 3. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store do núcleo executa o tratador com o estado corrente e os argumentos.
 4. `src/editor/assistant/state.ts:27` `export const setAssistantModel = registerHandler<'assistant.setModel', EditorUi>('assistant.setModel', ({ state }, { value }) => {` — o tratador recebe `{ value }`.
 5. `src/editor/assistant/state.ts:28` `if (assistantOf(state.ui).busy) return { kind: 'refused', message: message('assistant.busy') };` — lê o turno do assistente. [lê: EST-L06-050 via assistantOf]

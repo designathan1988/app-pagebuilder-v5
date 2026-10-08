@@ -38,7 +38,7 @@
 ## Regras
 
 - G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava a requisição de foco `src/editor/focus/focus.ts:25` `({ kind: 'change', ui: asking(state.ui, 'previous') })`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as dez portas de `focus.previous` chegam à tabela `src/app/commands.ts:316` `'focus.previous': focusPrevious,` e mandam só a intenção `'previous'` `src/editor/focus/focus.ts:25` `({ kind: 'change', ui: asking(state.ui, 'previous') })`.
 - G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/focus/focus.ts:25` `({ kind: 'change', ui: asking(state.ui, 'previous') })`.
 - G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a requisição `src/editor/focus/focus.ts:22` `focus: { request: { move, count: (ui.focus.request?.count ?? 0) + 1 } }`.

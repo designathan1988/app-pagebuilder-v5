@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,` — a tabela de comandos liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto da edição [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto da edição [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade do comando (`always`) é testada; o predicado `always` devolve verdadeiro (`src/core/commands/registry.ts:195` `export const always = registerPredicate('always', () => true);`).
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via run] [lê: EST-L01-037 via run].
@@ -52,8 +52,8 @@
 - **DOM do canvas:** o iframe redesenha os elementos com o `mode` novo e sem os insets inertes, pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto captado escreve na camada de `src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o contexto captado escreve na camada de `src/core/style/set.ts:343` `const layer = { breakpoint, state: base };`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:324` `'position.setMode': setPositionModeCommand,`
 - G4: n/a — o trecho não desenha nada sobre o canvas (`src/core/geometry/position.ts:53`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/core/geometry/position.ts:53`).

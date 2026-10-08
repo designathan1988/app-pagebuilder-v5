@@ -10,7 +10,7 @@
 1. `src/editor/input/pointer/panels.ts:49` `const moveGrip = (at: Point) => {` — a alça do painel rápido arrasta a partir do toque
 2. `src/editor/input/pointer/panels.ts:53` `shared.open = store.gesture();` — cada passo do arraste reabre o gesto [escreve: EST-L05a-019 via store.gesture]
 3. `src/editor/input/pointer/panels.ts:54` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, offset: { x: press.base.x + at.x - start.x, y: press.base.y + at.y - start.y }, distance: at.x - start.x } as never);` — a alça despacha o deslocamento novo no gesto
-4. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o gesto do editor leva a intenção ao gesto do núcleo
+4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo
 5. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador
 6. `src/app/commands.ts:487` `'quickPanel.setOffset': setOffset,` — a tabela liga o id ao tratador; o trecho TRC-quickPanel.setOffset começa aqui
 
@@ -33,7 +33,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/quick-panel/quick-panel.ts:62`).
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada quando o gesto do editor abre.
 - G3: ok `src/editor/quick-panel/quick-panel.ts:57` `export const setOffset = registerHandler<'quickPanel.setOffset', EditorUi>('quickPanel.setOffset', ({ state }, { target, offset }) => {` — a única porta (o arraste da alça do painel) chega ao mesmo tratador com o `target` e o `offset` que o gesto leu.
 - G4: n/a — o comando muda estado; o painel que ele posiciona fica ao lado do rótulo e nada cobre o canvas no ponto da ação (`src/editor/quick-panel/quick-panel.ts:62`); a colocação é medida na Fase 6.
 - G5: n/a — a colocação do painel rápido é medida na Fase 6 (`src/editor/quick-panel/quick-panel.ts:62`).

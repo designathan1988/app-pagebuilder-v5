@@ -38,7 +38,7 @@
 
 ## Regras
 - G1: n/a — o comando não tem digitação de campo; o único argumento é o id do nó vindo da porta `src/editor/capture/selection.ts:7` `export const selectCapturedCommand = registerHandler<'capture.select', EditorUi>('capture.select', ({ state }, { target }) => {`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é mantida antes de um comando que muda a seleção.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é mantida antes de um comando que muda a seleção.
 - G3: ok `src/editor/capture/selection.ts:7` `export const selectCapturedCommand = registerHandler<'capture.select', EditorUi>('capture.select', ({ state }, { target }) => {` — um só tratador; as duas portas enviam só `target`.
 - G4: n/a — o trecho não age sobre um ponto do canvas; o contorno do elemento é de outra entrada `src/editor/canvas/chrome.tsx:591` `function CapturedSelection() {`.
 - G5: n/a — o trecho não monta painel nem barra; lê a árvore e devolve estado `src/editor/capture/selection.ts:8` `const found = findCaptured(state.document, target);`.

@@ -3,10 +3,10 @@
 1. `src/editor/input/pointer/effects.ts:219` `else if (dropped !== null && dropDoorOf !== null) closing?.dispatch(dropDoorOf.command.id, { ...dropDoorOf.door.args, ...press.args, parent: dropped.parent, index: dropped.index } as never);` — a porta canvas-drag-palette-tile-drop-proposal despacha o comando e os argumentos na liberação — o Início da porta.
 2. `src/editor/input/pointer/effects.ts:154` `const closing = shared.open;` — `closing` é o gesto aberto (`shared.open`).
 3. `src/editor/input/pointer/effects.ts:41` `shared.open = store.gesture();` — o gesto foi aberto no toque, com `store.gesture()`.
-4. `src/editor/store.ts:204` `gesture: () => {` — a store do editor abre o gesto.
-5. `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada antes de abrir o gesto. [lê: EST-L05a-001 via keepTyping]
-6. `src/editor/store.ts:207` `const gesture = store.gesture();` — o gesto do núcleo vem de `store.gesture()`.
-7. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
+4. `src/editor/store.ts:215` `gesture: () => {` — a store do editor abre o gesto.
+5. `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada antes de abrir o gesto. [lê: EST-L05a-001 via keepTyping]
+6. `src/editor/store.ts:218` `const gesture = store.gesture();` — o gesto do núcleo vem de `store.gesture()`.
+7. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
 8. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o despacho.
 9. `src/core/store/store.ts:720` `return run(id, args, current);` — chama a regra única de execução dentro do gesto.
 10. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -26,7 +26,7 @@
 - **DOM do canvas:** o nó entra pela lista de remendos que `src/core/store/store.ts:567` `publish(committed, documentChanged ? applied.applied : []);` publica.
 ## Regras
 - G1: ok `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o tratador escreve pela camada do contexto capturado.
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — a digitação pendente é gravada antes do gesto.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — a digitação pendente é gravada antes do gesto.
 - G3: ok `src/app/commands.ts:365` `'element.insert': insertCommand,` — um só tratador; esta porta manda só a intenção e chega à mesma linha da Chamada do trecho.
 - G4: n/a — o caminho da porta e o tratador não desenham sobre o canvas (`src/app/commands.ts:365` `'element.insert': insertCommand,`).
 - G5: n/a — o caminho da porta e o tratador não medem nem desenham painel ou barra (`src/app/commands.ts:365` `'element.insert': insertCommand,`).

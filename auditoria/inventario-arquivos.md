@@ -349,9 +349,9 @@
 
 ### `eslint.config.js`
 - **Lote:** L22b
-- **Linhas:** 219
-- **SHA1:** 452afa6402c6351517df4afd675f7b2e35658f38
-- **Partes lidas:** 1-219
+- **Linhas:** 228
+- **SHA1:** 84fffda2ab0c33ce5447cbf2eb2fb5512c3f80ec
+- **Partes lidas:** 1-228
 - **Propósito:** a configuração do lint: os ignorados globais, as regras de JavaScript e TypeScript e as regras do projeto (donos do ponteiro, do gesto, do teclado e do iframe; tokens de estilo; ids do manifesto).
 - **Âncora:** `eslint.config.js:30` `extends: [js.configs.recommended, tseslint.configs.strict],`
 
@@ -4227,6 +4227,14 @@
 - **Propósito:** o dono único das teclas: lê o contexto do foco, decide quando um atalho roda, lê os argumentos que o controle focado representa e despacha pelo gesto, pela sequência de digitação ou pela store.
 - **Âncora:** `src/editor/input/keymap.ts:314` `export function installKeymap(store: EditorStore, target: Window = window): () => void {`
 
+### `src/editor/input/modes.ts`
+- **Lote:** L05a
+- **Linhas:** 54
+- **SHA1:** efcd0eee30bee7f56920b1214e35564b06d70bdd
+- **Partes lidas:** 1-54
+- **Propósito:** Modos de interação do editor (MEC-10, C6 opção A), lidos do estado que já guarda cada um (gesto e sessão do seletor no estado do ponteiro, digitação pendente, camadas da store), a tabela REFUSED_WHILE do que não abre com outro modo ativo e modeBreaches; conferida pela store do editor a cada comando dentro de um gesto.
+- **Âncora:** `src/editor/input/modes.ts:9` `import type { EditorStore } from '../store.ts';`
+
 ### `src/editor/input/pending.test.ts`
 - **Lote:** L05a
 - **Linhas:** 140
@@ -4277,11 +4285,11 @@
 
 ### `src/editor/input/pointer/common.ts`
 - **Lote:** L05a
-- **Linhas:** 564
-- **SHA1:** 54243fb50b2586f05660e0767822410bc7546ce9
-- **Partes lidas:** 1-562; 563-564
+- **Linhas:** 546
+- **SHA1:** 0945c93392a69d73b414a71ea6f028c36a831bea
+- **Partes lidas:** 1-546
 - **Propósito:** o que as partes do dono do ponteiro compartilham: as portas e constantes lidas do manifesto, o estado que sobrevive a um gesto, o pan, a sessão do seletor de cor e a leitura da pressão.
-- **Âncora:** `src/editor/input/pointer/common.ts:264` `export function sharedOf(store: EditorStore): PointerShared {`
+- **Âncora:** `src/editor/input/pointer/shared.ts:22` `export function sharedOf(store: EditorStore): PointerShared {`
 
 ### `src/editor/input/pointer/drag.ts`
 - **Lote:** L05a
@@ -4346,6 +4354,14 @@
 - **Partes lidas:** 1-96
 - **Propósito:** redimensionar e mover no canvas: a alça de resize, o arrasto livre de um elemento posicionado, o encaixe e a soltura dos gestos de alça.
 - **Âncora:** `src/editor/input/pointer/resize.ts:11` `export function pointerResize(p: PointerOwner): Pick<PointerOwner, 'resize' | 'positionedNow' | 'snappedResize' | 'moveFree' | 'dropHandleGestures'> {`
+
+### `src/editor/input/pointer/shared.ts`
+- **Lote:** L05a
+- **Linhas:** 29
+- **SHA1:** 69b00561f171df82b43d31c6d72a7bdcdb2ffc4e
+- **Partes lidas:** 1-29
+- **Propósito:** Estado do ponteiro de um editor que dura além de um gesto (PointerShared, sharedOf: pan, gesto aberto, sessão do seletor de cor), num módulo sem importação que rode, para modes.ts e a store do editor o lerem sem carregar as partes do dono do ponteiro.
+- **Âncora:** `src/editor/input/pointer/shared.ts:5` `import type { DispatchResult, Gesture } from '../../../core/store/store.ts';`
 
 ### `src/editor/input/pointer/tools.ts`
 - **Lote:** L05a
@@ -5693,11 +5709,11 @@
 
 ### `src/editor/store.ts`
 - **Lote:** L05a
-- **Linhas:** 254
-- **SHA1:** 27db28415c4218008576ccdf509439aef58375f2
-- **Partes lidas:** 1-254
+- **Linhas:** 276
+- **SHA1:** 1d71dacbbcc1c708ff9c60bac608c43bb8c4e5a9
+- **Partes lidas:** 1-276
 - **Propósito:** a ligação da store do editor: cria a store com a tabela, o manifesto, as portas e o estado do editor, expõe `editContextOf` e envolve tudo em `gestureSafe`, que grava a digitação pendente antes de cada comando.
-- **Âncora:** `src/editor/store.ts:102` `export function editContextOf(state: EditorState): EditContext {`
+- **Âncora:** `src/editor/store.ts:104` `export function editContextOf(state: EditorState): EditContext {`
 
 ### `src/editor/test-boot.test.ts`
 - **Lote:** L05b
@@ -9021,9 +9037,9 @@
 
 ### `tools/impact/detectors.ts`
 - **Lote:** L23
-- **Linhas:** 74
-- **SHA1:** eda2dba54acb5f1f455184b6b39104baaa443e10
-- **Partes lidas:** 1-74
+- **Linhas:** 78
+- **SHA1:** 74eee92453ef5578eab08099019c53297d9b2194
+- **Partes lidas:** 1-78
 - **Propósito:** Escolha dos detectores sem navegador que uma mudança alcança (MEC-04): os grupos do modelo da store pelo grafo de imports e os mutantes do catálogo pelo arquivo que trocam, cada um com o motivo.
 - **Âncora:** `tools/impact/detectors.ts:6` `import fs from 'node:fs';`
 
@@ -9147,6 +9163,14 @@
 - **Propósito:** Lista das exceções da regra builder/interactive-owner (MEC-08): 81 elementos interativos sem porta nem data-local, cada um com categoria (structural, local, door-part) e motivo.
 - **Âncora:** `tools/lint/interactive-allowed.ts:10` `export interface AllowedInteractive {`
 
+### `tools/lint/listener-allowed.ts`
+- **Lote:** L23
+- **Linhas:** 23
+- **SHA1:** 46485e46567976d575550710e5014651f31a5df0
+- **Partes lidas:** 1-23
+- **Propósito:** Exceções da regra builder/listener-scope (MEC-09): o que um arquivo começa e termina de outro jeito que a regra não vê, cada um com motivo; hoje os dois tratadores de erro da página e o intervalo da repetição do ponteiro.
+- **Âncora:** `tools/lint/listener-allowed.ts:5` `export interface AllowedListener {`
+
 ### `tools/lint/plugin.test.ts`
 - **Lote:** L22a
 - **Linhas:** 332
@@ -9157,11 +9181,11 @@
 
 ### `tools/lint/plugin.ts`
 - **Lote:** L22a
-- **Linhas:** 663
-- **SHA1:** 114e7e3b0198f11269cfa0bb16c2d37905192199
-- **Partes lidas:** 1-663
+- **Linhas:** 766
+- **SHA1:** aa01a60e1cb7d84117206d1914fe112bec6574e9
+- **Partes lidas:** 1-766
 - **Propósito:** Implementa as regras de ESLint que seguram o contrato no código: portas de relógio e ids, textos de interface, tokens de estilo, donos de ponteiro, gesto, quadro e teclado, e ids do manifesto.
-- **Âncora:** `tools/lint/plugin.ts:18` `type Node = Rule.Node;`
+- **Âncora:** `tools/lint/plugin.ts:19` `type Node = Rule.Node;`
 
 ### `tools/lint/style-values.ts`
 - **Lote:** L22a
@@ -9285,11 +9309,11 @@
 
 ### `tools/map/behavior.ts`
 - **Lote:** L23
-- **Linhas:** 25
-- **SHA1:** d91c434a97c4440072866f85c5751314c4711970
-- **Partes lidas:** 1-25
+- **Linhas:** 38
+- **SHA1:** 7e488e563fa1c74582994775a39f10124eb77314
+- **Partes lidas:** 1-38
 - **Propósito:** Textos do mapa de comportamento gerado (MEC-06), os mesmos para o gerador e para o detector: chaves em ordem fixa, sem data e sem caminho absoluto.
-- **Âncora:** `tools/map/behavior.ts:4` `import { gestureTable, IGNORED_ON_PURPOSE, ignoredOf, mermaidOf } from './gesture-table.ts';`
+- **Âncora:** `tools/map/behavior.ts:7` `import { gestureTable, IGNORED_ON_PURPOSE, ignoredOf, mermaidOf } from './gesture-table.ts';`
 
 ### `tools/map/generate.ts`
 - **Lote:** L23
@@ -9483,6 +9507,14 @@
 - **Propósito:** Grupo lifetime do modelo (MEC-07): cada rotina que agenda quadros ou timers, parada no meio, não deixa nada agendado e não roda o que esperava; hoje o boot de teste desenhado (DEF-0001).
 - **Âncora:** `tools/runner/model/lifetime.test.ts:6` `import { describe, expect, it } from 'vitest';`
 
+### `tools/runner/model/lint.test.ts`
+- **Lote:** L23
+- **Linhas:** 32
+- **SHA1:** 0abf42f7bb8f513542c888991751c0924a6c2be8
+- **Partes lidas:** 1-32
+- **Propósito:** Grupo lint dos detectores (MEC-09): passa o arquivo do mutante sob execução, com o trecho trocado, pelo ESLint do projeto e falha quando o texto mutado recebe erro que o arquivo em disco não recebe (M44, M45).
+- **Âncora:** `tools/runner/model/lint.test.ts:5` `import fs from 'node:fs';`
+
 ### `tools/runner/model/machine.test.ts`
 - **Lote:** L23
 - **Linhas:** 38
@@ -9490,6 +9522,14 @@
 - **Partes lidas:** 1-38
 - **Propósito:** Grupo machine do modelo (MEC-06): a tabela gravada é a que o código dá, toda combinação ignorada tem motivo declarado e o segundo toque do mesmo ponteiro com o gesto aberto reinicia o gesto (DCS-013).
 - **Âncora:** `tools/runner/model/machine.test.ts:6` `import fs from 'node:fs';`
+
+### `tools/runner/model/modes.test.ts`
+- **Lote:** L23
+- **Linhas:** 116
+- **SHA1:** 978e0b31519b03e8ddaf5a747c0263b8d81eb90f
+- **Partes lidas:** 1-116
+- **Propósito:** Grupo modes dos detectores (MEC-10): com um gesto do ponteiro aberto, cada atalho do manifesto passa pelo mapa de teclas real e nenhum modo recusado abre nem nenhuma tecla lança; o mesmo em sequências aleatórias com gestos abertos e fechados (M46).
+- **Âncora:** `tools/runner/model/modes.test.ts:7` `import fc from 'fast-check';`
 
 ### `tools/runner/model/pages.test.ts`
 - **Lote:** L23
@@ -9541,9 +9581,9 @@
 
 ### `tools/runner/mutants.ts`
 - **Lote:** L23
-- **Linhas:** 133
-- **SHA1:** 4393f3cda428dd5255ff54997b97f86001b1f575
-- **Partes lidas:** 1-133
+- **Linhas:** 136
+- **SHA1:** 342a66e352de0969a41960c93bc68d09a1a65472
+- **Partes lidas:** 1-136
 - **Propósito:** Catálogo de mutantes plantados (MEC-02), cada um com o trecho trocado, a regra que quebra, a origem e os detectores que o alcançam, e o plugin do Vite que faz a troca na carga do módulo.
 - **Âncora:** `tools/runner/mutants.ts:9` `import fs from 'node:fs';`
 

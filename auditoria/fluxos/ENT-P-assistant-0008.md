@@ -7,9 +7,9 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 2. `src/editor/input/keymap.ts:525` `    const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — fora de gesto e sem rajada de letras, o despacho é o `store.dispatch` da store do editor.
 3. `src/editor/input/keymap.ts:526` `    const given = withDoorArgs({ ...own, ...modifier }, binding.door.args);` — os argumentos da porta juntam os que o lugar dá (nenhum, fora da edição de texto em lugar) aos do manifesto (nenhum, `manifest/commands/assistant.json:385` `"args": {},`).
 4. `src/editor/input/keymap.ts:527` `    const args = binding.door.kind === 'shortcut' && binding.door.gesture !== null ? stepped(binding.door.gesture, given, held?.modifier ?? null) : given;` — a porta é `shortcut` sem gesto (`manifest/commands/assistant.json:373` `"gesture": null,`), então os argumentos são `given`.
-5. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-6. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.send` não é desfazível (`manifest/commands/assistant.json:340` `"undoable": false`).
-7. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
+5. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+6. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.send` não é desfazível (`manifest/commands/assistant.json:340` `"undoable": false`).
+7. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
 8. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 9. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 10. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela.
@@ -18,7 +18,7 @@ Fluxo de porta do domínio `assistant`. Rastreia o caminho próprio da porta —
 ## Ramos
 - R1 `src/editor/input/keymap.ts:530` `    const clipboard = Object.entries(binding.command.args).find(([name, arg]) => arg.type === 'clipboard' && !(name in args))?.[0];` — o comando não declara argumento `clipboard`, então `clipboard` é `undefined` e o caminho segue para a linha 531.
 - R2 `src/editor/input/keymap.ts:525` `    const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — com um gesto aberto o despacho iria pelo gesto; aqui não há gesto, então o despacho é o `store.dispatch`.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`.
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `assistant.send` tem tratador na tabela.
 
 ## Fronteiras assíncronas

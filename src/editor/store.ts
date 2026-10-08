@@ -38,6 +38,8 @@ import { wiring } from './wiring.ts';
 import { beforeCommand, heldTyping, keepTyping } from './input/pending.ts';
 import { historyBreaches } from '../core/history/invariants.ts';
 import { restoreEditContext } from './view/edit-context.ts';
+import { reportError } from '../core/incidents.ts';
+import { modeBreaches, modesOf } from './input/modes.ts';
 
 export type EditorStore = Store<EditorUi>;
 export type EditorState = StoreState<EditorUi>;
@@ -187,7 +189,16 @@ function gestureSafe(store: EditorStore): EditorStore {
     open = null;
     for (const run of waiting.splice(0)) run();
   };
-  return {
+  // a command run inside the open gesture, the gesture's own (its keys, its moves) or one from outside it: the modes
+  // it opens are checked against the table of what never opens during a gesture (input/modes.ts)
+  const inGesture = (id: CommandId, run: () => DispatchResult): DispatchResult => {
+    const before = modesOf(safe);
+    const result = run();
+    const breaches = modeBreaches(before, modesOf(safe));
+    if (breaches.length > 0) refusedMode(id, breaches);
+    return result;
+  };
+  const safe: EditorStore = {
     ...store,
     sequence: () => {
       keepTyping();
@@ -207,7 +218,7 @@ function gestureSafe(store: EditorStore): EditorStore {
       const gesture = store.gesture();
       open = gesture;
       return {
-        dispatch: (id, args) => gesture.dispatch(id, args),
+        dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),
         commit: () => {
           gesture.commit();
           settle();
@@ -224,8 +235,10 @@ function gestureSafe(store: EditorStore): EditorStore {
       const edited = heldTyping() === null ? null : editedKey(store.getState());
       let result: DispatchResult;
       if (open === null) result = store.dispatch(id, args, at);
-      else if (!changesDocument) result = open.dispatch(id, args);
-      else {
+      else if (!changesDocument) {
+        const gesture = open;
+        result = inGesture(id, () => gesture.dispatch(id, args));
+      } else {
         const asked = at ?? editContextOf(store.getState());
         waiting.push(() => void store.dispatch(id, args, asked));
         result = { status: 'done', changed: false };
@@ -234,6 +247,15 @@ function gestureSafe(store: EditorStore): EditorStore {
       return result;
     },
   };
+  return safe;
+}
+
+// A mode the table refuses opened: in development and tests an error, as the store's own rules are; in the build a
+// person uses, an incident in the feed the status bar draws.
+function refusedMode(id: CommandId, breaches: readonly string[]): void {
+  const what = `${id} opened a mode the open gesture refuses: ${breaches.join('; ')}`;
+  if (import.meta.env.DEV) throw new Error(what);
+  reportError('a command opened a mode the open gesture refuses', what);
 }
 
 // a first visit in a narrow window opens with the sidebar closed (workspace/narrow.ts)

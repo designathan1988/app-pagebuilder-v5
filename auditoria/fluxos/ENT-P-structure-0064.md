@@ -4,8 +4,8 @@
 2. `src/editor/input/keymap.ts:525` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — a tecla é uma letra digitada no canvas ou nas Camadas, então `dispatch` é o da sequência de teclas (`burstSequence`).
 3. `src/editor/input/keymap.ts:519` `if (burstSequence?.active() !== true) {` — a sequência de teclas é aberta se ainda não estiver ativa.
 4. `src/editor/input/keymap.ts:520` `burstSequence = store.sequence();` — `burstSequence` é a sequência da store do editor.
-5. `src/editor/store.ts:192` `sequence: () => {` — a store do editor abre a sequência.
-6. `src/editor/store.ts:193` `keepTyping();` — a digitação pendente é gravada antes de abrir a sequência. [lê: EST-L05a-001 via keepTyping]
+5. `src/editor/store.ts:203` `sequence: () => {` — a store do editor abre a sequência.
+6. `src/editor/store.ts:204` `keepTyping();` — a digitação pendente é gravada antes de abrir a sequência. [lê: EST-L05a-001 via keepTyping]
 7. `src/core/store/store.ts:669` `dispatch: (id, args) => {` — a sequência do núcleo recebe o despacho.
 8. `src/core/store/store.ts:671` `return run(id, args, null);` — chama a regra única de execução.
 9. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
@@ -26,7 +26,7 @@
 - **DOM do canvas:** nada muda — o resultado não leva `patches` e `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);` é falso.
 ## Regras
 - G1: n/a — o comando não grava no documento nem num contexto de edição; escreve `ui` (`src/app/commands.ts:383` `'hand.take': HAND.take,`).
-- G2: ok `src/editor/store.ts:193` `keepTyping();` — a digitação pendente é gravada antes da sequência.
+- G2: ok `src/editor/store.ts:204` `keepTyping();` — a digitação pendente é gravada antes da sequência.
 - G3: ok `src/app/commands.ts:383` `'hand.take': HAND.take,` — um só tratador; esta porta manda só a intenção e chega à mesma linha da Chamada do trecho.
 - G4: n/a — o caminho da porta e o tratador não desenham sobre o canvas (`src/app/commands.ts:383` `'hand.take': HAND.take,`).
 - G5: n/a — o caminho da porta e o tratador não medem nem desenham painel ou barra (`src/app/commands.ts:383` `'hand.take': HAND.take,`).

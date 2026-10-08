@@ -9,8 +9,8 @@
 Fluxo de porta do domínio `content`. Rastreia o caminho próprio do arraste de uma coluna do painel Dados até a linha que despacha o comando, que é também a `Chamada` do trecho `TRC-data.bindElement`; o trecho não é repetido.
 
 ## Passos
-1. `src/editor/input/pointer/common.ts:511` `  if (control instanceof HTMLElement && entry && COLUMN_DRAGS.includes(entry) && isFeatureBuilt(entry.door.feature as FeatureId)) {` — o toque numa coluna do painel Dados reconhece a porta de arraste de coluna.
-2. `src/editor/input/pointer/common.ts:514` `    if (typeof stands.field === 'string' && stands.field !== '') return { on: 'column', entry, args: stands, field: stands.field };` — o toque vira um toque de coluna com o campo que a coluna representa.
+1. `src/editor/input/pointer/common.ts:493` `  if (control instanceof HTMLElement && entry && COLUMN_DRAGS.includes(entry) && isFeatureBuilt(entry.door.feature as FeatureId)) {` — o toque numa coluna do painel Dados reconhece a porta de arraste de coluna.
+2. `src/editor/input/pointer/common.ts:496` `    if (typeof stands.field === 'string' && stands.field !== '') return { on: 'column', entry, args: stands, field: stands.field };` — o toque vira um toque de coluna com o campo que a coluna representa.
 3. `src/editor/input/pointer/effects.ts:87` `      if (press.on === 'column') ps.columning = { press, over: null };` — no início do gesto, o toque guarda a coluna e marca que nada está sob o ponteiro ainda.
 4. `src/editor/input/pointer/events.ts:416` `    if (ps.columning !== null && ps.machine.phase !== 'idle' && event.pointerId === ps.machine.pointer) p.moveColumn(at);` — cada movimento do ponteiro marca a parte do elemento sob ele.
 5. `src/editor/input/pointer/panels.ts:66` `    ps.columning = { ...ps.columning, over };` — o destino sob o ponteiro (o nó e a parte) é guardado.

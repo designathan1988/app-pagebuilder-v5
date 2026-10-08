@@ -37,7 +37,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a estrutura do nó, não um valor de estilo `src/core/elements/parts.ts:93` `return { kind: 'change', patches: [{ op: 'add', path: [...at.path, 'children', index], value: node }], selection: [at.node.id], message: message('status.parts.added', { part: node.name, name: at.node.name }) };`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/parts.ts:76` `export const addPartCommand = registerHandler('parts.add', ({ state, rules, ids, words }, { type }): Outcome<never> => {`
 - G4: n/a — a porta é um controle do inspetor, não um ponto do canvas `manifest/commands/elements.json:4964` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/parts.ts:93` `return { kind: 'change', patches: [{ op: 'add', path: [...at.path, 'children', index], value: node }], selection: [at.node.id], message: message('status.parts.added', { part: node.name, name: at.node.name }) };`.

@@ -4,11 +4,11 @@ Fluxo de porta do domínio `breakpoints`. Rastreia o caminho próprio da porta �
 
 ## Passos
 1. `src/editor/shell/breakpoints-dialog.tsx:187` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, breakpoint: breakpoint.id, [arg]: value });` — a gravação do campo despacha o id do comando e os argumentos: o ponto de quebra da linha e o valor digitado no campo (o nome).
-2. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
-3. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `breakpoints.rename` é desfazível (`manifest/commands/breakpoints.json:117` `"undoable": true,`), então `changesDocument` é `true`.
-4. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar. [lê: EST-L05a-001 via beforeCommand]
-5. `src/editor/store.ts:224` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
-6. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch]
+2. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a store do editor recebe o despacho no embrulho `gestureSafe`.
+3. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `breakpoints.rename` é desfazível (`manifest/commands/breakpoints.json:117` `"undoable": true,`), então `changesDocument` é `true`.
+4. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar. [lê: EST-L05a-001 via beforeCommand]
+5. `src/editor/store.ts:235` `const edited = heldTyping() === null ? null : editedKey(store.getState());` — lê a digitação pendente e o estado da store. [lê: EST-L05a-001 via heldTyping] [lê: EST-L01-031 via editedKey] [lê: EST-L01-037 via editedKey]
+6. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [escreve: EST-L01-030 via dispatch]
 7. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — a store do núcleo recebe o despacho.
 8. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o despacho entrega o comando à função que o roda.
 9. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id (`src/app/commands.ts:452` `'breakpoints.rename': renameBreakpoint,`).
@@ -17,7 +17,7 @@ Fluxo de porta do domínio `breakpoints`. Rastreia o caminho próprio da porta �
 
 ## Ramos
 - R1 `src/editor/shell/breakpoints-dialog.tsx:184` `if (!field.available || typed.trim() === shown) return;` — disponível e com o texto diferente do mostrado: o campo grava; indisponível ou com o mesmo texto: nada é despachado.
-- R2 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, ele entraria na fila `waiting` (`src/editor/store.ts:230` `waiting.push(() => void store.dispatch(id, args, asked));`).
+- R2 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto de ponteiro aberto, o despacho vai direto à store do núcleo; com um gesto aberto e um comando que muda o documento, ele entraria na fila `waiting` (`src/editor/store.ts:243` `waiting.push(() => void store.dispatch(id, args, asked));`).
 - R3 `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — o id de `breakpoint` precisa ser da tabela do projeto (`src/core/store/args.ts:44` `return typeof value === 'string' && rules.breakpoints.has(value) ? 'fits' : 'invalid';`): dentro dela o caminho segue ao tratador; fora dela o despacho para na recusa.
 
 ## Fronteiras assíncronas
@@ -34,8 +34,8 @@ Fluxo de porta do domínio `breakpoints`. Rastreia o caminho próprio da porta �
 - **DOM do canvas:** nada muda por esta porta.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e um comando que muda o documento grava a digitação antes.
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e um comando que muda o documento grava a digitação antes.
 - G3: ok `src/editor/shell/breakpoints-dialog.tsx:187` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, breakpoint: breakpoint.id, [arg]: value });` — a porta envia só a intenção (o id, o ponto de quebra e o nome) e o tratador único decide.
 - G4: n/a — a porta é um campo do diálogo de breakpoints, não um ponto do canvas (`manifest/commands/breakpoints.json:126` `"kind": "panel-control",`).
 - G5: n/a — o caminho da porta não desenha painel nem barra (`src/editor/shell/breakpoints-dialog.tsx:187` `(store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, breakpoint: breakpoint.id, [arg]: value });`).

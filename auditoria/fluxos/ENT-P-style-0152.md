@@ -7,9 +7,9 @@
 
 ## Passos
 1. `src/editor/input/pointer/events.ts:352` `ps.rotating.gesture = store.gesture();` — o arraste da alça abre um gesto [escreve: EST-L01-007 via gesture].
-2. `src/editor/store.ts:205` `keepTyping();` — ao abrir o gesto a digitação pendente é gravada [lê: EST-L05a-001 via keepTyping].
+2. `src/editor/store.ts:216` `keepTyping();` — ao abrir o gesto a digitação pendente é gravada [lê: EST-L05a-001 via keepTyping].
 3. `src/editor/input/pointer/events.ts:359` `ps.rotating.gesture.dispatch(ps.rotating.entry.command.id as CommandId` — o dono do ponteiro entrega a intenção (o ângulo em graus) ao gesto [lê: EST-L01-007 via o `dispatch` do gesto].
-4. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o invólucro do gesto da store do editor entrega ao gesto do núcleo.
+4. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o invólucro do gesto da store do editor entrega ao gesto do núcleo.
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o comando.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o comando entra em `run` com o gesto aberto.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — o comando é lido na tabela de comandos.
@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: ok `src/editor/input/pointer/events.ts:359` `ps.rotating.gesture.dispatch(ps.rotating.entry.command.id as CommandId` — a intenção leva a propriedade e o valor em graus.
-- G2: ok `src/editor/store.ts:205` `keepTyping();` — ao abrir o gesto a digitação pendente é gravada.
+- G2: ok `src/editor/store.ts:216` `keepTyping();` — ao abrir o gesto a digitação pendente é gravada.
 - G3: ok `src/app/commands.ts:389` `'style.set': setStyleCommand,` — a alça entrega a mesma intenção (a propriedade e o valor em graus) ao mesmo tratador.
 - G4: n/a — o caminho da porta não cobre o canvas (`src/editor/input/pointer/events.ts:356`).
 - G5: n/a — o caminho da porta não muda a geometria de painel nem de barra (`src/editor/input/pointer/events.ts:356`).
@@ -45,7 +45,7 @@
 - INT: ok `src/core/store/store.ts:273` `const problems = validateDocument(next.document, next.selection, rules);` — o documento é validado antes de publicar.
 
 ## Limpeza
-- nada a remover — o gesto é aberto em `src/editor/input/pointer/events.ts:349` e fechado pelo dono do ponteiro o arraste (`src/editor/store.ts:204` `gesture: () => {`); o caminho da porta não cria ouvinte, timer nem observador.
+- nada a remover — o gesto é aberto em `src/editor/input/pointer/events.ts:349` e fechado pelo dono do ponteiro o arraste (`src/editor/store.ts:215` `gesture: () => {`); o caminho da porta não cria ouvinte, timer nem observador.
 
 ## Medições
 - nenhuma — o caminho da porta não lê dimensão, posição, rolagem, zoom, estilo calculado, elemento sob um ponto nem ordem de foco.

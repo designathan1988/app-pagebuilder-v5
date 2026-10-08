@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:394` `'element.setDivider': setDividerCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/input/pointer/events.ts:314` `ps.spacing.gesture.dispatch(ps.spacing.entry.command.id as CommandId,` — a alça da fronteira, arrastada, entrega a intenção a cada passo.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `divideableSelection` é lida [lê: EST-L01-030 via run] [lê: EST-L01-031 via run].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
@@ -49,8 +49,8 @@
 - **DOM do canvas:** o iframe desenha os dois filhos na proporção nova pelo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a escrita usa a camada do contexto capturado (`src/core/style/divider.ts:75` `    patches.push(...writeDeclarations(where.node, where.path, rules.base, values));`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a escrita usa a camada do contexto capturado (`src/core/style/divider.ts:75` `    patches.push(...writeDeclarations(where.node, where.path, rules.base, values));`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:394` `'element.setDivider': setDividerCommand,` — a alça entrega só a intenção (a fronteira e a largura) ao mesmo tratador.
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/style/divider.ts:75`).
 - G5: n/a — o comando não altera a geometria de painel nem de barra (`src/core/style/divider.ts:75`).

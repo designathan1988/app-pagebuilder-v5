@@ -11,8 +11,8 @@
 1. `src/editor/input/pointer/events.ts:345` `} else if (ps.guiding.guide !== null && GUIDE_MOVE !== null) ps.guiding.gesture.dispatch(GUIDE_MOVE.command.id as CommandId, { ...GUIDE_MOVE.door.args, guide: ps.guiding.guide, at } as never);` — o arraste no canvas despacha o comando pelo gesto, com os argumentos [lê: EST-L05a-034 via onMove]
 2. `src/editor/input/pointer/events.ts:340` `const at = Math.max(0, Math.round(ps.guiding.axis === 'horizontal' ? point.y : point.x));` — a posição `at`, em px da página
 3. `src/editor/input/pointer/events.ts:327` `ps.guiding.gesture = store.gesture();` — o gesto do arraste foi aberto com a store, ao passar o limiar [escreve: EST-L05a-034 via onMove]
-4. `src/editor/store.ts:205` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
-5. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o `dispatch` do gesto da store do editor
+4. `src/editor/store.ts:216` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
+5. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto da store do núcleo entra no `run` com o gesto aberto
 7. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` resolve o id na entrada da tabela de comandos
 8. `src/app/commands.ts:470` `'guides.move': moveGuideCommand,` — a entrada da tabela onde o id nomeia o tratador (a Chamada do trecho)
@@ -44,7 +44,7 @@
 ## Regras
 
 - G1: n/a — o fluxo de porta para na chamada do tratador `src/app/commands.ts:470` `'guides.move': moveGuideCommand,`; a gravação no contexto em que a digitação começou é do tratador e está no trecho.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as 5 portas de guides.move chegam à mesma tabela `src/app/commands.ts:470` `'guides.move': moveGuideCommand,` e enviam só a intenção.
 - G4: n/a — a porta não desenha elemento algum sobre o canvas; `src/editor/input/pointer/events.ts:345` `} else if (ps.guiding.guide !== null && GUIDE_MOVE !== null) ps.guiding.gesture.dispatch(GUIDE_MOVE.command.id as CommandId, { ...GUIDE_MOVE.door.args, guide: ps.guiding.guide, at } as never);` não toca o DOM.
 - G5: n/a — a porta não desenha nem mede painel, barra ou rótulo; `src/editor/input/pointer/events.ts:345` `} else if (ps.guiding.guide !== null && GUIDE_MOVE !== null) ps.guiding.gesture.dispatch(GUIDE_MOVE.command.id as CommandId, { ...GUIDE_MOVE.door.args, guide: ps.guiding.guide, at } as never);` só despacha o comando.

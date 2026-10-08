@@ -36,7 +36,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava classes do nó, não um valor de estilo `src/core/elements/attributes.ts:190` `const classPatch: Patch[] = kept.join(' ') === at.node.classes.join(' ') ? [] : [{ op: 'replace', path: [...at.path, 'classes'], value: kept }];`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/attributes.ts:177` `export const setClassesCommand = registerHandler('element.setClasses', ({ state, rules, words }, { classes, target }): Outcome<never> => {`
 - G4: n/a — a porta é o campo Definir as classes do inspetor, não um ponto do canvas `manifest/commands/elements.json:3809` `"id": "inspector-classes",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/attributes.ts:191` `return { kind: 'change', patches: [...definitions, ...classPatch], message: said };`.

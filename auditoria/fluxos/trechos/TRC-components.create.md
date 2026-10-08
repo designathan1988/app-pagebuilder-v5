@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:233` `'components.create': createComponentCommand,` — a tabela liga o id ao tratador.
 2. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — a disponibilidade `singleSelection` é lida antes do tratador [lê: EST-L01-031 via run].
 5. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 6. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador.
@@ -46,7 +46,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve caminhos fixos do documento (`src/core/design/components.ts:129`), não a camada que a digitação começou.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:233` `'components.create': createComponentCommand,`
 - G4: n/a — o comando não desenha nada sobre o canvas (`src/core/design/components.ts:129`).
 - G5: n/a — o comando não altera a geometria de painel nenhum (`src/core/design/components.ts:129`).

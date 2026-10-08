@@ -12,8 +12,8 @@
 2. `src/editor/input/pointer/events.ts:480` `const { gesture, kind, guide } = ps.guiding;` — o gesto, o tipo do arraste e a guia segurada
 3. `src/editor/input/pointer/events.ts:481` `const dropped = guideOverRuler.get() !== null;` — a guia largada sobre a própria régua
 4. `src/editor/input/pointer/events.ts:327` `ps.guiding.gesture = store.gesture();` — o gesto do arraste foi aberto com a store, ao passar o limiar [escreve: EST-L05a-034 via onMove]
-5. `src/editor/store.ts:205` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
-6. `src/editor/store.ts:210` `dispatch: (id, args) => gesture.dispatch(id, args),` — o `dispatch` do gesto da store do editor
+5. `src/editor/store.ts:216` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
+6. `src/editor/store.ts:221` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor
 7. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto da store do núcleo entra no `run` com o gesto aberto
 8. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` resolve o id na entrada da tabela de comandos
 9. `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,` — a entrada da tabela onde o id nomeia o tratador (a Chamada do trecho)
@@ -45,7 +45,7 @@
 ## Regras
 
 - G1: n/a — o fluxo de porta para na chamada do tratador `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,`; a gravação no contexto em que a digitação começou é do tratador e está no trecho.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — `src/editor/input/pending.ts:82` `keepTyping();` guarda a digitação pendente antes do comando, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
 - G3: ok — as 4 portas de guides.delete chegam à mesma tabela `src/app/commands.ts:471` `'guides.delete': deleteGuideCommand,` e enviam só a intenção.
 - G4: n/a — a porta não desenha elemento algum sobre o canvas; `src/editor/input/pointer/events.ts:491` `if (dropped && guide !== null && GUIDE_DELETE !== null) gesture.dispatch(GUIDE_DELETE.command.id as CommandId, { ...GUIDE_DELETE.door.args, guide } as never);` não toca o DOM.
 - G5: n/a — a porta não desenha nem mede painel, barra ou rótulo; `src/editor/input/pointer/events.ts:491` `if (dropped && guide !== null && GUIDE_DELETE !== null) gesture.dispatch(GUIDE_DELETE.command.id as CommandId, { ...GUIDE_DELETE.door.args, guide } as never);` só despacha o comando.

@@ -11,9 +11,9 @@ O painel não desenha esta porta pelo `DoorControl`: em `src/editor/assistant/pa
 4. `src/editor/assistant/panel.tsx:77` `        assistantController(store)?.stageConnection(text);` — o par (endereço e token) é guardado no controlador.
 5. `src/editor/assistant/panel.tsx:78` `        invoke(entryOf('assistant-bridge-connect'));` — a porta entrega a intenção à store do editor.
 6. `src/editor/assistant/panel.tsx:54` `  const invoke = (entry: DoorEntry, args: unknown = {}) => (store.dispatch as (id: CommandId, args: unknown) => DispatchResult)(entry.command.id, args);` — o `invoke` é o `store.dispatch` da store do editor com o id do comando.
-7. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-8. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.connect` não é desfazível (`manifest/commands/assistant.json:464` `"undoable": false`).
-9. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
+7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+8. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.connect` não é desfazível (`manifest/commands/assistant.json:464` `"undoable": false`).
+9. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via dispatch]
 10. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 11. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 12. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela.
@@ -22,7 +22,7 @@ O painel não desenha esta porta pelo `DoorControl`: em `src/editor/assistant/pa
 ## Ramos
 - R1 `src/editor/assistant/panel.tsx:75` `      if (!file) return;` — nada escolhido no seletor: o caminho para; escolhido: segue para a leitura.
 - R2 `src/editor/assistant/panel.tsx:79` `      }).catch(() => store.notice(message('assistant.invalidConnection')));` — o arquivo não lido ou um par inválido falha e avisa `assistant.invalidConnection` sem despachar; um par válido segue.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`.
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `assistant.connect` tem tratador na tabela.
 
 ## Fronteiras assíncronas

@@ -53,7 +53,7 @@
 ## Regras
 
 - G1: n/a — o comando troca o documento inteiro, sem gravar estilo nem valor de camada (`src/core/project/project.ts:13` `return { kind: 'load' as const, document, message: message('status.project.blankPage') };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/project/project.ts:8` `export const newBlankPage = registerHandler('project.newBlankPage', ({ state, ids, rules, words, confirmed, language }) => {` — o único tratador do comando.
 - G4: n/a — o comando troca o documento; não desenha nada sobre o canvas (`src/core/project/project.ts:13`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/project.ts:13`).

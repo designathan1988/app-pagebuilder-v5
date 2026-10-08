@@ -57,7 +57,7 @@
 ## Regras
 
 - G1: n/a — os patches escrevem `pages[].name` e `pages[].tree.name`, fora de qualquer camada de estilo (`src/core/project/pages.ts:117` `const patches: Patch[] = [{ op: 'replace', path: ['pages', at, 'name'], value: typed }];`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes de o comando mudar o documento (`src/editor/input/pending.ts:82` `keepTyping();`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes de o comando mudar o documento (`src/editor/input/pending.ts:82` `keepTyping();`).
 - G3: ok `src/core/project/pages.ts:101` `export const renamePageCommand = registerHandler('pages.rename', ({ state, rules }, { page, name }) => {` — o único tratador; a porta envia só a intenção.
 - G4: n/a — o comando muda estado; não desenha nada sobre o canvas (`src/core/project/pages.ts:117`).
 - G5: n/a — o comando não desenha painel nem controle (`src/core/project/pages.ts:117`); as famílias de defeito de painel são medidas em Fase 6.

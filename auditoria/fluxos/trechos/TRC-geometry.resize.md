@@ -6,7 +6,7 @@
 ## Passos
 1. `src/app/commands.ts:325` `'geometry.resize': resizeCommand,` — a tabela de comandos liga o id ao tratador.
 2. `src/editor/input/pointer/events.ts:380` `ps.resizing.gesture.dispatch(ps.resizing.entry.command.id as CommandId, { ...ps.resizing.entry.door.args, ...given } as never);` — o dono do ponteiro entrega a intenção a cada passo do arraste, dentro de um gesto.
-3. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
+3. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a store do editor capta o contexto [lê: EST-L05a-001 via beforeCommand].
 4. `src/core/store/store.ts:410` `const invalid = argumentRefusal(id, command, args, state.document, layeredNow(at));` — os argumentos são lidos contra o manifesto [lê: EST-L01-030 via argumentRefusal].
 5. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — a store chama o tratador [lê: EST-L01-030 via handlerContext] [lê: EST-L01-037 via handlerContext].
 6. `src/core/geometry/resize.ts:22` `export const resizeCommand = registerHandler('geometry.resize', (context, args): Outcome<never> => {` — o tratador recebe o contexto e os argumentos do arraste.
@@ -49,8 +49,8 @@
 - **DOM do canvas:** o iframe desenha o elemento no tamanho novo pelo mesmo aviso de `src/core/store/store.ts:323` `for (const listener of [...documentListeners]) listener(change);`.
 
 ## Regras
-- G1: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/resize.ts:56` `const { breakpoint, state: base } = rules.base;`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G1: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a camada escrita é `rules.base` (`src/core/geometry/resize.ts:56` `const { breakpoint, state: base } = rules.base;`).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/app/commands.ts:325` `'geometry.resize': resizeCommand,`
 - G4: n/a — o trecho não desenha painel nem barra sobre o canvas; as alças são desenhadas pelo chrome do canvas (`src/core/geometry/resize.ts:22`).
 - G5: n/a — o trecho não altera a geometria de painel nem de barra (`src/core/geometry/resize.ts:62`).

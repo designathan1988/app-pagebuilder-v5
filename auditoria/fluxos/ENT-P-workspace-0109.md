@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: ok `src/core/style/set.ts:334` `const { breakpoint, state: base } = rules.base;` — a escrita entra na camada que o editor mostra (o ponto de quebra e o estado ativos).
-- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:205` `keepTyping();`).
+- G2: n/a — o comando roda dentro da sessão do seletor, aberta com o seletor; a digitação pendente foi gravada quando essa sessão abriu (`src/editor/store.ts:216` `keepTyping();`).
 - G3: ok `src/editor/inspector/color-picker.ts:75` `export const setColorChannel = registerHandler<'colorPicker.setChannel', EditorUi>('colorPicker.setChannel', (context, { property, channel, text, base }) => {` — a única porta (um canal do seletor) chega ao mesmo tratador com só `property`, `channel`, `text` e `base`.
 - G4: n/a — o comando muda o documento; o seletor abre sobre o painel e o cobrimento no ponto da ação é medido na Fase 6 (`src/editor/inspector/color-picker.ts:81`).
 - G5: n/a — o encaixe do seletor é medido na Fase 6 (`src/editor/inspector/color-picker.ts:81`).

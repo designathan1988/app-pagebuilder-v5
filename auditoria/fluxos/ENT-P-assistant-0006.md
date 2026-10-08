@@ -11,9 +11,9 @@ O painel não desenha esta porta pelo `DoorControl`: em `src/editor/assistant/pa
 4. `src/editor/doors/door.tsx:107` `const file = Object.entries(entry.command.args).find(([name, arg]) => arg.type === 'file' && !arg.optional && !(name in given))?.[0];` — o comando não declara argumento `file`, então ele é `undefined`.
 5. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — sem arquivo, o caminho segue para a linha seguinte.
 6. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega a intenção à store do editor. O `dispatch` é ligado em `src/editor/doors/door.tsx:94` `const dispatch = store.dispatch as (id: CommandId, args: unknown) => DispatchResult;`.
-7. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
-8. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.editKey` não é desfazível (`manifest/commands/assistant.json:288` `"undoable": false`).
-9. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
+7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — o despacho entra no embrulho `gestureSafe` da store do editor.
+8. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — `assistant.editKey` não é desfazível (`manifest/commands/assistant.json:288` `"undoable": false`).
+9. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai à store do núcleo. [lê: EST-L05a-038 via o dispatch da store do editor]
 10. `src/core/store/store.ts:685` `dispatch: (id, args, context) => {` — o despacho da store do núcleo.
 11. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — a store do núcleo chama o `run`.
 12. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` busca o tratador do id na tabela.
@@ -22,7 +22,7 @@ O painel não desenha esta porta pelo `DoorControl`: em `src/editor/assistant/pa
 ## Ramos
 - R1 `src/editor/assistant/panel.tsx:60` `if (name === 'assistant-key') return <label className="assistant-field" data-door={entry.ref}>{t('assistant.key')}<input ref={key} className="input" type="password" autoComplete="off" aria-label={t('assistant.key')} disabled={state.busy} /></label>;` — o painel desenha o campo sem despachar comando, então o caminho pelo `DoorControl` não é tomado pelo painel; o texto da chave é levado ao `stageKey` na gravação (`src/editor/assistant/panel.tsx:62`).
 - R2 `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não pede arquivo, então este lado é o tomado.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:227` `else if (!changesDocument) result = open.dispatch(id, args);`.
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai direto à store do núcleo; com um gesto aberto e um comando que não muda o documento, ele iria por `src/editor/store.ts:240` `result = inGesture(id, () => gesture.dispatch(id, args));`.
 - R4 `src/core/store/store.ts:400` `const entry = table[id];` — o id `assistant.editKey` tem tratador na tabela.
 
 ## Fronteiras assíncronas

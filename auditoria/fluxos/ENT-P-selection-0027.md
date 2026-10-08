@@ -9,10 +9,10 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 4. `src/editor/doors/door.tsx:92` `const run = () => {` — o `run` do controle desenhado.
 5. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não lê arquivo, então `file` é `undefined`.
 6. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — o controle despacha o comando.
-7. `src/editor/store.ts:221` `dispatch: (id, args, context) => {` — a `dispatch` da store do editor (gestureSafe), por onde todo comando do editor passa.
-8. `src/editor/store.ts:222` `const changesDocument = UNDOABLE.get(id) === true;` — lê do manifesto se o comando muda o documento; os comandos de seleção não são desfazíveis, então `changesDocument` é falso. [lê: EST-L01-030 via dispatch]
-9. `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de rodar, a store entrega ao comando o contexto da edição da digitação pendente. [lê: EST-L05a-001 via beforeCommand]
-10. `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai ao `dispatch` da store do núcleo. [lê: EST-L05a-038 via dispatch]
+7. `src/editor/store.ts:232` `dispatch: (id, args, context) => {` — a `dispatch` da store do editor (gestureSafe), por onde todo comando do editor passa.
+8. `src/editor/store.ts:233` `const changesDocument = UNDOABLE.get(id) === true;` — lê do manifesto se o comando muda o documento; os comandos de seleção não são desfazíveis, então `changesDocument` é falso. [lê: EST-L01-030 via dispatch]
+9. `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — antes de rodar, a store entrega ao comando o contexto da edição da digitação pendente. [lê: EST-L05a-001 via beforeCommand]
+10. `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto, o despacho vai ao `dispatch` da store do núcleo. [lê: EST-L05a-038 via dispatch]
 11. `src/core/store/store.ts:688` `return run(id, args, null, false, null, context);` — o `dispatch` do núcleo chama `run`.
 12. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador na tabela de comandos.
 13. `src/app/commands.ts:364` `'contextMenu.open': contextMenuOpen,` — a tabela liga o comando ao tratador (a Chamada do trecho).
@@ -20,7 +20,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 ## Ramos
 - R1 `src/editor/shell/sidebar/layers.tsx:269` `if (event.button !== 2) return;` — só a pressão secundária segue; qualquer outro botão para aqui.
 - R2 `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não lê arquivo: o caminho segue pela linha 144.
-- R3 `src/editor/store.ts:226` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo.
+- R3 `src/editor/store.ts:237` `if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho vai à store do núcleo.
 
 ## Fronteiras assíncronas
 - nenhuma — o caminho é síncrono do Início até a Chamada do trecho; nenhum passo cita `await`, timer, quadro ou ouvinte.
@@ -37,7 +37,7 @@ Fluxo de porta do domínio `selection`. Rastreia o caminho próprio da porta, do
 
 ## Regras
 - G1: n/a — o comando escreve `ui.contextMenu.opened` e a seleção, fora de qualquer camada de estilo (`src/editor/menus/context-menu.ts:30` `  const ui: EditorUi = { ...state.ui, contextMenu: { opened: { count: (state.ui.contextMenu.opened?.count ?? 0) + 1, dismissals: state.ui.overlays.dismissals } } };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (o contexto dela é entregue ao comando).
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente é gravada antes do comando (o contexto dela é entregue ao comando).
 - G3: ok `src/editor/shell/sidebar/layers.tsx:272` `secondary.run();` — a porta envia só a intenção ao mesmo tratador do comando (`src/app/commands.ts:364` `'contextMenu.open': contextMenuOpen,`).
 - G4: n/a — o comando muda estado; o menu é do desenho do canvas, e o trecho não o cobre no ponto da ação (`src/editor/menus/context-menu.ts:32`).
 - G5: n/a — o comando não desenha painel nem controle (`src/editor/menus/context-menu.ts:32`).

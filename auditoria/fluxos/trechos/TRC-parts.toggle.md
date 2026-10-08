@@ -35,7 +35,7 @@
 
 ## Regras
 - G1: n/a — o trecho grava a estrutura do nó, não um valor de estilo `src/core/elements/parts.ts:55` `patches: [{ op: 'add', path: [...table.path, 'children', slotOf(table.node, type)], value: part }],`.
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/core/elements/parts.ts:39` `export const togglePartCommand = registerHandler('parts.toggle', ({ state, rules, ids, words }, { type }): Outcome<never> => {`
 - G4: n/a — a porta é um controle do inspetor, não um ponto do canvas `manifest/commands/elements.json:4835` `"kind": "panel-control",`.
 - G5: n/a — o trecho não desenha painel nem barra; só devolve patches `src/core/elements/parts.ts:55` `patches: [{ op: 'add', path: [...table.path, 'children', slotOf(table.node, type)], value: part }],`.

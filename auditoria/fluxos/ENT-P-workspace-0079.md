@@ -32,7 +32,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/layers/tree.ts:76`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/layers/tree.ts:69` `export const setExpanded = registerHandler<'layers.setExpanded', EditorUi>('layers.setExpanded', ({ state }, { target, expanded }) => {` — as duas portas (o caret da linha e o repouso de um arraste sobre uma linha fechada) chegam ao mesmo tratador com só `target` e `expanded`.
 - G4: n/a — o comando muda estado; a árvore de Camadas ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/layers/tree.ts:76`).
 - G5: n/a — o encaixe da árvore com ramos abertos é medido na Fase 6 (`src/editor/layers/tree.ts:76`).

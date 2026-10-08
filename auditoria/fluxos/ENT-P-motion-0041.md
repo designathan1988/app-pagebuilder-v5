@@ -12,9 +12,9 @@
 4. `src/editor/input/pointer/press.ts:82` `    return picking.motion === null ? { ...entry.door.args } : { ...entry.door.args, timeline: picking.motion.timeline, action: picking.motion.action, value: { kind: 'element', node: press.node } };` — com um alvo sendo escolhido, os argumentos levam a timeline, a ação e o nó.
 5. `src/editor/input/pointer/effects.ts:253` `      ps.pickAfter = null;` — no fim do gesto a escolha é retirada. [escreve: EST-L05a-034 via run]
 6. `src/editor/input/pointer/effects.ts:254` `      if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);` — a escolha despacha motion.updateAction com esses argumentos; esta é a linha de Início da porta. [lê: EST-L05a-034 via run]
-7. `src/editor/store.ts:221` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
-8. `src/editor/store.ts:223` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
-9. `src/editor/store.ts:226` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo.
+7. `src/editor/store.ts:232` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
+8. `src/editor/store.ts:234` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
+9. `src/editor/store.ts:237` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo.
 10. `src/core/store/store.ts:688` `      return run(id, args, null, false, null, context);` — o despacho entra em `run`.
 11. `src/core/store/store.ts:400` `    const entry = table[id];` — o id resolve a entrada da tabela de comandos. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 12. `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,` — a tabela liga o id ao tratador; o trecho TRC-motion.updateAction continua daqui.

@@ -30,7 +30,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/workspace/panels.ts:125` `export const toggleDeveloperTools = registerHandler<'workspace.toggleDeveloperTools', EditorUi>(` — a única porta envia só a intenção sem argumentos; o tratador é o do comando workspace.toggleDeveloperTools.
 - G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
 - G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).

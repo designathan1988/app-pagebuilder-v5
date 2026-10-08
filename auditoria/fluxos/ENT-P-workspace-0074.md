@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só uma preferência do editor, fora de qualquer camada de estilo (`src/editor/palette/palette.ts:27`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/palette/palette.ts:20` `export const toggleGroup = registerHandler<'palette.toggleGroup', EditorUi>(` — a única porta (o cabeçalho do grupo) chega ao mesmo tratador com só `group`.
 - G4: n/a — o comando muda estado; o painel Insert ocupa a própria coluna e nada cobre o canvas no ponto da ação (`src/editor/palette/palette.ts:27`).
 - G5: n/a — o encaixe do painel Insert com os grupos abertos ou fechados é medido na Fase 6 (`src/editor/palette/palette.ts:27`).

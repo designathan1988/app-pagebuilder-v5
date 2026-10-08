@@ -31,7 +31,7 @@
 
 ## Regras
 - G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/command-bar/command-bar.ts:16`).
-- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G2: ok `src/editor/store.ts:234` `const at = context ?? beforeCommand(id, args, changesDocument);`
 - G3: ok `src/editor/command-bar/command-bar.ts:16` `export const openCommandBar = registerHandler<'commandBar.open', EditorUi>('commandBar.open', ({ state }) => (state.ui.commandBar === true ? { kind: 'change' } : { kind: 'change', ui: { ...state.ui, commandBar: true } }));` — as portas (Ctrl+K, Ctrl+Shift+K global e na edição de texto, campo da barra de topo, menu Arquivo) chegam ao mesmo tratador sem argumentos.
 - G4: n/a — o comando muda estado; a barra flutua sobre a área do editor e o seu cobrimento é medido na Fase 6 (`src/editor/command-bar/command-bar.ts:16`).
 - G5: n/a — o encaixe da barra de comandos é medido na Fase 6 (`src/editor/command-bar/command-bar.ts:16`).
