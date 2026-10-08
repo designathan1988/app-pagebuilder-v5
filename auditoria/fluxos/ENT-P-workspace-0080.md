@@ -10,7 +10,7 @@
 1. `src/editor/input/pointer/drag.ts:176` `const rest = (row: { readonly node: NodeId; readonly folded: boolean } | null) => {` — a função que trata o repouso numa linha fechada durante um arraste
 2. `src/editor/input/pointer/drag.ts:186` `ps.unfold = setTimeout(() => {` — um temporizador é armado para o repouso
 3. `src/editor/input/pointer/drag.ts:189` `shared.open?.dispatch(dwell.command.id as CommandId, { ...dwell.door.args, target: folded } as never);` — o temporizador roda a porta do repouso, no gesto do arraste, com o nó em `target`
-4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 5. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador
 6. `src/app/commands.ts:494` `'layers.setExpanded': setExpanded,` — a tabela liga o id ao tratador; o trecho TRC-layers.setExpanded começa aqui
 

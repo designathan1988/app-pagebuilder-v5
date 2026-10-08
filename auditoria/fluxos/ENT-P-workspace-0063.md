@@ -10,7 +10,7 @@
 1. `src/editor/input/pointer/panels.ts:49` `const moveGrip = (at: Point) => {` — a alça do painel rápido arrasta a partir do toque
 2. `src/editor/input/pointer/panels.ts:53` `shared.open = store.gesture();` — cada passo do arraste reabre o gesto [escreve: EST-L05a-019 via store.gesture]
 3. `src/editor/input/pointer/panels.ts:54` `shared.open.dispatch(press.entry.command.id as CommandId, { ...press.entry.door.args, ...press.args, offset: { x: press.base.x + at.x - start.x, y: press.base.y + at.y - start.y }, distance: at.x - start.x } as never);` — a alça despacha o deslocamento novo no gesto
-4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 5. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador
 6. `src/app/commands.ts:487` `'quickPanel.setOffset': setOffset,` — a tabela liga o id ao tratador; o trecho TRC-quickPanel.setOffset começa aqui
 

@@ -11,7 +11,7 @@
 1. `src/modules/layout-composer/interaction/tool.ts:92` `if (!travelled && (handle === null || handle.kind === 'move')) {` — um clique em lugar (sem alça de redimensionamento) segue pelo ramo do clique.
 2. `src/modules/layout-composer/interaction/tool.ts:98` `gesture.dispatch(SELECT as never, { regions: picked === null ? [] : [picked], mode } as never);` — o comando do clique roda dentro do gesto, com a região sob o ponto e o `mode` calculado.
 3. `src/editor/store.ts:217` `keepTyping();` — o gesto, aberto na pressão (`src/editor/input/pointer/events.ts:69` `const gesture = store.gesture();`), guarda a digitação pendente. [escreve: EST-L05a-001 via keepTyping]
-4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo.
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o despacho do gesto entra no gesto da store do núcleo. Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o despacho do gesto do núcleo.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto entrega o comando a `run`.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — `run` busca o tratador do comando na tabela `wiring().commands`.

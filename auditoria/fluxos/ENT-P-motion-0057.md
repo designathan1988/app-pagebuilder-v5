@@ -19,7 +19,7 @@
 11. `src/editor/input/pointer/events.ts:243` `        ps.tooling.gesture.cancel();` — o gesto aberto é cancelado antes de correr de novo, para o painel seguir o ponteiro. [lê: EST-L05a-038 via gestureSafe]
 12. `src/editor/input/pointer/events.ts:244` `        const gesture = store.gesture();` — um gesto novo é aberto a cada movimento.
 13. `src/editor/input/pointer/events.ts:247` `        gesture.dispatch(step.command as never, step.args as never);` — o passo é despachado no gesto; esta é a linha de Início da porta. [escreve: EST-L05a-034 via onMove]
-14. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — a store do editor encaminha o despacho para o gesto aberto.
+14. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — a store do editor encaminha o despacho para o gesto aberto. Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 15. `src/core/store/store.ts:720` `          return run(id, args, current);` — o gesto entra em `run` com a transação aberta.
 16. `src/core/store/store.ts:400` `    const entry = table[id];` — o id resolve a entrada da tabela de comandos. [lê: EST-L01-030 via run] [lê: EST-L01-031 via run]
 17. `src/app/commands.ts:282` `'motion.moveMarker': moveMarkerCommand,` — a tabela liga o id ao tratador; o trecho TRC-motion.moveMarker continua daqui.

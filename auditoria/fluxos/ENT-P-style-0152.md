@@ -9,7 +9,7 @@
 1. `src/editor/input/pointer/events.ts:352` `ps.rotating.gesture = store.gesture();` — o arraste da alça abre um gesto [escreve: EST-L01-007 via gesture].
 2. `src/editor/store.ts:217` `keepTyping();` — ao abrir o gesto a digitação pendente é gravada [lê: EST-L05a-001 via keepTyping].
 3. `src/editor/input/pointer/events.ts:359` `ps.rotating.gesture.dispatch(ps.rotating.entry.command.id as CommandId` — o dono do ponteiro entrega a intenção (o ângulo em graus) ao gesto [lê: EST-L01-007 via o `dispatch` do gesto].
-4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o invólucro do gesto da store do editor entrega ao gesto do núcleo.
+4. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o invólucro do gesto da store do editor entrega ao gesto do núcleo. Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 5. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o comando.
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o comando entra em `run` com o gesto aberto.
 7. `src/core/store/store.ts:400` `const entry = table[id];` — o comando é lido na tabela de comandos.

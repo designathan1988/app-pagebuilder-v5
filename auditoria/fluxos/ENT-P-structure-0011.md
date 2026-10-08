@@ -4,7 +4,7 @@
 2. `src/editor/input/keymap.ts:526` `const dispatch = (gesture?.gesture.dispatch ?? (typedKey ? burstSequence?.dispatch : undefined) ?? store.dispatch) as (id: CommandId, args: unknown) => DispatchResult;` — há um gesto aberto (o arraste, ou a sessão do seletor de cor), então `dispatch` é o do gesto.
 3. `src/editor/input/keymap.ts:412` `const gesture = openGesture(store);` — `openGesture` dá o gesto aberto agora.
 4. `src/editor/input/pointer/common.ts:355` `export function openGesture(store: EditorStore): { readonly context: KeyContextId; readonly gesture: Gesture } | null {` — `openGesture` devolve o contexto e o gesto aberto da store do editor.
-5. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
+5. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo. Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 6. `src/editor/store.ts:219` `const gesture = store.gesture();` — o gesto do núcleo foi aberto por `store.gesture()`.
 7. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o despacho.
 8. `src/core/store/store.ts:720` `return run(id, args, current);` — chama a regra única de execução dentro do gesto.

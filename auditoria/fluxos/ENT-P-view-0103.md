@@ -13,7 +13,7 @@
 3. `src/editor/input/pointer/resize.ts:23` `shared.open = store.gesture();` — o gesto novo, aberto com a store [escreve: EST-L05a-019 via resize]
 4. `src/editor/input/pointer/resize.ts:22` `shared.open?.cancel();` — o gesto anterior é cancelado antes de o novo abrir
 5. `src/editor/store.ts:217` `keepTyping();` — a abertura do gesto guarda a digitação pendente [escreve: EST-L05a-001 via gesture]
-6. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor
+6. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o `dispatch` do gesto da store do editor Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 7. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto da store do núcleo entra no `run` com o gesto aberto
 8. `src/core/store/store.ts:400` `const entry = table[id];` — o `run` resolve o id na entrada da tabela de comandos
 9. `src/app/commands.ts:448` `'view.resizeViewport': resizeViewport,` — a entrada da tabela onde o id nomeia o tratador (a Chamada do trecho)

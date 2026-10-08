@@ -11,7 +11,7 @@
 2. `src/editor/input/pointer/effects.ts:94` `if (press.on === 'panel') ps.panelling = { press };` — o arraste do painel começa no toque do cabeçalho
 3. `src/editor/input/pointer/effects.ts:185` `const place = panelDrop(panelHintAt(ps.pointerAt.x, ps.pointerAt.y, dragging.press.panel));` — a solta lê o lugar onde o ponteiro está
 4. `src/editor/input/pointer/effects.ts:186` `if (place.door !== null) closing?.dispatch(place.door.command.id as CommandId, { ...place.door.door.args, panel: dragging.press.panel, ...place.args } as never);` — a solta roda a porta do lugar, com o painel e o lugar como argumentos
-5. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo
+5. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto do editor leva a intenção ao gesto do núcleo Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 6. `src/core/store/store.ts:720` `return run(id, args, current);` — o gesto executa o tratador
 7. `src/app/commands.ts:486` `'workspace.movePanel': movePanel,` — a tabela liga o id ao tratador; o trecho TRC-workspace.movePanel começa aqui
 

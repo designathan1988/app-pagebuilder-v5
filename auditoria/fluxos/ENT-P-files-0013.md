@@ -16,7 +16,7 @@
 5. `src/editor/input/pointer/effects.ts:189` `if (ps.exploring !== null && effect === 'commit' && ps.exploring.press.path !== '') {` — a liberação com caminho não vazio entra no ramo do arraste de linha.
 6. `src/editor/input/pointer/effects.ts:190` `const into = ps.exploring.over;` — `into` é a pasta marcada.
 7. `src/editor/input/pointer/effects.ts:193` `if (into !== null) closing?.dispatch(exploringNow.entry.command.id as CommandId, { ...exploringNow.entry.door.args, ...exploringNow.args, to: into } as never);` — a porta despacha `files.move` com o caminho da linha e a pasta sob o ponteiro; esta é a linha de Início.
-8. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo.
+8. `src/editor/store.ts:222` `dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),` — o gesto da store do editor encaminha o despacho ao gesto do núcleo. Antes e depois do comando, a conferência dos modos lê a store, o estado do ponteiro e a digitação (`src/editor/input/modes.ts:27` `const state = store.getState();`, `src/editor/input/modes.ts:29` `const shared = sharedOf(store);`, `src/editor/input/modes.ts:33` `typing: heldTyping() !== null,`). [lê: EST-L01-037 via getState] [lê: EST-L01-034 via getState] [lê: EST-L05a-019 via sharedOf] [lê: EST-L05a-001 via heldTyping]
 9. `src/core/store/store.ts:718` `dispatch: (id, args) => {` — o gesto do núcleo recebe o despacho.
 10. `src/core/store/store.ts:720` `return run(id, args, current);` — chama a regra única de execução dentro do gesto.
 11. `src/core/store/store.ts:400` `const entry = table[id];` — a tabela de comandos dá o tratador do id.
