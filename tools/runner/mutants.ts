@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -99,6 +99,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M48', file: 'src/editor/persistence/autosave.ts', from: "    pending = work;\n    setState('saving');\n    writeWhenIdle();", to: "    pending ??= work;\n    setState('saving');\n    writeWhenIdle();", breaks: 'um autosave que sobrevive à troca de projeto: o trabalho do projeto anterior fica pendente e é gravado', source: 'C6', detectors: ['lifetime'] },
   { id: 'M49', file: 'src/editor/input/after-read.ts', from: '    if (editedKey(store.getState()) !== taken) {', to: "    if (editedKey(store.getState()) === '\\u0000') {", breaks: 'o que chega tarde de uma leitura roda no contexto que mudou', source: 'DEF-0513', detectors: ['races'] },
   { id: 'M50', file: 'src/editor/input/keymap.ts', from: 'afterRead(store, readClipboard(), (content) =>', to: 'void readClipboard().then((content) =>', breaks: 'a tecla de colar despacha quando a leitura chega, sem conferir o contexto da tecla', source: 'DEF-0513', detectors: ['races'] },
+  { id: 'M51', file: 'src/modules/layout-composer/ui/overlay.tsx', from: '  const [open, setOpen] = useState(composer !== null);\n  if ((composer !== null) !== open) {\n    setOpen(composer !== null);\n    if (composer === null) {\n      setBox(null);\n      setMeasured(null);\n    }\n  }\n', to: '', breaks: 'o compositor reaberto desenha o primeiro quadro com a caixa e as regiões da sessão anterior (o código de antes do DEF-0512)', source: 'DEF-0512', detectors: ['composer'] },
 ];
 
 export const ALL_DETECTORS = ALL;

@@ -79,8 +79,9 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
   - `tools/runner/model/lifetime.test.ts` (novo) — o grupo `lifetime` do modelo: cada rotina que agenda quadros ou timers, parada no meio, não deixa nada agendado e não roda o que ainda esperava.
   - o mesmo arquivo, caso do autosave (`src/editor/persistence/autosave.ts`, `startAutosave`), com timers falsos do Vitest: depois de uma troca de projeto com a gravação pendente, o diário guarda só o projeto novo, e parado o autosave nenhum timer fica agendado (`vi.getTimerCount`);
   - `tools/runner/mutants.ts` — os mutantes do caso do autosave.
+  - `tools/runner/model/composer.test.ts` (novo) — o grupo `composer` dos detectores: a camada do Layout Composer montada de verdade (React em happy-dom), com os quadros de `requestAnimationFrame` rodados só quando o teste pede e a geometria do canvas trocada (`vi.mock` das coordenadas, como os testes de componente fazem); aberto, medido, fechado e reaberto com a geometria mudada, o primeiro desenho não usa a caixa da sessão anterior (DEF-0512); o mutante que tira o zeramento entra no catálogo.
 - **Falhas de aceitação que precisa acusar:** DEF-0001 (o laço de quadros do boot de teste desenhado sem como parar); um quadro reagendado depois de a rotina ser parada. Do autosave: um `setTimeout` que sobrevive à troca de projeto ou à parada (a nova tentativa sem `clearTimeout` na limpeza; o trabalho do projeto anterior mantido pendente).
-- **Tempo medido:** a medir.
+- **Tempo medido:** grupo `lifetime` 3,3 s (o boot de teste e o autosave; M41, M42, M47, M48 acusados); grupo `composer` 4,0 s (um caso; M51 acusado).
 
 ## MEC-08 — inventário gerado e dono de todo elemento interativo
 - **Capacidade:** C1 (inventário dinâmico), opções A, B e F do relatório.

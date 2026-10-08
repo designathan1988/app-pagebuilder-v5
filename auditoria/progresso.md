@@ -1,20 +1,52 @@
 # Progresso — memória do trabalho
 
-## Escopo e trava (atualizado em 2026-10-08 pelo dono)
-O dono tirou `manifest/features/fixtures/**` e `deepseek.ps1` do escopo da trava, e a leitura sem offset/limit passou a valer só para arquivo de até 34.000 caracteres (arquivo maior é lido com offset e limit explícitos, em partes de até 60.000 caracteres). O escopo caiu de 1.225 para 1.163 arquivos; os 10 arquivos grandes que estavam lidos por uma leitura inteira voltaram a exigir leitura em partes e foram relidos. O bloqueio que isso resolve está em `auditoria/decisoes.md`, DCS-007.
+Este arquivo é a memória do trabalho e a única fonte para retomar. A seção **Estado atual** é o estado; tudo abaixo de **Histórico** é registro do que já passou e não descreve o estado de agora. Leia-o por inteiro antes de qualquer trabalho e grave nele o avanço depois de cada passo (CLAUDE.md, seção 0).
 
-## Execução final (iniciada em 2026-10-08): mecanismos do relatório e Fases 8 e 9
-Instrução do dono: construir os mecanismos de `auditoria/investigacao/relatorio.md` (seção 4 e C1 a C8, a partir das provas de `auditoria/investigacao/poc/`) e executar as Fases 8 e 9, sem perguntar. Cada mecanismo entra em `auditoria/mecanismos.md` antes de qualquer arquivo dele existir.
+## Estado atual (2026-10-08)
+
+Instrução em vigor: a "Execução final" do dono — construir os mecanismos de `auditoria/investigacao/relatorio.md` (seção 4 e C1 a C8) e executar as Fases 8 e 9, sem perguntar; cada mecanismo entra em `auditoria/mecanismos.md` antes de qualquer arquivo dele existir. Revisão do dono em 2026-10-08 (quatro pontos, nesta ordem, antes da etapa 4): (1) este arquivo com um estado só; (2) DEF-0512 com reprodução ou pendente do lote da etapa 4; (3) os 8 elementos classificados como "porta faltando" rastreados pela G2 e pela G3 e a categoria registrada em DCS nova; (4) nos relatos, defeito só "corrigido" com o detector que acusa antes e não acusa depois citado.
 
 | etapa | conteúdo | estado |
 |---|---|---|
 | 0 | decisões D-A a D-E gravadas (`decisoes.md`, DCS-009 a DCS-014) | feita |
-| 1 | detectores: modelo da store (`tools/runner/model/`), catálogo de mutantes (`tools/runner/mutants.ts`), invariantes do histórico em DEV e prova P5, seletor de impacto | **feita** (linha de base verde; catálogo 27 de 27 acusados, 2 equivalentes com motivo) |
-| 2 | Fase 8: DEF- abertos por causa raiz, cada um com mutante ou passo de modelo | **feita**: os 22 DEF- corrigidos, C8 com 0 pendências (DEF-0512 sem detector sem navegador: conferir no lote da etapa 4) |
-| 3 | detectores durante a Fase 8: contratos de campo (C5), inventário e `builder/interactive-owner` (C1), modos e `builder/listener-scope` (C6/C3) | **feita**: MEC-05 a MEC-11; DEF-0513 achado e corrigido; catálogo 50 mutantes, 47 acusados, 3 equivalentes com motivo (100,0%); 12 grupos, 23 testes |
-| 4 | fonte empacotada (DCS-012), medição de texto (C4), lote único do navegador | em curso |
+| 1 | modelo da store (`tools/runner/model/`), catálogo de mutantes (`tools/runner/mutants.ts`), invariantes do histórico em DEV e prova P5, seletor de impacto (MEC-01 a MEC-04) | feita |
+| 2 | Fase 8: DEF- abertos por causa raiz, cada um com detector, correção e mutante | feita (o DEF-0512 ganhou detector no ponto 2 do dono: grupo `composer`, M51) |
+| 3 | detectores durante a Fase 8: contratos de campo (C5), inventário e `builder/interactive-owner` (C1), modos, `builder/listener-scope`, escopo de vida e corridas (C6/C3) — MEC-05 a MEC-11 | feita, com a classificação dos 8 elementos "porta faltando" em revisão (ponto 3 do dono) |
+| 4 | fonte empacotada (DCS-012), medição de texto (C4), lote único do navegador | não iniciada (licença OFL da Source Sans 3 já obtida em `scratchpad/licenca/LICENSE.md`, fora do repositório; os TTF em `scratchpad/fontes/`) |
 | 5 | Fase 9: contadores de render, LoAF, memória, catálogo C8 | não iniciada |
 
+**Defeitos** (`auditoria/defeitos.md`): 23 registrados, nenhum com status aberto.
+- Com detector que acusa antes da correção e não acusa depois: DEF-0512 (grupo `composer`, M51, o código anterior à alteração), DEF-0001 (grupo `lifetime`, M41, M42), DEF-0508 (invariantes e grupo `history`, M28, M29), DEF-0509 (grupo `fields`, M34), DEF-0510 (grupo `machine`, M36, M37), DEF-0511 (grupos `history` e `style`, M38 a M40), DEF-0513 (grupo `races`, M49, M50).
+- Defeitos de registro da auditoria, sem código da aplicação, conferidos pelo verificador (C2, C6): DEF-0002 a DEF-0008, DEF-0286, DEF-0289, DEF-0501 a DEF-0507.
+
+**Mecanismos** (`auditoria/mecanismos.md`): MEC-01 a MEC-11. Catálogo de mutantes: 51, 48 acusados, 3 equivalentes com motivo (100,0% dos não equivalentes), 74,1 s. Detectores sem navegador: 12 grupos, 23 testes, 7,0 s juntos.
+
+**Verificação na última rodada:** `node tools/audit/check.mjs` com `TOTAL: 0 pendências`; `npm run typecheck` e `npm run lint` com saída 0.
+
+**Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos).
+
+**Próximo passo:** ponto 3 do dono — rastrear pela G2 e pela G3 os 8 elementos que a classificação deu como "porta faltando" (o form de `src/editor/canvas/edit-handles.tsx`, o corpo de `src/editor/canvas/side-frame.tsx`, os 2 forms de `src/editor/shell/class-bar.tsx`, os 3 elementos de `src/editor/shell/easing-curve.tsx`, o form de `src/editor/shell/guides-grids.tsx`): conferir com citação se cada popover em portal está ligado ao campo por `aria-controls` (`src/editor/input/pending.ts`, limite do campo) e se cada um envia a mesma intenção ao mesmo tratador que a porta com `data-door`; achado vira DEF- com detector, correção e mutante; depois a categoria em DCS nova. Só então a etapa 4.
+
+**Lote único do navegador da etapa 4 (lista a cumprir):**
+- guarda de tela (off-window, covered, sideways) nas duas configurações da seção 8 do CLAUDE.md;
+- controles montados contra `manifest/generated/inventory.json`;
+- larguras fluidas;
+- para cada comando desfazível: DOM do canvas incremental, o mesmo documento aberto do zero e a exportação (DCS-002);
+- o que ficar pendente dos pontos 2 e 3 do dono.
+
+### Procedimentos
+- **Depois de toda mudança de código, nesta ordem:** `node tools/audit/recitar.mjs` (citações pelo diff exato contra `.cache/audit/base/`); conferir as citações perdidas e trocá-las só onde o trecho citado é o da linha mudada (uma linha de número igual pode ter outro trecho depois de um deslocamento); `node tools/audit/inventariar.mjs <arquivos>` (arquivo novo exige propósito em JSON); `node tools/inventory/write.ts` (o inventário gerado conta módulos e linhas); `node tools/audit/check.mjs --resumo`.
+- **Depois de mudar uma marca `[lê:]`/`[escreve:]` de fluxo:** `node tools/audit/matriz.mjs`, `node tools/audit/renumerar.mjs` (os ids `GRE-`/`GRL-` saem da posição do nome da função na lista ordenada), `node tools/audit/esqueletos.mjs <EST>` e só então o preenchimento.
+- **Detectores:** `npx vitest run --config tools/runner/model/vitest.config.ts` (todos os grupos); `BUILDER_MUTANT=<id>` com o mesmo comando para um mutante; `node tools/runner/mutants-run.ts` para o catálogo inteiro.
+- Não use `sed` em arquivos do escopo (a trava exige reler o arquivo inteiro depois); no Git Bash, escreva scripts com barra invertida pela ferramenta de escrita, nunca por heredoc.
+
+### Lições
+- Um caso de detector precisa provar que passou pelo caminho que confere: o caso do autosave passava sem trocar de projeto, porque a troca pedia confirmação, e o M48 sobrevivente mostrou; o grupo `races` exige os dois desfechos.
+- Um fluxo registrado pode afirmar uma regra que não vale: o fluxo da colagem pela tecla dizia "G1: ok" e o grupo `races` reproduziu o DEF-0513.
+
+## Histórico (não é o estado atual)
+
+### Execução final, etapas 1 e 2 (2026-10-08)
 **Etapa 1 (fechada em 2026-10-08):**
 - MEC-01 a MEC-04 registrados em `auditoria/mecanismos.md` e criados: `tools/runner/model/` (5 grupos, 4,7 s juntos), `tools/runner/mutants.ts` e `mutants-run.ts` (29 mutantes, 27 acusados, 2 equivalentes com motivo, 42,4 s), `src/core/history/invariants.ts` ligado em DEV por `src/editor/store.ts`, verificação no `vite.config.ts` e `tools/runner/production-probe.ts` (1,1 s), `tools/impact/detectors.ts` ligado a `select.ts` e `run.ts`.
 - A invariante nova acusou um defeito real na linha de base: `DEF-0508` (rajada fundida que volta ao documento de antes deixa entrada vazia). A linha de base da etapa 1 fecha verde com a correção dele.
@@ -36,13 +68,15 @@ Instrução do dono: construir os mecanismos de `auditoria/investigacao/relatori
 - Achados C7 (cancelamento sem devolver o ui) e C8 (postMessage para `*`) rastreados e resolvidos como regra: DCS-017 e DCS-018.
 - DEF-0001 corrigido (o boot de teste desenhado devolve a parada; MEC-07 com o grupo `lifetime`; M41, M42).
 - Defeitos de registro do grupo 1 (DEF-0003, 0004, 0501 a 0507) corrigidos: marcas tiradas, matriz recalculada (8.292 pares), 180 pares órfãos arquivados em `.cache/audit/orfaos/`, 4.860 pares renomeados.
-- DEF-0002 (ids MED separados em MED-0103 a MED-0116), DEF-0005, DEF-0006, DEF-0007, DEF-0008, DEF-0286 e DEF-0289 corrigidos; o rastreamento achou e corrigiu o DEF-0512 (o compositor reaberto com a caixa da sessão anterior).
+- DEF-0002 (ids MED separados em MED-0103 a MED-0116), DEF-0005, DEF-0006, DEF-0007, DEF-0008, DEF-0286 e DEF-0289 corrigidos; o rastreamento achou o DEF-0512 (o compositor reaberto com a caixa da sessão anterior), que foi alterado sem detector sem navegador e está em revisão (ver Estado atual).
 
-**Próximo passo:** etapa 4 — empacotar a fonte da D-D (Source Sans 3, `src/ui/fonts/` com `OFL.txt`, `@font-face` e o token da fonte), depois a medição de texto do C4 (`tools/ui-fit`, a partir de `auditoria/investigacao/poc/c4-texto/medir.mjs`) e o lote único do navegador. A etapa 3 está feita: os leitores de `modesOf` foram registrados em 80 fluxos e nos 2 pares novos de EST-L01-034. O C6 está fechado: MEC-09 (`builder/listener-scope`), MEC-10 (máquina de modos), MEC-07 ampliado (autosave na troca de projeto e na parada: M47, M48) e MEC-11 (corridas com `fc.scheduler`: DEF-0513 achado e corrigido, DCS-019, M49, M50). Catálogo: 50 mutantes, 47 acusados, 3 equivalentes com motivo, 100,0%, 74,1 s; 12 grupos, 23 testes, 7,0 s. Lição: um caso de detector precisa provar que passou pelo caminho que confere (o caso do autosave passava sem trocar de projeto, porque a troca pedia confirmação; o M48 sobrevivente mostrou); o grupo `races` exige os dois desfechos. Commits locais 253b9a3 e faab19e (2026-10-08); o repositório não tem remoto; ficam fora dos commits `PROMPT.md`, `deepseek.ps1` e a pasta do dono.
+### Fases 1 a 7 (fechadas em 2026-10-08, antes da execução final)
+O texto abaixo foi escrito ao fim da Fase 7. Os números e as frases "não iniciada" valiam naquele momento; o estado de agora está em **Estado atual**.
 
-Este arquivo é a memória do trabalho. Ele diz onde o trabalho está e qual é o próximo passo. Leia-o por inteiro antes de qualquer trabalho e grave nele o avanço depois de cada passo (CLAUDE.md, seção 0).
+#### Escopo e trava (atualizado em 2026-10-08 pelo dono)
+O dono tirou `manifest/features/fixtures/**` e `deepseek.ps1` do escopo da trava, e a leitura sem offset/limit passou a valer só para arquivo de até 34.000 caracteres (arquivo maior é lido com offset e limit explícitos, em partes de até 60.000 caracteres). O escopo caiu de 1.225 para 1.163 arquivos; os 10 arquivos grandes que estavam lidos por uma leitura inteira voltaram a exigir leitura em partes e foram relidos. O bloqueio que isso resolve está em `auditoria/decisoes.md`, DCS-007.
 
-## Onde está
+#### Onde estava ao fim da Fase 7
 - **Fases 1 a 7 FECHADAS e verificadas.** `node tools/audit/check.mjs --ate-fase 7` termina com `TOTAL: 0 pendências`:
   - C1 `1163 no escopo | 1163 inventariados | 0 pendências`;
   - C2 `11181 arquivos | 0 pendências`;
@@ -53,7 +87,7 @@ Este arquivo é a memória do trabalho. Ele diz onde o trabalho está e qual é 
   - C7 `11181 arquivos | 0 pendências`;
   - C9 `760 requisitos | 0 pendências`.
 - `npm run typecheck` e `npm run lint` terminam com exit 0.
-- **A Fase 8 (correção) tem 17 defeitos abertos**, achados pelo rastreamento (`DEF-0001` a `DEF-0008`, `DEF-0286`, `DEF-0289`, `DEF-0501` a `DEF-0507`); o C8 acusa uma pendência por defeito aberto, e é a conta que a Fase 8 fecha. **A Fase 8 não foi iniciada.**
+- Ao fim da Fase 7, o rastreamento tinha aberto 17 defeitos (`DEF-0001` a `DEF-0008`, `DEF-0286`, `DEF-0289`, `DEF-0501` a `DEF-0507`) para a Fase 8, que naquele momento não tinha começado; a execução final os tratou (ver **Estado atual**).
 - **Entradas gravadas:** as 1.362 portas de comando em `auditoria/entradas/portas-<domínio>.md` e as demais entradas (ouvintes, handlers, efeitos, timers, quadros, observadores, mensagens, promessas, assinaturas de store, boot e restauração de rascunho) em `auditoria/entradas/<área>.md`, juntadas em `auditoria/entradas.md`.
 - **Fase 5 FECHADA:** `node tools/audit/check.mjs --ate-fase 5` termina com `TOTAL: 0 pendências` (C5 com 2.444 arquivos de fluxo, zero pendências). O rastreamento achou um defeito real, `DEF-0001` (o laço de `runDrawnTestBoot` não cancela o quadro), aberto em `auditoria/defeitos.md` para a Fase 8.
 - **Fase 6 quase fechada:** 50 medições gravadas em `auditoria/medicoes/` (`MED-nnnn.mjs` + `MED-nnnn.md`), medidas no Chrome headless nas duas configurações (A: 1280×720 pt-BR escala 1; B: 1440×900 en-US escala 1.25 com barras), com o boot de teste `?test-boot`. O servidor é o `vite preview` (`PORT=5399 npm run preview`) — este ambiente não tem Python para o `http.server` da seção 8. Uma medição (MED-0029) não foi medida por não ser citada por fluxo algum. Um defeito de registro, `DEF-0002`, guarda a colisão de ids `MED-` entre áreas (agentes independentes numeraram cada um a partir do mesmo ponto).
@@ -65,7 +99,7 @@ Este arquivo é a memória do trabalho. Ele diz onde o trabalho está e qual é 
   - **Passo 3 (feito):** `--ate-fase 6` de volta a zero, e `node tools/audit/matriz.mjs` congelou `auditoria/matriz.md`.
   - **Passo 4 (feito):** os 8.456 pares gerados por `node tools/audit/esqueletos.mjs` e rastreados um a um em `auditoria/interacoes/`, com a regra em `auditoria/interacoes/PROCEDIMENTO.md`; `--ate-fase 7` termina com `TOTAL: 0 pendências`. O rastreamento abriu 17 defeitos (a Fase 8).
 
-## Fase 7 — a matriz depois do re-escopo (2026-10-08)
+#### Fase 7 — a matriz depois do re-escopo
 `node tools/audit/matriz.mjs`: **353 itens de estado, 8.456 pares**. Antes do re-escopo eram 349 itens e 77.541 pares; o item único `EST-L01-006` respondia por 76.744 deles.
 
 **Distribuição por item** (escritores × leitores = pares):
@@ -92,31 +126,27 @@ Este arquivo é a memória do trabalho. Ele diz onde o trabalho está e qual é 
 - **Fase 6 FECHADA:** `node tools/audit/check.mjs --ate-fase 6` termina com `TOTAL: 0 pendências`.
 - **A trava da vistoria deixou de exigir leitura:** todo arquivo do escopo está lido na versão atual.
 
-## Fechamento
+#### Fechamento das Fases 1 a 7
+- Ao fim da Fase 7, as Fases 8 e 9 não tinham começado, por instrução do dono; a execução final, iniciada no mesmo dia, as retomou.
 
-**Fases 1 a 7 concluídas; próxima etapa: revisão independente**
-
-- A Fase 8 (correção dos 17 defeitos abertos) e a Fase 9 (otimização) **não foram iniciadas**, por instrução do dono.
-- Quem retomar para as Fases 8 e 9 começa pelos defeitos de `auditoria/defeitos.md` e fecha o C8; `node tools/audit/check.mjs --ate-fase 7` é a trava que a Fase 7 deixa verde.
-
-## Como retomar depois de uma compactação de contexto, ou numa sessão nova
+#### Como retomar depois de uma compactação de contexto, ou numa sessão nova
 1. Leia este arquivo por inteiro.
 2. Leia `auditoria/decisoes.md` (as decisões tomadas não se rediscutem).
 3. Rode `node tools/audit/check.mjs --resumo` e leia as contagens.
 4. Releia do disco o que precisar. Nunca continue por memória da conversa.
 
-## Fase 1 — verificador (fechada)
+#### Fase 1 — verificador (fechada)
 - **Ferramentas:** `tools/audit/check.mjs` (as dez conferências C1 a C10, com `--ate-fase`, `--so`, `--lote` e `--resumo`), `lib.mjs`, `lotes.mjs`, `juntar-inventario.mjs`, `juntar.mjs`, `matriz.mjs`, `esqueletos.mjs`, `contar.mjs`.
 - **Conferência:** `node tools/audit/check.mjs --ate-fase 1` termina com `TOTAL: 0 pendências`.
 - **Decisões:** `auditoria/decisoes.md`, DCS-001 a DCS-006.
 
-## Fase 2 — leitura integral (em curso)
+#### Fase 2 — leitura integral (fechada)
 - **Partição:** `auditoria/lotes/<lote>.md`, gerada por `node tools/audit/lotes.mjs`; as 36 contagens de arquivos batem com a tabela B.2 do plano, com `L22a` maior por conter as ferramentas criadas.
 - **Procedimento de um lote:** `auditoria/inventario/PROCEDIMENTO.md`.
 - **Padrões:** `auditoria/padroes.json`, com 25 padrões; `node tools/audit/contar.mjs` conta 3.202 ocorrências nos alvos.
 - **Pesquisa:** `auditoria/inventario/stack.md` (pacotes de produção) e `stack-ferramentas.md` (ferramentas), ambas gravadas.
 
-## Ambiente e armadilhas aprendidas
+#### Ambiente e armadilhas aprendidas
 - **Git:** o repositório acusa proprietário diferente do usuário da sessão; sem a exceção `safe.directory` (acrescentada em 2026-10-08), `git ls-files` falha e a vistoria cai na varredura alternativa, subindo o escopo de 1.225 para 2.280 arquivos.
 - **Leitura por subagente não é debitada do orçamento da sessão principal:** use subagentes para as varreduras grandes.
 - **O principal fica com `L01` e `L05a`,** os pontos garantidores de G1 e G2 (a store do núcleo e a store do editor).

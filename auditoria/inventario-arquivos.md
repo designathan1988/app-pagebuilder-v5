@@ -9475,6 +9475,14 @@
 - **Propósito:** Dirige as portas do Layout Composer como uma pessoa: traço com o botão preso, alça arrastada e região clicada, levando cada ponto do contêiner para a tela pela caixa desenhada.
 - **Âncora:** `tools/runner/layout-composer.ts:21` `export const LAYOUT_GESTURES: readonly string[] = ['layout-stroke', 'layout-handle', 'layout-click'];`
 
+### `tools/runner/model/composer.test.ts`
+- **Lote:** L23
+- **Linhas:** 100
+- **SHA1:** 4e0169692b7d184e033831d2dcdfbc8dd69471eb
+- **Partes lidas:** 1-100
+- **Propósito:** Grupo composer dos detectores (MEC-07, DEF-0512): a camada do Layout Composer montada em happy-dom, com quadros controlados pelo teste e um iframe registrado como canvas; reaberta com a geometria mudada, o primeiro desenho não usa a caixa da sessão anterior (M51).
+- **Âncora:** `tools/runner/model/composer.test.ts:9` `import { act, createElement } from 'react';`
+
 ### `tools/runner/model/fields.test.ts`
 - **Lote:** L23
 - **Linhas:** 118
@@ -9597,9 +9605,9 @@
 
 ### `tools/runner/mutants.ts`
 - **Lote:** L23
-- **Linhas:** 140
-- **SHA1:** bf3dbc755c680663b98b1457b10a4ab311b05c43
-- **Partes lidas:** 1-140
+- **Linhas:** 141
+- **SHA1:** f29dad0e74e9ecf19e15f5b2009e3e7f357604aa
+- **Partes lidas:** 1-141
 - **Propósito:** Catálogo de mutantes plantados (MEC-02), cada um com o trecho trocado, a regra que quebra, a origem e os detectores que o alcançam, e o plugin do Vite que faz a troca na carga do módulo.
 - **Âncora:** `tools/runner/mutants.ts:9` `import fs from 'node:fs';`
 
