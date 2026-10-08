@@ -5,8 +5,8 @@
     "commands": 373,
     "doors": 1362,
     "scenarios": 1831,
-    "modules": 490,
-    "lines": 85112,
+    "modules": 491,
+    "lines": 85283,
     "fields": 207,
     "interactive": 257
   },
@@ -4167,7 +4167,7 @@
         "owner": "door"
       },
       {
-        "key": "src/editor/canvas/edit-handles.tsx|form|className,data-band-field,onSubmit,style|1",
+        "key": "src/editor/canvas/edit-handles.tsx|form|className,data-band-field,onSubmit,ref,style|1",
         "tag": "form",
         "role": null,
         "handlers": [
@@ -4176,10 +4176,11 @@
         "owner": "none"
       },
       {
-        "key": "src/editor/canvas/edit-handles.tsx|input|aria-label,className,data-key-context,defaultValue,onBlur,ref,spellCheck|1",
+        "key": "src/editor/canvas/edit-handles.tsx|input|aria-label,className,data-key-context,defaultValue,onBlur,onInput,ref,spellCheck|1",
         "tag": "input",
         "role": null,
         "handlers": [
+          "onInput",
           "onBlur"
         ],
         "owner": "none"
@@ -5432,7 +5433,7 @@
         "owner": "local"
       },
       {
-        "key": "src/editor/shell/guides-grids.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "key": "src/editor/shell/guides-grids.tsx|form|className,data-args,data-door,onSubmit,ref,title|1",
         "tag": "form",
         "role": null,
         "handlers": [
@@ -5441,7 +5442,7 @@
         "owner": "door"
       },
       {
-        "key": "src/editor/shell/guides-grids.tsx|input|className,data-key-context,disabled,id,inputMode,onBlur,onChange,spellCheck,value|1",
+        "key": "src/editor/shell/guides-grids.tsx|input|className,data-key-context,disabled,id,inputMode,onBlur,onChange,ref,spellCheck,value|1",
         "tag": "input",
         "role": null,
         "handlers": [

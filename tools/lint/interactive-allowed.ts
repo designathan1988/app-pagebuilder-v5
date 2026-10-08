@@ -4,9 +4,9 @@
 // structural element that is no control of the person's (a focus sentinel, a dialog's container that only passes keys
 // on, a branch no door reaches), a control of the person's that runs no command of the manifest (a filter that only
 // narrows a list it draws), or a part of a door drawn away from the element that carries data-door (its popover in a
-// portal, the form of its typed value, JSX built in a constant the door's element holds). An element that runs a
-// command of the manifest no door declares is never listed here: it is a door the manifest must declare
-// (auditoria/defeitos.md).
+// portal, the form of its typed value, JSX built in a constant the door's element holds; auditoria/decisoes.md,
+// DCS-020: it sends the same intent to the same handler as its door). An element that runs a command of the manifest
+// no door declares is never listed here: it is a door the manifest must declare (auditoria/defeitos.md).
 export interface AllowedInteractive {
   readonly key: string;
   readonly category: 'structural' | 'local' | 'door-part';
@@ -15,8 +15,8 @@ export interface AllowedInteractive {
 
 export const INTERACTIVE_ALLOWED: readonly AllowedInteractive[] = [
   { key: 'src/editor/assistant/panel.tsx|input|accept,aria-hidden,className,onChange,ref,tabIndex,type|1', category: 'structural', reason: 'Visually hidden file input (aria-hidden, tabIndex -1) that the click of the assistant-bridge-connect door opens; its onChange only reads the file and invokes that same door.' },
-  { key: 'src/editor/canvas/edit-handles.tsx|form|className,data-band-field,onSubmit,style|1', category: 'door-part', reason: 'The form submit dispatches the band manifest command (entry.command.id) through the store; this typed-field form is a part of the handle door and carries no data-door of its own.' },
-  { key: 'src/editor/canvas/edit-handles.tsx|input|aria-label,className,data-key-context,defaultValue,onBlur,ref,spellCheck|1', category: 'local', reason: 'Draft field of the band; onBlur only closes the field (typedBand.close) and the submit is the form on line 242.' },
+  { key: 'src/editor/canvas/edit-handles.tsx|form|className,data-band-field,onSubmit,ref,style|1', category: 'door-part', reason: 'The form submit dispatches the band manifest command (entry.command.id) with the handle arguments and the typed text, as the handle drag does; this typed-field form is a part of the handle door and carries no data-door of its own (decisoes.md, DCS-020).' },
+  { key: 'src/editor/canvas/edit-handles.tsx|input|aria-label,className,data-key-context,defaultValue,onBlur,onInput,ref,spellCheck|1', category: 'door-part', reason: 'The typed field of the band: its typing is held in the registry of typing and kept with the band command when the field is left (held-draft.ts, DEF-0514), so it is a part of the handle door (decisoes.md, DCS-020).' },
   { key: 'src/editor/canvas/frame.tsx|iframe|aria-hidden,className,ref,sandbox,srcDoc,style,tabIndex|1', category: 'structural', reason: 'Iframe of the canvas page, out of the focus order (tabIndex -1) and hidden from screen readers; it is not a control.' },
   { key: 'src/editor/canvas/side-frame.tsx|div|aria-hidden,className,onClick,ref|1', category: 'door-part', reason: 'The side frame body calls door.run (useDoor.run, which dispatches the manifest command) as the second face of the door; data-door is only on the head button at line 75.' },
   { key: 'src/editor/canvas/side-frame.tsx|iframe|className,ref,sandbox,srcDoc,style,tabIndex,title|1', category: 'structural', reason: 'Iframe of the side frame page, tabIndex -1 inside an aria-hidden div; presentation only.' },

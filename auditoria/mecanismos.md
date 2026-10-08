@@ -144,3 +144,15 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Achado:** DEF-0513 (a colagem caía onde a seleção estivesse quando a leitura chegava), corrigido.
 - **Mutantes:** M49 e M50, acusados.
 - **Tempo medido:** grupo `races` 3,6 s (uma colagem de referência e 60 rodadas com o agendador; desfechos medidos: 21 coladas no lugar, 39 recusadas com aviso).
+
+## MEC-12 — campos de valor contra o registro de pendências e o tratador
+- **Capacidade:** C6 (controlador global de eventos e estados) e as regras G2 e G3, a partir do rastreamento do ponto 3 da revisão do dono (2026-10-08).
+- **Arquivos:**
+  - `tools/runner/model/drafts.test.ts` (novo) — o grupo `drafts` dos detectores: o campo de painel, a banda digitada e o campo de valor das grades montados em happy-dom; digitado um valor, um toque fora do campo (`keepTypingBefore`) e a perda de foco o gravam (G2), com o Enter como controle de que o detector vê a gravação; Enter com texto vazio ou não numérico chega ao tratador, que recusa com aviso (G3);
+  - `src/editor/canvas/edit-handles.tsx` — a banda digitada (`TypedBand`) exportada para o detector a montar sozinha;
+  - `tools/runner/mutants.ts` — o grupo `drafts` e os mutantes dos defeitos que ele reproduz.
+- **Falhas de aceitação que precisa acusar:** DEF-0514 e DEF-0515.
+- **Achados:** DEF-0514 e DEF-0515, reproduzidos antes da correção (7 casos falhando, os 3 controles passando).
+- **Mutantes:** M52 a M56, acusados.
+- **Tempo medido:** grupo `drafts` 4,1 s (10 casos).
+

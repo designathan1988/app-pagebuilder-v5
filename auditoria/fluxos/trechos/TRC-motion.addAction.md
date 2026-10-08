@@ -34,7 +34,7 @@
 - R3: `src/core/motion/commands.ts:308` `    start: placementStart(found.timeline, (placement ?? 'after') as Placement, playheadOf(context)),` — `placement` `at` usa o cursor (`src/core/motion/commands.ts:97` `const playheadOf = <Ui>(context: HandlerContext<Ui>): number => context.motion?.playhead ?? 0;`), `with` o início da última ação, e `after` (o padrão) o fim de tudo.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:299`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:299`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L08-019 (`ui.motion.time` via `playheadOf`).

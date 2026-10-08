@@ -4299,8 +4299,8 @@ O lote cobre `src/editor/canvas/`, `src/editor/view/`, `src/editor/timeline/` e 
   - `src/editor/canvas/band-typing.ts:27` `open = null;` via typedBand.close
 - **Leitores:**
   - `src/editor/canvas/band-typing.ts:15` `get: (): TypedBand | null => open,` via typedBand.get
-  - `src/editor/canvas/edit-handles.tsx:285` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);` via EditHandles
-  - `src/editor/canvas/edit-handles.tsx:398` `const typed = typing === null ? undefined : drawn.find((d) => d.entry.ref === typing.ref && d.opposite !== undefined);` via EditHandles
+  - `src/editor/canvas/edit-handles.tsx:321` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);` via EditHandles
+  - `src/editor/canvas/edit-handles.tsx:434` `const typed = typing === null ? undefined : drawn.find((d) => d.entry.ref === typing.ref && d.opposite !== undefined);` via EditHandles
 - **Criação:** `src/editor/canvas/band-typing.ts:8` `let open: TypedBand | null = null;`
 - **Descarte:** fim-da-página `src/editor/canvas/band-typing.ts:10` `const listeners = new Set<() => void>();`
 - **Navegador:** não
@@ -4519,52 +4519,52 @@ O lote cobre `src/editor/canvas/`, `src/editor/view/`, `src/editor/timeline/` e 
 
 ## EST-L07-014 — caches de leitura e de filhos do editor de grades
 
-- **Declaração:** `src/editor/canvas/edit-handles.tsx:249` `const READS = new Map<string, readonly string[]>();`
+- **Declaração:** `src/editor/canvas/edit-handles.tsx:285` `const READS = new Map<string, readonly string[]>();`
 - **Forma:** `READS: Map<string, readonly string[]>` (as propriedades que cada modo lê) e `IDS: Map<string, readonly string[]>` (os filhos por texto).
 - **Valores possíveis:**
   - V1 vazios.
-  - V2 com uma entrada por modo em `READS` (`src/editor/canvas/edit-handles.tsx:254` `READS.set(mode, list);`) e por texto de filhos em `IDS` (`src/editor/canvas/edit-handles.tsx:263` `IDS.set(text, ids);`).
+  - V2 com uma entrada por modo em `READS` (`src/editor/canvas/edit-handles.tsx:290` `READS.set(mode, list);`) e por texto de filhos em `IDS` (`src/editor/canvas/edit-handles.tsx:299` `IDS.set(text, ids);`).
 - **Escritores:**
-  - `src/editor/canvas/edit-handles.tsx:254` `READS.set(mode, list);` via readsOf
-  - `src/editor/canvas/edit-handles.tsx:263` `IDS.set(text, ids);` via childrenOf
+  - `src/editor/canvas/edit-handles.tsx:290` `READS.set(mode, list);` via readsOf
+  - `src/editor/canvas/edit-handles.tsx:299` `IDS.set(text, ids);` via childrenOf
 - **Leitores:**
-  - `src/editor/canvas/edit-handles.tsx:251` `const held = READS.get(mode);` via readsOf
-  - `src/editor/canvas/edit-handles.tsx:260` `const held = IDS.get(text);` via childrenOf
-- **Criação:** `src/editor/canvas/edit-handles.tsx:249` `const READS = new Map<string, readonly string[]>();`
-- **Descarte:** fim-da-página `src/editor/canvas/edit-handles.tsx:258` `const IDS = new Map<string, readonly string[]>();`
+  - `src/editor/canvas/edit-handles.tsx:287` `const held = READS.get(mode);` via readsOf
+  - `src/editor/canvas/edit-handles.tsx:296` `const held = IDS.get(text);` via childrenOf
+- **Criação:** `src/editor/canvas/edit-handles.tsx:285` `const READS = new Map<string, readonly string[]>();`
+- **Descarte:** fim-da-página `src/editor/canvas/edit-handles.tsx:294` `const IDS = new Map<string, readonly string[]>();`
 - **Navegador:** não
 
 ## EST-L07-015 — valores computados de um nó no editor de faixas
 
-- **Declaração:** `src/editor/canvas/edit-handles.tsx:99` `const [read, setRead] = useState<{ readonly node: NodeId; readonly values: Readonly<Record<string, string>> | null } | null>(null);`
+- **Declaração:** `src/editor/canvas/edit-handles.tsx:100` `const [read, setRead] = useState<{ readonly node: NodeId; readonly values: Readonly<Record<string, string>> | null } | null>(null);`
 - **Forma:** estado local do hook `useComputed`: o nó e os valores computados das propriedades pedidas, ou `null`.
 - **Valores possíveis:**
   - V1 `null`: ainda não medido, ou o nó mudou.
-  - V2 os valores do nó (`src/editor/canvas/edit-handles.tsx:113` `setRead({ node, values });`).
+  - V2 os valores do nó (`src/editor/canvas/edit-handles.tsx:114` `setRead({ node, values });`).
 - **Escritores:**
-  - `src/editor/canvas/edit-handles.tsx:113` `setRead({ node, values });` via useComputed (laço de medição)
+  - `src/editor/canvas/edit-handles.tsx:114` `setRead({ node, values });` via useComputed (laço de medição)
 - **Leitores:**
-  - `src/editor/canvas/edit-handles.tsx:120` `return read !== null && read.node === node ? read.values : null;` via useComputed
-  - `src/editor/canvas/edit-handles.tsx:290` `if (computed === null || (doors.length === 0 && DIVIDER === undefined)) return null;` via EditHandles
-  - No `TypedBand` do mesmo arquivo: `src/editor/canvas/edit-handles.tsx:228` `const input = useRef<HTMLInputElement>(null);`
-- **Criação:** `src/editor/canvas/edit-handles.tsx:99` `const [read, setRead] = useState<{ readonly node: NodeId; readonly values: Readonly<Record<string, string>> | null } | null>(null);`
-- **Descarte:** `src/editor/canvas/edit-handles.tsx:118` `return () => cancelAnimationFrame(request);` via useComputed (retorno do efeito)
+  - `src/editor/canvas/edit-handles.tsx:121` `return read !== null && read.node === node ? read.values : null;` via useComputed
+  - `src/editor/canvas/edit-handles.tsx:326` `if (computed === null || (doors.length === 0 && DIVIDER === undefined)) return null;` via EditHandles
+  - No `TypedBand` do mesmo arquivo: `src/editor/canvas/edit-handles.tsx:230` `const input = useRef<HTMLInputElement>(null);`
+- **Criação:** `src/editor/canvas/edit-handles.tsx:100` `const [read, setRead] = useState<{ readonly node: NodeId; readonly values: Readonly<Record<string, string>> | null } | null>(null);`
+- **Descarte:** `src/editor/canvas/edit-handles.tsx:119` `return () => cancelAnimationFrame(request);` via useComputed (retorno do efeito)
 - **Navegador:** não
 
 ## EST-L07-016 — caixas dos filhos de um nó no editor de faixas
 
-- **Declaração:** `src/editor/canvas/edit-handles.tsx:126` `const [read, setRead] = useState<{ readonly text: string; readonly boxes: readonly Box[]; readonly ids: readonly string[] } | null>(null);`
+- **Declaração:** `src/editor/canvas/edit-handles.tsx:127` `const [read, setRead] = useState<{ readonly text: string; readonly boxes: readonly Box[]; readonly ids: readonly string[] } | null>(null);`
 - **Forma:** estado local do hook `useFlow`: o texto, as caixas e os ids dos filhos, ou `null`.
 - **Valores possíveis:**
   - V1 `null`: ainda não medido.
-  - V2 as caixas dos filhos na origem do chrome (`src/editor/canvas/edit-handles.tsx:139` `setRead((before) => (before?.text === text ? before : { text, boxes: pairs, ids: pairs.map((drawn) => drawn.id) }));`).
+  - V2 as caixas dos filhos na origem do chrome (`src/editor/canvas/edit-handles.tsx:140` `setRead((before) => (before?.text === text ? before : { text, boxes: pairs, ids: pairs.map((drawn) => drawn.id) }));`).
 - **Escritores:**
-  - `src/editor/canvas/edit-handles.tsx:139` `setRead((before) => (before?.text === text ? before : { text, boxes: pairs, ids: pairs.map((drawn) => drawn.id) }));` via useFlow
+  - `src/editor/canvas/edit-handles.tsx:140` `setRead((before) => (before?.text === text ? before : { text, boxes: pairs, ids: pairs.map((drawn) => drawn.id) }));` via useFlow
 - **Leitores:**
-  - `src/editor/canvas/edit-handles.tsx:146` `return read;` via useFlow
-  - `src/editor/canvas/edit-handles.tsx:284` `const flow = useFlow(gaps || DIVIDER !== undefined ? node : null, childrenOf(childrenText), origin);` via EditHandles
-- **Criação:** `src/editor/canvas/edit-handles.tsx:126` `const [read, setRead] = useState<{ readonly text: string; readonly boxes: readonly Box[]; readonly ids: readonly string[] } | null>(null);`
-- **Descarte:** `src/editor/canvas/edit-handles.tsx:144` `return () => cancelAnimationFrame(request);` via useFlow (retorno do efeito)
+  - `src/editor/canvas/edit-handles.tsx:147` `return read;` via useFlow
+  - `src/editor/canvas/edit-handles.tsx:320` `const flow = useFlow(gaps || DIVIDER !== undefined ? node : null, childrenOf(childrenText), origin);` via EditHandles
+- **Criação:** `src/editor/canvas/edit-handles.tsx:127` `const [read, setRead] = useState<{ readonly text: string; readonly boxes: readonly Box[]; readonly ids: readonly string[] } | null>(null);`
+- **Descarte:** `src/editor/canvas/edit-handles.tsx:145` `return () => cancelAnimationFrame(request);` via useFlow (retorno do efeito)
 - **Navegador:** não
 
 ## EST-L07-017 — estado local do quadro do canvas (CanvasFrame)
@@ -5075,12 +5075,12 @@ O lote cobre `src/editor/canvas/`, `src/editor/view/`, `src/editor/timeline/` e 
 
 ## EXC-L07-0005
 - **Padrão:** P-E02
-- **Ocorrência:** `src/editor/canvas/edit-handles.tsx:87` `const BOX_LONGHANDS: ReadonlySet<string> = new Set(COMPOSITES.filter((c) => c.control === BOX_MODEL_CONTROL).flatMap((c) => c.longhands));`
+- **Ocorrência:** `src/editor/canvas/edit-handles.tsx:88` `const BOX_LONGHANDS: ReadonlySet<string> = new Set(COMPOSITES.filter((c) => c.control === BOX_MODEL_CONTROL).flatMap((c) => c.longhands));`
 - **Motivo:** conjunto fixo das propriedades do box model, montado uma vez de properties.json; apenas consultado.
 
 ## EXC-L07-0006
 - **Padrão:** P-E02
-- **Ocorrência:** `src/editor/canvas/edit-handles.tsx:89` `const BAND_LONGHANDS: ReadonlySet<string> = new Set([...BOX_LONGHANDS, ROW_GAP, COLUMN_GAP]);`
+- **Ocorrência:** `src/editor/canvas/edit-handles.tsx:90` `const BAND_LONGHANDS: ReadonlySet<string> = new Set([...BOX_LONGHANDS, ROW_GAP, COLUMN_GAP]);`
 - **Motivo:** união fixa das longhands do box model com as duas do gap; montada na carga e só lida.
 
 ## EXC-L07-0007
@@ -7701,38 +7701,38 @@ Estado declarado e guardado pelos arquivos de `src/editor/shell/` do lote L09a. 
 - **Navegador:** foco
 
 ## EST-L09a-138 — open — guides-grids.tsx
-- **Declaração:** `src/editor/shell/guides-grids.tsx:72` `const [open, setOpen] = useState(false);`
+- **Declaração:** `src/editor/shell/guides-grids.tsx:74` `const [open, setOpen] = useState(false);`
 - **Forma:** valor de estado do componente React (useState), gravado por setOpen
 - **Valores possíveis:**
-  - V1 o valor inicial, na primeira renderização `src/editor/shell/guides-grids.tsx:72` `const [open, setOpen] = useState(false);`
-  - V2 o valor depois de setOpen `src/editor/shell/guides-grids.tsx:79` `setOpen(false);` via setOpen
+  - V1 o valor inicial, na primeira renderização `src/editor/shell/guides-grids.tsx:74` `const [open, setOpen] = useState(false);`
+  - V2 o valor depois de setOpen `src/editor/shell/guides-grids.tsx:80` `setOpen(false);` via setOpen
 - **Escritores:**
-  - `src/editor/shell/guides-grids.tsx:79` `setOpen(false);` via setOpen
-  - `src/editor/shell/guides-grids.tsx:93` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}` via setOpen
-  - `src/editor/shell/guides-grids.tsx:100` `<input className="input" name="at" autoFocus inputMode="decimal" spellCheck={false} aria-label={t('guidesGrids.place')} placeholder={t('guidesGrids.place')} data-local="guide-place" data-key-context={DIALOG_KEYS} onBlur={() => setOpen(false)} />` via setOpen
+  - `src/editor/shell/guides-grids.tsx:80` `setOpen(false);` via setOpen
+  - `src/editor/shell/guides-grids.tsx:95` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}` via setOpen
+  - `src/editor/shell/guides-grids.tsx:102` `<input className="input" name="at" autoFocus inputMode="decimal" spellCheck={false} aria-label={t('guidesGrids.place')} placeholder={t('guidesGrids.place')} data-local="guide-place" data-key-context={DIALOG_KEYS} onBlur={() => setOpen(false)} />` via setOpen
 - **Leitores:**
-  - `src/editor/shell/guides-grids.tsx:90` `aria-expanded={open}` via leitura de open
-  - `src/editor/shell/guides-grids.tsx:98` `{open ? (` via leitura de open
-  - `src/editor/shell/guides-grids.tsx:171` `const open = useEditorState((s) => s.ui.dialog === DIALOG);` via leitura de open
-- **Criação:** `src/editor/shell/guides-grids.tsx:72` `const [open, setOpen] = useState(false);`
-- **Descarte:** quando o componente desmonta `src/editor/shell/guides-grids.tsx:72` `const [open, setOpen] = useState(false);`
+  - `src/editor/shell/guides-grids.tsx:92` `aria-expanded={open}` via leitura de open
+  - `src/editor/shell/guides-grids.tsx:100` `{open ? (` via leitura de open
+  - `src/editor/shell/guides-grids.tsx:221` `const open = useEditorState((s) => s.ui.dialog === DIALOG);` via leitura de open
+- **Criação:** `src/editor/shell/guides-grids.tsx:74` `const [open, setOpen] = useState(false);`
+- **Descarte:** quando o componente desmonta `src/editor/shell/guides-grids.tsx:74` `const [open, setOpen] = useState(false);`
 - **Navegador:** não
 
 ## EST-L09a-139 — draft — guides-grids.tsx
-- **Declaração:** `src/editor/shell/guides-grids.tsx:133` `const [draft, setDraft] = useState<string | null>(null);`
+- **Declaração:** `src/editor/shell/guides-grids.tsx:135` `const [draft, setDraft] = useState<string | null>(null);`
 - **Forma:** valor de estado do componente React (useState), gravado por setDraft
 - **Valores possíveis:**
-  - V1 o valor inicial, na primeira renderização `src/editor/shell/guides-grids.tsx:133` `const [draft, setDraft] = useState<string | null>(null);`
-  - V2 o valor depois de setDraft `src/editor/shell/guides-grids.tsx:139` `setDraft(null);` via setDraft
+  - V1 o valor inicial, na primeira renderização `src/editor/shell/guides-grids.tsx:135` `const [draft, setDraft] = useState<string | null>(null);`
+  - V2 o valor depois de setDraft `src/editor/shell/guides-grids.tsx:170` `setDraft(null);` via setDraft
 - **Escritores:**
-  - `src/editor/shell/guides-grids.tsx:139` `setDraft(null);` via setDraft
-  - `src/editor/shell/guides-grids.tsx:147` `} className="input" inputMode="decimal" spellCheck={false} disabled={!door.available} data-key-context={DIALOG_KEYS} value={draft ?? String(value)} onChange={(event) => setDraft(event.currentTarget.value)} onBlur={() => setDraft(null)} />` via setDraft
+  - `src/editor/shell/guides-grids.tsx:170` `setDraft(null);` via setDraft
+  - `src/editor/shell/guides-grids.tsx:193` `onBlur={() => {` via setDraft
 - **Leitores:**
-  - `src/editor/shell/guides-grids.tsx:137` `if (draft === null) return;` via leitura de draft
-  - `src/editor/shell/guides-grids.tsx:138` `const typed = Number(draft);` via leitura de draft
-  - `src/editor/shell/guides-grids.tsx:140` `if (draft.trim() !== '' && Number.isFinite(typed)) run(entry, { grid, setting, value: typed });` via leitura de draft
-- **Criação:** `src/editor/shell/guides-grids.tsx:133` `const [draft, setDraft] = useState<string | null>(null);`
-- **Descarte:** quando o componente desmonta `src/editor/shell/guides-grids.tsx:133` `const [draft, setDraft] = useState<string | null>(null);`
+  - `src/editor/shell/guides-grids.tsx:168` `if (draft === null) return;` via leitura de draft
+  - `src/editor/shell/guides-grids.tsx:143` `const write = (text: string, context?: EditContext) => run(entry, { grid, setting, value: typedNumber(text) }, context);` via leitura de draft
+  - `src/editor/shell/guides-grids.tsx:171` `write(draft);` via leitura de draft
+- **Criação:** `src/editor/shell/guides-grids.tsx:135` `const [draft, setDraft] = useState<string | null>(null);`
+- **Descarte:** quando o componente desmonta `src/editor/shell/guides-grids.tsx:135` `const [draft, setDraft] = useState<string | null>(null);`
 - **Navegador:** não
 
 ## EST-L09a-140 — choices — html-import.tsx
@@ -8350,50 +8350,50 @@ Arquivos do lote L09b: as vistas e a moldura do editor (src/editor/shell/). Cada
 - **Navegador:** não
 
 ## EST-L09b-004 — draft (texto digitado num campo de painel)
-- **Declaração:** `src/editor/shell/panel-field.tsx:67` `const [draft, setDraft] = useState(value);`
+- **Declaração:** `src/editor/shell/panel-field.tsx:69` `const [draft, setDraft] = useState(value);`
 - **Forma:** string
 - **Valores possíveis:**
   - V1 o valor do documento na primeira renderização
   - V2 o texto digitado, ainda não guardado
   - V3 o texto esvaziado pela pessoa
 - **Escritores:**
-  - `src/editor/shell/panel-field.tsx:114` `setDraft(event.target.value);` via onChange
+  - `src/editor/shell/panel-field.tsx:140` `setDraft(event.target.value);` via onChange
 - **Leitores:**
-  - `src/editor/shell/panel-field.tsx:106` `value={edited ? draft : display === undefined || value === '' ? value : display(value)}` via a renderização do input
-  - `src/editor/shell/panel-field.tsx:87` `runWith(accept === undefined ? draft : accept(draft));` via keep
-- **Criação:** `src/editor/shell/panel-field.tsx:67` `const [draft, setDraft] = useState(value);`
-- **Descarte:** `src/editor/shell/panel-field.tsx:67` `const [draft, setDraft] = useState(value);` (desmontagem do campo)
+  - `src/editor/shell/panel-field.tsx:132` `value={edited ? draft : display === undefined || value === '' ? value : display(value)}` via a renderização do input
+  - `src/editor/shell/panel-field.tsx:112` `runWith(accept === undefined ? draft : accept(draft));` via keep
+- **Criação:** `src/editor/shell/panel-field.tsx:69` `const [draft, setDraft] = useState(value);`
+- **Descarte:** `src/editor/shell/panel-field.tsx:69` `const [draft, setDraft] = useState(value);` (desmontagem do campo)
 - **Navegador:** não
 
 ## EST-L09b-005 — edited (há digitação não guardada no campo de painel)
-- **Declaração:** `src/editor/shell/panel-field.tsx:68` `const [edited, setEdited] = useState(false);`
+- **Declaração:** `src/editor/shell/panel-field.tsx:70` `const [edited, setEdited] = useState(false);`
 - **Forma:** boolean
 - **Valores possíveis:**
   - V1 false: o campo mostra o valor do documento
   - V2 true: há digitação não guardada
 - **Escritores:**
-  - `src/editor/shell/panel-field.tsx:113` `setEdited(true);` via onChange
-  - `src/editor/shell/panel-field.tsx:86` `setEdited(false);` via keep
-  - `src/editor/shell/panel-field.tsx:117` `onBlur={() => setEdited(false)}` via a saída do campo
+  - `src/editor/shell/panel-field.tsx:139` `setEdited(true);` via onChange
+  - `src/editor/shell/panel-field.tsx:111` `setEdited(false);` via keep
+  - `src/editor/shell/panel-field.tsx:145` `onBlur={() => {` via a saída do campo
 - **Leitores:**
-  - `src/editor/shell/panel-field.tsx:106` `value={edited ? draft : display === undefined || value === '' ? value : display(value)}` via a renderização do input
-  - `src/editor/shell/panel-field.tsx:85` `if (!edited) return;` via keep
-- **Criação:** `src/editor/shell/panel-field.tsx:68` `const [edited, setEdited] = useState(false);`
-- **Descarte:** `src/editor/shell/panel-field.tsx:68` `const [edited, setEdited] = useState(false);` (desmontagem do campo)
+  - `src/editor/shell/panel-field.tsx:132` `value={edited ? draft : display === undefined || value === '' ? value : display(value)}` via a renderização do input
+  - `src/editor/shell/panel-field.tsx:110` `if (!edited) return;` via keep
+- **Criação:** `src/editor/shell/panel-field.tsx:70` `const [edited, setEdited] = useState(false);`
+- **Descarte:** `src/editor/shell/panel-field.tsx:70` `const [edited, setEdited] = useState(false);` (desmontagem do campo)
 - **Navegador:** não
 
 ## EST-L09b-006 — input (referência do campo de painel)
-- **Declaração:** `src/editor/shell/panel-field.tsx:69` `const input = useRef<HTMLInputElement>(null);`
+- **Declaração:** `src/editor/shell/panel-field.tsx:71` `const input = useRef<HTMLInputElement>(null);`
 - **Forma:** React ref (RefObject<HTMLInputElement | null>)
 - **Valores possíveis:**
   - V1 null, antes de o input ser montado
   - V2 o input da lista depois de montado
 - **Escritores:**
-  - `src/editor/shell/panel-field.tsx:98` `ref={input}` via a renderização do input
+  - `src/editor/shell/panel-field.tsx:124` `ref={input}` via a renderização do input
 - **Leitores:**
-  - `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();` via o efeito de autoFocus
-- **Criação:** `src/editor/shell/panel-field.tsx:69` `const input = useRef<HTMLInputElement>(null);`
-- **Descarte:** `src/editor/shell/panel-field.tsx:69` `const input = useRef<HTMLInputElement>(null);` (desmontagem do campo)
+  - `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();` via o efeito de autoFocus
+- **Criação:** `src/editor/shell/panel-field.tsx:71` `const input = useRef<HTMLInputElement>(null);`
+- **Descarte:** `src/editor/shell/panel-field.tsx:71` `const input = useRef<HTMLInputElement>(null);` (desmontagem do campo)
 - **Navegador:** não
 
 ## EST-L09b-007 — openedAt (a abertura de uma camada sobreposta)
@@ -9132,7 +9132,7 @@ Arquivos do lote L09b: as vistas e a moldura do editor (src/editor/shell/). Cada
 - **Escritores:**
   - `src/editor/shell/outside-layer.ts:56` `restore.focus()` via o retorno do foco ao fechar a camada
   - `src/editor/shell/link-picker.tsx:56` `if (open !== null) panel.current?.focus();` via o efeito da abertura do seletor
-  - `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();` via o efeito de autoFocus
+  - `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();` via o efeito de autoFocus
   - `src/editor/shell/popover.tsx:78` `own.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();` via o layout effect do foco
   - `src/editor/shell/popover.tsx:30` `trigger.current?.focus();` via o retorno do foco ao gatilho
   - `src/editor/shell/shell.tsx:102` `(first ?? preview).focus();` via usePreviewModal
@@ -9148,7 +9148,7 @@ Arquivos do lote L09b: as vistas e a moldura do editor (src/editor/shell/). Cada
   - `src/editor/shell/row-fit.ts:107` `document.activeElement instanceof HTMLInputElement` via judge
   - `src/editor/shell/shell.tsx:99` `const wasFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;` via usePreviewModal
   - `src/editor/shell/sidebar/explorer.tsx:70` `document.activeElement !== input.current` via o efeito que repõe o nome
-- **Criação:** `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();`
+- **Criação:** `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();`
 - **Descarte:** `src/editor/shell/sidebar/explorer.tsx:107` `event.currentTarget.blur();`
 - **Navegador:** foco
 

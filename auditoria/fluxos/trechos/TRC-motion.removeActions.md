@@ -33,7 +33,7 @@
 - R3: `src/core/motion/commands.ts:492` `  if (next.actions.length === found.timeline.actions.length) return { kind: 'change' };` — nenhuma ação removida (ids que não pertencem à timeline): nada muda; removida alguma segue ao passo 13.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:486`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:486`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`).

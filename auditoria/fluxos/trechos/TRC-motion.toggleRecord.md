@@ -26,7 +26,7 @@
 - R2: `src/editor/motion/state.ts:161` `  if (motion[key] === true) {` — com `recording` já `true` o campo sai (desliga); com ele ausente o campo passa a `true` (liga).
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/editor/motion/state.ts:167`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o clique da porta panel-control (`src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/editor/motion/state.ts:167`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o clique da porta panel-control (`src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L08-019 (`ui.motion.recording`).

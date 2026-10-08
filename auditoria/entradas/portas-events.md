@@ -14,7 +14,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:140` `"id": "inspector-interaction-trigger",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0002.md
 - **Requisitos:** REQ-1002
 
@@ -23,7 +23,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:168` `"id": "inspector-interaction-action",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0003.md
 - **Requisitos:** REQ-1002
 
@@ -32,7 +32,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:196` `"id": "inspector-interaction-target",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0004.md
 - **Requisitos:** REQ-1002
 
@@ -41,7 +41,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:227` `"id": "inspector-interaction-value",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0005.md
 - **Requisitos:** REQ-1002
 
@@ -50,7 +50,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:255` `"id": "inspector-interaction-options",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0006.md
 - **Requisitos:** REQ-1002
 
@@ -59,7 +59,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:283` `"id": "inspector-interaction-scope",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0007.md
 - **Requisitos:** REQ-1002
 
@@ -87,7 +87,7 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:363` `"id": "inspector-interaction-new-tab",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0010.md
 - **Requisitos:** REQ-1002
 
@@ -96,6 +96,6 @@
 - **Comando:** interactions.remove
 - **Porta:** `manifest/commands/events.json:421` `"id": "inspector-interaction-remove",`
 - **Tratador:** `src/app/commands.ts:263` `'interactions.remove': removeInteractionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0011.md
 - **Requisitos:** REQ-1003

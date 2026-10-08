@@ -4,7 +4,7 @@
 - **Leitor:** GRL-EST-L09b-057-04 (o layout effect da inscrição): ENT-L09b-0005
 ## Estados deixados por A
 - **V o elemento guardado volta a ter o foco.** `src/editor/shell/shell.tsx:105` `wasFocused?.focus();` — a limpeza do efeito do preview devolve o foco ao elemento ativo guardado antes de abrir; o valor é do navegador, medido em MED-0035.
-- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
+- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
 - **A desmontagem devolve o foco.** `src/editor/shell/popover.tsx:30` `if (dismissed && (document.activeElement === null || document.activeElement === document.body)) trigger.current?.focus();` — ao fechar, quem devolve o foco o repõe no gatilho ou no elemento guardado.
 ## Casos
 ### C1 final

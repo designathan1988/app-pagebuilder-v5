@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -100,6 +100,11 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M49', file: 'src/editor/input/after-read.ts', from: '    if (editedKey(store.getState()) !== taken) {', to: "    if (editedKey(store.getState()) === '\\u0000') {", breaks: 'o que chega tarde de uma leitura roda no contexto que mudou', source: 'DEF-0513', detectors: ['races'] },
   { id: 'M50', file: 'src/editor/input/keymap.ts', from: 'afterRead(store, readClipboard(), (content) =>', to: 'void readClipboard().then((content) =>', breaks: 'a tecla de colar despacha quando a leitura chega, sem conferir o contexto da tecla', source: 'DEF-0513', detectors: ['races'] },
   { id: 'M51', file: 'src/modules/layout-composer/ui/overlay.tsx', from: '  const [open, setOpen] = useState(composer !== null);\n  if ((composer !== null) !== open) {\n    setOpen(composer !== null);\n    if (composer === null) {\n      setBox(null);\n      setMeasured(null);\n    }\n  }\n', to: '', breaks: 'o compositor reaberto desenha o primeiro quadro com a caixa e as regiões da sessão anterior (o código de antes do DEF-0512)', source: 'DEF-0512', detectors: ['composer'] },
+  { id: 'M52', file: 'src/editor/input/held-draft.ts', from: '      if (holding() !== null) keepTyping();\n', to: '', breaks: 'um campo de valor perde a digitação ao perder o foco ou ao sair (G2)', source: 'DEF-0514', detectors: ['drafts'] },
+  { id: 'M53', file: 'src/editor/shell/panel-field.tsx', from: '            typed.current = event.target.value;\n            held.current?.typed();\n', to: '            typed.current = event.target.value;\n', breaks: 'o campo de painel guarda a digitação só para si, fora do registro (o código de antes do DEF-0514)', source: 'DEF-0514', detectors: ['drafts'] },
+  { id: 'M54', file: 'src/editor/canvas/edit-handles.tsx', from: '        onInput={() => held.current?.typed()}\n', to: '', breaks: 'a banda digitada guarda a digitação só para si, fora do registro (o código de antes do DEF-0514)', source: 'DEF-0514', detectors: ['drafts'] },
+  { id: 'M55', file: 'src/editor/shell/guides-grids.tsx', from: "    run(entry, { axis, at: typedNumber(field?.value ?? '') });", to: "    if (field !== null && field.value.trim() !== '' && Number.isFinite(Number(field.value))) run(entry, { axis, at: Number(field.value) });", breaks: 'o formulário de nova guia decide sozinho que um texto vazio ou não numérico não roda o comando (o código de antes do DEF-0515)', source: 'DEF-0515', detectors: ['drafts'] },
+  { id: 'M56', file: 'src/editor/input/held-draft.ts', from: "(text.trim() === '' ? Number.NaN : Number(text))", to: '(Number(text))', breaks: 'um campo numérico vazio vira 0 e roda o comando como se a pessoa tivesse digitado 0', source: 'DEF-0515', detectors: ['drafts'] },
 ];
 
 export const ALL_DETECTORS = ALL;

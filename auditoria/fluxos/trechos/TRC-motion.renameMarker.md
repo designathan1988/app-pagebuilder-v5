@@ -26,7 +26,7 @@
 - R2: `src/core/motion/commands.ts:707` `  if (held === null || name.trim() === held.name) return { kind: 'change' };` — sem `marker`/`markerAt` que nomeiem marcador, ou `name` igual ao atual: nada muda; diferente segue ao passo 9.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:703`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:703`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`).

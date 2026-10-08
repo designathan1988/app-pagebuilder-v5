@@ -55,8 +55,8 @@
 ## Resultado
 
 - **Estado final:** EST-L01-030 com `pages[at].tree.grid[grid][breakpoint][setting]` no valor pedido, ou sem mudança quando o valor já era esse `src/core/page/grid.ts:103` `patches: [held === undefined ? { op: 'add', path, value: settings } : { op: 'replace', path, value: settings }]`.
-- **Re-renderizado:** os componentes inscritos no estado do editor são avisados por `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`; o campo do diálogo relê o ajuste `src/editor/shell/guides-grids.tsx:130` `const value = useEditorState((s) => gridSetting(s.document, grid, setting, activeBreakpoint(s).id, openedPage(s)));`.
-- **DOM do editor:** o campo do diálogo mostra o valor guardado no ponto de quebra em vigor `src/editor/shell/guides-grids.tsx:130` `const value = useEditorState((s) => gridSetting(s.document, grid, setting, activeBreakpoint(s).id, openedPage(s)));`.
+- **Re-renderizado:** os componentes inscritos no estado do editor são avisados por `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`; o campo do diálogo relê o ajuste `src/editor/shell/guides-grids.tsx:132` `const value = useEditorState((s) => gridSetting(s.document, grid, setting, activeBreakpoint(s).id, openedPage(s)));`.
+- **DOM do editor:** o campo do diálogo mostra o valor guardado no ponto de quebra em vigor `src/editor/shell/guides-grids.tsx:132` `const value = useEditorState((s) => gridSetting(s.document, grid, setting, activeBreakpoint(s).id, openedPage(s)));`.
 - **DOM do canvas:** as faixas da grade são redesenhadas com o ajuste novo pela leitura `src/editor/canvas/grid-overlay.tsx:35` `const settings = useEditorState((s) => JSON.stringify({ columns: columnsOf(s.document, breakpoint, openedPage(s)), rows: rowsOf(s.document, breakpoint, openedPage(s)), dots: dotsOf(s.document, breakpoint, openedPage(s)) }));`.
 
 ## Regras

@@ -187,7 +187,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.setLanguage
 - **Porta:** `manifest/commands/project.json:714` `"id": "inspector-project-language",`
 - **Tratador:** `src/app/commands.ts:347` `'project.setLanguage': setProjectLanguage,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-project-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2009
 
@@ -196,7 +196,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.setCodeLanguage
 - **Porta:** `manifest/commands/project.json:770` `"id": "inspector-code-language",`
 - **Tratador:** `src/app/commands.ts:348` `'project.setCodeLanguage': setCodeLanguage,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-project-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2010
 

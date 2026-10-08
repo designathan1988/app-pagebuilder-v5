@@ -34,7 +34,7 @@
 - R3: `src/core/motion/commands.ts:601` `  let next: MotionTimeline;` — `field` `value` troca o valor (passo 10), `easing` a aceleração (passo 12), `time` o tempo (passo 13) e qualquer outro o nome da propriedade (passo 14); `value` que não muda a timeline devolve nada (passo 16).
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:596`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:596`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`).

@@ -41,8 +41,8 @@
 ## Resultado
 
 - **Estado final:** EST-L01-037 com `ui.dialog` no diálogo pedido `src/editor/workspace/dialogs.ts:22` `return { kind: 'change', ui: { ...state.ui, dialog } };`.
-- **Re-renderizado:** os componentes inscritos no estado do editor são avisados por `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`; cada diálogo relê o próprio nome `src/editor/shell/guides-grids.tsx:171` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`.
-- **DOM do editor:** o diálogo pedido passa a ser desenhado `src/editor/shell/guides-grids.tsx:171` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`, e o de renomear em lote pela leitura `src/editor/shell/batch-rename.tsx:29` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`.
+- **Re-renderizado:** os componentes inscritos no estado do editor são avisados por `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`; cada diálogo relê o próprio nome `src/editor/shell/guides-grids.tsx:221` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`.
+- **DOM do editor:** o diálogo pedido passa a ser desenhado `src/editor/shell/guides-grids.tsx:221` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`, e o de renomear em lote pela leitura `src/editor/shell/batch-rename.tsx:29` `const open = useEditorState((s) => s.ui.dialog === DIALOG);`.
 - **DOM do canvas:** nada muda: o resultado não leva `patches` e `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);` é falso.
 
 ## Regras

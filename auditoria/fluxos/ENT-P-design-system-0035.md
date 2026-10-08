@@ -33,7 +33,7 @@ Fluxo de porta do domínio `design-system`. Rastreia o caminho próprio da porta
 
 ## Regras
 - G1: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o caminho da porta toma o contexto da digitação aqui e o entrega à store do núcleo em `src/editor/store.ts:220`.
-- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e o campo só o despacha quando difere (`src/editor/shell/panel-field.tsx:78` `if (argument === null || chosen === value) return;`).
+- G2: ok `src/editor/store.ts:235` `const at = context ?? beforeCommand(id, args, changesDocument);` — o registro da digitação pendente é consultado antes de o comando rodar, e o campo só o despacha quando difere (`src/editor/shell/panel-field.tsx:84` `if (argument === null || chosen === value) return;`).
 - G3: ok `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);` — a porta envia só a intenção e o tratador único decide.
 - G4: n/a — a porta é o campo Variant do inspector, não um ponto do canvas `manifest/commands/design-system.json:1693` `"kind": "panel-control",`.
 - G5: n/a — o caminho da porta não desenha painel nem barra; ele só despacha o comando `src/editor/doors/door.tsx:145` `dispatch(entry.command.id, given);`.
@@ -49,6 +49,6 @@ Fluxo de porta do domínio `design-system`. Rastreia o caminho próprio da porta
 
 ## Ramos do trecho
 - **Trecho:** TRC-components.setVariant
-- **Argumentos enviados:** `{ variant }` — o nome da variante da instância; esta porta envia `variant` com o texto do campo (`src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`, com o argumento livre `variant`).
+- **Argumentos enviados:** `{ variant }` — o nome da variante da instância; esta porta envia `variant` com o texto do campo (`src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`, com o argumento livre `variant`).
 - R2 `src/core/design/components.ts:457` `if (typed !== '' && !/^[a-z][a-z0-9-]*$/.test(typed)) return { kind: 'refused', message: message('status.components.badVariant', { variant: variant.trim() }) };` — o `variant` desta porta é o texto digitado ou um dos oferecidos; vazio ou no padrão, o caminho segue; fora do padrão, para na recusa.
 - R3 `src/core/design/components.ts:459` `if (locked !== null) return { kind: 'refused', message: locked };` — a raiz da instância desta porta não está trancada; livre, o caminho segue para os patches.

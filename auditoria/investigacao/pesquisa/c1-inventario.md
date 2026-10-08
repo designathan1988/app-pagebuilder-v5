@@ -347,7 +347,7 @@ Nenhuma medição de custo foi feita neste projeto. Onde o texto fala de custo, 
 
 **Detecta.** Elemento não interativo com manipulador sem `role` e sem foco: é a classe de elemento que escapa de T4 e T5.
 
-**Não detecta.** Componentes que repassam props a elementos ocultos sem mapeamento, interatividade ligada em `addEventListener`. A própria página declara a análise estática e recomenda `@axe-core/react` e teste manual (F36). O repositório já usa ESLint (CLAUDE.md, seção 10); a versão do plugin e a compatibilidade com ESLint do projeto não foram verificadas.
+**Não detecta.** Componentes que repassam props a elementos ocultos sem mapeamento, interatividade ligada em `addEventListener`. A própria página declara a análise estática e recomenda `@axe-core/react` e teste manual (F36). O repositório já usa ESLint (CLAUDE.md, seção 9); a versão do plugin e a compatibilidade com ESLint do projeto não foram verificadas.
 
 ### T10. Percurso dinâmico da interface (GUI ripping)
 

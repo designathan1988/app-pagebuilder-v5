@@ -11,18 +11,19 @@
 //    refuses one out of its range).
 // Escape (the dialog key context) and its close button (ui.dismiss) close it, and the focus goes back where it was:
 // the control that opened it, or the button of the menu whose item did. Opening a field or the list is not a command.
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { openedPage } from '../../core/project/pages.ts';
 import { isFeatureBuilt } from '../../core/commands/registry.ts';
 import { gridSetting } from '../../core/page/grid.ts';
 import { settingsOf, type GridName } from '../../core/page/grid-settings.ts';
 import { guidesOf } from '../../core/page/guides.ts';
-import type { DispatchResult } from '../../core/store/store.ts';
+import type { DispatchResult, EditContext } from '../../core/store/store.ts';
 import type { CommandId, FeatureId, MessageId } from '../../generated/ids.ts';
 import type { DoorEntry } from '../../manifest/runtime.ts';
 import { DoorControl, Icon, useDoor } from '../doors/door.tsx';
 import { breaksIn, doorSlots, drawnAsOf } from '../doors/placement.ts';
 import { afterGesture } from '../input/pointer.ts';
+import { heldDraft, typedNumber, type HeldDraft } from '../input/held-draft.ts';
 import { activeBreakpoint } from '../view/breakpoints.ts';
 import { useEditorState, useStore } from '../store.ts';
 import { useT } from '../text.ts';
@@ -60,10 +61,11 @@ function groups(): readonly (readonly DoorEntry[])[] {
 }
 const GROUPS = groups();
 
-// a command run with the arguments of a field, once no gesture is open
-function useRun(): (entry: DoorEntry, args: Readonly<Record<string, unknown>>) => void {
+// a command run with the arguments of a field, once no gesture is open (in the context the typing began in, when the
+// registry of typing keeps a field's value)
+function useRun(): (entry: DoorEntry, args: Readonly<Record<string, unknown>>, context?: EditContext) => void {
   const store = useStore();
-  return (entry, args) => afterGesture(store, () => (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args }));
+  return (entry, args, context) => afterGesture(store, () => (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args }, context));
 }
 
 function AddGuide({ entry, axis }: { readonly entry: DoorEntry; readonly axis: string }) {
@@ -75,9 +77,9 @@ function AddGuide({ entry, axis }: { readonly entry: DoorEntry; readonly axis: s
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const field = event.currentTarget.elements.namedItem('at') as HTMLInputElement | null;
-    const at = Number(field?.value ?? '');
     setOpen(false);
-    if (field !== null && field.value.trim() !== '' && Number.isFinite(at)) run(entry, { axis, at });
+    // the text as the number the command takes, never judged here: the command refuses a place that is none (DEF-0515)
+    run(entry, { axis, at: typedNumber(field?.value ?? '') });
   };
   return (
     <span className="guides-grids__add">
@@ -131,20 +133,68 @@ function GridField({ entry, grid, setting, labelKey }: { readonly entry: DoorEnt
   const door = useDoor(entry, { grid, setting }, label, ready(entry));
   // what is typed, until Enter keeps it or the field is left (a field's draft, not editor state)
   const [draft, setDraft] = useState<string | null>(null);
+  const store = useStore();
+  const input = useRef<HTMLInputElement>(null);
+  const form = useRef<HTMLFormElement>(null);
+  // the text typed now, for the keep the registry runs outside a render (a press elsewhere, the focus leaving)
+  const typed = useRef<string | null>(null);
+  // the text as the number the command takes, never judged here: the command refuses a value out of its range or none
+  // at all with its own words (rule G3, DEF-0515)
+  const write = (text: string, context?: EditContext) => run(entry, { grid, setting, value: typedNumber(text) }, context);
+  const keepHeld = useRef<(context: EditContext) => void>(() => undefined);
+  useEffect(() => {
+    keepHeld.current = (context) => {
+      const text = typed.current;
+      typed.current = null;
+      setDraft(null);
+      if (text !== null) write(text, context);
+    };
+  });
+  // the typing is held in the one registry of typing (input/held-draft.ts, rule G2; DEF-0514): a press elsewhere, the
+  // focus leaving or the dialog closing keep it
+  const command = entry.command.id as CommandId;
+  const held = useRef<HeldDraft | null>(null);
+  useEffect(() => {
+    const draft = heldDraft(store, input, form, command, keepHeld);
+    held.current = draft;
+    return () => {
+      draft.left();
+      held.current = null;
+    };
+  }, [store, command]);
   // Enter submits the field's form
   const keep = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (draft === null) return;
-    const typed = Number(draft);
+    typed.current = null;
     setDraft(null);
-    if (draft.trim() !== '' && Number.isFinite(typed)) run(entry, { grid, setting, value: typed });
+    write(draft);
+    held.current?.done();
   };
   return (
-    <form className="guides-grids__field" data-door={entry.ref} data-args={JSON.stringify({ grid, setting })} title={door.title} onSubmit={keep}>
+    <form ref={form} className="guides-grids__field" data-door={entry.ref} data-args={JSON.stringify({ grid, setting })} title={door.title} onSubmit={keep}>
       <label className="guides-grids__label" htmlFor={`guides-grids-${grid}-${setting}`}>
         {label}
       </label>
-      <input id={`guides-grids-${grid}-${setting}`} className="input" inputMode="decimal" spellCheck={false} disabled={!door.available} data-key-context={DIALOG_KEYS} value={draft ?? String(value)} onChange={(event) => setDraft(event.currentTarget.value)} onBlur={() => setDraft(null)} />
+      <input
+        ref={input}
+        id={`guides-grids-${grid}-${setting}`}
+        className="input"
+        inputMode="decimal"
+        spellCheck={false}
+        disabled={!door.available}
+        data-key-context={DIALOG_KEYS}
+        value={draft ?? String(value)}
+        onChange={(event) => {
+          setDraft(event.currentTarget.value);
+          typed.current = event.currentTarget.value;
+          held.current?.typed();
+        }}
+        onBlur={() => {
+          held.current?.left();
+          setDraft(null);
+        }}
+      />
     </form>
   );
 }

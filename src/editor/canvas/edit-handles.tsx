@@ -26,7 +26,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type FormEvent } from 'react';
 import { isFeatureBuilt } from '../../core/commands/registry.ts';
 import { locate, type NodeId } from '../../core/document/model.ts';
-import type { DispatchResult } from '../../core/store/store.ts';
+import type { DispatchResult, EditContext } from '../../core/store/store.ts';
 import { gapBands, lineExtent, linesOf } from '../../core/geometry/lines.ts';
 import { appliesToOf, contextPredicate, elementPredicate } from '../../core/style/applies.ts';
 import { mayBeNegative } from '../../core/style/spacing.ts';
@@ -41,6 +41,7 @@ import { editMode, handlesOf, type EditMode } from './edit-mode.ts';
 import { handleArgs, movesOffset, shadowLength, shadowOf, valueArg } from './handles.ts';
 import { lineStyles } from '../../core/style/set.ts';
 import { usePointerValue } from '../input/pointer/use-views.ts';
+import { heldDraft, type HeldDraft } from '../input/held-draft.ts';
 
 interface Box {
   readonly x: number;
@@ -223,24 +224,59 @@ function Handle({ drawn, mode, bandKey, yielded }: { readonly drawn: Drawn; read
 }
 
 // The typed field of a band clicked without a drag: its text kept with the band's command (a bare number is px).
-function TypedBand({ entry, box, value }: { readonly entry: DoorEntry; readonly box: Box; readonly value: number }) {
+// Exported for the detector that mounts it alone (tools/runner/model/drafts.test.ts).
+export function TypedBand({ entry, box, value }: { readonly entry: DoorEntry; readonly box: Box; readonly value: number }) {
   const store = useStore();
   const input = useRef<HTMLInputElement>(null);
+  const form = useRef<HTMLFormElement>(null);
   const stands = handleArgs(entry);
   const door = useDoor(entry, stands);
   useEffect(() => {
     input.current?.focus();
     input.current?.select();
   }, []);
+  // the band's command with the text the field holds, in the context the typing began in when the registry keeps it
+  const write = (context?: EditContext) => {
+    const text = input.current?.value ?? '';
+    (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...stands, [valueArg(entry)]: text }, context);
+  };
+  const writeHeld = useRef<(context: EditContext) => void>(() => undefined);
+  useEffect(() => {
+    writeHeld.current = write;
+  });
+  // the typing is held in the one registry of typing (input/held-draft.ts, rule G2; DEF-0514): a press elsewhere, the
+  // focus leaving or another band opening keep it
+  const command = entry.command.id as CommandId;
+  const held = useRef<HeldDraft | null>(null);
+  useEffect(() => {
+    const draft = heldDraft(store, input, form, command, writeHeld);
+    held.current = draft;
+    return () => {
+      draft.left();
+      held.current = null;
+    };
+  }, [store, command]);
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    const text = input.current?.value ?? '';
     typedBand.close();
-    (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...stands, [valueArg(entry)]: text });
+    write();
+    held.current?.done();
   };
   return (
-    <form className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">
-      <input ref={input} className="input" defaultValue={String(value)} aria-label={door.label} spellCheck={false} onBlur={() => typedBand.close()} data-key-context="field" />
+    <form ref={form} className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">
+      <input
+        ref={input}
+        className="input"
+        defaultValue={String(value)}
+        aria-label={door.label}
+        spellCheck={false}
+        onInput={() => held.current?.typed()}
+        onBlur={() => {
+          held.current?.left();
+          typedBand.close();
+        }}
+        data-key-context="field"
+      />
     </form>
   );
 }

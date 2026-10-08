@@ -4,7 +4,7 @@
 - **Leitor:** GRL-EST-L09b-057-03 (judge): ENT-L09b-0023
 ## Estados deixados por A
 - **V o campo do nome toma o foco.** `src/editor/shell/variables.tsx:75` `name?.focus();` — o efeito da variável recém-criada põe o foco no campo do nome.
-- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
+- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
 - **A desmontagem devolve o foco.** `src/editor/shell/popover.tsx:30` `if (dismissed && (document.activeElement === null || document.activeElement === document.body)) trigger.current?.focus();` — ao fechar, quem devolve o foco o repõe no gatilho ou no elemento guardado.
 ## Casos
 ### C1 final

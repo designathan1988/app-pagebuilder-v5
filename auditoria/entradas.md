@@ -1902,50 +1902,50 @@ Nesta área há: ouvintes do DOM e ouvintes por propriedade (`onload`, `onerror`
 
 ## ENT-L07-0026 — montagem da leitura dos valores computados das alças
 - **Tipo:** montagem
-- **Origem:** `src/editor/canvas/edit-handles.tsx:103` `useEffect(() => {`
-- **Início:** `src/editor/canvas/edit-handles.tsx:104` `const wanted = key === '' ? [] : key.split('|');`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:104` `useEffect(() => {`
+- **Início:** `src/editor/canvas/edit-handles.tsx:105` `const wanted = key === '' ? [] : key.split('|');`
 - **Fluxo:** `fluxos/ENT-L07-0026.md`
 
 ## ENT-L07-0027 — laço de quadro da leitura dos valores computados das alças
 - **Tipo:** frame
-- **Origem:** `src/editor/canvas/edit-handles.tsx:117` `request = requestAnimationFrame(measure);`
-- **Início:** `src/editor/canvas/edit-handles.tsx:115` `request = requestAnimationFrame(measure);`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:118` `request = requestAnimationFrame(measure);`
+- **Início:** `src/editor/canvas/edit-handles.tsx:116` `request = requestAnimationFrame(measure);`
 - **Fluxo:** `fluxos/ENT-L07-0027.md`
 
 ## ENT-L07-0028 — montagem da leitura das caixas dos filhos das alças
 - **Tipo:** montagem
-- **Origem:** `src/editor/canvas/edit-handles.tsx:128` `useEffect(() => {`
-- **Início:** `src/editor/canvas/edit-handles.tsx:129` `if (node === null) return;`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:129` `useEffect(() => {`
+- **Início:** `src/editor/canvas/edit-handles.tsx:130` `if (node === null) return;`
 - **Fluxo:** `fluxos/ENT-L07-0028.md`
 
 ## ENT-L07-0029 — laço de quadro da leitura das caixas dos filhos das alças
 - **Tipo:** frame
-- **Origem:** `src/editor/canvas/edit-handles.tsx:143` `request = requestAnimationFrame(measure);`
-- **Início:** `src/editor/canvas/edit-handles.tsx:141` `request = requestAnimationFrame(measure);`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:144` `request = requestAnimationFrame(measure);`
+- **Início:** `src/editor/canvas/edit-handles.tsx:142` `request = requestAnimationFrame(measure);`
 - **Fluxo:** `fluxos/ENT-L07-0029.md`
 
 ## ENT-L07-0030 — montagem do foco e da seleção do campo digitado de uma faixa
 - **Tipo:** montagem
-- **Origem:** `src/editor/canvas/edit-handles.tsx:231` `useEffect(() => {`
-- **Início:** `src/editor/canvas/edit-handles.tsx:232` `input.current?.focus();`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:234` `useEffect(() => {`
+- **Início:** `src/editor/canvas/edit-handles.tsx:235` `input.current?.focus();`
 - **Fluxo:** `fluxos/ENT-L07-0030.md`
 
 ## ENT-L07-0031 — envio do campo digitado de uma faixa
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/canvas/edit-handles.tsx:242` `<form className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">`
-- **Início:** `src/editor/canvas/edit-handles.tsx:242` `<form className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:266` `<form ref={form} className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">`
+- **Início:** `src/editor/canvas/edit-handles.tsx:266` `<form ref={form} className="chrome__band-field" style={{ left: box.x, top: box.y }} onSubmit={submit} data-band-field="">`
 - **Fluxo:** `fluxos/ENT-L07-0031.md`
 
 ## ENT-L07-0032 — fechamento do campo digitado de uma faixa ao perder o foco
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/canvas/edit-handles.tsx:243` `<input ref={input} className="input" defaultValue={String(value)} aria-label={door.label} spellCheck={false} onBlur={() => typedBand.close()} data-key-context="field" />`
-- **Início:** `src/editor/canvas/edit-handles.tsx:243` `<input ref={input} className="input" defaultValue={String(value)} aria-label={door.label} spellCheck={false} onBlur={() => typedBand.close()} data-key-context="field" />`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:274` `onBlur={() => {`
+- **Início:** `src/editor/canvas/edit-handles.tsx:274` `onBlur={() => {`
 - **Fluxo:** `fluxos/ENT-L07-0032.md`
 
 ## ENT-L07-0033 — assinatura do registro do campo digitado de uma faixa
 - **Tipo:** assinatura-de-store
-- **Origem:** `src/editor/canvas/edit-handles.tsx:285` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);`
-- **Início:** `src/editor/canvas/edit-handles.tsx:285` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);`
+- **Origem:** `src/editor/canvas/edit-handles.tsx:321` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);`
+- **Início:** `src/editor/canvas/edit-handles.tsx:321` `const typing = useSyncExternalStore(typedBand.subscribe, typedBand.get);`
 - **Fluxo:** `fluxos/ENT-L07-0033.md`
 
 ## ENT-L07-0034 — montagem do observador de tamanho da vista do quadro
@@ -3570,32 +3570,32 @@ A ocorrência do padrão P-N07 em `field.tsx` é a anotação de tipo `EditorSta
 
 ## ENT-L09a-0147 — clique no botão de adicionar guia
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/guides-grids.tsx:93` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}`
-- **Início:** `src/editor/shell/guides-grids.tsx:93` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}`
+- **Origem:** `src/editor/shell/guides-grids.tsx:95` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}`
+- **Início:** `src/editor/shell/guides-grids.tsx:95` `onClick={() => (door.available ? setOpen((was) => !was) : undefined)}`
 - **Fluxo:** `fluxos/ENT-L09a-0147.md`
 
 ## ENT-L09a-0148 — envio do formulário de adicionar guia
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/guides-grids.tsx:99` `onSubmit={submit}>`
-- **Início:** `src/editor/shell/guides-grids.tsx:76` `event.preventDefault();`
+- **Origem:** `src/editor/shell/guides-grids.tsx:101` `onSubmit={submit}>`
+- **Início:** `src/editor/shell/guides-grids.tsx:78` `event.preventDefault();`
 - **Fluxo:** `fluxos/ENT-L09a-0148.md`
 
 ## ENT-L09a-0149 — campo do lugar ao perder o foco
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/guides-grids.tsx:100` `onBlur={() => setOpen(false)} />`
-- **Início:** `src/editor/shell/guides-grids.tsx:100` `onBlur={() => setOpen(false)} />`
+- **Origem:** `src/editor/shell/guides-grids.tsx:102` `onBlur={() => setOpen(false)} />`
+- **Início:** `src/editor/shell/guides-grids.tsx:102` `onBlur={() => setOpen(false)} />`
 - **Fluxo:** `fluxos/ENT-L09a-0149.md`
 
 ## ENT-L09a-0150 — envio do formulário de uma configuração de grade
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/guides-grids.tsx:143` `title={door.title} onSubmit={keep}>`
-- **Início:** `src/editor/shell/guides-grids.tsx:136` `event.preventDefault();`
+- **Origem:** `src/editor/shell/guides-grids.tsx:175` `title={door.title} onSubmit={keep}>`
+- **Início:** `src/editor/shell/guides-grids.tsx:167` `event.preventDefault();`
 - **Fluxo:** `fluxos/ENT-L09a-0150.md`
 
 ## ENT-L09a-0151 — digitação e saída do campo de configuração
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/guides-grids.tsx:147` `onChange={(event) => setDraft(event.currentTarget.value)} onBlur={() => setDraft(null)} />`
-- **Início:** `src/editor/shell/guides-grids.tsx:147` `onChange={(event) => setDraft(event.currentTarget.value)} onBlur={() => setDraft(null)} />`
+- **Origem:** `src/editor/shell/guides-grids.tsx:193` `onBlur={() => {`
+- **Início:** `src/editor/shell/guides-grids.tsx:193` `onBlur={() => {`
 - **Fluxo:** `fluxos/ENT-L09a-0151.md`
 
 ## ENT-L09a-0152 — foco na escolha padrão de importação
@@ -3898,20 +3898,20 @@ A ocorrência do padrão P-N07 em `field.tsx` é a anotação de tipo `EditorSta
 
 ## ENT-L09b-0006 — efeito que foca o campo de um painel com autoFocus
 - **Tipo:** montagem
-- **Origem:** `src/editor/shell/panel-field.tsx:70` `useEffect(() => {`
-- **Início:** `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();`
+- **Origem:** `src/editor/shell/panel-field.tsx:75` `useEffect(() => {`
+- **Início:** `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();`
 - **Fluxo:** `fluxos/ENT-L09b-0006.md`
 
 ## ENT-L09b-0007 — digitação no campo de um painel (guarda o rascunho local)
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/panel-field.tsx:112` `onChange={(event) => {`
-- **Início:** `src/editor/shell/panel-field.tsx:113` `setEdited(true);`
+- **Origem:** `src/editor/shell/panel-field.tsx:138` `onChange={(event) => {`
+- **Início:** `src/editor/shell/panel-field.tsx:139` `setEdited(true);`
 - **Fluxo:** `fluxos/ENT-L09b-0007.md`
 
 ## ENT-L09b-0008 — saída do campo de um painel que descarta o rascunho local
 - **Tipo:** handler-jsx
-- **Origem:** `src/editor/shell/panel-field.tsx:117` `onBlur={() => setEdited(false)}`
-- **Início:** `src/editor/shell/panel-field.tsx:117` `onBlur={() => setEdited(false)}`
+- **Origem:** `src/editor/shell/panel-field.tsx:145` `onBlur={() => {`
+- **Início:** `src/editor/shell/panel-field.tsx:145` `onBlur={() => {`
 - **Fluxo:** `fluxos/ENT-L09b-0008.md`
 
 ## ENT-L09b-0009 — efeito que devolve o foco ao gatilho de um popover dispensado
@@ -4401,12 +4401,12 @@ A ocorrência do padrão P-N07 em `field.tsx` é a anotação de tipo `EditorSta
 
 ## EXC-L09b-0002
 - **Padrão:** P-N03
-- **Ocorrência:** `src/editor/shell/panel-field.tsx:95`
+- **Ocorrência:** `src/editor/shell/panel-field.tsx:114`
 - **Motivo:** o envio do formulário mantém o argumento de texto da porta do campo e a despacha; é o gatilho de uma porta de comando registrada em auditoria/entradas/portas-<domínio>.md, não uma entrada própria.
 
 ## EXC-L09b-0003
 - **Padrão:** P-N03
-- **Ocorrência:** `src/editor/shell/panel-field.tsx:170`
+- **Ocorrência:** `src/editor/shell/panel-field.tsx:194`
 - **Motivo:** o toque no botão de painel despacha a porta do botão; é o gatilho de uma porta de comando registrada em auditoria/entradas/portas-<domínio>.md, não uma entrada própria.
 
 ## EXC-L09b-0004
@@ -7747,7 +7747,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:140` `"id": "inspector-interaction-trigger",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0002.md
 - **Requisitos:** REQ-1002
 
@@ -7756,7 +7756,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:168` `"id": "inspector-interaction-action",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0003.md
 - **Requisitos:** REQ-1002
 
@@ -7765,7 +7765,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:196` `"id": "inspector-interaction-target",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0004.md
 - **Requisitos:** REQ-1002
 
@@ -7774,7 +7774,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:227` `"id": "inspector-interaction-value",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0005.md
 - **Requisitos:** REQ-1002
 
@@ -7783,7 +7783,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:255` `"id": "inspector-interaction-options",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0006.md
 - **Requisitos:** REQ-1002
 
@@ -7792,7 +7792,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:283` `"id": "inspector-interaction-scope",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** fluxos/ENT-P-events-0007.md
 - **Requisitos:** REQ-1002
 
@@ -7820,7 +7820,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:363` `"id": "inspector-interaction-new-tab",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0010.md
 - **Requisitos:** REQ-1002
 
@@ -7829,7 +7829,7 @@ Cada bloco é uma porta (entryPoint) de um comando do domínio `elements`, lida 
 - **Comando:** interactions.remove
 - **Porta:** `manifest/commands/events.json:421` `"id": "inspector-interaction-remove",`
 - **Tratador:** `src/app/commands.ts:263` `'interactions.remove': removeInteractionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** fluxos/ENT-P-events-0011.md
 - **Requisitos:** REQ-1003
 
@@ -9692,7 +9692,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.add
 - **Porta:** `manifest/commands/motion.json:85` `"id": "inspector-motion-add",`
 - **Tratador:** `src/app/commands.ts:264` `'motion.add': addMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0001.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1601
 
@@ -9701,7 +9701,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:175` `"id": "inspector-motion-trigger",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0002.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9710,7 +9710,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:203` `"id": "inspector-motion-timeline",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0003.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9719,7 +9719,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:231` `"id": "inspector-motion-control",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0004.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9728,7 +9728,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:259` `"id": "inspector-motion-leave",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0005.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9737,7 +9737,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:287` `"id": "inspector-motion-scope",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0006.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9746,7 +9746,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:315` `"id": "inspector-motion-once",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0007.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9755,7 +9755,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:343` `"id": "inspector-motion-delay",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0008.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9764,7 +9764,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:371` `"id": "inspector-motion-breakpoints",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0009.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9773,7 +9773,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:399` `"id": "inspector-motion-reduced-motion",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0010.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9782,7 +9782,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:427` `"id": "inspector-motion-key",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0011.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9791,7 +9791,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:455` `"id": "inspector-motion-threshold",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0012.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9800,7 +9800,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:483` `"id": "inspector-motion-milliseconds",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0013.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9809,7 +9809,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:511` `"id": "inspector-motion-direction",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0014.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9818,7 +9818,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:539` `"id": "inspector-motion-axis",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0015.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9827,7 +9827,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:567` `"id": "inspector-motion-breakpoint",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0016.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9836,7 +9836,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:595` `"id": "inspector-motion-seconds",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0017.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9845,7 +9845,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:623` `"id": "inspector-motion-state",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0018.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9854,7 +9854,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:651` `"id": "inspector-motion-event",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0019.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9863,7 +9863,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:679` `"id": "inspector-motion-scroll-start",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0020.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9872,7 +9872,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.update
 - **Porta:** `manifest/commands/motion.json:707` `"id": "inspector-motion-scroll-end",`
 - **Tratador:** `src/app/commands.ts:265` `'motion.update': updateMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1602
 
@@ -9881,7 +9881,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.remove
 - **Porta:** `manifest/commands/motion.json:765` `"id": "inspector-motion-remove",`
 - **Tratador:** `src/app/commands.ts:266` `'motion.remove': removeMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1603
 
@@ -9890,7 +9890,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.createTimeline
 - **Porta:** `manifest/commands/motion.json:822` `"id": "timeline-motion-new-timeline",`
 - **Tratador:** `src/app/commands.ts:267` `'motion.createTimeline': createTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0023.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1604
 
@@ -9899,7 +9899,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.renameTimeline
 - **Porta:** `manifest/commands/motion.json:885` `"id": "timeline-motion-timeline-name",`
 - **Tratador:** `src/app/commands.ts:268` `'motion.renameTimeline': renameTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0024.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1605
 
@@ -9908,7 +9908,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.deleteTimeline
 - **Porta:** `manifest/commands/motion.json:942` `"id": "timeline-motion-timeline-delete",`
 - **Tratador:** `src/app/commands.ts:269` `'motion.deleteTimeline': deleteTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0025.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1606
 
@@ -9917,7 +9917,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.openTimeline
 - **Porta:** `manifest/commands/motion.json:994` `"id": "timeline-motion-timeline-row",`
 - **Tratador:** `src/app/commands.ts:270` `'motion.openTimeline': openTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0026.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1607
 
@@ -9926,7 +9926,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.addAction
 - **Porta:** `manifest/commands/motion.json:1090` `"id": "timeline-motion-add-action-after",`
 - **Tratador:** `src/app/commands.ts:271` `'motion.addAction': addActionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0027.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1608
 
@@ -9935,7 +9935,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.addAction
 - **Porta:** `manifest/commands/motion.json:1118` `"id": "timeline-motion-add-action-with",`
 - **Tratador:** `src/app/commands.ts:271` `'motion.addAction': addActionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0028.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1608
 
@@ -9944,7 +9944,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.addAction
 - **Porta:** `manifest/commands/motion.json:1146` `"id": "timeline-motion-add-action-at",`
 - **Tratador:** `src/app/commands.ts:271` `'motion.addAction': addActionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0029.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1608
 
@@ -9953,7 +9953,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1238` `"id": "timeline-motion-action-kind",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0030.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -9962,7 +9962,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1266` `"id": "timeline-motion-action-target",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0031.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -9971,7 +9971,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1294` `"id": "timeline-motion-action-target-value",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0032.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -9980,7 +9980,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1322` `"id": "timeline-motion-action-start",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0033.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -9989,7 +9989,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1350` `"id": "timeline-motion-action-duration",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0034.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -9998,7 +9998,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1378` `"id": "timeline-motion-action-easing",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0035.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10007,7 +10007,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1406` `"id": "timeline-motion-action-repeat",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0036.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10016,7 +10016,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1434` `"id": "timeline-motion-action-stagger-each",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0037.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10025,7 +10025,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1462` `"id": "timeline-motion-action-stagger-from",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0038.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10034,7 +10034,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1490` `"id": "timeline-motion-action-yoyo",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0039.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10043,7 +10043,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.updateAction
 - **Porta:** `manifest/commands/motion.json:1518` `"id": "timeline-motion-action-pick",`
 - **Tratador:** `src/app/commands.ts:272` `'motion.updateAction': MOTION_UPDATE_ACTION,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0040.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1609
 
@@ -10071,7 +10071,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setEffectOption
 - **Porta:** `manifest/commands/motion.json:1682` `"id": "timeline-motion-effect-option",`
 - **Tratador:** `src/app/commands.ts:273` `'motion.setEffectOption': setEffectOptionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0043.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1610
 
@@ -10080,7 +10080,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.removeActions
 - **Porta:** `manifest/commands/motion.json:1748` `"id": "timeline-motion-actions-delete",`
 - **Tratador:** `src/app/commands.ts:274` `'motion.removeActions': removeActionsCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0044.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1611
 
@@ -10169,7 +10169,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.zoomTimeline
 - **Porta:** `manifest/commands/motion.json:2187` `"id": "timeline-motion-zoom-in",`
 - **Tratador:** `src/app/commands.ts:279` `'motion.zoomTimeline': zoomTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0053.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1616
 
@@ -10178,7 +10178,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.zoomTimeline
 - **Porta:** `manifest/commands/motion.json:2215` `"id": "timeline-motion-zoom-out",`
 - **Tratador:** `src/app/commands.ts:279` `'motion.zoomTimeline': zoomTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0054.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1616
 
@@ -10187,7 +10187,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.toggleSnap
 - **Porta:** `manifest/commands/motion.json:2261` `"id": "timeline-motion-snap",`
 - **Tratador:** `src/app/commands.ts:280` `'motion.toggleSnap': toggleSnapCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0055.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1617
 
@@ -10196,7 +10196,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.addMarker
 - **Porta:** `manifest/commands/motion.json:2323` `"id": "timeline-motion-add-marker",`
 - **Tratador:** `src/app/commands.ts:281` `'motion.addMarker': addMarkerCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0056.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1618
 
@@ -10215,7 +10215,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.renameMarker
 - **Porta:** `manifest/commands/motion.json:2465` `"id": "timeline-motion-marker-name",`
 - **Tratador:** `src/app/commands.ts:283` `'motion.renameMarker': renameMarkerCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0058.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1620
 
@@ -10224,7 +10224,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.removeMarker
 - **Porta:** `manifest/commands/motion.json:2531` `"id": "timeline-motion-marker-remove",`
 - **Tratador:** `src/app/commands.ts:284` `'motion.removeMarker': removeMarkerCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0059.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1621
 
@@ -10233,7 +10233,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setKeyframe
 - **Porta:** `manifest/commands/motion.json:2610` `"id": "timeline-motion-add-keyframe",`
 - **Tratador:** `src/app/commands.ts:285` `'motion.setKeyframe': setKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0060.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1622
 
@@ -10242,7 +10242,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setKeyframe
 - **Porta:** `manifest/commands/motion.json:2636` `"id": "timeline-motion-add-property",`
 - **Tratador:** `src/app/commands.ts:285` `'motion.setKeyframe': setKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0061.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1622
 
@@ -10251,7 +10251,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.editKeyframe
 - **Porta:** `manifest/commands/motion.json:2728` `"id": "timeline-motion-keyframe-value",`
 - **Tratador:** `src/app/commands.ts:286` `'motion.editKeyframe': editKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0062.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1623
 
@@ -10260,7 +10260,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.editKeyframe
 - **Porta:** `manifest/commands/motion.json:2756` `"id": "timeline-motion-keyframe-easing",`
 - **Tratador:** `src/app/commands.ts:286` `'motion.editKeyframe': editKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0063.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1623
 
@@ -10269,7 +10269,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.editKeyframe
 - **Porta:** `manifest/commands/motion.json:2784` `"id": "timeline-motion-keyframe-time",`
 - **Tratador:** `src/app/commands.ts:286` `'motion.editKeyframe': editKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0064.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1623
 
@@ -10278,7 +10278,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.editKeyframe
 - **Porta:** `manifest/commands/motion.json:2812` `"id": "timeline-motion-keyframe-property",`
 - **Tratador:** `src/app/commands.ts:286` `'motion.editKeyframe': editKeyframeCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0065.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1623
 
@@ -10297,7 +10297,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.deleteKeyframes
 - **Porta:** `manifest/commands/motion.json:2970` `"id": "timeline-motion-keyframes-delete",`
 - **Tratador:** `src/app/commands.ts:288` `'motion.deleteKeyframes': deleteKeyframesCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0067.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1625
 
@@ -10306,7 +10306,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.copyKeyframes
 - **Porta:** `manifest/commands/motion.json:3016` `"id": "timeline-motion-keyframes-copy",`
 - **Tratador:** `src/app/commands.ts:289` `'motion.copyKeyframes': copyMotionKeyframesCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0068.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1626
 
@@ -10315,7 +10315,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.pasteKeyframes
 - **Porta:** `manifest/commands/motion.json:3089` `"id": "timeline-motion-keyframes-paste",`
 - **Tratador:** `src/app/commands.ts:290` `'motion.pasteKeyframes': pasteKeyframesCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0069.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1627
 
@@ -10324,7 +10324,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.toggleRecord
 - **Porta:** `manifest/commands/motion.json:3135` `"id": "timeline-motion-record",`
 - **Tratador:** `src/app/commands.ts:291` `'motion.toggleRecord': toggleRecordCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0070.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1628
 
@@ -10333,7 +10333,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.preview
 - **Porta:** `manifest/commands/motion.json:3191` `"id": "timeline-motion-play",`
 - **Tratador:** `src/app/commands.ts:292` `'motion.preview': previewMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0071.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1629
 
@@ -10342,7 +10342,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.preview
 - **Porta:** `manifest/commands/motion.json:3219` `"id": "timeline-motion-pause",`
 - **Tratador:** `src/app/commands.ts:292` `'motion.preview': previewMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0072.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1629
 
@@ -10351,7 +10351,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.preview
 - **Porta:** `manifest/commands/motion.json:3247` `"id": "timeline-motion-stop",`
 - **Tratador:** `src/app/commands.ts:292` `'motion.preview': previewMotionCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0073.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1629
 
@@ -10369,7 +10369,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3367` `"id": "inspector-motion-behaviour-sticky",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0075.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10378,7 +10378,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3398` `"id": "inspector-motion-behaviour-scroll-snap",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0076.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10387,7 +10387,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3431` `"id": "inspector-motion-behaviour-smooth-scroll",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0077.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10396,7 +10396,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3459` `"id": "inspector-motion-behaviour-parallax",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0078.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10405,7 +10405,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3487` `"id": "inspector-motion-behaviour-marquee",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0079.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10414,7 +10414,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3515` `"id": "inspector-motion-behaviour-cursor-follow",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0080.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10423,7 +10423,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3543` `"id": "inspector-motion-behaviour-amount",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-motion-0081.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10432,7 +10432,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3569` `"id": "inspector-motion-behaviour-axis-x",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0082.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10441,7 +10441,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.setBehaviour
 - **Porta:** `manifest/commands/motion.json:3597` `"id": "inspector-motion-behaviour-axis-y",`
 - **Tratador:** `src/app/commands.ts:294` `'motion.setBehaviour': setBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0083.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1631
 
@@ -10450,7 +10450,7 @@ Fonte: `manifest/commands/motion.json`. Uma porta por bloco, na ordem do manifes
 - **Comando:** motion.removeBehaviour
 - **Porta:** `manifest/commands/motion.json:3660` `"id": "inspector-motion-behaviour-remove",`
 - **Tratador:** `src/app/commands.ts:295` `'motion.removeBehaviour': removeBehaviourCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Fluxo:** `fluxos/ENT-P-motion-0084.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-1632
 
@@ -10924,7 +10924,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.setLanguage
 - **Porta:** `manifest/commands/project.json:714` `"id": "inspector-project-language",`
 - **Tratador:** `src/app/commands.ts:347` `'project.setLanguage': setProjectLanguage,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-project-0021.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2009
 
@@ -10933,7 +10933,7 @@ Fonte: `manifest/commands/project.json`. Uma porta por bloco, na ordem do manife
 - **Comando:** project.setCodeLanguage
 - **Porta:** `manifest/commands/project.json:770` `"id": "inspector-code-language",`
 - **Tratador:** `src/app/commands.ts:348` `'project.setCodeLanguage': setCodeLanguage,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Fluxo:** `fluxos/ENT-P-project-0022.md` (o arquivo entra na Fase 5)
 - **Requisitos:** REQ-2010
 

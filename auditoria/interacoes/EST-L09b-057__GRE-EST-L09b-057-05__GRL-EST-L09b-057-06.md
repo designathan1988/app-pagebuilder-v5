@@ -4,7 +4,7 @@
 - **Leitor:** GRL-EST-L09b-057-06 (usePreviewModal): ENT-L09b-0035
 ## Estados deixados por A
 - **V o diálogo do seletor toma o foco.** `src/editor/shell/link-picker.tsx:56` `if (open !== null) panel.current?.focus();` — o efeito da abertura põe o foco no diálogo.
-- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:71` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
+- **A recusa natural deixa o foco onde está.** `src/editor/shell/panel-field.tsx:76` `if (autoFocus) input.current?.focus();` — a guarda do efeito decide antes de escrever: sem a condição, o foco não muda.
 - **A desmontagem devolve o foco.** `src/editor/shell/popover.tsx:30` `if (dismissed && (document.activeElement === null || document.activeElement === document.body)) trigger.current?.focus();` — ao fechar, quem devolve o foco o repõe no gatilho ou no elemento guardado.
 ## Casos
 ### C1 final

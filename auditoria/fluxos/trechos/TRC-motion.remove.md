@@ -28,7 +28,7 @@
 - R3: `src/core/motion/commands.ts:253` `  if (locked !== null) return { kind: 'refused', message: locked };` — com trava recusa `status.locked.edit`; sem trava segue ao passo 10.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:247`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:247`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L01-031 (`state.selection`).

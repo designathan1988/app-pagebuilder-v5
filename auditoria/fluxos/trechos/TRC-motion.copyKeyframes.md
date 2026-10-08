@@ -25,7 +25,7 @@
 - R1: `src/editor/motion/state.ts:155` `  if (found === null || (motion.selectedKeyframes ?? []).length === 0) return { kind: 'refused', message: message('status.motion.nothingSelected') };` — sem timeline mostrada ou sem quadro-chave selecionado recusa `status.motion.nothingSelected`; com os dois segue ao passo 9.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/editor/motion/state.ts:151`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o clique da porta panel-control (`src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/editor/motion/state.ts:151`) e o `run` da store (`src/core/store/store.ts:399` `  const run = <Id extends CommandId>(id: Id, args: CommandArgs[Id], gesture: OpenGesture | null, confirmed = false, ownedGroup: OpenGesture | null = null, at?: EditContext): DispatchResult => {`) são síncronos; o clique da porta panel-control (`src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L08-019 (`ui.motion.selectedKeyframes`).

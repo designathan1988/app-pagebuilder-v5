@@ -2,15 +2,15 @@
 - **Comando:** motion.deleteTimeline
 - **Porta:** `manifest/commands/motion.json:942` `"id": "timeline-motion-timeline-delete",`
 - **Tratador:** `src/app/commands.ts:269` `'motion.deleteTimeline': deleteTimelineCommand,`
-- **Início:** `src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
+- **Início:** `src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`
 - **Trecho:** TRC-motion.deleteTimeline
 
 ## Passos
-1. `src/editor/shell/panel-field.tsx:157` `  const door = useDoor(entry, args, label);` — o botão lê a porta (o rótulo, a disponibilidade, se é a corrente).
-2. `src/editor/shell/panel-field.tsx:159` `  const ready = door.available && !disabled;` — só uma porta disponível despacha.
-3. `src/editor/shell/panel-field.tsx:170` `      onClick={() => {` — o toque no botão.
-4. `src/editor/shell/panel-field.tsx:171` `        if (!ready) return;` — porta indisponível não despacha.
-5. `src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });` — o botão despacha motion.deleteTimeline com os argumentos da porta e os do desenho; esta é a linha de Início da porta.
+1. `src/editor/shell/panel-field.tsx:188` `  const door = useDoor(entry, args, label);` — o botão lê a porta (o rótulo, a disponibilidade, se é a corrente).
+2. `src/editor/shell/panel-field.tsx:190` `  const ready = door.available && !disabled;` — só uma porta disponível despacha.
+3. `src/editor/shell/panel-field.tsx:201` `      onClick={() => {` — o toque no botão.
+4. `src/editor/shell/panel-field.tsx:202` `        if (!ready) return;` — porta indisponível não despacha.
+5. `src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });` — o botão despacha motion.deleteTimeline com os argumentos da porta e os do desenho; esta é a linha de Início da porta.
 6. `src/editor/store.ts:233` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
 7. `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
 8. `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo.
@@ -19,7 +19,7 @@
 11. `src/app/commands.ts:269` `'motion.deleteTimeline': deleteTimelineCommand,` — a tabela liga o id ao tratador; o trecho TRC-motion.deleteTimeline continua daqui.
 
 ## Ramos
-- A disponibilidade do botão: `src/editor/shell/panel-field.tsx:171` `        if (!ready) return;` — porta indisponível não despacha; disponível segue ao passo 5.
+- A disponibilidade do botão: `src/editor/shell/panel-field.tsx:202` `        if (!ready) return;` — porta indisponível não despacha; disponível segue ao passo 5.
 - O gesto aberto na store do editor: `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto, o despacho segue; com gesto e um comando que muda o documento, a gravação é adiada (a linha 224).
 
 ## Fronteiras assíncronas

@@ -3509,11 +3509,11 @@
 
 ### `src/editor/canvas/edit-handles.tsx`
 - **Lote:** L07
-- **Linhas:** 407
-- **SHA1:** 54a942dbcf9394b2db386b0e7876f71556257494
-- **Partes lidas:** 1-407
+- **Linhas:** 443
+- **SHA1:** a6e4b4b00053d37914589a6e933c6918ed279e57
+- **Partes lidas:** 1-443
 - **Propósito:** Desenha as alças de um modo de edição no canvas sobre o elemento selecionado: faixas de espaçamento e de vão, canto do raio, bordas, sombra e o divisor de colunas, com os valores lidos a cada quadro.
-- **Âncora:** `src/editor/canvas/edit-handles.tsx:51` `const MIN_BAND = numberConstant('spacing.minBand');`
+- **Âncora:** `src/editor/canvas/edit-handles.tsx:52` `const MIN_BAND = numberConstant('spacing.minBand');`
 
 ### `src/editor/canvas/edit-mode.ts`
 - **Lote:** L07
@@ -4202,6 +4202,14 @@
 - **Partes lidas:** 1-186
 - **Propósito:** o arrasto de arquivo do sistema operacional: uma imagem sobre o canvas publica a proposta de criação e a solta insere ou substitui; um arquivo solto na zona de pasta do Explorer sobe.
 - **Âncora:** `src/editor/input/file-drop.ts:116` `export function installOsFileDrop(store: EditorStore, win: Window, inside: boolean): () => void {`
+
+### `src/editor/input/held-draft.ts`
+- **Lote:** L05a
+- **Linhas:** 53
+- **SHA1:** 9cc56f56f6f4aa1ec8f1cfc76b92a4aa1d4c7d64
+- **Partes lidas:** 1-53
+- **Propósito:** Ponto único dos campos de valor que guardam o rascunho no próprio estado (DEF-0514): seguram a digitação no registro de pendências com o contexto da primeira tecla, gravam ao perder o foco ou sair e soltam depois do Enter; typedNumber converte o texto no número que o comando declara, sem julgar (DEF-0515).
+- **Âncora:** `src/editor/input/held-draft.ts:8` `import type { RefObject } from 'react';`
 
 ### `src/editor/input/key-caps.ts`
 - **Lote:** L05a
@@ -5269,11 +5277,11 @@
 
 ### `src/editor/shell/guides-grids.tsx`
 - **Lote:** L09a
-- **Linhas:** 192
-- **SHA1:** 8cda24c1e4411471fb1b3fab69d807c9438f9109
-- **Partes lidas:** 1-192
+- **Linhas:** 242
+- **SHA1:** 8a3d942f46c7584f1750d8584442a1f6d2da3870
+- **Partes lidas:** 1-242
 - **Propósito:** O diálogo de guias e grades: as seções com interruptores, adicionar guia por eixo com campo de posição, a lista de guias da página com remover e os campos das configurações de cada grade.
-- **Âncora:** `src/editor/shell/guides-grids.tsx:32` `const DIALOG = 'guides-grids';`
+- **Âncora:** `src/editor/shell/guides-grids.tsx:33` `const DIALOG = 'guides-grids';`
 
 ### `src/editor/shell/html-import.tsx`
 - **Lote:** L09a
@@ -5381,11 +5389,11 @@
 
 ### `src/editor/shell/panel-field.tsx`
 - **Lote:** L09b
-- **Linhas:** 180
-- **SHA1:** 01e98c1d15dae327e88ad9671ae01d160b02e8aa
-- **Partes lidas:** 1-180
+- **Linhas:** 211
+- **SHA1:** 922baf4a33588a9dc89c6b7b067aa222b24754ca
+- **Partes lidas:** 1-211
 - **Propósito:** O campo de texto de um painel (PanelField) e o botão de painel (PanelButton): o controle de uma porta panel-control desenhado como o manifesto diz, com o argumento de texto lido do próprio contrato da porta, a lista de valores oferecidos como datalist, o rascunho que some ao sair do campo e o botão de curva de easing.
-- **Âncora:** `src/editor/shell/panel-field.tsx:33` `export function PanelField({`
+- **Âncora:** `src/editor/shell/panel-field.tsx:35` `export function PanelField({`
 
 ### `src/editor/shell/panels.css`
 - **Lote:** L09b
@@ -9166,7 +9174,7 @@
 ### `tools/lint/interactive-allowed.ts`
 - **Lote:** L23
 - **Linhas:** 98
-- **SHA1:** e89afafb407ec1d86fc21027ade90531c861c185
+- **SHA1:** ef10b08d10794def51a3cce610cd59b479d55371
 - **Partes lidas:** 1-98
 - **Propósito:** Lista das exceções da regra builder/interactive-owner (MEC-08): 81 elementos interativos sem porta nem data-local, cada um com categoria (structural, local, door-part) e motivo.
 - **Âncora:** `tools/lint/interactive-allowed.ts:10` `export interface AllowedInteractive {`
@@ -9483,6 +9491,14 @@
 - **Propósito:** Grupo composer dos detectores (MEC-07, DEF-0512): a camada do Layout Composer montada em happy-dom, com quadros controlados pelo teste e um iframe registrado como canvas; reaberta com a geometria mudada, o primeiro desenho não usa a caixa da sessão anterior (M51).
 - **Âncora:** `tools/runner/model/composer.test.ts:9` `import { act, createElement } from 'react';`
 
+### `tools/runner/model/drafts.test.ts`
+- **Lote:** L23
+- **Linhas:** 184
+- **SHA1:** 40ab5a452c875253cccbe901dba128668bcfd1b6
+- **Partes lidas:** 1-184
+- **Propósito:** Grupo drafts dos detectores (MEC-12): o campo de painel, a banda digitada e o campo das grades montados em happy-dom; o valor digitado é gravado num toque fora e na perda de foco (G2), com o Enter como controle; texto vazio ou não numérico chega ao comando, que recusa com aviso (G3); M52 a M56.
+- **Âncora:** `tools/runner/model/drafts.test.ts:10` `import { act, createElement, type ReactElement } from 'react';`
+
 ### `tools/runner/model/fields.test.ts`
 - **Lote:** L23
 - **Linhas:** 118
@@ -9605,9 +9621,9 @@
 
 ### `tools/runner/mutants.ts`
 - **Lote:** L23
-- **Linhas:** 141
-- **SHA1:** f29dad0e74e9ecf19e15f5b2009e3e7f357604aa
-- **Partes lidas:** 1-141
+- **Linhas:** 146
+- **SHA1:** 11fb345ed1431529ab8ff6f7d5c901697f963c0e
+- **Partes lidas:** 1-146
 - **Propósito:** Catálogo de mutantes plantados (MEC-02), cada um com o trecho trocado, a regra que quebra, a origem e os detectores que o alcançam, e o plugin do Vite que faz a troca na carga do módulo.
 - **Âncora:** `tools/runner/mutants.ts:9` `import fs from 'node:fs';`
 

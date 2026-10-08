@@ -5,7 +5,9 @@
 // door with what it holds; what the document holds is shown again as soon as the field is left. The values the door
 // offers are drawn as a datalist, so the person may pick one or type their own.
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import type { EditContext } from '../../core/store/store.ts';
 import type { CommandId } from '../../generated/ids.ts';
+import { heldDraft, type HeldDraft } from '../input/held-draft.ts';
 import { GENERATED_VALUES } from '../../generated/value-lists.ts';
 import type { DoorEntry } from '../../manifest/runtime.ts';
 import type { DispatchResult } from '../../core/store/store.ts';
@@ -67,28 +69,52 @@ export function PanelField({
   const [draft, setDraft] = useState(value);
   const [edited, setEdited] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+  const row = useRef<HTMLDivElement>(null);
+  // the text typed now, for the keep the registry runs outside a render (a press elsewhere, the focus leaving)
+  const typed = useRef(value);
   useEffect(() => {
     if (autoFocus) input.current?.focus();
   }, [autoFocus]);
   const list = offered ?? [];
   const id = `panel-field-${entry.ref.replaceAll('#', '-')}-${String(args.animation ?? args.interaction ?? '')}`;
-  // the door run with a text in its free argument (typed and kept, or a curve chosen beside the field)
-  const runWith = (chosen: string) => {
+  // the door run with a text in its free argument (typed and kept, or a curve chosen beside the field), in the context
+  // the typing began in when the registry keeps it
+  const runWith = (chosen: string, context?: EditContext) => {
     const argument = textArgument(entry, args);
     if (argument === null || chosen === value) return;
-    const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });
+    const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);
     if (outcome.status === 'done') onDone?.();
   };
+  // the typing is held in the one registry of typing (input/held-draft.ts, rule G2): a press elsewhere, a command from
+  // outside, the focus leaving or the field going keep it; what the document holds shows again once it is kept
+  const keepHeld = useRef<(context: EditContext) => void>(() => undefined);
+  useEffect(() => {
+    keepHeld.current = (context) => {
+      setEdited(false);
+      runWith(accept === undefined ? typed.current : accept(typed.current), context);
+    };
+  });
+  const command = entry.command.id as CommandId;
+  const held = useRef<HeldDraft | null>(null);
+  useEffect(() => {
+    const draft = heldDraft(store, input, row, command, keepHeld);
+    held.current = draft;
+    return () => {
+      draft.left();
+      held.current = null;
+    };
+  }, [store, command]);
   const keep = (event: FormEvent) => {
     event.preventDefault();
     // nothing typed since the field last showed the document's value: nothing to keep (the draft is that old value)
     if (!edited) return;
     setEdited(false);
     runWith(accept === undefined ? draft : accept(draft));
+    held.current?.done();
   };
   const ready = door.built && !disabled;
   return (
-    <div className={`field-row panel-field${ready ? '' : ' is-unavailable'}`} data-door={entry.ref} data-args={JSON.stringify({ ...entry.door.args, ...args })} title={door.title}>
+    <div ref={row} className={`field-row panel-field${ready ? '' : ' is-unavailable'}`} data-door={entry.ref} data-args={JSON.stringify({ ...entry.door.args, ...args })} title={door.title}>
       <label className="field-row__label" htmlFor={`${id}-input`}>
         {label}
       </label>
@@ -112,9 +138,14 @@ export function PanelField({
           onChange={(event) => {
             setEdited(true);
             setDraft(event.target.value);
+            typed.current = event.target.value;
+            held.current?.typed();
           }}
-          // left without keeping it, the typing goes and the document's value shows again (the audit's FD2)
-          onBlur={() => setEdited(false)}
+          // left, the typing is kept (rule G2, DEF-0514), and the document's value shows again (the audit's FD2)
+          onBlur={() => {
+            held.current?.left();
+            setEdited(false);
+          }}
         />
         {/* the curve that applies: the value, else what the empty field shows it takes (its placeholder) */}
         {curve ? <EasingCurveButton value={value === '' && placeholder !== undefined ? placeholder : value} label={label} disabled={!ready} run={runWith} /> : null}

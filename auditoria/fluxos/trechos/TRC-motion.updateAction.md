@@ -45,7 +45,7 @@
 - R5: `src/core/motion/commands.ts:423` `    if (JSON.stringify(next) === JSON.stringify(held)) return { kind: 'change', ...ui };` — valor que não muda a ação: nada no documento, mas o modo de escolha sai; mudada segue ao passo 24.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:413`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; as portas panel-control (`src/editor/shell/panel-field.tsx:79` `const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`) e a porta de clique no canvas (`src/editor/input/pointer/effects.ts:254` `if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);`) não interpõem await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:413`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; as portas panel-control (`src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`) e a porta de clique no canvas (`src/editor/input/pointer/effects.ts:254` `if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);`) não interpõem await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`), EST-L01-031 (`state.selection`), EST-L08-019 (`ui.motion.picking`).

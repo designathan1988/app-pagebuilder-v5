@@ -28,7 +28,7 @@
 - R2: `src/core/motion/commands.ts:285` `  if (uses.interactions + uses.actions > 0) return { kind: 'refused', message: message('status.motion.timelineInUse', { name: found.timeline.name, count: uses.interactions + uses.actions }) };` — timeline tocada por alguma interação ou controlada por alguma ação recusa `status.motion.timelineInUse`; sem uso segue ao passo 10.
 
 ## Fronteiras assíncronas
-- nenhuma — o tratador (`src/core/motion/commands.ts:280`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:172` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
+- nenhuma — o tratador (`src/core/motion/commands.ts:280`) e o `run` da store (`src/core/store/store.ts:378`) são síncronos; o despacho da porta panel-control (`src/editor/shell/panel-field.tsx:203` `        const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args });`) não interpõe await, timer nem quadro.
 
 ## Estado
 - Lê: EST-L01-030 (`state.document`).

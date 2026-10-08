@@ -2,19 +2,19 @@
 - **Comando:** interactions.update
 - **Porta:** `manifest/commands/events.json:255` `          "id": "inspector-interaction-options",`
 - **Tratador:** `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,`
-- **Início:** `src/editor/shell/panel-field.tsx:79` `    const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });`
+- **Início:** `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);`
 - **Trecho:** TRC-interactions.update
 
 ## Passos
-1. `src/editor/shell/panel-field.tsx:95` `      <form className="panel-field__form" onSubmit={keep}>` — o campo é um formulário de um só input; o Enter o submete e o roda com o que ele guarda.
-2. `src/editor/shell/panel-field.tsx:82` `  const keep = (event: FormEvent) => {` — o submetedor do formulário.
-3. `src/editor/shell/panel-field.tsx:85` `    if (!edited) return;` — sem digitação desde que o campo mostrou o valor do documento, nada a guardar.
-4. `src/editor/shell/panel-field.tsx:87` `    runWith(accept === undefined ? draft : accept(draft));` — o texto guardado é levado ao comando pelo `accept` do campo (a porta das opções põe as palavras na forma do comando).
-5. `src/editor/shell/panel-field.tsx:76` `  const runWith = (chosen: string) => {` — a rotina que roda a porta com um texto.
-6. `src/editor/shell/panel-field.tsx:77` `    const argument = textArgument(entry, args);` — o único argumento do comando que nem a porta nem o desenho dão é `changes`.
-7. `src/editor/shell/panel-field.tsx:19` `  const free = Object.keys(entry.command.args).filter((name) => !(name in entry.door.args) && !(name in given));` — a porta fixa `field` e o desenho dá `interaction`; sobra `changes`.
-8. `src/editor/shell/panel-field.tsx:78` `    if (argument === null || chosen === value) return;` — sem argumento livre, ou texto igual ao do documento, nada despacha.
-9. `src/editor/shell/panel-field.tsx:79` `    const outcome = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen });` — o campo despacha interactions.update com `field: "options"`, `interaction` e `changes`; esta é a linha de Início da porta.
+1. `src/editor/shell/panel-field.tsx:121` `      <form className="panel-field__form" onSubmit={keep}>` — o campo é um formulário de um só input; o Enter o submete e o roda com o que ele guarda.
+2. `src/editor/shell/panel-field.tsx:107` `  const keep = (event: FormEvent) => {` — o submetedor do formulário.
+3. `src/editor/shell/panel-field.tsx:110` `    if (!edited) return;` — sem digitação desde que o campo mostrou o valor do documento, nada a guardar.
+4. `src/editor/shell/panel-field.tsx:112` `    runWith(accept === undefined ? draft : accept(draft));` — o texto guardado é levado ao comando pelo `accept` do campo (a porta das opções põe as palavras na forma do comando).
+5. `src/editor/shell/panel-field.tsx:82` `const runWith = (chosen: string, context?: EditContext) => {` — a rotina que roda a porta com um texto.
+6. `src/editor/shell/panel-field.tsx:83` `    const argument = textArgument(entry, args);` — o único argumento do comando que nem a porta nem o desenho dão é `changes`.
+7. `src/editor/shell/panel-field.tsx:21` `  const free = Object.keys(entry.command.args).filter((name) => !(name in entry.door.args) && !(name in given));` — a porta fixa `field` e o desenho dá `interaction`; sobra `changes`.
+8. `src/editor/shell/panel-field.tsx:84` `    if (argument === null || chosen === value) return;` — sem argumento livre, ou texto igual ao do documento, nada despacha.
+9. `src/editor/shell/panel-field.tsx:85` `const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);` — o campo despacha interactions.update com `field: "options"`, `interaction` e `changes`; esta é a linha de Início da porta.
 10. `src/editor/store.ts:233` `    dispatch: (id, args, context) => {` — o despacho entra na store do editor, que guarda a digitação e prende o contexto. [lê: EST-L05a-038 via gestureSafe]
 11. `src/editor/store.ts:235` `      const at = context ?? beforeCommand(id, args, changesDocument);` — a digitação pendente, se houver, é guardada antes do comando. [lê: EST-L05a-001 via beforeCommand]
 12. `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto aberto o despacho segue para a store do núcleo. [escreve: EST-L01-030 via dispatch]
@@ -23,8 +23,8 @@
 15. `src/app/commands.ts:262` `'interactions.update': INTERACTIONS_UPDATE,` — a tabela liga o id ao tratador; o trecho TRC-interactions.update continua daqui.
 
 ## Ramos
-- Sem digitação por guardar: `src/editor/shell/panel-field.tsx:85` `    if (!edited) return;` — lado verdadeiro (nada digitado desde o valor do documento): nada despacha; lado falso: segue.
-- Texto igual ao do documento: `src/editor/shell/panel-field.tsx:78` `    if (argument === null || chosen === value) return;` — lado verdadeiro: nada despacha; lado falso: segue ao passo 9.
+- Sem digitação por guardar: `src/editor/shell/panel-field.tsx:110` `    if (!edited) return;` — lado verdadeiro (nada digitado desde o valor do documento): nada despacha; lado falso: segue.
+- Texto igual ao do documento: `src/editor/shell/panel-field.tsx:84` `    if (argument === null || chosen === value) return;` — lado verdadeiro: nada despacha; lado falso: segue ao passo 9.
 - O gesto aberto na store do editor: `src/editor/store.ts:238` `      if (open === null) result = store.dispatch(id, args, at);` — sem gesto o despacho segue à store do núcleo; com gesto aberto e um comando que muda o documento (interactions.update é desfazível), a gravação é adiada em `src/editor/store.ts:244` `        waiting.push(() => void store.dispatch(id, args, asked));`.
 
 ## Fronteiras assíncronas
