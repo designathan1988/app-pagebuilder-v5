@@ -1,0 +1,16 @@
+{
+  "mutante": "M09",
+  "aplicado": "M09",
+  "acusou": true,
+  "execucoes": 115,
+  "conta": {
+    "passos": 1921,
+    "entradasMax": 21,
+    "desfeitos": 189,
+    "fusoes": 86,
+    "gestos": 115,
+    "digitacoes": 137
+  },
+  "ms": 261,
+  "falha": "Property failed after 60 tests\n{ seed: 20261008, path: \"59:2:2:2:4:5:8:8:8\", endOnFailure: true }\nCounterexample: [\"aurora\",Selecionar(0),Rajada(width,0),Estilo(position=10px),PassoDeCampo(width,10px,down) /*replayPath=\"PBp:F\"*/]\nShrunk 8 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita"
+}

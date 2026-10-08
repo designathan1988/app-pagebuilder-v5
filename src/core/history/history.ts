@@ -5,7 +5,7 @@
 // merge into the previous entry.
 import { message, registerHandler, registerPredicate, type Message, type MessageParam } from '../commands/registry.ts';
 import type { DocumentJson, Selection } from '../document/model.ts';
-import { applyPatches, type Transaction } from './transaction.ts';
+import { applyPatches, deepEqual, type Transaction } from './transaction.ts';
 
 export interface HistoryState {
   // oldest first
@@ -17,8 +17,11 @@ export interface HistoryState {
 export const EMPTY_HISTORY: HistoryState = { past: [], future: [] };
 
 // Records a transaction: it merges into the last entry when both carry the same coalescing key and the last one
-// was recorded at most `within` ms before; otherwise it is a new entry. The redo stack is emptied either way.
-export function record(history: HistoryState, tx: Transaction, within: number | null): HistoryState {
+// was recorded at most `within` ms before; otherwise it is a new entry. The redo stack is emptied either way. A merged
+// entry that takes `document` (the document the transaction leaves) back to the one from before the entry changes
+// nothing (an arrow up and an arrow down in one burst), and goes: it records no entry, as a command that changes
+// nothing records none.
+export function record(history: HistoryState, tx: Transaction, within: number | null, document?: DocumentJson): HistoryState {
   const last = history.past[history.past.length - 1];
   if (last !== undefined && within !== null && tx.coalesceKey !== null && tx.coalesceKey === last.coalesceKey && tx.at - last.at <= within) {
     const merged: Transaction = {
@@ -27,11 +30,14 @@ export function record(history: HistoryState, tx: Transaction, within: number | 
       inverses: [...tx.inverses, ...last.inverses],
       selectionBefore: last.selectionBefore,
       selectionAfter: tx.selectionAfter,
+      // a burst is made where its first step was
+      ...(last.context === undefined ? {} : { context: last.context }),
       at: tx.at,
       coalesceKey: last.coalesceKey,
       // the entry says what its latest command did
       message: tx.message ?? last.message,
     };
+    if (document !== undefined && deepEqual(applyPatches(document, merged.inverses).document, document)) return { past: history.past.slice(0, -1), future: [] };
     return { past: [...history.past.slice(0, -1), merged], future: [] };
   }
   return { past: [...history.past, tx], future: [] };

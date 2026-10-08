@@ -1,0 +1,88 @@
+propriedades com unidades: 59; casos: 11800; tempo: 753 ms
+idempotencia: 0 ()
+gramatica: 1842 (grid-template-columns 97, grid-template-rows 97, flex-basis 54, column-width 54, padding-top 54, padding-right 54, padding-bottom 54, padding-left 54, width 54, height 54, min-width 54, max-width 54, min-height 54, max-height 54, object-position 98, translate 98, rotate 117, scale 49, background-size 25, border-top-left-radius 54, border-top-right-radius 54, border-bottom-right-radius 54, border-bottom-left-radius 54, font-size 54, font-stretch 147, transform-origin 98, perspective-origin 98)
+numero: 81 (grid-template-columns 11, grid-template-rows 11, object-position 10, translate 10, rotate 9, scale 5, font-stretch 5, transform-origin 10, perspective-origin 10)
+recusa: 126 (background-position-x 63, background-position-y 63)
+excecao: 0 ()
+
+exemplos de idempotencia:
+exemplos de gramatica:
+  grid-template-columns: "-228 cqh" gravou "-228 cqh", recusado pela sintaxe (Mismatch)
+  grid-template-columns: "6.4e-323 lvw" gravou "6.4e-323 lvw", recusado pela sintaxe (Mismatch)
+  grid-template-rows: "-228 cqh" gravou "-228 cqh", recusado pela sintaxe (Mismatch)
+  grid-template-rows: "6.4e-323 lvw" gravou "6.4e-323 lvw", recusado pela sintaxe (Mismatch)
+  flex-basis: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  flex-basis: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  column-width: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  column-width: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  padding-top: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  padding-top: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  padding-right: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  padding-right: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  padding-bottom: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  padding-bottom: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  padding-left: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  padding-left: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  width: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  width: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  height: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  height: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  min-width: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  min-width: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  max-width: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  max-width: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  min-height: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  min-height: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  max-height: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  max-height: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  object-position: "-228 ex" gravou "-228 ex", recusado pela sintaxe (Mismatch)
+  object-position: "6.4e-323 mm" gravou "6.4e-323 mm", recusado pela sintaxe (Mismatch)
+  translate: "-228 ex" gravou "-228 ex", recusado pela sintaxe (Mismatch)
+  translate: "6.4e-323 mm" gravou "6.4e-323 mm", recusado pela sintaxe (Mismatch)
+  rotate: "-228 grad" gravou "-228 grad", recusado pela sintaxe (Mismatch)
+  rotate: "6.4e-323 grad" gravou "6.4e-323 grad", recusado pela sintaxe (Mismatch)
+  scale: "6.4e-323 %" gravou "6.4e-323 %", recusado pela sintaxe (not parseable as a CSS value: Unexpected input)
+  scale: "-1546 %" gravou "-1546 %", recusado pela sintaxe (not parseable as a CSS value: Unexpected input)
+  background-size: "-1998q" gravou "-1998q", recusado pela sintaxe (Mismatch)
+  background-size: "-1592dvi" gravou "-1592dvi", recusado pela sintaxe (Mismatch)
+  border-top-left-radius: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  border-top-left-radius: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  border-top-right-radius: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  border-top-right-radius: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  border-bottom-right-radius: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  border-bottom-right-radius: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  border-bottom-left-radius: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  border-bottom-left-radius: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  font-size: "-228 ex" gravou "-228ex", recusado pela sintaxe (Mismatch)
+  font-size: "-1546 vmax" gravou "-1546vmax", recusado pela sintaxe (Mismatch)
+  font-stretch: "-228 " gravou "-228", recusado pela sintaxe (Mismatch)
+  font-stretch: "0" gravou "0", recusado pela sintaxe (Mismatch)
+  transform-origin: "-228 ex" gravou "-228 ex", recusado pela sintaxe (Mismatch)
+  transform-origin: "6.4e-323 mm" gravou "6.4e-323 mm", recusado pela sintaxe (Mismatch)
+  perspective-origin: "-228 ex" gravou "-228 ex", recusado pela sintaxe (Mismatch)
+  perspective-origin: "6.4e-323 mm" gravou "6.4e-323 mm", recusado pela sintaxe (Mismatch)
+exemplos de numero:
+  grid-template-columns: "0.00001svh" gravou "0.00001svh"
+  grid-template-columns: "0.00001rex" gravou "0.00001rex"
+  grid-template-rows: "0.00001svh" gravou "0.00001svh"
+  grid-template-rows: "0.00001rex" gravou "0.00001rex"
+  object-position: "0.00001mm" gravou "0.00001mm"
+  object-position: "0.00001ric" gravou "0.00001ric"
+  translate: "0.00001mm" gravou "0.00001mm"
+  translate: "0.00001ric" gravou "0.00001ric"
+  rotate: "0.00001rad" gravou "0.00001rad"
+  rotate: "0.00001deg" gravou "0.00001deg"
+  scale: "0.00001%" gravou "0.00001%"
+  scale: "-0.893598339242658%" gravou "-0.893598339242658%"
+  font-stretch: "0.00001%" gravou "0.00001%"
+  font-stretch: "-0.893598339242658%" gravou "-0.893598339242658%"
+  transform-origin: "0.00001mm" gravou "0.00001mm"
+  transform-origin: "0.00001ric" gravou "0.00001ric"
+  perspective-origin: "0.00001mm" gravou "0.00001mm"
+  perspective-origin: "0.00001ric" gravou "0.00001ric"
+exemplos de recusa:
+  background-position-x: "0px"
+  background-position-x: "0vmin"
+  background-position-y: "0px"
+  background-position-y: "0vmin"
+exemplos de excecao:

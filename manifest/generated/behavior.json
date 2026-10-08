@@ -1,0 +1,216 @@
+{
+  "machines": {
+    "gesture": {
+      "source": "src/editor/input/pointer/machine.ts",
+      "threshold": 4,
+      "transitions": [
+        {
+          "phase": "idle",
+          "event": "down(p1)",
+          "next": "pressed",
+          "effect": "press"
+        },
+        {
+          "phase": "idle",
+          "event": "down(p2)",
+          "next": "pressed",
+          "effect": "press"
+        },
+        {
+          "phase": "idle",
+          "event": "move(p1, below the threshold)",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "idle",
+          "event": "move(p1, at the threshold)",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "idle",
+          "event": "move(p2)",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "idle",
+          "event": "up(p1)",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "idle",
+          "event": "up(p2)",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "idle",
+          "event": "cancel",
+          "next": "idle",
+          "effect": null
+        },
+        {
+          "phase": "pressed",
+          "event": "down(p1)",
+          "next": "pressed",
+          "effect": "restart"
+        },
+        {
+          "phase": "pressed",
+          "event": "down(p2)",
+          "next": "pressed",
+          "effect": null
+        },
+        {
+          "phase": "pressed",
+          "event": "move(p1, below the threshold)",
+          "next": "pressed",
+          "effect": null
+        },
+        {
+          "phase": "pressed",
+          "event": "move(p1, at the threshold)",
+          "next": "dragging",
+          "effect": "drag"
+        },
+        {
+          "phase": "pressed",
+          "event": "move(p2)",
+          "next": "pressed",
+          "effect": null
+        },
+        {
+          "phase": "pressed",
+          "event": "up(p1)",
+          "next": "idle",
+          "effect": "commit"
+        },
+        {
+          "phase": "pressed",
+          "event": "up(p2)",
+          "next": "pressed",
+          "effect": null
+        },
+        {
+          "phase": "pressed",
+          "event": "cancel",
+          "next": "idle",
+          "effect": "cancel"
+        },
+        {
+          "phase": "dragging",
+          "event": "down(p1)",
+          "next": "pressed",
+          "effect": "restart"
+        },
+        {
+          "phase": "dragging",
+          "event": "down(p2)",
+          "next": "dragging",
+          "effect": null
+        },
+        {
+          "phase": "dragging",
+          "event": "move(p1, below the threshold)",
+          "next": "dragging",
+          "effect": null
+        },
+        {
+          "phase": "dragging",
+          "event": "move(p1, at the threshold)",
+          "next": "dragging",
+          "effect": null
+        },
+        {
+          "phase": "dragging",
+          "event": "move(p2)",
+          "next": "dragging",
+          "effect": null
+        },
+        {
+          "phase": "dragging",
+          "event": "up(p1)",
+          "next": "idle",
+          "effect": "commit"
+        },
+        {
+          "phase": "dragging",
+          "event": "up(p2)",
+          "next": "dragging",
+          "effect": null
+        },
+        {
+          "phase": "dragging",
+          "event": "cancel",
+          "next": "idle",
+          "effect": "cancel"
+        }
+      ],
+      "ignored": [
+        {
+          "combination": "idle + move(p1, below the threshold)",
+          "why": "nothing is pressed: a move with no press is the hover, which the pointer owner draws outside the machine"
+        },
+        {
+          "combination": "idle + move(p1, at the threshold)",
+          "why": "nothing is pressed: a move with no press is the hover"
+        },
+        {
+          "combination": "idle + move(p2)",
+          "why": "nothing is pressed: a move with no press is the hover"
+        },
+        {
+          "combination": "idle + up(p1)",
+          "why": "a release with no press (pressed outside the window): nothing to end"
+        },
+        {
+          "combination": "idle + up(p2)",
+          "why": "a release with no press: nothing to end"
+        },
+        {
+          "combination": "idle + cancel",
+          "why": "nothing is open to cancel"
+        },
+        {
+          "combination": "pressed + down(p2)",
+          "why": "another pointer (a second finger, a pen) does not join the gesture"
+        },
+        {
+          "combination": "pressed + move(p1, below the threshold)",
+          "why": "below drag.threshold a press stays a press (a click)"
+        },
+        {
+          "combination": "pressed + move(p2)",
+          "why": "another pointer does not join the gesture"
+        },
+        {
+          "combination": "pressed + up(p2)",
+          "why": "another pointer does not end the gesture"
+        },
+        {
+          "combination": "dragging + down(p2)",
+          "why": "another pointer does not join the gesture"
+        },
+        {
+          "combination": "dragging + move(p1, below the threshold)",
+          "why": "the drag follows the pointer through its owner (events.ts onMove), which draws it; the machine stays dragging"
+        },
+        {
+          "combination": "dragging + move(p1, at the threshold)",
+          "why": "the drag follows the pointer through its owner, which draws it; the machine stays dragging"
+        },
+        {
+          "combination": "dragging + move(p2)",
+          "why": "another pointer does not join the gesture"
+        },
+        {
+          "combination": "dragging + up(p2)",
+          "why": "another pointer does not end the gesture"
+        }
+      ]
+    }
+  }
+}

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { PRODUCT_NAME } from './src/config/product.ts';
+import { HISTORY_RULES_MARK } from './src/core/history/invariants.ts';
 import { toothPlugin } from './tools/runner/tooth-plugin.ts';
 
 function readPort(): number {
@@ -59,6 +60,24 @@ function noTestPort(): Plugin {
   };
 }
 
+// What development alone carries says so if a build holds it: the rules of the history the store checks at every
+// publication (src/core/history/invariants.ts) are handed to it behind import.meta.env.DEV, which every build replaces
+// with false, so no build a person or a test uses keeps them; a chunk that names their mark fails the build
+// (tools/runner/production-probe.ts shows the mark is there when DEV is on).
+const DEVELOPMENT_ONLY_MARKS = [HISTORY_RULES_MARK];
+function developmentOnly(): Plugin {
+  return {
+    name: 'development-only',
+    apply: 'build',
+    generateBundle(_options, bundle) {
+      for (const [file, output] of Object.entries(bundle)) {
+        const named = output.type === 'chunk' ? DEVELOPMENT_ONLY_MARKS.find((mark) => output.code.includes(mark)) : undefined;
+        if (named !== undefined) this.error(`${file} carries ${named}, which only development may hold`);
+      }
+    },
+  };
+}
+
 export default defineConfig(({ command, mode }) => {
   // PORT is required by the servers, dev and preview (vite preview reports the serve command too), never by a build
   const port = command === 'build' ? null : readPort();
@@ -68,7 +87,7 @@ export default defineConfig(({ command, mode }) => {
   const testPort = command === 'serve' || e2e;
   return {
     // toothPlugin() is null unless the scenario runner's tooth proof starts this server (tools/runner/tooth.ts)
-    plugins: [react(), productTitle(), toothPlugin(), fullReload(), testPort ? null : noTestPort()],
+    plugins: [react(), productTitle(), toothPlugin(), fullReload(), testPort ? null : noTestPort(), developmentOnly()],
     define: { __BUILDER_TEST_PORT__: JSON.stringify(testPort) },
     // reference/ holds other projects with their own HTML entries; keep Vite away from them.
     optimizeDeps: { entries: ['index.html'] },

@@ -1,0 +1,16 @@
+{
+  "mutante": "M16",
+  "aplicado": "M16",
+  "acusou": true,
+  "execucoes": 19,
+  "conta": {
+    "passos": 38,
+    "entradasMax": 2,
+    "desfeitos": 0,
+    "fusoes": 0,
+    "gestos": 4,
+    "digitacoes": 10
+  },
+  "ms": 33,
+  "falha": "Property failed after 2 tests\n{ seed: 20261008, path: \"1:0:2:1:1:1:1:1:1\", endOnFailure: true }\nCounterexample: [\"aurora\",Digitar(10px),PassoDeCampo(width,10px,down) /*replayPath=\"GDQ:F\"*/]\nShrunk 8 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: a digitação pendente continuou pendente depois de field.step vindo de fora do campo"
+}

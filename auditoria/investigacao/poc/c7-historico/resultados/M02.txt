@@ -1,0 +1,16 @@
+{
+  "mutante": "M02",
+  "aplicado": "M02",
+  "acusou": true,
+  "execucoes": 130,
+  "conta": {
+    "passos": 1488,
+    "entradasMax": 13,
+    "desfeitos": 200,
+    "fusoes": 30,
+    "gestos": 41,
+    "digitacoes": 152
+  },
+  "ms": 211,
+  "falha": "Property failed after 9 tests\n{ seed: 20261008, path: \"8:0:3:3:4:4:11:12:11:12:7:5:5:5:5:6:6\", endOnFailure: true }\nCounterexample: [\"aurora\",Selecionar(20),element.delete,Inserir(container),Digitar(10px) /*replayPath=\"////C:f\"*/]\nShrunk 16 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: history.redo produced an invalid state: /selection/0: the selection names \"n-hero\", which is no node of the document"
+}

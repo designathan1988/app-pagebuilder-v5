@@ -4,7 +4,10 @@
 // Two plugins: `builder` lints JavaScript and TypeScript (use-ports, no-literal-ui-string, use-tokens for React style
 // objects, pointer-owner, gesture-owner, frame-owner) and `builder-css` lints stylesheets with the @eslint/css
 // language (use-tokens).
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
+import process from 'node:process';
+import { isInteractive, keyOf } from '../inventory/ui-scan.ts';
+import { INTERACTIVE_ALLOWED } from './interactive-allowed.ts';
 import type { RuleDefinition, RuleVisitor } from '@eslint/core';
 import type { CSSRuleDefinition } from '@eslint/css';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -356,6 +359,7 @@ type TsVisitor = RuleVisitor & {
   MemberExpression?: (node: TSESTree.MemberExpression) => void;
   ImportSpecifier?: (node: TSESTree.ImportSpecifier) => void;
   JSXAttribute?: (node: TSESTree.JSXAttribute) => void;
+  JSXOpeningElement?: (node: TSESTree.JSXOpeningElement) => void;
 };
 type TsRuleDefinition<MessageIds extends string> = RuleDefinition<{
   LangOptions: Linter.LanguageOptions;
@@ -592,6 +596,50 @@ const noManifestId: TsRuleDefinition<'id'> = {
   },
 };
 
+// builder/interactive-owner: every element a person acts on has an owner (the investigation's C1, option B): a door of
+// the manifest (data-door, drawn by src/editor/doors/door.tsx), a declared local control (data-local, conferred with
+// manifest/layout.json), the attributes a door spreads on it, an element inside a door, a wrapper of a door — or, for
+// what is none of these on purpose (a focus sentinel, a dialog's container), an entry of
+// tools/lint/interactive-allowed.ts with its reason. What "interactive" is and the key that names an element are
+// tools/inventory/ui-scan.ts's, so the lint and the generated inventory (manifest/generated/inventory.json) agree.
+const ALLOWED_INTERACTIVE: ReadonlySet<string> = new Set(INTERACTIVE_ALLOWED.map((entry) => entry.key));
+const DOOR_INSIDE = /data-door|<[A-Za-z.]*Door[A-Za-z.]*[\s/>]/;
+const jsxName = (name: TSESTree.JSXTagNameExpression | TSESTree.JSXAttribute['name']): string =>
+  name.type === 'JSXIdentifier' ? name.name : name.type === 'JSXNamespacedName' ? `${name.namespace.name}:${name.name.name}` : `${jsxName(name.object)}.${name.property.name}`;
+const interactiveOwner: TsRuleDefinition<'owner'> = {
+  meta: {
+    type: 'problem',
+    docs: { description: 'Every interactive element is a door, a declared local control, or listed with its reason' },
+    messages: { owner: '<{{tag}}> is an element a person acts on that nobody owns: draw it as a door of the manifest (data-door), declare it a local control (data-local, manifest/layout.json), or list it with its reason in tools/lint/interactive-allowed.ts ({{key}}).' },
+    schema: [],
+  },
+  create(context) {
+    const file = relative(process.cwd(), context.filename).replaceAll('\\', '/');
+    const seen = new Map<string, number>();
+    const text = context.sourceCode.text;
+    return {
+      JSXOpeningElement(node) {
+        const tag = jsxName(node.name);
+        const names = node.attributes.flatMap((a) => (a.type === 'JSXAttribute' ? [jsxName(a.name)] : []));
+        const role = node.attributes.flatMap((a) => (a.type === 'JSXAttribute' && jsxName(a.name) === 'role' && a.value?.type === 'Literal' && typeof a.value.value === 'string' ? [a.value.value] : []))[0] ?? null;
+        if (!isInteractive(tag, names, role)) return;
+        const sig = `${tag}|${[...names].sort().join(',')}`;
+        const nth = (seen.get(sig) ?? 0) + 1;
+        seen.set(sig, nth);
+        if (names.includes('data-door') || names.includes('data-local') || node.attributes.some((a) => a.type === 'JSXSpreadAttribute')) return;
+        const element = node.parent;
+        // the program's parent is null at run time, whatever its type says
+        for (let up: TSESTree.Node | null | undefined = element.parent; up !== null && up !== undefined; up = up.parent) {
+          if (up.type === 'JSXElement' && up.openingElement.attributes.some((a) => a.type === 'JSXAttribute' && jsxName(a.name) === 'data-door')) return;
+        }
+        if (element.type === 'JSXElement' && element.closingElement !== null && DOOR_INSIDE.test(text.slice(node.range[1], element.range[1]))) return;
+        const key = keyOf(file, tag, names, nth);
+        if (!ALLOWED_INTERACTIVE.has(key)) context.report({ node, messageId: 'owner', data: { tag, key } });
+      },
+    };
+  },
+};
+
 const plugin = {
   meta: { name: 'builder' },
   rules: {
@@ -603,6 +651,7 @@ const plugin = {
     'frame-owner': frameOwner,
     'keyboard-owner': keyboardOwner,
     'no-manifest-id': noManifestId,
+    'interactive-owner': interactiveOwner,
   },
 };
 

@@ -122,6 +122,15 @@ export default defineConfig(
     },
   },
   {
+    // Every element a person acts on has an owner (the investigation's C1): a door of the manifest (data-door), a
+    // declared local control (data-local), or an entry with its reason in tools/lint/interactive-allowed.ts; the
+    // inventory of these elements is manifest/generated/inventory.json (tools/inventory/write.ts).
+    files: ['src/**/*.tsx'],
+    ignores: ['src/**/*.test.tsx'],
+    plugins: { builder },
+    rules: { 'builder/interactive-owner': 'error' },
+  },
+  {
     // Every stylesheet but the generated tokens reads its colours, spacing, sizes, radii, shadows and font values
     // from the tokens.
     files: ['src/**/*.css'],

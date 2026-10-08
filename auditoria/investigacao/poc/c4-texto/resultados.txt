@@ -1,0 +1,19 @@
+textos distintos: 6229
+Node, cálculo de 93435 larguras: 82 ms
+Chrome, medição de 31145 larguras: 403 ms
+
+11px peso 400, sem kerning: |erro| mediano 0.009 px, p95 0.407 px, máximo 2.782 px (relativo p95 0.68%); até 0,5 px: 95.3%; até 1 px: 97.6%; até 2 px: 100.0%; erro médio com sinal 0.072 px; pior texto com 74 caracteres
+11px peso 400, tabela kern: |erro| mediano 0.150 px, p95 0.703 px, máximo 4.057 px (relativo p95 0.48%); até 0,5 px: 90.5%; até 1 px: 97.4%; até 2 px: 99.7%; erro médio com sinal -0.186 px; pior texto com 402 caracteres
+11px peso 400, GPOS kern: |erro| mediano 0.007 px, p95 0.015 px, máximo 0.015 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.008 px; pior texto com 66 caracteres
+12px peso 400, sem kerning: |erro| mediano 0.008 px, p95 0.445 px, máximo 3.035 px (relativo p95 0.68%); até 0,5 px: 95.3%; até 1 px: 96.8%; até 2 px: 100.0%; erro médio com sinal 0.080 px; pior texto com 74 caracteres
+12px peso 400, tabela kern: |erro| mediano 0.162 px, p95 0.766 px, máximo 4.414 px (relativo p95 0.48%); até 0,5 px: 89.2%; até 1 px: 96.9%; até 2 px: 99.6%; erro médio com sinal -0.201 px; pior texto com 402 caracteres
+12px peso 400, GPOS kern: |erro| mediano 0.008 px, p95 0.014 px, máximo 0.014 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.007 px; pior texto com 20 caracteres
+12px peso 600, sem kerning: |erro| mediano 0.146 px, p95 1.094 px, máximo 5.990 px (relativo p95 0.80%); até 0,5 px: 85.6%; até 1 px: 94.4%; até 2 px: 99.6%; erro médio com sinal 0.232 px; pior texto com 402 caracteres
+12px peso 600, tabela kern: |erro| mediano 0.008 px, p95 0.014 px, máximo 0.014 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.007 px; pior texto com 7 caracteres
+12px peso 600, GPOS kern: |erro| mediano 0.008 px, p95 0.014 px, máximo 0.014 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.007 px; pior texto com 7 caracteres
+13px peso 600, sem kerning: |erro| mediano 0.157 px, p95 1.177 px, máximo 6.499 px (relativo p95 0.80%); até 0,5 px: 84.1%; até 1 px: 93.2%; até 2 px: 99.5%; erro médio com sinal 0.252 px; pior texto com 402 caracteres
+13px peso 600, tabela kern: |erro| mediano 0.007 px, p95 0.015 px, máximo 0.015 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.008 px; pior texto com 20 caracteres
+13px peso 600, GPOS kern: |erro| mediano 0.007 px, p95 0.015 px, máximo 0.015 px (relativo p95 0.03%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.008 px; pior texto com 20 caracteres
+15px peso 400, sem kerning: |erro| mediano 0.009 px, p95 0.556 px, máximo 3.794 px (relativo p95 0.68%); até 0,5 px: 92.7%; até 1 px: 96.0%; até 2 px: 99.9%; erro médio com sinal 0.102 px; pior texto com 74 caracteres
+15px peso 400, tabela kern: |erro| mediano 0.203 px, p95 0.955 px, máximo 5.518 px (relativo p95 0.48%); até 0,5 px: 84.3%; até 1 px: 95.4%; até 2 px: 99.1%; erro médio com sinal -0.250 px; pior texto com 402 caracteres
+15px peso 400, GPOS kern: |erro| mediano 0.008 px, p95 0.015 px, máximo 0.015 px (relativo p95 0.02%); até 0,5 px: 100.0%; até 1 px: 100.0%; até 2 px: 100.0%; erro médio com sinal -0.008 px; pior texto com 22 caracteres

@@ -1,0 +1,23 @@
+execuções por rodada: 300
+mutantes: 18; carregados com a troca: 18; acusados: 17
+
+mutante | saída do Vitest | troca carregada | acusado | ms do teste | ms do processo | primeira regra quebrada
+original | 0 | - | false | 845 | 7168 | 
+M01 | 1 | M01 | true | 40 | 6499 | history.undo produced an invalid state: /selection/0: the selection names "p1", which is no node of the document
+M02 | 1 | M02 | true | 211 | 6711 | history.redo produced an invalid state: /selection/0: the selection names "n-hero", which is no node of the document
+M03 | 1 | M03 | true | 52 | 6982 | desfazer não voltou ao documento de antes da entrada
+M04 | 1 | M04 | true | 86 | 6709 | uma entrada nova não esvaziou a pilha de refazer
+M05 | 1 | M05 | true | 39 | 6251 | o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita
+M06 | 1 | M06 | true | 33 | 6469 | um DocumentChange não leva before a after pelos próprios patches
+M07 | 1 | M07 | true | 287 | 6997 | index 2 is past the end at pages/0/tree/children/1/children/0/children/2
+M08 | 1 | M08 | true | 71 | 6549 | o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita
+M09 | 1 | M09 | true | 261 | 6439 | o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita
+M10 | 1 | M10 | true | 40 | 6416 | um DocumentChange não leva before a after pelos próprios patches
+M11 | 1 | M11 | true | 28 | 6513 | cancelar o gesto não devolveu a seleção de antes
+M12 | 1 | M12 | true | 21 | 6463 | o histórico mudou durante um gesto aberto
+M13 | 1 | M13 | true | 39 | 6664 | history.undo produced an invalid state: /selection/0: the selection names "p1", which is no node of the document
+M14 | 1 | M14 | true | 24 | 6594 | uma entrada nova entrou no histórico sem mudança no documento
+M15 | 0 | M15 | false | 859 | 7157 | 
+M16 | 1 | M16 | true | 33 | 6241 | a digitação pendente continuou pendente depois de field.step vindo de fora do campo
+M17 | 1 | M17 | true | 69 | 6170 | um campo novo descartou a digitação pendente do anterior
+M18 | 1 | M18 | true | 86 | 6308 | depois do gesto o histórico tem 0 entradas e devia ter 1

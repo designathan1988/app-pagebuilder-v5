@@ -1,0 +1,56 @@
+limiar de arraste lido do manifesto: 4px
+
+fase | evento | fase seguinte | efeito
+idle | down(p1) | pressed | press
+idle | down(p2) | pressed | press
+idle | move(p1, abaixo do limiar) | idle | -
+idle | move(p1, no limiar) | idle | -
+idle | move(p2) | idle | -
+idle | up(p1) | idle | -
+idle | up(p2) | idle | -
+idle | cancel | idle | -
+pressed | down(p1) | pressed | -
+pressed | down(p2) | pressed | -
+pressed | move(p1, abaixo do limiar) | pressed | -
+pressed | move(p1, no limiar) | dragging | drag
+pressed | move(p2) | pressed | -
+pressed | up(p1) | idle | commit
+pressed | up(p2) | pressed | -
+pressed | cancel | idle | cancel
+dragging | down(p1) | dragging | -
+dragging | down(p2) | dragging | -
+dragging | move(p1, abaixo do limiar) | dragging | -
+dragging | move(p1, no limiar) | dragging | -
+dragging | move(p2) | dragging | -
+dragging | up(p1) | idle | commit
+dragging | up(p2) | dragging | -
+dragging | cancel | idle | cancel
+
+combinações ignoradas em silêncio (17):
+  idle + move(p1, abaixo do limiar)
+  idle + move(p1, no limiar)
+  idle + move(p2)
+  idle + up(p1)
+  idle + up(p2)
+  idle + cancel
+  pressed + down(p1)
+  pressed + down(p2)
+  pressed + move(p1, abaixo do limiar)
+  pressed + move(p2)
+  pressed + up(p2)
+  dragging + down(p1)
+  dragging + down(p2)
+  dragging + move(p1, abaixo do limiar)
+  dragging + move(p1, no limiar)
+  dragging + move(p2)
+  dragging + up(p2)
+
+stateDiagram-v2
+  [*] --> idle
+  idle --> pressed : down(p1) / press
+  idle --> pressed : down(p2) / press
+  pressed --> dragging : move(p1, no limiar) / drag
+  pressed --> idle : up(p1) / commit
+  pressed --> idle : cancel / cancel
+  dragging --> idle : up(p1) / commit
+  dragging --> idle : cancel / cancel

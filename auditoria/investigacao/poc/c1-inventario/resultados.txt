@@ -1,0 +1,128 @@
+arquivos lidos: 485; tempo: 514 ms (TypeScript 6.0.3)
+elementos JSX interativos e componentes com tratador: 261
+  porta: 91
+  sem marca: 81
+  dentro de porta: 41
+  envolve porta: 23
+  atributos espalhados: 11
+  local: 10
+  componente com tratador: 4
+chamadas imperativas: 95
+  addEventListener: 90
+  createElement('input'): 4
+  createElement('a'): 1
+
+sem marca, por arquivo:
+  src/editor/shell/captured-inspector.tsx: 12
+  src/editor/shell/field.tsx: 11
+  src/editor/doors/menu.tsx: 5
+  src/editor/shell/easing-curve.tsx: 5
+  src/editor/shell/inspector-controls.tsx: 4
+  src/editor/shell/status-bar.tsx: 4
+  src/editor/data/grid.tsx: 3
+  src/editor/data/pages.tsx: 3
+  src/editor/shell/command-bar.tsx: 3
+  src/editor/canvas/edit-handles.tsx: 2
+  src/editor/canvas/side-frame.tsx: 2
+  src/editor/shell/batch-rename.tsx: 2
+  src/editor/shell/capture-url.tsx: 2
+  src/editor/shell/class-bar.tsx: 2
+  src/editor/shell/code-pane.tsx: 2
+  src/editor/shell/color.tsx: 2
+  src/editor/shell/confirmation.tsx: 2
+  src/editor/shell/dialog.tsx: 2
+  src/editor/shell/snap-settings.tsx: 2
+  src/editor/assistant/panel.tsx: 1
+  src/editor/canvas/frame.tsx: 1
+  src/editor/data/controls.tsx: 1
+  src/editor/data/preview.tsx: 1
+  src/editor/motion/ui/interactions.tsx: 1
+  src/editor/shell/component-prompt.tsx: 1
+  src/editor/shell/dock.tsx: 1
+  src/editor/shell/guides-grids.tsx: 1
+  src/editor/shell/interactions.tsx: 1
+  src/editor/shell/shell.tsx: 1
+  src/editor/shell/top-bar.tsx: 1
+
+sem marca, um por linha (arquivo, linha, tag, papel, tratadores):
+  src/editor/assistant/panel.tsx linha 72 <input> - onChange
+  src/editor/canvas/edit-handles.tsx linha 242 <form> - onSubmit
+  src/editor/canvas/edit-handles.tsx linha 243 <input> - onBlur
+  src/editor/canvas/frame.tsx linha 264 <iframe> - -
+  src/editor/canvas/side-frame.tsx linha 81 <div> - onClick
+  src/editor/canvas/side-frame.tsx linha 82 <iframe> - -
+  src/editor/data/controls.tsx linha 77 <option> - -
+  src/editor/data/grid.tsx linha 52 <input> - -
+  src/editor/data/grid.tsx linha 53 <select> - -
+  src/editor/data/grid.tsx linha 55 <option> - -
+  src/editor/data/pages.tsx linha 30 <textarea> - -
+  src/editor/data/pages.tsx linha 66 <input> - -
+  src/editor/data/pages.tsx linha 71 <input> - -
+  src/editor/data/preview.tsx linha 76 <input> - -
+  src/editor/doors/menu.tsx linha 149 <div> menu -
+  src/editor/doors/menu.tsx linha 159 <div> separator -
+  src/editor/doors/menu.tsx linha 172 <button> menuitem onClick
+  src/editor/doors/menu.tsx linha 268 <button> - onClick
+  src/editor/doors/menu.tsx linha 330 <div> menu -
+  src/editor/motion/ui/interactions.tsx linha 98 <button> - onClick
+  src/editor/shell/batch-rename.tsx linha 63 <input> - onChange
+  src/editor/shell/batch-rename.tsx linha 68 <input> - onChange
+  src/editor/shell/capture-url.tsx linha 44 <input> - onChange
+  src/editor/shell/capture-url.tsx linha 48 <input> - onChange
+  src/editor/shell/captured-inspector.tsx linha 65 <select> - onChange
+  src/editor/shell/captured-inspector.tsx linha 66 <option> - -
+  src/editor/shell/captured-inspector.tsx linha 67 <option> - -
+  src/editor/shell/captured-inspector.tsx linha 68 <option> - -
+  src/editor/shell/captured-inspector.tsx linha 69 <option> - -
+  src/editor/shell/captured-inspector.tsx linha 70 <option> - -
+  src/editor/shell/captured-inspector.tsx linha 73 <input> - onChange
+  src/editor/shell/captured-inspector.tsx linha 75 <input> - onChange
+  src/editor/shell/captured-inspector.tsx linha 76 <input> - onChange
+  src/editor/shell/captured-inspector.tsx linha 89 <summary> - -
+  src/editor/shell/captured-inspector.tsx linha 114 <input> - onChange
+  src/editor/shell/captured-inspector.tsx linha 118 <summary> - -
+  src/editor/shell/class-bar.tsx linha 130 <form> - onSubmit
+  src/editor/shell/class-bar.tsx linha 173 <form> - onSubmit
+  src/editor/shell/code-pane.tsx linha 125 <span> tab -
+  src/editor/shell/code-pane.tsx linha 160 <div> - -
+  src/editor/shell/color.tsx linha 103 <input> - onInput,onBlur
+  src/editor/shell/color.tsx linha 149 <input> - onChange
+  src/editor/shell/command-bar.tsx linha 172 <input> combobox onChange
+  src/editor/shell/command-bar.tsx linha 194 <button> - onClick
+  src/editor/shell/command-bar.tsx linha 220 <li> option onClick
+  src/editor/shell/component-prompt.tsx linha 70 <button> - -
+  src/editor/shell/confirmation.tsx linha 58 <span> - onFocus
+  src/editor/shell/confirmation.tsx linha 72 <span> - onFocus
+  src/editor/shell/dialog.tsx linha 42 <span> - onFocus
+  src/editor/shell/dialog.tsx linha 52 <span> - onFocus
+  src/editor/shell/dock.tsx linha 54 <pre> - -
+  src/editor/shell/easing-curve.tsx linha 59 <button> - onClick
+  src/editor/shell/easing-curve.tsx linha 88 <button> - onClick
+  src/editor/shell/easing-curve.tsx linha 97 <form> - onSubmit
+  src/editor/shell/easing-curve.tsx linha 109 <input> - onChange
+  src/editor/shell/easing-curve.tsx linha 123 <button> - -
+  src/editor/shell/field.tsx linha 111 <div> menu -
+  src/editor/shell/field.tsx linha 463 <div> separator -
+  src/editor/shell/field.tsx linha 484 <button> - onClick
+  src/editor/shell/field.tsx linha 689 <input> spinbutton onInput
+  src/editor/shell/field.tsx linha 835 <input> - onBlur
+  src/editor/shell/field.tsx linha 900 <button> menuitem onClick
+  src/editor/shell/field.tsx linha 1153 <form> - onSubmit
+  src/editor/shell/field.tsx linha 1154 <input> - onInput
+  src/editor/shell/field.tsx linha 1157 <input> - onInput
+  src/editor/shell/field.tsx linha 1166 <option> - -
+  src/editor/shell/field.tsx linha 1172 <button> - onClick
+  src/editor/shell/guides-grids.tsx linha 99 <form> - onSubmit
+  src/editor/shell/inspector-controls.tsx linha 83 <button> - -
+  src/editor/shell/inspector-controls.tsx linha 94 <button> - -
+  src/editor/shell/inspector-controls.tsx linha 104 <button> - -
+  src/editor/shell/inspector-controls.tsx linha 113 <input> - -
+  src/editor/shell/interactions.tsx linha 111 <button> - onClick
+  src/editor/shell/shell.tsx linha 191 <div> - -
+  src/editor/shell/snap-settings.tsx linha 56 <input> - -
+  src/editor/shell/snap-settings.tsx linha 63 <input> - -
+  src/editor/shell/status-bar.tsx linha 185 <button> - -
+  src/editor/shell/status-bar.tsx linha 190 <button> - -
+  src/editor/shell/status-bar.tsx linha 225 <button> - onClick
+  src/editor/shell/status-bar.tsx linha 229 <div> menu -
+  src/editor/shell/top-bar.tsx linha 49 <div> menu -

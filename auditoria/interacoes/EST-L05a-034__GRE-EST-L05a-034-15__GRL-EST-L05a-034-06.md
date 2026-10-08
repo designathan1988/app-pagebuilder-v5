@@ -1,0 +1,30 @@
+# EST-L05a-034 × GRE-EST-L05a-034-15 → GRL-EST-L05a-034-06
+- **Estado:** EST-L05a-034
+- **Escritor:** GRE-EST-L05a-034-15 (run): ENT-P-events-0008, ENT-P-motion-0041
+- **Leitor:** GRL-EST-L05a-034-06 (onDown): ENT-L05a-0040
+## Estados deixados por A
+- **V-com-a-escolha.** `src/editor/input/pointer/effects.ts:60` `if (pickingDoor !== null) ps.pickAfter = { entry: pickingDoor, args: argsFor(pickingDoor, press, picking) };` — guarda a porta e os argumentos da escolha para o fim do gesto.
+- **V-sem-arraste.** `src/editor/input/pointer/effects.ts:169` `ps.dragging = null;` — o fim do gesto larga o arraste.
+- **V-sem-a-escolha.** `src/editor/input/pointer/effects.ts:253` `ps.pickAfter = null;` — no fim a escolha é retirada e despachada (`src/editor/input/pointer/effects.ts:254` `if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);`).
+- **Sem recusa.** A recusa do comando escolhido não muda a sessão: a escolha é retirada e despachada à mesma.
+- **Sem intermediário.** Cada escrita é uma só instrução (`src/editor/input/pointer/effects.ts:169` `ps.dragging = null;`).
+## Casos
+### C1 final
+- Estado deixado pelo fim do gesto: arraste e pressão nulos (`src/editor/input/pointer/effects.ts:169` `ps.dragging = null;`; `src/editor/input/pointer/effects.ts:205` `ps.pressed = null;`) com a máquina já em `idle` (o `up` grava a máquina em `src/editor/input/pointer/events.ts:540` `ps.machine = next.machine;` antes de `src/editor/input/pointer/events.ts:541` `p.run(next.effect);`). Lê a máquina em `src/editor/input/pointer/events.ts:51` `const lost = ps.machine.phase !== 'idle' && step(ps.machine, { type: 'down', pointer: event.pointerId, at: { x: event.clientX, y: event.clientY }, press: { on: 'stage' } }).effect === 'restart';`: com a fase em `idle`, o `&&` para antes do `step` e `lost` fica falso; a condição de `src/editor/input/pointer/events.ts:52` `if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();` decide só pelos outros termos, e as leituras de `ps.machine.phase === 'idle'` (`src/editor/input/pointer/events.ts:64` `ps.machine.phase === 'idle' && shared.open === null`) seguem verdadeiras.
+- ok — depois do fim do gesto o toque novo segue sem cancelar.
+
+### C2 intermediário
+- Estado deixado pelo efeito `press`: o gesto aberto e a pressão guardada (`src/editor/input/pointer/effects.ts:41` `shared.open = store.gesture();`; `src/editor/input/pointer/effects.ts:42` `ps.pressed = press;`) com a máquina em `pressed`. Com a máquina em `pressed` ou `dragging` do mesmo ponteiro, o `step` devolve `restart` (`src/editor/input/pointer/machine.ts:88` `if (event.type === 'down' && event.pointer === machine.pointer) return { machine: { phase: 'pressed', pointer: event.pointer, start: event.at, press: event.press }, effect: 'restart' };`), `lost` fica verdadeiro e a condição de `src/editor/input/pointer/events.ts:52` `if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();` chama `p.onCancel()`, que grava a máquina em `idle` (`src/editor/input/pointer/events.ts:549` `const next = step(ps.machine, { type: 'cancel' });`; `src/editor/input/pointer/machine.ts:80` `if (event.type === 'cancel') return machine.phase === 'idle' ? { machine, effect: null } : { machine: IDLE, effect: 'cancel' };`; `src/editor/input/pointer/events.ts:550` `ps.machine = next.machine;`) antes das leituras de `idle` das alças e do pan (`src/editor/input/pointer/events.ts:105` `ps.machine.phase === 'idle' ? (chromeControl(`).
+- O cancelamento fecha o gesto aberto (`src/editor/input/pointer/effects.ts:244` `else closing?.cancel();`) e roda a escolha guardada (`src/editor/input/pointer/effects.ts:254` `if (picked) store.dispatch(picked.entry.command.id as CommandId, picked.args as never);`), como o comentário do efeito declara para o gesto que termina por cancelamento (`src/editor/input/pointer/effects.ts:247` `// the text the press left is kept whether the gesture ends or the browser takes the pointer away`).
+- ok — o gesto aberto pelo `press` termina cancelado pelo toque novo do mesmo ponteiro.
+
+### C3 em curso
+- O leitor chama o escritor dentro do próprio toque: a condição de `src/editor/input/pointer/events.ts:52` `if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();` chama `p.onCancel()`, que corre o efeito (`src/editor/input/pointer/events.ts:551` `p.run(next.effect);`) e este fecha o gesto (`src/editor/input/pointer/effects.ts:244` `else closing?.cancel();`) e larga o arraste (`src/editor/input/pointer/effects.ts:169` `ps.dragging = null;`); o toque continua depois do retorno e lê `ps.machine.phase === 'idle'` (`src/editor/input/pointer/events.ts:64` `ps.machine.phase === 'idle' && shared.open === null`), gravado antes do efeito (`src/editor/input/pointer/events.ts:550` `ps.machine = next.machine;`).
+- ok — o toque novo continua com a máquina em `idle` e sem gesto aberto.
+
+### C4 desmontagem
+- O desmonte do dono remove o ouvinte de pointerdown (`src/editor/input/pointer.ts:234` `target.removeEventListener('pointerdown', p.onDown, true);`) depois de `src/editor/input/pointer.ts:220` `p.onCancel();` ter fechado o gesto aberto.
+- ok — depois da desmontagem o leitor deixa de correr.
+
+## Resultado
+- O leitor fecha o gesto aberto pelo efeito de cancelamento e segue desde `idle`: `src/editor/input/pointer/events.ts:52` `if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();`.

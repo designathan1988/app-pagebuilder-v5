@@ -1,0 +1,3 @@
+produção: 1 pedaço(s), 135 bytes, marca da sonda ausente, 37 ms
+desenvolvimento: 2 pedaço(s), 395 bytes, marca da sonda PRESENTE, 13 ms
+teste: 2 pedaço(s), 395 bytes, marca da sonda PRESENTE, 12 ms

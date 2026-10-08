@@ -1,0 +1,16 @@
+{
+  "mutante": "M14",
+  "aplicado": "M14",
+  "acusou": true,
+  "execucoes": 5,
+  "conta": {
+    "passos": 10,
+    "entradasMax": 1,
+    "desfeitos": 0,
+    "fusoes": 0,
+    "gestos": 2,
+    "digitacoes": 2
+  },
+  "ms": 24,
+  "falha": "Property failed after 1 tests\n{ seed: 20261008, path: \"0:0:1:0\", endOnFailure: true }\nCounterexample: [\"aurora\",Adicionar(0) /*replayPath=\"FBB:F\"*/]\nShrunk 3 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: uma entrada nova entrou no histórico sem mudança no documento"
+}

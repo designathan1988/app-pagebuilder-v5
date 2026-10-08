@@ -1,0 +1,50 @@
+# ENT-P-workspace-0035 — workspace.toggleDeveloperTools pela porta workspace.toggleDeveloperTools#menu-view
+- **Comando:** workspace.toggleDeveloperTools
+- **Porta:** `menu-view`
+- **Trecho:** TRC-workspace.toggleDeveloperTools
+
+## Passos
+1. `src/editor/doors/door.tsx:285` `onClick: pointerRuns ? (event: MouseEvent) => (event.detail === 0 ? door.run() : undefined) : door.run,` — o clique no controle desenhado pela porta executa o `run` da porta.
+2. `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — a porta só entrega a intenção quando o comando está construído e disponível.
+3. `src/editor/doors/door.tsx:95` `const given = { ...entry.door.args, ...args };` — os argumentos são os do manifesto da porta sobre os do contexto.
+4. `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência, então o caminho segue ao despacho.
+5. `src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);` — a porta entrega o id e os argumentos ao despacho da store do editor (o Início da porta).
+6. `src/app/commands.ts:481` `'workspace.toggleDeveloperTools': toggleDeveloperTools,` — a store resolve o id na tabela de comandos, que o liga ao tratador; a Chamada do trecho.
+
+## Ramos
+- `src/editor/doors/door.tsx:93` `if (!built || !available) return;` — com o comando construído e a disponibilidade verdadeira, a porta segue aos passos seguintes; caso contrário não entrega nada.
+- `src/editor/doors/door.tsx:143` `if (file === undefined) {` — o comando não toma arquivo nem área de transferência: `files`, `file` e `clipboard` são indefinidos e o caminho toma o despacho direto. Os ramos de arquivo e área de transferência (linhas 98 a 142) não rodam.
+
+## Fronteiras assíncronas
+- nenhuma — o caminho da porta é síncrono (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`), sem await, temporizador nem ouvinte.
+
+## Estado
+- lê: EST-L01-037 (`ui.preferences.developerTools`), EST-L05a-001 (digitação pendente).
+- escreve: EST-L01-037 (`ui.preferences`, `ui.panels`).
+
+## Resultado
+- **Estado final:** EST-L01-037 com `ui.preferences.developerTools` ligado ou ausente e a aba Documento do dock mostrada ou escondida (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`); o documento não muda.
+- **Re-renderizado:** os assinantes da store em `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();` redesenham a casca.
+- **DOM do editor:** a aba Documento aparece ou some na faixa do dock (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
+- **DOM do canvas:** nada muda.
+
+## Regras
+- G1: n/a — o comando escreve só estado do editor, fora de qualquer camada de estilo (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
+- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);`
+- G3: ok `src/editor/workspace/panels.ts:125` `export const toggleDeveloperTools = registerHandler<'workspace.toggleDeveloperTools', EditorUi>(` — a única porta envia só a intenção sem argumentos; o tratador é o do comando workspace.toggleDeveloperTools.
+- G4: n/a — o comando muda estado; nada é desenhado sobre o canvas no ponto da ação (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
+- G5: n/a — o encaixe dos painéis é medido na Fase 6 (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
+- G6: ok `src/core/store/store.ts:522` `const chosen = outcome.selection ?? before.selection;` — a seleção vem da store, sem cópia local.
+- G7: n/a — o documento não muda: `src/core/store/store.ts:321` `if (next.document !== before.document) {`
+- INT: n/a — nenhum esquema, id ou referência do documento é tocado (`src/editor/workspace/panels.ts:130` `return { kind: 'change', ui: withPanel({ ...state.ui, preferences }, DOCUMENT_TAB, on), message: panelMessage(DOCUMENT_TAB, on) };`).
+
+## Limpeza
+- nada a remover — o caminho da porta não cria ouvinte, temporizador nem observador (`src/editor/doors/door.tsx:144` `dispatch(entry.command.id, given);`).
+
+## Medições
+- nenhuma — a porta não lê valores que só o navegador calcula; o encaixe é medido na Fase 6.
+
+## Ramos do trecho
+- **Trecho:** TRC-workspace.toggleDeveloperTools
+- **Argumentos enviados:** nenhum
+- nenhum — os argumentos do comando não mudam o caminho do tratador: a porta envia só a intenção.

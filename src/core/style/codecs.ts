@@ -661,6 +661,24 @@ const gridLinePair = registerCodec('grid-line-pair', {
   },
   write: (value) => (value.kind === 'longhands' ? value.text : ''),
 });
+// The longhands of the composites above, each written alone by style.set (properties.json lists style.set doors for
+// them): a grid item's one line (grid-column-start…), auto, a number, a span or a name, the browser's to check, with no
+// slash (that is the composite's); the properties a transition animates (transition-property), none, all or names
+// separated by commas, the browser's to check; and one keyword per transition (transition-behavior), each one the
+// property offers, written joined by ", ".
+const gridLine = registerCodec('grid-line', { read: (text, facts) => (text.includes('/') ? null : cssText(text, facts)), write: writeCssText });
+const propertyList = registerCodec('property-list', { read: cssText, write: writeCssText });
+const keywordList = registerCodec('keyword-list', {
+  read(text, facts) {
+    const words = text.split(',').map((w) => w.trim().toLowerCase());
+    return words.every((w) => facts.keywords.includes(w)) ? { kind: 'expression', text: words.join(', ') } : null;
+  },
+  write: writeCssText,
+});
+// One axis of a position (background-position-x and -y, the longhands of background-position): a keyword of its own
+// axis (left, center, right on x), a length or a percentage in a unit it offers, a bare number in the field's unit —
+// read and written as length-percentage reads and writes them.
+const positionAxis = registerCodec('position-axis', { read: (text, facts) => lengthPercentage.read(text, facts), write: (value) => lengthPercentage.write(value) });
 // grid-area (spec props-grid-container, the audit item A1.3): one area name or line name (a CSS identifier, which
 // the property offers no list of), written into all four of its longhands (grid-row-start, grid-column-start,
 // grid-row-end, grid-column-end); what the field shows is the value it holds.
@@ -888,6 +906,10 @@ const CODECS: ReadonlyMap<string, Codec> = new Map(
     number,
     alpha,
     gridLinePair,
+    gridLine,
+    propertyList,
+    keywordList,
+    positionAxis,
     gridArea,
     trackList,
     gridAreas,

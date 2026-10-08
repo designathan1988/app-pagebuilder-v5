@@ -1,0 +1,16 @@
+{
+  "mutante": "M13",
+  "aplicado": "M13",
+  "acusou": true,
+  "execucoes": 18,
+  "conta": {
+    "passos": 64,
+    "entradasMax": 4,
+    "desfeitos": 0,
+    "fusoes": 5,
+    "gestos": 3,
+    "digitacoes": 4
+  },
+  "ms": 39,
+  "falha": "Property failed after 2 tests\n{ seed: 20261008, path: \"1:0:2:1:1:2:1:1\", endOnFailure: true }\nCounterexample: [\"aurora\",Inserir(container),Adicionar(0) /*replayPath=\"d:B\"*/]\nShrunk 7 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: history.undo produced an invalid state: /selection/0: the selection names \"p1\", which is no node of the document"
+}

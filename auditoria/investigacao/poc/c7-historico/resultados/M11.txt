@@ -1,0 +1,16 @@
+{
+  "mutante": "M11",
+  "aplicado": "M11",
+  "acusou": true,
+  "execucoes": 12,
+  "conta": {
+    "passos": 18,
+    "entradasMax": 2,
+    "desfeitos": 0,
+    "fusoes": 0,
+    "gestos": 11,
+    "digitacoes": 1
+  },
+  "ms": 28,
+  "falha": "Property failed after 2 tests\n{ seed: 20261008, path: \"1:0:1:1:0:2\", endOnFailure: true }\nCounterexample: [\"aurora\",Gesto(1,cancel,seleciona 0) /*replayPath=\"DGD:F\"*/]\nShrunk 5 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: cancelar o gesto não devolveu a seleção de antes"
+}

@@ -45,8 +45,11 @@ export function pointerEvents(p: PointerOwner): Pick<PointerOwner, 'onDoubleClic
     gesture.commit();
   };
   const onDown = (event: PointerEvent) => {
-    // a press or a gesture still open here lost its release: it ends before anything new begins
-    if (pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();
+    // a press or a gesture still open here lost its release: it ends before anything new begins. The gesture machine
+    // says so of its own gesture (the same pointer pressed again: effect restart, DCS-013), even when another pointer's
+    // release has turned pressing off since
+    const lost = ps.machine.phase !== 'idle' && step(ps.machine, { type: 'down', pointer: event.pointerId, at: { x: event.clientX, y: event.clientY }, press: { on: 'stage' } }).effect === 'restart';
+    if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();
     // a value typed in a field and not kept yet is kept then, before the press measures what it acts from or runs
     // anything (CLAUDE.md, rule G2; input/pending.ts): a press on the field's own controls excepted. What the press
     // aims at is what was drawn when it began: the selection's box then, read before the value kept moves it, is the

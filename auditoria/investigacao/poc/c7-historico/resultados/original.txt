@@ -1,0 +1,16 @@
+{
+  "mutante": "nenhum",
+  "aplicado": null,
+  "acusou": false,
+  "execucoes": 300,
+  "conta": {
+    "passos": 8589,
+    "entradasMax": 22,
+    "desfeitos": 883,
+    "fusoes": 221,
+    "gestos": 605,
+    "digitacoes": 591
+  },
+  "ms": 845,
+  "falha": null
+}

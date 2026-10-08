@@ -1,0 +1,16 @@
+{
+  "mutante": "M10",
+  "aplicado": "M10",
+  "acusou": true,
+  "execucoes": 13,
+  "conta": {
+    "passos": 49,
+    "entradasMax": 4,
+    "desfeitos": 4,
+    "fusoes": 1,
+    "gestos": 2,
+    "digitacoes": 2
+  },
+  "ms": 40,
+  "falha": "Property failed after 3 tests\n{ seed: 20261008, path: \"2:2:3:1\", endOnFailure: true }\nCounterexample: [\"aurora\",Inserir(container),Desfazer /*replayPath=\"IRI:F\"*/]\nShrunk 3 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: um DocumentChange não leva before a after pelos próprios patches"
+}

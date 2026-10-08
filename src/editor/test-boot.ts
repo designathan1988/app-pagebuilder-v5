@@ -100,21 +100,33 @@ const MOST_FRAMES = 120;
 
 // Runs the boot's drawn commands once the editor is drawn, adding what each ended with to `results`: its fonts in (a
 // text's width moves what the sidebar and panels leave the stage), and its stage the same size for a few frames (the
-// panels laid out), so a zoom keeps the place it keeps when a person picks it from the drawn editor.
-export function runDrawnTestBoot(store: EditorStore, boot: TestBoot, results: TestBootResult[], target: Window = window): void {
+// panels laid out), so a zoom keeps the place it keeps when a person picks it from the drawn editor. It returns how to
+// stop it: the frame it waits for is cancelled, and nothing it waited to run runs.
+export function runDrawnTestBoot(store: EditorStore, boot: TestBoot, results: TestBootResult[], target: Window = window): () => void {
   const drawn = boot.drawn ?? [];
-  if (drawn.length === 0) return;
+  if (drawn.length === 0) return () => undefined;
   let last = '';
   let still = 0;
   let frames = 0;
+  let frame: number | null = null;
+  let stopped = false;
   const settle = () => {
+    frame = null;
+    if (stopped) return;
     const box = target.document.querySelector('[data-canvas-stage]')?.getBoundingClientRect();
     const size = box === undefined ? '' : `${box.left},${box.top},${box.width},${box.height}`;
     still = size !== '' && size === last ? still + 1 : 0;
     last = size;
     frames += 1;
     if (still >= STILL_FRAMES || frames >= MOST_FRAMES) results.push(...runTestBoot(store, { commands: drawn }));
-    else target.requestAnimationFrame(settle);
+    else frame = target.requestAnimationFrame(settle);
   };
-  void target.document.fonts.ready.then(() => target.requestAnimationFrame(settle));
+  void target.document.fonts.ready.then(() => {
+    if (!stopped) frame = target.requestAnimationFrame(settle);
+  });
+  return () => {
+    stopped = true;
+    if (frame !== null) target.cancelAnimationFrame(frame);
+    frame = null;
+  };
 }

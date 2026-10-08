@@ -5,6 +5,7 @@
 import type { CommandId } from '../../generated/ids.ts';
 import type { Message } from '../commands/registry.ts';
 import type { DocumentJson, Selection } from '../document/model.ts';
+import type { EditContext } from '../store/store.ts';
 
 export type Path = readonly (string | number)[];
 export type Patch =
@@ -19,6 +20,9 @@ export interface Transaction {
   readonly inverses: readonly Patch[];
   readonly selectionBefore: Selection;
   readonly selectionAfter: Selection;
+  // the context the change was made in (the breakpoint and state, the class the Style tab targets, the keyframe), which
+  // an undo and a redo give back to the editor (decisoes.md, DCS-009); absent on an entry no store recorded
+  readonly context?: EditContext;
   // when it was recorded (Clock), for coalescing
   readonly at: number;
   // commands that coalesce (manifest history.coalesce) merge with the previous entry of the same key

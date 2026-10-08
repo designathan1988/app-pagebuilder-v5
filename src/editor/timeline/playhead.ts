@@ -16,7 +16,7 @@ import { animationsOf, durationMs } from '../../core/animation/animation.ts';
 import { manifest, numberConstant, pairConstant, type DoorEntry } from '../../manifest/runtime.ts';
 import type { StoreState } from '../../core/store/store.ts';
 import type { EditorUi } from '../state.ts';
-import { isPanelOpen } from '../workspace/panels.ts';
+import { isPanelOpen, showPanel } from '../workspace/panels.ts';
 import type { Panel } from '../workspace/panel-catalogue.ts';
 
 // the dock panel the Timeline is
@@ -91,6 +91,16 @@ export function keyframeTarget(state: StoreState<EditorUi>): KeyframeTarget | nu
 // the time an offset of a shown animation sits at, in whole ms
 function timeOfPercent(animation: Animation, percent: number): number {
   return Math.round((durationMs(animation) * Math.min(100, Math.max(0, percent))) / 100);
+}
+
+// The editor state with the Timeline open on a keyframe: its animation shown and the playhead on its offset, so a
+// style write goes there again (an undone or redone change made on that keyframe: view/edit-context.ts, DCS-009); null
+// when the element no longer holds that animation.
+export function atKeyframe(state: StoreState<EditorUi>, target: KeyframeTarget): EditorUi | null {
+  const found = locate(state.document, target.node);
+  const animation = found === null ? undefined : animationsOf(found.node).find((a) => a.name === target.animation);
+  if (animation === undefined) return null;
+  return showPanel({ ...state.ui, timeline: { ...timelineOf(state.ui), shown: animation.name, time: timeOfPercent(animation, target.keyframe) } }, TIMELINE_PANEL);
 }
 
 // Where a pointer at this x of the track lands as a keyframe offset (a whole percent, clamped to the manifest's

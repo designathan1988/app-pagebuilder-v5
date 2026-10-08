@@ -11,6 +11,7 @@ import { kindOf } from '../../tests/support/groups.ts';
 import { inputHashes } from '../runner/run-inputs.ts';
 import { changedOldLines } from './diff.ts';
 import { selectorsOn } from './css.ts';
+import { graphReaches, selectDetectors } from './detectors.ts';
 import { IMPACT_DIR, readMap, readSnapshot } from './map.ts';
 import { selectImpact, type BrowserTest, type Change } from './select.ts';
 import { changedDoors, changedKeys, changedScenarios, usersOf } from './sources.ts';
@@ -70,7 +71,7 @@ const walk = (suite: Suite, titles: string[], file: string) => {
 for (const suite of (JSON.parse(listed.stdout) as { suites: Suite[] }).suites) walk(suite, [], suite.title);
 
 const map = readMap(snapshot);
-const impact = selectImpact({ changes, tests, map, selectorsOn, changedScenarios, changedDoors, changedKeys, usersOf });
+const impact = selectImpact({ changes, tests, map, selectorsOn, changedScenarios, changedDoors, changedKeys, usersOf, detectors: (changed) => selectDetectors(changed, graphReaches) });
 
 // ---- the choice, said
 console.log(`\nstatic: type check and dependency check whole; lint ${impact.lint.length} file(s)${impact.manifestCheck.length > 0 ? '; manifest check' : ''}${impact.genCheck.length > 0 ? '; generator check' : ''}`);
@@ -81,6 +82,9 @@ else {
   console.log(`browser: ${impact.browser.size} of ${tests.length} tests`);
   for (const [id, why] of impact.browser) console.log(`  ${id}\n      ${why.slice(0, 3).join('; ')}${why.length > 3 ? ` (and ${why.length - 3} more)` : ''}`);
 }
+console.log(`detectors: ${impact.detectors.models.size} model group(s), ${impact.detectors.mutants.size} mutant(s)`);
+for (const [group, why] of impact.detectors.models) console.log(`  model ${group}: ${why.slice(0, 2).join('; ')}${why.length > 2 ? ` (and ${why.length - 2} more)` : ''}`);
+if (impact.detectors.mutants.size > 0) console.log(`  mutants: ${[...impact.detectors.mutants.keys()].join(', ')}`);
 for (const note of impact.notes) console.log(`note: ${note}`);
 if (listOnly) process.exit(0);
 
@@ -102,6 +106,8 @@ else {
   if (related.length > 0) step('unit tests related', run(process.execPath, [vitest, 'related', '--run', '--passWithNoTests', ...related]));
   step('fast scenario runner', run(process.execPath, [vitest, 'run', 'tools/runner/headless.test.ts']));
 }
+if (impact.detectors.models.size > 0) step(`model of the store (${[...impact.detectors.models.keys()].join(', ')})`, run(process.execPath, [vitest, 'run', '--config', 'tools/runner/model/vitest.config.ts', ...[...impact.detectors.models.keys()].map((group) => `tools/runner/model/${group}.test.ts`)]));
+if (impact.detectors.mutants.size > 0) step(`catalogue of mutants (${impact.detectors.mutants.size})`, run(process.execPath, ['tools/runner/mutants-run.ts', '--only', [...impact.detectors.mutants.keys()].join(',')]));
 const cli = path.join('node_modules', '@playwright', 'test', 'cli.js');
 if (impact.browserAll.length > 0) step('browser suite', run(process.execPath, [cli, 'test']));
 else if (impact.browser.size > 0) {

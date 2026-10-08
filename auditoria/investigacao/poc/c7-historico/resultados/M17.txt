@@ -1,0 +1,16 @@
+{
+  "mutante": "M17",
+  "aplicado": "M17",
+  "acusou": true,
+  "execucoes": 17,
+  "conta": {
+    "passos": 249,
+    "entradasMax": 13,
+    "desfeitos": 20,
+    "fusoes": 10,
+    "gestos": 11,
+    "digitacoes": 31
+  },
+  "ms": 69,
+  "falha": "Property failed after 12 tests\n{ seed: 20261008, path: \"11:0:2\", endOnFailure: true }\nCounterexample: [\"aurora\",Digitar(10px),Digitar(10px) /*replayPath=\"BeB:F\"*/]\nShrunk 2 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: um campo novo descartou a digitação pendente do anterior"
+}

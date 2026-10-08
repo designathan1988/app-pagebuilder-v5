@@ -1,0 +1,16 @@
+{
+  "mutante": "M07",
+  "aplicado": "M07",
+  "acusou": true,
+  "execucoes": 206,
+  "conta": {
+    "passos": 2355,
+    "entradasMax": 13,
+    "desfeitos": 338,
+    "fusoes": 109,
+    "gestos": 26,
+    "digitacoes": 170
+  },
+  "ms": 287,
+  "falha": "Property failed after 12 tests\n{ seed: 20261008, path: \"11:5:5:5:8:14:15:20:19:18:14:14:10:0:10:10\", endOnFailure: true }\nCounterexample: [\"aurora\",Adicionar(10),element.delete,Adicionar(10),element.delete,Desfazer /*replayPath=\"///s:P\"*/]\nShrunk 15 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: index 2 is past the end at pages/0/tree/children/1/children/0/children/2"
+}

@@ -1,0 +1,16 @@
+{
+  "mutante": "M05",
+  "aplicado": "M05",
+  "acusou": true,
+  "execucoes": 20,
+  "conta": {
+    "passos": 79,
+    "entradasMax": 4,
+    "desfeitos": 3,
+    "fusoes": 2,
+    "gestos": 2,
+    "digitacoes": 2
+  },
+  "ms": 39,
+  "falha": "Property failed after 3 tests\n{ seed: 20261008, path: \"2:3:1:1:2:1:1\", endOnFailure: true }\nCounterexample: [\"aurora\",Selecionar(0),Rajada(width,1001) /*replayPath=\"JQV:F\"*/]\nShrunk 6 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita"
+}

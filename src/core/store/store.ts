@@ -203,6 +203,12 @@ export interface StoreOptions<Ui> {
   // text edit ends when an undoable command runs: the document may change under it; a renamed class the editor targets
   // moves the target with it); it returns the same editor state when nothing follows
   readonly followCommand?: (state: StoreState<Ui>, command: Command, args: Readonly<Record<string, unknown>>) => Followed<Ui>;
+  // the editor state with the context an undone or redone change was made in given back (decisoes.md, DCS-009: its
+  // breakpoint and state, its class, its keyframe); the editor state as it is when absent
+  readonly restoreContext?: (state: StoreState<Ui>, context: EditContext) => Ui;
+  // the rules every publication keeps (core/history/invariants.ts), in development and tests only: what one breaks, in
+  // words, is recorded in the incident feed and thrown before the state changes; nothing is checked when absent
+  readonly invariants?: (before: StoreState<Ui>, after: StoreState<Ui>, patches: readonly Patch[]) => readonly string[];
 }
 
 // What follows a new selection or a command that ran: the editor state, and words for the status bar when what followed
@@ -306,6 +312,11 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
   const publish = (committed: StoreState<Ui>, patches: readonly Patch[] = [], follow = true) => {
     const before = state;
     const next = follow ? followSelection(before, committed) : committed;
+    const breaches = options.invariants?.(before, next, patches) ?? [];
+    if (breaches.length > 0) {
+      reportError('a publication broke a rule of the history', breaches.join('\n'));
+      throw new Error(breaches.join('; '));
+    }
     state = next;
     if (next.document !== before.document) {
       const change: DocumentChange = { before: before.document, after: next.document, patches };
@@ -345,6 +356,16 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     if (picked === undefined) return project;
     const layer = project.breakpoints.has(picked.breakpoint) ? picked : { ...picked, breakpoint: project.base.breakpoint };
     return layer.breakpoint === project.base.breakpoint && layer.state === project.base.state ? project : { ...project, base: layer };
+  };
+  // the context a change is made in, recorded with its transaction (DCS-009): the one its dispatch carries, else the
+  // editor's present one as these options read it
+  const contextAt = (s: StoreState<Ui>, at?: EditContext): EditContext => {
+    const layer = at?.layer ?? options.layer?.(s);
+    return {
+      ...(layer === undefined ? {} : { layer }),
+      styleClass: at !== undefined && 'styleClass' in at ? (at.styleClass ?? null) : (options.styleClass?.(s.ui) ?? null),
+      keyframe: at !== undefined && 'keyframe' in at ? (at.keyframe ?? null) : (options.keyframe?.(s) ?? null),
+    };
   };
   const handlerContext = (confirmed = false, at?: EditContext): HandlerContext<Ui> => {
     const ui = state.ui;
@@ -458,7 +479,9 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       if (restored === null || tx === undefined) return { status: 'done', changed: false };
       // the step names what it undoes or redoes: what its command said, else "the last change"
       const action = tx.message ?? LAST_CHANGE;
-      publish(commit({ ...state, ...restored, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches);
+      // the context the change was made in comes back with it (DCS-009), so the editor shows what the step changed
+      const ui = tx.context !== undefined && options.restoreContext !== undefined ? options.restoreContext({ ...state, ...restored }, tx.context) : state.ui;
+      publish(commit({ ...state, ...restored, ui, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches);
       return { status: 'done', changed: true };
     }
     if (outcome.kind === 'load') {
@@ -503,9 +526,11 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     // before, and a refused commit inside a gesture left them in its history entry)
     if (documentChanged && gesture === null && ownedGroup === null) {
       const { key, within } = coalescing(command, args, before.selection);
-      const tx: Transaction = { command: id, patches: applied.applied, inverses: applied.inverses, selectionBefore: before.selection, selectionAfter: selection, at: clock.now(), coalesceKey: key, message: outcome.message ?? null };
-      history = record(before.history, tx, key !== null && key === previousMergeable ? within : null);
-      lastMergeable = key;
+      const context = contextAt(before, at);
+      const tx: Transaction = { command: id, patches: applied.applied, inverses: applied.inverses, selectionBefore: before.selection, selectionAfter: selection, context, at: clock.now(), coalesceKey: key, message: outcome.message ?? null };
+      history = record(before.history, tx, key !== null && key === previousMergeable ? within : null, applied.document);
+      // a burst whose entry went (it came back to where it began: history.ts) begins anew with its next step
+      lastMergeable = history.past.length < before.history.past.length ? null : key;
     }
     const ran: StoreState<Ui> = {
       document: documentChanged ? applied.document : before.document,
@@ -617,6 +642,8 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
               inverses: current.inverses,
               selectionBefore: before.selection,
               selectionAfter: state.selection,
+              // a group is made where it was opened
+              context: contextAt(before),
               at: clock.now(),
               coalesceKey: null,
               message: state.message !== before.message ? state.message : null
@@ -709,6 +736,8 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
             inverses: current.inverses,
             selectionBefore: before.selection,
             selectionAfter: state.selection,
+            // a gesture is made where it was pressed
+            context: contextAt(before),
             at: clock.now(),
             coalesceKey: null,
             message: state.message !== before.message ? state.message : null

@@ -1,0 +1,16 @@
+{
+  "mutante": "M06",
+  "aplicado": "M06",
+  "acusou": true,
+  "execucoes": 17,
+  "conta": {
+    "passos": 50,
+    "entradasMax": 2,
+    "desfeitos": 0,
+    "fusoes": 0,
+    "gestos": 10,
+    "digitacoes": 6
+  },
+  "ms": 33,
+  "falha": "Property failed after 1 tests\n{ seed: 20261008, path: \"0:0:3:3:2:2\", endOnFailure: true }\nCounterexample: [\"aurora\",Gesto(1,cancel,seleciona 0) /*replayPath=\"RAA:F\"*/]\nShrunk 5 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: um DocumentChange não leva before a after pelos próprios patches"
+}

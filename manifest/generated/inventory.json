@@ -1,0 +1,6253 @@
+{
+  "totals": {
+    "features": 214,
+    "built": 214,
+    "commands": 373,
+    "doors": 1362,
+    "scenarios": 1831,
+    "modules": 487,
+    "lines": 85000,
+    "fields": 207,
+    "interactive": 257
+  },
+  "features": [
+    {
+      "id": "editor-shell",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen"
+      ],
+      "doors": 25,
+      "scenarios": 3
+    },
+    {
+      "id": "canvas-page-iframe",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "palette-click-insert",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 30,
+      "scenarios": 7
+    },
+    {
+      "id": "select-click",
+      "built": true,
+      "commands": [
+        "selection.select",
+        "selection.clear",
+        "view.selectTool"
+      ],
+      "doors": 13,
+      "scenarios": 7
+    },
+    {
+      "id": "layers-tree",
+      "built": true,
+      "commands": [
+        "selection.select",
+        "layers.setExpanded",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 34,
+      "scenarios": 5
+    },
+    {
+      "id": "undo-redo",
+      "built": true,
+      "commands": [
+        "history.undo",
+        "history.redo"
+      ],
+      "doors": 10,
+      "scenarios": 5
+    },
+    {
+      "id": "delete-element",
+      "built": true,
+      "commands": [
+        "history.undo",
+        "element.delete"
+      ],
+      "doors": 12,
+      "scenarios": 6
+    },
+    {
+      "id": "drag-reorder-canvas",
+      "built": true,
+      "commands": [
+        "element.moveTo"
+      ],
+      "doors": 4,
+      "scenarios": 4
+    },
+    {
+      "id": "drag-drop-inside",
+      "built": true,
+      "commands": [
+        "element.moveTo"
+      ],
+      "doors": 4,
+      "scenarios": 3
+    },
+    {
+      "id": "drag-level-keys-escape",
+      "built": true,
+      "commands": [
+        "drag.levelUp",
+        "drag.levelDown",
+        "drag.cancel"
+      ],
+      "doors": 4,
+      "scenarios": 4
+    },
+    {
+      "id": "palette-drag-insert",
+      "built": true,
+      "commands": [
+        "element.insert"
+      ],
+      "doors": 5,
+      "scenarios": 10
+    },
+    {
+      "id": "layers-drag",
+      "built": true,
+      "commands": [
+        "element.moveTo",
+        "layers.setExpanded"
+      ],
+      "doors": 6,
+      "scenarios": 3
+    },
+    {
+      "id": "move-up-down",
+      "built": true,
+      "commands": [
+        "element.moveUp",
+        "element.moveDown"
+      ],
+      "doors": 10,
+      "scenarios": 4
+    },
+    {
+      "id": "wrap-row-column",
+      "built": true,
+      "commands": [
+        "element.wrapRow",
+        "element.wrapColumn"
+      ],
+      "doors": 10,
+      "scenarios": 4
+    },
+    {
+      "id": "drag-side-wrap",
+      "built": true,
+      "commands": [
+        "element.wrapBeside"
+      ],
+      "doors": 2,
+      "scenarios": 3
+    },
+    {
+      "id": "context-menu",
+      "built": true,
+      "commands": [
+        "contextMenu.open",
+        "focus.next",
+        "focus.previous",
+        "focus.first",
+        "focus.last",
+        "focus.activate",
+        "ui.dismiss",
+        "element.moveUp",
+        "element.moveDown",
+        "element.wrapRow",
+        "element.wrapColumn",
+        "element.delete"
+      ],
+      "doors": 73,
+      "scenarios": 7
+    },
+    {
+      "id": "nest-into-previous",
+      "built": true,
+      "commands": [
+        "element.nestIntoPrevious"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "promote-out",
+      "built": true,
+      "commands": [
+        "element.promote"
+      ],
+      "doors": 5,
+      "scenarios": 4
+    },
+    {
+      "id": "duplicate",
+      "built": true,
+      "commands": [
+        "element.duplicate"
+      ],
+      "doors": 5,
+      "scenarios": 4
+    },
+    {
+      "id": "drag-duplicate",
+      "built": true,
+      "commands": [
+        "element.duplicate",
+        "element.moveTo"
+      ],
+      "doors": 9,
+      "scenarios": 2
+    },
+    {
+      "id": "clipboard-copy-paste",
+      "built": true,
+      "commands": [
+        "clipboard.copy",
+        "clipboard.paste"
+      ],
+      "doors": 8,
+      "scenarios": 6
+    },
+    {
+      "id": "keyboard-tree-walk",
+      "built": true,
+      "commands": [
+        "selection.walkNextSibling",
+        "selection.walkPreviousSibling",
+        "selection.walkParent",
+        "selection.walkFirstChild"
+      ],
+      "doors": 4,
+      "scenarios": 10
+    },
+    {
+      "id": "hand-keyboard-move",
+      "built": true,
+      "commands": [
+        "element.moveTo",
+        "hand.take",
+        "hand.aimNext",
+        "hand.aimPrevious",
+        "hand.climb",
+        "hand.descend",
+        "hand.drop"
+      ],
+      "doors": 16,
+      "scenarios": 8
+    },
+    {
+      "id": "text-edit-inline",
+      "built": true,
+      "commands": [
+        "text.startEdit",
+        "text.set",
+        "text.cancelEdit",
+        "text.insertLineBreak"
+      ],
+      "doors": 11,
+      "scenarios": 6
+    },
+    {
+      "id": "text-inline-formatting",
+      "built": true,
+      "commands": [
+        "text.toggleBold",
+        "text.toggleItalic",
+        "text.editLink",
+        "text.paste"
+      ],
+      "doors": 7,
+      "scenarios": 5
+    },
+    {
+      "id": "rename-element",
+      "built": true,
+      "commands": [
+        "layers.startRename",
+        "element.rename",
+        "layers.cancelRename"
+      ],
+      "doors": 8,
+      "scenarios": 4
+    },
+    {
+      "id": "multi-select-click",
+      "built": true,
+      "commands": [
+        "selection.add",
+        "selection.toggle",
+        "selection.range"
+      ],
+      "doors": 4,
+      "scenarios": 7
+    },
+    {
+      "id": "unwrap",
+      "built": true,
+      "commands": [
+        "element.unwrap"
+      ],
+      "doors": 3,
+      "scenarios": 2
+    },
+    {
+      "id": "marquee-select",
+      "built": true,
+      "commands": [
+        "selection.marquee"
+      ],
+      "doors": 2,
+      "scenarios": 6
+    },
+    {
+      "id": "multi-select-actions",
+      "built": true,
+      "commands": [
+        "element.moveUp",
+        "element.wrapRow",
+        "element.wrapColumn",
+        "element.promote",
+        "element.duplicate",
+        "element.delete",
+        "hand.take",
+        "layers.startRename",
+        "text.startEdit"
+      ],
+      "doors": 46,
+      "scenarios": 8
+    },
+    {
+      "id": "select-container-children",
+      "built": true,
+      "commands": [
+        "selection.selectAllInContainer",
+        "text.selectAll"
+      ],
+      "doors": 5,
+      "scenarios": 4
+    },
+    {
+      "id": "lock-element",
+      "built": true,
+      "commands": [
+        "element.toggleLock"
+      ],
+      "doors": 4,
+      "scenarios": 5
+    },
+    {
+      "id": "hide-element",
+      "built": true,
+      "commands": [
+        "element.toggleHidden"
+      ],
+      "doors": 4,
+      "scenarios": 4
+    },
+    {
+      "id": "drag-autoscroll",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 1
+    },
+    {
+      "id": "app-menu",
+      "built": true,
+      "commands": [
+        "history.undo",
+        "history.redo",
+        "selection.clear",
+        "selection.selectAllInContainer",
+        "element.moveUp",
+        "element.moveDown",
+        "element.wrapRow",
+        "element.wrapColumn",
+        "element.nestIntoPrevious",
+        "element.promote",
+        "element.duplicate",
+        "element.delete",
+        "element.unwrap",
+        "hand.take",
+        "clipboard.copy",
+        "clipboard.paste",
+        "layers.startRename",
+        "workspace.setPanelOpen",
+        "focus.menuBar",
+        "focus.nextMenu",
+        "focus.previousMenu"
+      ],
+      "doors": 110,
+      "scenarios": 21
+    },
+    {
+      "id": "ui-language",
+      "built": true,
+      "commands": [
+        "preferences.setLanguage"
+      ],
+      "doors": 2,
+      "scenarios": 2
+    },
+    {
+      "id": "autosave-restore",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 4
+    },
+    {
+      "id": "unsaved-work-guard",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "autosave-crash-recovery",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "new-blank-page",
+      "built": true,
+      "commands": [
+        "project.newBlankPage"
+      ],
+      "doors": 2,
+      "scenarios": 3
+    },
+    {
+      "id": "autosave-corruption-recovery",
+      "built": true,
+      "commands": [
+        "project.restoreVersion"
+      ],
+      "doors": 1,
+      "scenarios": 1
+    },
+    {
+      "id": "multi-tab-guard",
+      "built": true,
+      "commands": [
+        "project.takeOverEditing"
+      ],
+      "doors": 1,
+      "scenarios": 2
+    },
+    {
+      "id": "project-save-json",
+      "built": true,
+      "commands": [
+        "project.save"
+      ],
+      "doors": 2,
+      "scenarios": 2
+    },
+    {
+      "id": "project-open-json",
+      "built": true,
+      "commands": [
+        "project.open"
+      ],
+      "doors": 2,
+      "scenarios": 5
+    },
+    {
+      "id": "inspector-panel",
+      "built": true,
+      "commands": [
+        "element.toggleLock",
+        "element.toggleHidden",
+        "text.set",
+        "text.cancelEdit",
+        "inspector.toggleSection",
+        "inspector.toggleRow",
+        "workspace.setActiveTab"
+      ],
+      "doors": 22,
+      "scenarios": 16
+    },
+    {
+      "id": "inspector-number-fields",
+      "built": true,
+      "commands": [
+        "style.set",
+        "field.step",
+        "field.scrub",
+        "field.setUnit",
+        "field.cancel"
+      ],
+      "doors": 185,
+      "scenarios": 21
+    },
+    {
+      "id": "props-display",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 11
+    },
+    {
+      "id": "props-flex-container",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setAlignment"
+      ],
+      "doors": 173,
+      "scenarios": 20
+    },
+    {
+      "id": "props-grid-container",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setGridTracks",
+        "style.setGridItem"
+      ],
+      "doors": 183,
+      "scenarios": 21
+    },
+    {
+      "id": "props-layout-item",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 10
+    },
+    {
+      "id": "props-spacing",
+      "built": true,
+      "commands": [
+        "style.setSpacing",
+        "inspector.toggleSpacingLink",
+        "field.cancel",
+        "field.step"
+      ],
+      "doors": 31,
+      "scenarios": 18
+    },
+    {
+      "id": "props-size-overflow",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 13
+    },
+    {
+      "id": "props-position",
+      "built": true,
+      "commands": [
+        "style.set",
+        "position.setMode"
+      ],
+      "doors": 174,
+      "scenarios": 15
+    },
+    {
+      "id": "color-picker",
+      "built": true,
+      "commands": [
+        "style.set",
+        "colorPicker.open",
+        "colorPicker.setFormat",
+        "colorPicker.setChannel",
+        "colorPicker.apply",
+        "colorPicker.cancel",
+        "drag.cancel"
+      ],
+      "doors": 183,
+      "scenarios": 22
+    },
+    {
+      "id": "color-picker-oklch",
+      "built": true,
+      "commands": [
+        "colorPicker.setFormat",
+        "colorPicker.setChannel"
+      ],
+      "doors": 6,
+      "scenarios": 5
+    },
+    {
+      "id": "color-swatches-eyedropper",
+      "built": true,
+      "commands": [
+        "colors.saveSwatch",
+        "colors.removeSwatch",
+        "style.set"
+      ],
+      "doors": 174,
+      "scenarios": 5
+    },
+    {
+      "id": "props-typography",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 23
+    },
+    {
+      "id": "props-typography-advanced",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 15
+    },
+    {
+      "id": "props-background",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setBackgroundImage"
+      ],
+      "doors": 191,
+      "scenarios": 16
+    },
+    {
+      "id": "gradient-editor",
+      "built": true,
+      "commands": [
+        "style.setBackgroundImage"
+      ],
+      "doors": 19,
+      "scenarios": 23
+    },
+    {
+      "id": "props-border-outline",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setBorder",
+        "style.setRadius",
+        "field.cancel"
+      ],
+      "doors": 200,
+      "scenarios": 27
+    },
+    {
+      "id": "props-effects-basic",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 9
+    },
+    {
+      "id": "shadow-editor",
+      "built": true,
+      "commands": [
+        "style.setShadows"
+      ],
+      "doors": 31,
+      "scenarios": 35
+    },
+    {
+      "id": "props-filters-clip",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setFilter"
+      ],
+      "doors": 183,
+      "scenarios": 16
+    },
+    {
+      "id": "props-transforms",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setTransform"
+      ],
+      "doors": 177,
+      "scenarios": 15
+    },
+    {
+      "id": "props-transition",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 6
+    },
+    {
+      "id": "props-more",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 20
+    },
+    {
+      "id": "props-attributes",
+      "built": true,
+      "commands": [
+        "style.setCustomDeclarations",
+        "element.setAttribute",
+        "element.setId",
+        "element.setClasses"
+      ],
+      "doors": 136,
+      "scenarios": 11
+    },
+    {
+      "id": "inspector-provenance-reset",
+      "built": true,
+      "commands": [
+        "style.reset",
+        "style.resetAll"
+      ],
+      "doors": 3,
+      "scenarios": 4
+    },
+    {
+      "id": "inspector-property-search",
+      "built": true,
+      "commands": [
+        "inspector.search"
+      ],
+      "doors": 1,
+      "scenarios": 3
+    },
+    {
+      "id": "inspector-advanced-mode",
+      "built": true,
+      "commands": [
+        "inspector.setMode"
+      ],
+      "doors": 2,
+      "scenarios": 2
+    },
+    {
+      "id": "inspector-add-property",
+      "built": true,
+      "commands": [
+        "inspector.reveal"
+      ],
+      "doors": 3,
+      "scenarios": 2
+    },
+    {
+      "id": "semantic-tag-switch",
+      "built": true,
+      "commands": [
+        "element.setTag"
+      ],
+      "doors": 2,
+      "scenarios": 12
+    },
+    {
+      "id": "quick-panel",
+      "built": true,
+      "commands": [
+        "contextMenu.open",
+        "style.set",
+        "style.setBorder",
+        "style.setBackgroundImage",
+        "style.setFilter",
+        "element.setTag",
+        "quickPanel.setOffset",
+        "style.setTransform",
+        "quickPanel.setOpen"
+      ],
+      "doors": 235,
+      "scenarios": 36
+    },
+    {
+      "id": "multi-select-edit",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 3
+    },
+    {
+      "id": "value-presets",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setShadows"
+      ],
+      "doors": 203,
+      "scenarios": 4
+    },
+    {
+      "id": "resize-handles",
+      "built": true,
+      "commands": [
+        "geometry.resize"
+      ],
+      "doors": 12,
+      "scenarios": 11
+    },
+    {
+      "id": "spacing-handles",
+      "built": true,
+      "commands": [
+        "style.setSpacing",
+        "canvas.setEditMode"
+      ],
+      "doors": 21,
+      "scenarios": 15
+    },
+    {
+      "id": "radius-border-gap-handles",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setBorder",
+        "style.setRadius",
+        "handle.step"
+      ],
+      "doors": 201,
+      "scenarios": 11
+    },
+    {
+      "id": "shadow-handles",
+      "built": true,
+      "commands": [
+        "style.setShadows"
+      ],
+      "doors": 31,
+      "scenarios": 4
+    },
+    {
+      "id": "page-properties",
+      "built": true,
+      "commands": [
+        "page.openProperties",
+        "page.setSetting"
+      ],
+      "doors": 12,
+      "scenarios": 7
+    },
+    {
+      "id": "base-style",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "export-zip",
+      "built": true,
+      "commands": [
+        "page.setSetting",
+        "project.export"
+      ],
+      "doors": 14,
+      "scenarios": 5
+    },
+    {
+      "id": "css-variables-tokens",
+      "built": true,
+      "commands": [
+        "tokens.create",
+        "tokens.update",
+        "tokens.rename",
+        "tokens.delete",
+        "workspace.setPanelOpen",
+        "focus.next",
+        "focus.previous",
+        "focus.activate",
+        "ui.dismiss"
+      ],
+      "doors": 62,
+      "scenarios": 16
+    },
+    {
+      "id": "export-bem-css",
+      "built": true,
+      "commands": [
+        "element.setClasses",
+        "project.export"
+      ],
+      "doors": 5,
+      "scenarios": 3
+    },
+    {
+      "id": "project-language",
+      "built": true,
+      "commands": [
+        "project.setLanguage",
+        "project.setCodeLanguage",
+        "workspace.setActiveTab",
+        "project.export"
+      ],
+      "doors": 11,
+      "scenarios": 4
+    },
+    {
+      "id": "site-colours",
+      "built": true,
+      "commands": [
+        "design.replaceColour",
+        "design.colourToVariable"
+      ],
+      "doors": 2,
+      "scenarios": 3
+    },
+    {
+      "id": "style-suggestions",
+      "built": true,
+      "commands": [
+        "design.applySuggestion"
+      ],
+      "doors": 1,
+      "scenarios": 2
+    },
+    {
+      "id": "elements-structure",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setLink"
+      ],
+      "doors": 11,
+      "scenarios": 12
+    },
+    {
+      "id": "elements-text",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setTag",
+        "element.setLink"
+      ],
+      "doors": 13,
+      "scenarios": 6
+    },
+    {
+      "id": "elements-lists",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.duplicate"
+      ],
+      "doors": 10,
+      "scenarios": 11
+    },
+    {
+      "id": "nesting-grammar",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.moveTo",
+        "clipboard.paste"
+      ],
+      "doors": 13,
+      "scenarios": 2
+    },
+    {
+      "id": "nesting-grammar-structure",
+      "built": true,
+      "commands": [
+        "element.moveTo",
+        "element.wrapRow",
+        "element.wrapColumn",
+        "element.promote",
+        "element.unwrap",
+        "hand.take",
+        "element.setTag"
+      ],
+      "doors": 29,
+      "scenarios": 6
+    },
+    {
+      "id": "elements-tables",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "parts.toggle"
+      ],
+      "doors": 8,
+      "scenarios": 4
+    },
+    {
+      "id": "table-commands",
+      "built": true,
+      "commands": [
+        "table.addColumnAfter",
+        "table.addColumnEnd",
+        "table.removeColumn",
+        "table.addRowAfter",
+        "table.removeRow"
+      ],
+      "doors": 10,
+      "scenarios": 5
+    },
+    {
+      "id": "elements-form-structure",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setTag",
+        "element.setAttribute"
+      ],
+      "doors": 140,
+      "scenarios": 10
+    },
+    {
+      "id": "element-attributes-aria",
+      "built": true,
+      "commands": [
+        "element.setCustomAttribute",
+        "element.removeCustomAttribute",
+        "element.setAttribute"
+      ],
+      "doors": 136,
+      "scenarios": 8
+    },
+    {
+      "id": "shared-style-classes",
+      "built": true,
+      "commands": [
+        "classes.create",
+        "classes.apply",
+        "classes.detach",
+        "inspector.setStyleTarget"
+      ],
+      "doors": 5,
+      "scenarios": 10
+    },
+    {
+      "id": "elements-form-inputs",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setAttribute"
+      ],
+      "doors": 138,
+      "scenarios": 26
+    },
+    {
+      "id": "elements-form-inputs-rules",
+      "built": true,
+      "commands": [
+        "element.setInputType",
+        "element.setLabelTarget",
+        "inspector.reveal"
+      ],
+      "doors": 6,
+      "scenarios": 3
+    },
+    {
+      "id": "elements-form-controls",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setAttribute",
+        "parts.add",
+        "parts.move",
+        "parts.remove"
+      ],
+      "doors": 149,
+      "scenarios": 13
+    },
+    {
+      "id": "elements-media-images",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setAttribute",
+        "parts.add"
+      ],
+      "doors": 146,
+      "scenarios": 9
+    },
+    {
+      "id": "elements-media-embeds",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setAttribute",
+        "parts.add"
+      ],
+      "doors": 146,
+      "scenarios": 14
+    },
+    {
+      "id": "elements-svg-shapes",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "style.set",
+        "geometry.resize",
+        "element.setSvgMarkup",
+        "parts.add"
+      ],
+      "doors": 198,
+      "scenarios": 14
+    },
+    {
+      "id": "elements-interactive",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "element.setAttribute"
+      ],
+      "doors": 138,
+      "scenarios": 4
+    },
+    {
+      "id": "natural-child-command",
+      "built": true,
+      "commands": [
+        "element.createNaturalChild"
+      ],
+      "doors": 2,
+      "scenarios": 4
+    },
+    {
+      "id": "props-element-specific",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 10
+    },
+    {
+      "id": "settings-class-management",
+      "built": true,
+      "commands": [
+        "element.setClasses",
+        "element.setCustomAttribute",
+        "inspector.setStyleTarget",
+        "classes.rename",
+        "classes.delete"
+      ],
+      "doors": 6,
+      "scenarios": 6
+    },
+    {
+      "id": "settings-audit",
+      "built": true,
+      "commands": [
+        "element.setAttribute",
+        "element.setInputType",
+        "element.setClasses",
+        "element.setCustomAttribute",
+        "element.setTag",
+        "text.toggleBold",
+        "text.toggleItalic",
+        "classes.rename",
+        "classes.delete"
+      ],
+      "doors": 146,
+      "scenarios": 26
+    },
+    {
+      "id": "forms-masks-validation",
+      "built": true,
+      "commands": [
+        "element.setAttribute",
+        "element.setInputType"
+      ],
+      "doors": 135,
+      "scenarios": 75
+    },
+    {
+      "id": "class-moves",
+      "built": true,
+      "commands": [
+        "classes.moveInto",
+        "classes.applyToSimilar"
+      ],
+      "doors": 3,
+      "scenarios": 4
+    },
+    {
+      "id": "templates-layout",
+      "built": true,
+      "commands": [
+        "element.insert"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "templates-content",
+      "built": true,
+      "commands": [
+        "element.insert"
+      ],
+      "doors": 5,
+      "scenarios": 7
+    },
+    {
+      "id": "templates-sections",
+      "built": true,
+      "commands": [
+        "element.insert"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "reusable-components",
+      "built": true,
+      "commands": [
+        "components.create",
+        "components.insertInstance",
+        "components.detach",
+        "components.startCreate",
+        "components.closePrompt"
+      ],
+      "doors": 9,
+      "scenarios": 10
+    },
+    {
+      "id": "repeat-element",
+      "built": true,
+      "commands": [
+        "components.repeat",
+        "components.fillFromData"
+      ],
+      "doors": 5,
+      "scenarios": 6
+    },
+    {
+      "id": "templates-components",
+      "built": true,
+      "commands": [
+        "element.insert"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "component-master-edit",
+      "built": true,
+      "commands": [
+        "components.updateFromInstance"
+      ],
+      "doors": 1,
+      "scenarios": 2
+    },
+    {
+      "id": "component-variants",
+      "built": true,
+      "commands": [
+        "components.setVariant"
+      ],
+      "doors": 1,
+      "scenarios": 3
+    },
+    {
+      "id": "palette-search-groups",
+      "built": true,
+      "commands": [
+        "element.insert",
+        "palette.toggleGroup"
+      ],
+      "doors": 6,
+      "scenarios": 2
+    },
+    {
+      "id": "palette-density",
+      "built": true,
+      "commands": [
+        "palette.setDensity"
+      ],
+      "doors": 4,
+      "scenarios": 3
+    },
+    {
+      "id": "layers-expand-collapse-all",
+      "built": true,
+      "commands": [
+        "layers.collapseAll",
+        "layers.expandAll"
+      ],
+      "doors": 2,
+      "scenarios": 3
+    },
+    {
+      "id": "layers-search",
+      "built": true,
+      "commands": [
+        "layers.search",
+        "selection.select"
+      ],
+      "doors": 8,
+      "scenarios": 4
+    },
+    {
+      "id": "layers-row-columns",
+      "built": true,
+      "commands": [
+        "layers.setRowDetails"
+      ],
+      "doors": 4,
+      "scenarios": 3
+    },
+    {
+      "id": "layers-row-colours",
+      "built": true,
+      "commands": [
+        "element.setLayerColor"
+      ],
+      "doors": 1,
+      "scenarios": 2
+    },
+    {
+      "id": "zoom-keyboard-buttons",
+      "built": true,
+      "commands": [
+        "view.zoomIn",
+        "view.zoomOut",
+        "view.zoomReset",
+        "view.zoomTo",
+        "view.zoomFit"
+      ],
+      "doors": 20,
+      "scenarios": 15
+    },
+    {
+      "id": "rotation-handle",
+      "built": true,
+      "commands": [
+        "style.set"
+      ],
+      "doors": 172,
+      "scenarios": 3
+    },
+    {
+      "id": "zoom-wheel-pan",
+      "built": true,
+      "commands": [
+        "view.zoomAt",
+        "view.pan"
+      ],
+      "doors": 5,
+      "scenarios": 6
+    },
+    {
+      "id": "rulers",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "guides-manual",
+      "built": true,
+      "commands": [
+        "guides.create",
+        "guides.move",
+        "guides.delete",
+        "guides.toggleLock"
+      ],
+      "doors": 13,
+      "scenarios": 10
+    },
+    {
+      "id": "canvas-outlines-zones",
+      "built": true,
+      "commands": [
+        "view.toggleOutlines",
+        "view.toggleZones",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 27,
+      "scenarios": 3
+    },
+    {
+      "id": "layout-grid-overlay",
+      "built": true,
+      "commands": [
+        "grid.toggleColumns",
+        "grid.toggleRows",
+        "grid.toggleDots",
+        "page.setSetting"
+      ],
+      "doors": 17,
+      "scenarios": 7
+    },
+    {
+      "id": "workspace-settings-dialog",
+      "built": true,
+      "commands": [
+        "ui.dismiss",
+        "view.toggleRulers",
+        "grid.toggleColumns",
+        "grid.toggleRows",
+        "grid.toggleDots",
+        "grid.setSettings",
+        "guides.create",
+        "guides.delete",
+        "guides.toggleVisible",
+        "workspace.openDialog",
+        "grid.toggleFolds"
+      ],
+      "doors": 31,
+      "scenarios": 11
+    },
+    {
+      "id": "absolute-free-drag",
+      "built": true,
+      "commands": [
+        "position.move"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "absolute-nudge",
+      "built": true,
+      "commands": [
+        "position.move"
+      ],
+      "doors": 5,
+      "scenarios": 5
+    },
+    {
+      "id": "absolute-anchors",
+      "built": true,
+      "commands": [
+        "position.setAnchors"
+      ],
+      "doors": 9,
+      "scenarios": 10
+    },
+    {
+      "id": "align-distribute",
+      "built": true,
+      "commands": [
+        "position.align",
+        "position.distribute",
+        "selection.range"
+      ],
+      "doors": 25,
+      "scenarios": 9
+    },
+    {
+      "id": "snap-toggle-settings",
+      "built": true,
+      "commands": [
+        "snap.setEnabled",
+        "snap.setSettings",
+        "workspace.openDialog"
+      ],
+      "doors": 9,
+      "scenarios": 9
+    },
+    {
+      "id": "snap-while-moving",
+      "built": true,
+      "commands": [
+        "geometry.resize",
+        "position.move",
+        "guides.create",
+        "snap.setEnabled"
+      ],
+      "doors": 23,
+      "scenarios": 6
+    },
+    {
+      "id": "smart-guides",
+      "built": true,
+      "commands": [
+        "position.move",
+        "view.toggleSmartGuides",
+        "view.toggleEqualSpacing"
+      ],
+      "doors": 7,
+      "scenarios": 3
+    },
+    {
+      "id": "hover-measure",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 4
+    },
+    {
+      "id": "breakpoints-switch",
+      "built": true,
+      "commands": [
+        "view.setBreakpoint",
+        "grid.toggleFolds",
+        "page.setSetting",
+        "view.setViewportWidth",
+        "view.resizeViewport"
+      ],
+      "doors": 24,
+      "scenarios": 12
+    },
+    {
+      "id": "breakpoint-overrides",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.reset",
+        "view.setBreakpoint"
+      ],
+      "doors": 184,
+      "scenarios": 5
+    },
+    {
+      "id": "state-styles",
+      "built": true,
+      "commands": [
+        "style.set",
+        "view.setBreakpoint",
+        "view.setStyleState"
+      ],
+      "doors": 198,
+      "scenarios": 17
+    },
+    {
+      "id": "preview-mode",
+      "built": true,
+      "commands": [
+        "view.setBreakpoint",
+        "view.enterPreview",
+        "view.exitPreview",
+        "project.export"
+      ],
+      "doors": 22,
+      "scenarios": 11
+    },
+    {
+      "id": "embed-html",
+      "built": true,
+      "commands": [
+        "element.setEmbedMarkup"
+      ],
+      "doors": 1,
+      "scenarios": 2
+    },
+    {
+      "id": "theme-switch",
+      "built": true,
+      "commands": [
+        "preferences.setTheme"
+      ],
+      "doors": 3,
+      "scenarios": 3
+    },
+    {
+      "id": "dock-toggles",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen",
+        "workspace.toggleLeftDock",
+        "workspace.toggleInspector",
+        "workspace.collapseDocks"
+      ],
+      "doors": 34,
+      "scenarios": 15
+    },
+    {
+      "id": "command-bar",
+      "built": true,
+      "commands": [
+        "history.undo",
+        "history.redo",
+        "selection.clear",
+        "selection.selectAllInContainer",
+        "focus.next",
+        "focus.previous",
+        "focus.activate",
+        "ui.dismiss",
+        "element.insert",
+        "element.moveUp",
+        "element.moveDown",
+        "element.wrapRow",
+        "element.wrapColumn",
+        "element.nestIntoPrevious",
+        "element.promote",
+        "element.duplicate",
+        "element.delete",
+        "element.unwrap",
+        "element.createNaturalChild",
+        "hand.take",
+        "clipboard.copy",
+        "clipboard.paste",
+        "layers.startRename",
+        "element.toggleLock",
+        "element.toggleHidden",
+        "text.startEdit",
+        "style.resetAll",
+        "position.align",
+        "position.distribute",
+        "table.addColumnAfter",
+        "table.addColumnEnd",
+        "table.removeColumn",
+        "table.addRowAfter",
+        "table.removeRow",
+        "components.create",
+        "components.detach",
+        "page.openProperties",
+        "view.zoomIn",
+        "view.zoomOut",
+        "view.zoomReset",
+        "view.zoomFit",
+        "view.enterPreview",
+        "project.newBlankPage",
+        "project.save",
+        "project.open",
+        "project.export",
+        "workspace.setPanelOpen",
+        "commandBar.open",
+        "components.startCreate",
+        "selection.range"
+      ],
+      "doors": 234,
+      "scenarios": 56
+    },
+    {
+      "id": "command-bar-set-property",
+      "built": true,
+      "commands": [
+        "style.set",
+        "style.setSpacing",
+        "style.setBorder",
+        "style.setRadius",
+        "style.setBackgroundImage",
+        "style.setShadows",
+        "style.setFilter",
+        "style.setTransform",
+        "position.setMode",
+        "inspector.reveal"
+      ],
+      "doors": 287,
+      "scenarios": 10
+    },
+    {
+      "id": "shortcuts-panel",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen"
+      ],
+      "doors": 25,
+      "scenarios": 2
+    },
+    {
+      "id": "workbench-panel",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen",
+        "workspace.toggleDeveloperTools",
+        "workspace.setWorkbenchState",
+        "workspace.setActiveTab"
+      ],
+      "doors": 33,
+      "scenarios": 10
+    },
+    {
+      "id": "panel-resize",
+      "built": true,
+      "commands": [
+        "workspace.resizeSplitter"
+      ],
+      "doors": 11,
+      "scenarios": 12
+    },
+    {
+      "id": "floating-panels",
+      "built": true,
+      "commands": [
+        "workspace.movePanel"
+      ],
+      "doors": 7,
+      "scenarios": 5
+    },
+    {
+      "id": "panel-combine-tabs",
+      "built": true,
+      "commands": [
+        "workspace.movePanel",
+        "workspace.setActiveTab"
+      ],
+      "doors": 12,
+      "scenarios": 3
+    },
+    {
+      "id": "workspace-persist-reset",
+      "built": true,
+      "commands": [
+        "workspace.toggleInspector",
+        "workspace.reset",
+        "workspace.resizeSplitter",
+        "workspace.movePanel",
+        "inspector.toggleSection"
+      ],
+      "doors": 24,
+      "scenarios": 2
+    },
+    {
+      "id": "status-bar",
+      "built": true,
+      "commands": [
+        "selection.select",
+        "view.setBreakpoint",
+        "view.setStyleState"
+      ],
+      "doors": 33,
+      "scenarios": 2
+    },
+    {
+      "id": "accessibility-checks",
+      "built": true,
+      "commands": [
+        "selection.select",
+        "workspace.setPanelOpen",
+        "checks.applyFix"
+      ],
+      "doors": 38,
+      "scenarios": 8
+    },
+    {
+      "id": "keyboard-panel-navigation",
+      "built": true,
+      "commands": [
+        "focus.next",
+        "focus.previous",
+        "focus.first",
+        "focus.last",
+        "focus.activate",
+        "focus.nextRegion",
+        "focus.previousRegion",
+        "focus.canvas"
+      ],
+      "doors": 46,
+      "scenarios": 8
+    },
+    {
+      "id": "layers-keyboard-navigation",
+      "built": true,
+      "commands": [
+        "selection.select",
+        "focus.next",
+        "focus.previous",
+        "focus.first",
+        "focus.last",
+        "element.moveUp",
+        "element.moveDown",
+        "element.delete",
+        "layers.startRename",
+        "layers.expandOrFocusChild",
+        "layers.collapseOrFocusParent",
+        "selection.range"
+      ],
+      "doors": 63,
+      "scenarios": 7
+    },
+    {
+      "id": "clipboard-cut-system",
+      "built": true,
+      "commands": [
+        "clipboard.cut"
+      ],
+      "doors": 4,
+      "scenarios": 4
+    },
+    {
+      "id": "copy-paste-styles",
+      "built": true,
+      "commands": [
+        "clipboard.copyStyle",
+        "clipboard.pasteStyle"
+      ],
+      "doors": 8,
+      "scenarios": 5
+    },
+    {
+      "id": "html-import-structure",
+      "built": true,
+      "commands": [
+        "project.importHtml"
+      ],
+      "doors": 6,
+      "scenarios": 8
+    },
+    {
+      "id": "html-import-cleaning",
+      "built": true,
+      "commands": [
+        "project.importHtml"
+      ],
+      "doors": 6,
+      "scenarios": 2
+    },
+    {
+      "id": "html-import-styles",
+      "built": true,
+      "commands": [
+        "project.importHtml"
+      ],
+      "doors": 6,
+      "scenarios": 2
+    },
+    {
+      "id": "html-import-media-queries",
+      "built": true,
+      "commands": [
+        "project.importHtml"
+      ],
+      "doors": 6,
+      "scenarios": 2
+    },
+    {
+      "id": "html-import-states",
+      "built": true,
+      "commands": [
+        "view.enterPreview",
+        "project.importHtml"
+      ],
+      "doors": 10,
+      "scenarios": 2
+    },
+    {
+      "id": "html-import-roundtrip",
+      "built": true,
+      "commands": [
+        "project.importHtml",
+        "project.export"
+      ],
+      "doors": 10,
+      "scenarios": 2
+    },
+    {
+      "id": "clipboard-paste-external",
+      "built": true,
+      "commands": [
+        "clipboard.paste"
+      ],
+      "doors": 4,
+      "scenarios": 2
+    },
+    {
+      "id": "capture-url",
+      "built": true,
+      "commands": [
+        "project.captureUrl",
+        "capture.edit",
+        "capture.select",
+        "workspace.openDialog"
+      ],
+      "doors": 11,
+      "scenarios": 7
+    },
+    {
+      "id": "code-panel-view",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen",
+        "view.setEditorView",
+        "codePanel.setPane"
+      ],
+      "doors": 32,
+      "scenarios": 5
+    },
+    {
+      "id": "code-panel-selection-sync",
+      "built": true,
+      "commands": [
+        "selection.select"
+      ],
+      "doors": 7,
+      "scenarios": 2
+    },
+    {
+      "id": "code-panel-copy-download",
+      "built": true,
+      "commands": [
+        "codePanel.copyPane",
+        "codePanel.downloadPane"
+      ],
+      "doors": 2,
+      "scenarios": 2
+    },
+    {
+      "id": "code-panel-edit-css",
+      "built": true,
+      "commands": [
+        "style.applyCssRule"
+      ],
+      "doors": 1,
+      "scenarios": 6
+    },
+    {
+      "id": "code-panel-edit-html",
+      "built": true,
+      "commands": [
+        "element.applyHtml"
+      ],
+      "doors": 1,
+      "scenarios": 5
+    },
+    {
+      "id": "timeline-animations",
+      "built": true,
+      "commands": [
+        "workspace.setPanelOpen",
+        "animation.create",
+        "animation.rename",
+        "animation.delete",
+        "timeline.show"
+      ],
+      "doors": 29,
+      "scenarios": 3
+    },
+    {
+      "id": "timeline-keyframes",
+      "built": true,
+      "commands": [
+        "animation.addKeyframe",
+        "animation.moveKeyframe",
+        "animation.setKeyframeEasing",
+        "animation.deleteKeyframe",
+        "timeline.setPlayhead"
+      ],
+      "doors": 6,
+      "scenarios": 4
+    },
+    {
+      "id": "timeline-animation-settings",
+      "built": true,
+      "commands": [
+        "animation.setSettings"
+      ],
+      "doors": 7,
+      "scenarios": 2
+    },
+    {
+      "id": "timeline-preview",
+      "built": true,
+      "commands": [
+        "timeline.play",
+        "timeline.pause",
+        "timeline.stop",
+        "timeline.toggleLoop"
+      ],
+      "doors": 4,
+      "scenarios": 5
+    },
+    {
+      "id": "export-keyframes",
+      "built": true,
+      "commands": [
+        "project.export"
+      ],
+      "doors": 4,
+      "scenarios": 2
+    },
+    {
+      "id": "events-actions",
+      "built": true,
+      "commands": [
+        "interactions.add",
+        "interactions.update",
+        "interactions.remove",
+        "workspace.setActiveTab"
+      ],
+      "doors": 16,
+      "scenarios": 10
+    },
+    {
+      "id": "export-events-js",
+      "built": true,
+      "commands": [
+        "view.enterPreview",
+        "project.export"
+      ],
+      "doors": 8,
+      "scenarios": 3
+    },
+    {
+      "id": "explorer-pages",
+      "built": true,
+      "commands": [
+        "pages.add",
+        "pages.rename",
+        "pages.duplicate",
+        "pages.delete",
+        "pages.switch",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 33,
+      "scenarios": 11
+    },
+    {
+      "id": "explorer-file-system",
+      "built": true,
+      "commands": [
+        "files.createFolder",
+        "files.createFile",
+        "files.rename",
+        "files.move",
+        "files.delete",
+        "files.open",
+        "files.closeTab",
+        "files.startRename"
+      ],
+      "doors": 11,
+      "scenarios": 14
+    },
+    {
+      "id": "link-picker",
+      "built": true,
+      "commands": [
+        "element.setLink",
+        "linkPicker.open",
+        "linkPicker.setKind",
+        "linkPicker.close"
+      ],
+      "doors": 14,
+      "scenarios": 2
+    },
+    {
+      "id": "export-multi-page",
+      "built": true,
+      "commands": [
+        "element.setLink",
+        "project.export",
+        "pages.add",
+        "files.move"
+      ],
+      "doors": 14,
+      "scenarios": 2
+    },
+    {
+      "id": "explorer-assets",
+      "built": true,
+      "commands": [
+        "files.upload"
+      ],
+      "doors": 2,
+      "scenarios": 2
+    },
+    {
+      "id": "explorer-assets-use",
+      "built": true,
+      "commands": [
+        "element.setAttribute",
+        "assets.insertImageFile",
+        "assetPicker.open",
+        "assetPicker.close"
+      ],
+      "doors": 137,
+      "scenarios": 3
+    },
+    {
+      "id": "export-file-tree",
+      "built": true,
+      "commands": [
+        "project.export",
+        "files.createFolder"
+      ],
+      "doors": 5,
+      "scenarios": 2
+    },
+    {
+      "id": "export-assets",
+      "built": true,
+      "commands": [
+        "project.export",
+        "files.upload"
+      ],
+      "doors": 6,
+      "scenarios": 2
+    },
+    {
+      "id": "page-seo-meta",
+      "built": true,
+      "commands": [
+        "page.setSetting",
+        "project.export"
+      ],
+      "doors": 14,
+      "scenarios": 7
+    },
+    {
+      "id": "custom-fonts",
+      "built": true,
+      "commands": [
+        "style.set",
+        "project.export",
+        "files.upload"
+      ],
+      "doors": 178,
+      "scenarios": 2
+    },
+    {
+      "id": "explorer-open-folder",
+      "built": true,
+      "commands": [
+        "project.openFolder",
+        "project.export"
+      ],
+      "doors": 6,
+      "scenarios": 4
+    },
+    {
+      "id": "code-panel-edit-js",
+      "built": true,
+      "commands": [
+        "page.setSetting",
+        "view.enterPreview",
+        "project.export",
+        "files.createFile",
+        "files.saveContent"
+      ],
+      "doors": 22,
+      "scenarios": 3
+    },
+    {
+      "id": "command-bar-find",
+      "built": true,
+      "commands": [
+        "pages.switch",
+        "selection.select",
+        "classes.apply"
+      ],
+      "doors": 13,
+      "scenarios": 3
+    },
+    {
+      "id": "shortcuts-e2e-sweep",
+      "built": true,
+      "commands": [],
+      "doors": 0,
+      "scenarios": 2
+    },
+    {
+      "id": "layout-actions",
+      "built": true,
+      "commands": [
+        "element.wrapContainer",
+        "element.wrapGrid",
+        "element.swapDirection",
+        "element.stackOnPhone",
+        "element.organize",
+        "element.setDivider"
+      ],
+      "doors": 26,
+      "scenarios": 14
+    },
+    {
+      "id": "canvas-grid-editor",
+      "built": true,
+      "commands": [
+        "grid.enterEdit",
+        "grid.exitEdit",
+        "grid.addTrack",
+        "grid.removeTrack",
+        "grid.spanItem",
+        "grid.mergeCells",
+        "grid.splitCells",
+        "style.setGridTracks"
+      ],
+      "doors": 15,
+      "scenarios": 6
+    },
+    {
+      "id": "batch-rename",
+      "built": true,
+      "commands": [
+        "element.renameMany",
+        "workspace.openDialog",
+        "contextMenu.open"
+      ],
+      "doors": 9,
+      "scenarios": 3
+    },
+    {
+      "id": "assistant-chat",
+      "built": true,
+      "commands": [
+        "assistant.setModel",
+        "assistant.setPreferences",
+        "assistant.attachReference",
+        "assistant.clearReference",
+        "assistant.editKey",
+        "assistant.send",
+        "assistant.cancel",
+        "assistant.connect",
+        "assistant.disconnect",
+        "assistant.saveKey",
+        "assistant.deleteKey",
+        "assistant.selectSession",
+        "assistant.clearConversation",
+        "assistant.update",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 41,
+      "scenarios": 15
+    },
+    {
+      "id": "layout-composer",
+      "built": true,
+      "commands": [
+        "layout.enter",
+        "layout.leave",
+        "layout.stroke",
+        "layout.select",
+        "layout.delete",
+        "layout.merge",
+        "layout.place",
+        "layout.configure",
+        "layout.interpret",
+        "layout.respond",
+        "layout.unrelate",
+        "layout.suggest",
+        "layout.template",
+        "layout.reference",
+        "layout.trace",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 69,
+      "scenarios": 40
+    },
+    {
+      "id": "motion-interactions",
+      "built": true,
+      "commands": [
+        "motion.add",
+        "motion.update",
+        "motion.remove"
+      ],
+      "doors": 22,
+      "scenarios": 64
+    },
+    {
+      "id": "motion-timeline",
+      "built": true,
+      "commands": [
+        "motion.createTimeline",
+        "motion.renameTimeline",
+        "motion.deleteTimeline",
+        "motion.openTimeline",
+        "motion.addAction",
+        "motion.updateAction",
+        "motion.setEffectOption",
+        "motion.removeActions",
+        "motion.moveActions",
+        "motion.resizeAction",
+        "motion.select",
+        "motion.setPlayhead",
+        "motion.zoomTimeline",
+        "motion.toggleSnap",
+        "motion.addMarker",
+        "motion.moveMarker",
+        "motion.renameMarker",
+        "motion.removeMarker",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 62,
+      "scenarios": 57
+    },
+    {
+      "id": "motion-keyframes",
+      "built": true,
+      "commands": [
+        "motion.setKeyframe",
+        "motion.editKeyframe",
+        "motion.moveKeyframes",
+        "motion.deleteKeyframes",
+        "motion.copyKeyframes",
+        "motion.pasteKeyframes",
+        "motion.toggleRecord",
+        "motion.select"
+      ],
+      "doors": 15,
+      "scenarios": 12
+    },
+    {
+      "id": "motion-preview",
+      "built": true,
+      "commands": [
+        "motion.preview",
+        "motion.toggleRun"
+      ],
+      "doors": 4,
+      "scenarios": 4
+    },
+    {
+      "id": "motion-behaviours",
+      "built": true,
+      "commands": [
+        "motion.setBehaviour",
+        "motion.removeBehaviour"
+      ],
+      "doors": 10,
+      "scenarios": 10
+    },
+    {
+      "id": "export-motion-js",
+      "built": true,
+      "commands": [
+        "view.enterPreview",
+        "project.export"
+      ],
+      "doors": 8,
+      "scenarios": 2
+    },
+    {
+      "id": "data-collections",
+      "built": true,
+      "commands": [
+        "data.select",
+        "data.setQuery",
+        "data.createCollection",
+        "data.renameCollection",
+        "data.deleteCollection",
+        "data.addField",
+        "data.setField",
+        "data.removeField",
+        "data.addItem",
+        "data.setCell",
+        "data.deleteItems",
+        "data.moveItem",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 46,
+      "scenarios": 25
+    },
+    {
+      "id": "data-import",
+      "built": true,
+      "commands": [
+        "data.preview",
+        "data.previewSheet",
+        "data.previewType",
+        "data.closePreview",
+        "data.importNew",
+        "data.importInto",
+        "data.select",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 34,
+      "scenarios": 10
+    },
+    {
+      "id": "data-binding",
+      "built": true,
+      "commands": [
+        "data.bindElement",
+        "data.fill",
+        "data.unbind",
+        "data.setCell",
+        "data.select",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 31,
+      "scenarios": 6
+    },
+    {
+      "id": "data-pages",
+      "built": true,
+      "commands": [
+        "pages.fromNames",
+        "pages.fromCollection",
+        "pages.duplicate",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 28,
+      "scenarios": 3
+    },
+    {
+      "id": "shared-regions",
+      "built": true,
+      "commands": [
+        "regions.share",
+        "regions.detach",
+        "regions.stopSharing",
+        "text.set",
+        "pages.add",
+        "workspace.setPanelOpen"
+      ],
+      "doors": 35,
+      "scenarios": 5
+    },
+    {
+      "id": "project-breakpoints",
+      "built": true,
+      "commands": [
+        "breakpoints.add",
+        "breakpoints.rename",
+        "breakpoints.setWidth",
+        "breakpoints.remove",
+        "workspace.openDialog",
+        "view.setBreakpoint",
+        "view.setViewportWidth",
+        "style.set",
+        "project.export"
+      ],
+      "doors": 198,
+      "scenarios": 15
+    },
+    {
+      "id": "side-by-side-view",
+      "built": true,
+      "commands": [
+        "view.toggleSideBySide",
+        "view.setBreakpoint"
+      ],
+      "doors": 12,
+      "scenarios": 2
+    }
+  ],
+  "fields": [
+    {
+      "property": "display",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "flex-direction",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "flex-wrap",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "justify-content",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "align-items",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "align-content",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "row-gap",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-gap",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-template-columns",
+      "kind": "property",
+      "codec": "track-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-template-rows",
+      "kind": "property",
+      "codec": "track-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-auto-flow",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "justify-items",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-template-areas",
+      "kind": "property",
+      "codec": "grid-areas",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "flex-grow",
+      "kind": "property",
+      "codec": "number",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "flex-shrink",
+      "kind": "property",
+      "codec": "number",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "flex-basis",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "align-self",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "justify-self",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "order",
+      "kind": "property",
+      "codec": "integer",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-column-start",
+      "kind": "property",
+      "codec": "grid-line",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-column-end",
+      "kind": "property",
+      "codec": "grid-line",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-row-start",
+      "kind": "property",
+      "codec": "grid-line",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-row-end",
+      "kind": "property",
+      "codec": "grid-line",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-width",
+      "kind": "property",
+      "codec": "length",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-count",
+      "kind": "property",
+      "codec": "integer",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-span",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-fill",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-rule-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-rule-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "column-rule-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "break-before",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "break-after",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "break-inside",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "scroll-behavior",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "scroll-snap-type",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "scroll-snap-align",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-collapse",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-spacing",
+      "kind": "property",
+      "codec": "length-pair",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "table-layout",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "caption-side",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "empty-cells",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "contain",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "content-visibility",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "counter-reset",
+      "kind": "property",
+      "codec": "counter-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "counter-increment",
+      "kind": "property",
+      "codec": "counter-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "padding-top",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "padding-right",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "padding-bottom",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "padding-left",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "margin-top",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "margin-right",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "margin-bottom",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "margin-left",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "width",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "height",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "min-width",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "max-width",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "min-height",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "max-height",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "box-sizing",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "aspect-ratio",
+      "kind": "property",
+      "codec": "ratio",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "overflow-x",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "overflow-y",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "resize",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "object-fit",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "object-position",
+      "kind": "property",
+      "codec": "position",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "position",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "top",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "right",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "bottom",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "left",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "z-index",
+      "kind": "property",
+      "codec": "integer",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "float",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "clear",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "translate",
+      "kind": "property",
+      "codec": "translate",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "rotate",
+      "kind": "property",
+      "codec": "rotate",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "scale",
+      "kind": "property",
+      "codec": "scale",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-image",
+      "kind": "property",
+      "codec": "image-layers",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "background-size",
+      "kind": "property",
+      "codec": "background-size",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-position-x",
+      "kind": "property",
+      "codec": "position-axis",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-position-y",
+      "kind": "property",
+      "codec": "position-axis",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-repeat",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-attachment",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-origin",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-clip",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-blend-mode",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "fill",
+      "kind": "property",
+      "codec": "paint",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "stroke",
+      "kind": "property",
+      "codec": "paint",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "stroke-width",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-top-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-top-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-top-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-right-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-right-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-right-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-bottom-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-bottom-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-bottom-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-left-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-left-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-left-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-top-left-radius",
+      "kind": "property",
+      "codec": "radius",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-top-right-radius",
+      "kind": "property",
+      "codec": "radius",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-bottom-right-radius",
+      "kind": "property",
+      "codec": "radius",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "border-bottom-left-radius",
+      "kind": "property",
+      "codec": "radius",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "outline-width",
+      "kind": "property",
+      "codec": "line-width",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "outline-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "outline-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "outline-offset",
+      "kind": "property",
+      "codec": "length",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-family",
+      "kind": "property",
+      "codec": "font-family-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-size",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-weight",
+      "kind": "property",
+      "codec": "font-weight",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-style",
+      "kind": "property",
+      "codec": "font-style",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "line-height",
+      "kind": "property",
+      "codec": "line-height",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "letter-spacing",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "word-spacing",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-align",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-decoration-line",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-decoration-thickness",
+      "kind": "property",
+      "codec": "length-percentage",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-decoration-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-decoration-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-transform",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-indent",
+      "kind": "property",
+      "codec": "text-indent",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-overflow",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "white-space-collapse",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-wrap-mode",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "word-break",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "vertical-align",
+      "kind": "property",
+      "codec": "vertical-align",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-stretch",
+      "kind": "property",
+      "codec": "font-stretch",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-ligatures",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-caps",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-alternates",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-numeric",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-east-asian",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant-position",
+      "kind": "property",
+      "codec": "keyword-set",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-feature-settings",
+      "kind": "property",
+      "codec": "feature-tag-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "overflow-wrap",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "hyphens",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "direction",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "writing-mode",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-orientation",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "list-style-type",
+      "kind": "property",
+      "codec": "counter-style",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "list-style-position",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "list-style-image",
+      "kind": "property",
+      "codec": "image",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "accent-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "caret-color",
+      "kind": "property",
+      "codec": "color",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "appearance",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "opacity",
+      "kind": "property",
+      "codec": "alpha",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "visibility",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "mix-blend-mode",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "isolation",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "cursor",
+      "kind": "property",
+      "codec": "cursor",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "pointer-events",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "will-change",
+      "kind": "property",
+      "codec": "animateable-feature-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "box-shadow",
+      "kind": "property",
+      "codec": "shadow-list",
+      "registered": false,
+      "reachedByStyleSet": false,
+      "structured": true
+    },
+    {
+      "property": "text-shadow",
+      "kind": "property",
+      "codec": "text-shadow-list",
+      "registered": false,
+      "reachedByStyleSet": false,
+      "structured": true
+    },
+    {
+      "property": "filter",
+      "kind": "property",
+      "codec": "filter-list",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "backdrop-filter",
+      "kind": "property",
+      "codec": "filter-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "clip-path",
+      "kind": "property",
+      "codec": "clip-path",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "mask-image",
+      "kind": "property",
+      "codec": "image-layers",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transform",
+      "kind": "property",
+      "codec": "transform-list",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "transform-origin",
+      "kind": "property",
+      "codec": "position",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "perspective",
+      "kind": "property",
+      "codec": "length",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "perspective-origin",
+      "kind": "property",
+      "codec": "position",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transform-style",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "backface-visibility",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transform-box",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "animation-duration",
+      "kind": "property",
+      "codec": "time-list",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-delay",
+      "kind": "property",
+      "codec": "time-list",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-iteration-count",
+      "kind": "property",
+      "codec": "integer",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-direction",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-fill-mode",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-timing-function",
+      "kind": "property",
+      "codec": "easing-list",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "animation-play-state",
+      "kind": "property",
+      "codec": "keyword",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "transition-property",
+      "kind": "property",
+      "codec": "property-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transition-duration",
+      "kind": "property",
+      "codec": "time-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transition-timing-function",
+      "kind": "property",
+      "codec": "easing-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transition-delay",
+      "kind": "property",
+      "codec": "time-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "transition-behavior",
+      "kind": "property",
+      "codec": "keyword-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "gap",
+      "kind": "composite",
+      "codec": "axis-pair",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "overflow",
+      "kind": "composite",
+      "codec": "axis-pair",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "columns",
+      "kind": "composite",
+      "codec": "columns",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-column",
+      "kind": "composite",
+      "codec": "grid-line-pair",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-row",
+      "kind": "composite",
+      "codec": "grid-line-pair",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "grid-area",
+      "kind": "composite",
+      "codec": "grid-area",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "padding",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "margin",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "inset",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border",
+      "kind": "composite",
+      "codec": "border",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-width",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-style",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-color",
+      "kind": "composite",
+      "codec": "box-sides",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-top",
+      "kind": "composite",
+      "codec": "border-side",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-right",
+      "kind": "composite",
+      "codec": "border-side",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-bottom",
+      "kind": "composite",
+      "codec": "border-side",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-left",
+      "kind": "composite",
+      "codec": "border-side",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "border-radius",
+      "kind": "composite",
+      "codec": "box-corners",
+      "registered": true,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "outline",
+      "kind": "composite",
+      "codec": "border-side",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "text-decoration",
+      "kind": "composite",
+      "codec": "text-decoration",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "white-space",
+      "kind": "composite",
+      "codec": "white-space",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "font-variant",
+      "kind": "composite",
+      "codec": "font-variant",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background-position",
+      "kind": "composite",
+      "codec": "position",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "background",
+      "kind": "composite",
+      "codec": "background-layers",
+      "registered": false,
+      "reachedByStyleSet": false,
+      "structured": false
+    },
+    {
+      "property": "transition",
+      "kind": "composite",
+      "codec": "transition-list",
+      "registered": true,
+      "reachedByStyleSet": true,
+      "structured": false
+    },
+    {
+      "property": "alignment-matrix",
+      "kind": "composite",
+      "codec": "alignment-matrix",
+      "registered": false,
+      "reachedByStyleSet": false,
+      "structured": false
+    }
+  ],
+  "state": [
+    "document",
+    "selection",
+    "history",
+    "message",
+    "confirmation",
+    "refusal",
+    "refused",
+    "ui"
+  ],
+  "interactive": {
+    "owners": {
+      "door": 91,
+      "inside-door": 41,
+      "local": 10,
+      "none": 81,
+      "spread": 11,
+      "wraps-door": 23
+    },
+    "elements": [
+      {
+        "key": "src/editor/assistant/panel.tsx|form|className,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|textarea|ref,rows|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|input|ref|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|input|aria-label,autoComplete,className,disabled,ref,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|button|className,data-door,disabled,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|button|className,data-door,disabled,onClick,type|2",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/assistant/panel.tsx|input|accept,aria-hidden,className,onChange,ref,tabIndex,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/edit-handles.tsx|div|aria-disabled,aria-label,aria-valuenow,className,data-args,data-arrange-key,data-chrome,data-door,data-edit-handle,data-key-context,data-min,data-normal,data-opposite,data-opposite-start,data-shadow,data-sides-start,data-start,data-start-x,data-start-y,data-value-arg,role,style,tabIndex,title|1",
+        "tag": "div",
+        "role": "slider",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/edit-handles.tsx|form|className,data-band-field,onSubmit,style|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/edit-handles.tsx|input|aria-label,className,data-key-context,defaultValue,onBlur,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/frame.tsx|iframe|aria-hidden,className,ref,sandbox,srcDoc,style,tabIndex|1",
+        "tag": "iframe",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/guides.tsx|div|aria-label,aria-orientation,aria-valuenow,className,data-args,data-axis,data-door,data-guide,data-key-context,key,role,style,tabIndex|1",
+        "tag": "div",
+        "role": "separator",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|button|aria-disabled,aria-selected,className,data-args,data-door,onClick,role,title,type|1",
+        "tag": "button",
+        "role": "option",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|button|aria-disabled,aria-expanded,aria-haspopup,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|button|aria-checked,aria-disabled,className,data-args,data-door,onClick,role,title,type|1",
+        "tag": "button",
+        "role": "switch",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|button|aria-expanded,className|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|button|aria-expanded,className,data-args,data-door,data-region,style|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/quick-panel.tsx|span|aria-disabled,aria-label,className,data-args,data-door,data-offset,role,tabIndex,title|1",
+        "tag": "span",
+        "role": "button",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/side-frame.tsx|button|aria-disabled,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/canvas/side-frame.tsx|div|aria-hidden,className,onClick,ref|1",
+        "tag": "div",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/side-frame.tsx|iframe|className,ref,sandbox,srcDoc,style,tabIndex,title|1",
+        "tag": "iframe",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/canvas/text-toolbar.tsx|input|aria-describedby,aria-invalid,autoComplete,className,data-autofocus,data-key-context,data-local,id,inputMode,onChange,onFocus,placeholder,ref,spellCheck,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange",
+          "onFocus"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|select|onChange,ref|1",
+        "tag": "select",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|textarea|onBlur,ref,rows|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|input|autoComplete,onBlur,ref,spellCheck,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|form|className,data-args,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/data/controls.tsx|button|aria-disabled,className,data-args,data-door,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/data/grid.tsx|input|aria-label,autoComplete,className,name,placeholder|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/grid.tsx|select|aria-label,className,defaultValue,name|1",
+        "tag": "select",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/grid.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/pages.tsx|textarea|aria-label,className,name,placeholder,rows,spellCheck|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/pages.tsx|input|defaultChecked,name,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/pages.tsx|input|defaultChecked,name,type,value|2",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/data/preview.tsx|input|aria-label,autoComplete,className,name,placeholder,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-label,aria-pressed|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-label,aria-selected,role|1",
+        "tag": "button",
+        "role": "tab",
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-label,aria-pressed|2",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-expanded,aria-label|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-label,tabIndex|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/door.tsx|button|aria-label,aria-pressed|3",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|button|aria-checked,aria-disabled,className,data-args,data-door,onClick,role,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|div|aria-label,className,data-key-context,data-region,ref,role,style,tabIndex|1",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|div|className,key,role|1",
+        "tag": "div",
+        "role": "separator",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|button|aria-expanded,aria-haspopup,className,onClick,ref,role,type|1",
+        "tag": "button",
+        "role": "menuitem",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|button|aria-expanded,aria-haspopup,aria-label,className,data-menu,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/doors/menu.tsx|div|aria-label,className,data-key-context,data-region,ref,role,style,tabIndex|2",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|button|aria-disabled,aria-pressed,className,data-args,data-door,data-key-context,key,onClick,tabIndex,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|form|className,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|textarea|ref|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|input|inputMode,list,ref|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/forms/inspector.tsx|button|aria-disabled,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/motion/ui/interactions.tsx|button|aria-expanded,className,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/motion/ui/timeline.tsx|button|aria-disabled,aria-haspopup,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/motion/ui/timeline.tsx|button|aria-label,aria-pressed,className,data-args,data-door,onClick,style,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/asset-picker.tsx|div|aria-label,className,data-key-context,data-region,onClick,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "dialog",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/asset-picker.tsx|input|aria-label,className,data-local,onChange,placeholder,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/batch-rename.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/batch-rename.tsx|input|className,data-autofocus,data-key-context,name,onChange,spellCheck,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/batch-rename.tsx|input|className,data-key-context,inputMode,name,onChange,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/batch-rename.tsx|button|aria-disabled,className,data-door,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/breakpoints-dialog.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,data-key-context,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/breakpoints-dialog.tsx|button|aria-disabled,className,data-args,data-door,onClick,role,title,type|1",
+        "tag": "button",
+        "role": "menuitem",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/breakpoints-dialog.tsx|form|className,onSubmit,role|1",
+        "tag": "form",
+        "role": "cell",
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/breakpoints-dialog.tsx|input|aria-label,autoComplete,className,data-args,data-door,data-key-context,defaultValue,disabled,inputMode,onBlur,ref,spellCheck,title,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/canvas.tsx|div|aria-label,aria-orientation,aria-valuenow,className,data-door,role,title|1",
+        "tag": "div",
+        "role": "separator",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/capture-url.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/capture-url.tsx|input|className,data-autofocus,data-key-context,inputMode,name,onChange,placeholder,spellCheck,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/capture-url.tsx|input|className,data-key-context,inputMode,name,onChange,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/capture-url.tsx|button|aria-disabled,className,data-door,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|button|aria-pressed,className,data-args,data-door,disabled,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|form|className,data-region,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|select|onChange,value|1",
+        "tag": "select",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|option|value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|option|value|2",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|option|value|3",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|option|value|4",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|option|value|5",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|input|onChange,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|textarea|data-args,data-door,data-key-context,onChange,value|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|input|onChange,value|2",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|input|min,onChange,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|button|data-args,data-door,disabled,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|summary||1",
+        "tag": "summary",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|input|aria-label,onChange,placeholder,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/captured-inspector.tsx|summary||2",
+        "tag": "summary",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|button|className,data-args,data-door,key,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,placeholder,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,onClick,ref,title,type|2",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|form|className,onSubmit|2",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,placeholder,spellCheck|2",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/code-pane.tsx|span|aria-selected,className,role|1",
+        "tag": "span",
+        "role": "tab",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/code-pane.tsx|textarea|aria-label,className,data-args,data-code-editor,data-door,data-key-context,onChange,spellCheck,value|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/code-pane.tsx|div|className,data-code-pane,ref,tabIndex|1",
+        "tag": "div",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|button|aria-disabled,aria-pressed,className,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|input|aria-label,className,disabled,onBlur,onInput,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput",
+          "onBlur"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|input|aria-label,aria-valuetext,className,max,min,onChange,step,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|button|aria-disabled,aria-label,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|button|aria-disabled,aria-label,className,data-args,data-door,onClick,style,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|button|aria-disabled,aria-label,className,data-args,data-door,onClick,style,title,type|2",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|div|aria-label,className,data-region,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "dialog",
+        "handlers": [],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/color.tsx|button|aria-label,className,data-args,data-door,onClick,style,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/command-bar.tsx|input|aria-autocomplete,aria-controls,aria-expanded,aria-label,autoComplete,className,data-key-context,onChange,placeholder,ref,role,spellCheck,type,value|1",
+        "tag": "input",
+        "role": "combobox",
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/command-bar.tsx|button|aria-pressed,className,key,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/command-bar.tsx|li|aria-selected,className,id,key,onClick,role|1",
+        "tag": "li",
+        "role": "option",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/component-prompt.tsx|div|aria-label,className,data-region,onClick,ref,role|1",
+        "tag": "div",
+        "role": "dialog",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/component-prompt.tsx|form|className,data-args,data-door,id,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/component-prompt.tsx|input|className,data-key-context,defaultValue,id,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/component-prompt.tsx|button|className,form,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/confirmation.tsx|span|data-edge,onFocus,tabIndex|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onFocus"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/confirmation.tsx|button|className,data-confirmation,data-local,onClick,ref,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/confirmation.tsx|button|className,data-confirmation,data-local,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/confirmation.tsx|span|data-edge,onFocus,tabIndex|2",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onFocus"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/dialog.tsx|span|data-edge,onFocus,tabIndex|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onFocus"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/dialog.tsx|div|aria-labelledby,aria-modal,className,data-key-context,data-region,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "dialog",
+        "handlers": [],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/dialog.tsx|span|data-edge,onFocus,tabIndex|2",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onFocus"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/dock.tsx|pre|aria-label,aria-readonly,className,tabIndex|1",
+        "tag": "pre",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/easing-curve.tsx|button|aria-expanded,aria-haspopup,aria-label,className,disabled,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/easing-curve.tsx|button|aria-label,className,key,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/easing-curve.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/easing-curve.tsx|input|aria-label,className,inputMode,onChange,spellCheck,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/easing-curve.tsx|button|className,disabled,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|div|aria-label,className,data-key-context,id,ref,role,style,tabIndex|1",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-disabled,aria-label,className,data-args,data-door,data-repeat,ref,tabIndex,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|div|aria-label,className,data-key-context,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|className,data-args,data-door,key,onClick,role,type|1",
+        "tag": "button",
+        "role": "menuitem",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|div|className,role|1",
+        "tag": "div",
+        "role": "separator",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-checked,className,data-args,data-door,key,onClick,role,type|1",
+        "tag": "button",
+        "role": "menuitemradio",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-label,className,data-menu-more,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-invalid,aria-label,className,data-key-context,disabled,inputMode,onInput,placeholder,ref,role,spellCheck|1",
+        "tag": "input",
+        "role": "spinbutton",
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-label,className,disabled,max,min,onBlur,ref,step,title,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-checked,className,data-args,data-door,key,onClick,role,tabIndex,type|1",
+        "tag": "button",
+        "role": "menuitemradio",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-label,className,data-menu-more,onClick,role,tabIndex,type|1",
+        "tag": "button",
+        "role": "menuitem",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|form|className,key,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-invalid,aria-label,className,data-key-context,disabled,onInput,placeholder,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-invalid,aria-label,className,data-key-context,disabled,key,list,onInput,placeholder,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|option|key,label,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-controls,aria-disabled,aria-expanded,aria-haspopup,aria-label,className,onClick,ref,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,data-face,data-origin,onClick,ref,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|div|aria-label,className,data-key-context,ref,role,tabIndex|2",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-checked,className,data-args,data-door,key,onClick,role,type|2",
+        "tag": "button",
+        "role": "menuitemradio",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-disabled,aria-label,aria-pressed,className,data-args,data-door,data-key-context,key,onClick,tabIndex,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|textarea|aria-label,className,data-key-context,disabled,ref,rows,spellCheck|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|textarea|aria-invalid,aria-label,className,disabled,onInput,ref,rows,spellCheck|1",
+        "tag": "textarea",
+        "role": null,
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-invalid,aria-label,className,disabled,list,onInput,placeholder,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|input|aria-label,className,disabled,onChange,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|button|aria-hidden,disabled,hidden,tabIndex,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/field.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/gradient.tsx|button|aria-disabled,className,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/gradient.tsx|button|aria-disabled,aria-pressed,className,data-args,data-door,key,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/gradient.tsx|div|aria-disabled,aria-label,className,data-args,data-door,data-gradient-bar,onClick,style|1",
+        "tag": "div",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/gradient.tsx|button|aria-label,aria-pressed,className,data-args,data-door,data-key-context,key,onFocus,style,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onFocus"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/guides-grids.tsx|button|aria-disabled,aria-expanded,aria-haspopup,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/guides-grids.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/guides-grids.tsx|input|aria-label,autoFocus,className,data-key-context,data-local,inputMode,name,onBlur,placeholder,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/guides-grids.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/guides-grids.tsx|input|className,data-key-context,disabled,id,inputMode,onBlur,onChange,spellCheck,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|button|aria-disabled,aria-label,className,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|button|aria-disabled,aria-label,className,key,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|button|aria-disabled,aria-haspopup,aria-label,className,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|input|aria-label,className,disabled|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|button|aria-disabled,className,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|form|className,data-args,data-door,data-origin,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|input|aria-label,className,disabled,inputMode,onBlur,onInput,placeholder,ref,role,spellCheck,type|1",
+        "tag": "input",
+        "role": "spinbutton",
+        "handlers": [
+          "onInput",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|form|className,data-args,data-door,data-origin,onSubmit,title|2",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|input|aria-label,className,disabled,inputMode,onBlur,onInput,ref,role,spellCheck|1",
+        "tag": "input",
+        "role": "spinbutton",
+        "handlers": [
+          "onInput",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|form|className,data-args,data-door,data-origin,onSubmit,title|3",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector-controls.tsx|input|aria-label,className,data-key-context,disabled,onBlur,onInput,placeholder,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|button|aria-disabled,aria-pressed,className,data-args,data-door,data-key-context,key,onClick,tabIndex,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|input|aria-invalid,aria-label,className,data-local,disabled,onInput,placeholder,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onInput"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|button|aria-label,className,disabled,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|input|aria-label,className,disabled,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|input|aria-label,className,disabled,list,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|button|aria-disabled,className,key,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector-settings.tsx|input|aria-label,className,disabled|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|form|className,data-args,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|input|aria-label,autoComplete,className,disabled,onChange,placeholder,spellCheck,title,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|input|aria-autocomplete,aria-controls,aria-expanded,aria-label,className,data-autofocus,data-key-context,data-local,onChange,placeholder,ref,role,type,value|1",
+        "tag": "input",
+        "role": "combobox",
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|div|aria-selected,id,key,role|1",
+        "tag": "div",
+        "role": "option",
+        "handlers": [],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|input|aria-label,className,disabled,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/inspector.tsx|input|aria-label,className,disabled|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/interactions.tsx|button|aria-expanded,className,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/interactions.tsx|button|aria-disabled,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/link-picker.tsx|div|aria-label,className,data-key-context,data-region,onClick,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "dialog",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/link-picker.tsx|form|className,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/link-picker.tsx|input|aria-label,className,defaultValue,spellCheck,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/panel-field.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/panel-field.tsx|input|className,disabled,id,list,onBlur,onChange,placeholder,ref,spellCheck,title,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/panel-field.tsx|button|className,tabIndex,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/panel-field.tsx|option|key,value|1",
+        "tag": "option",
+        "role": null,
+        "handlers": [],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/panel-field.tsx|button|aria-disabled,aria-pressed,className,data-args,data-door,disabled,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/popover.tsx|form|onSubmit,ref|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "spread"
+      },
+      {
+        "key": "src/editor/shell/shadow.tsx|button|aria-disabled,aria-pressed,className,onClick,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/shadow.tsx|button|aria-disabled,aria-label,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/shadow.tsx|button|aria-pressed,className,data-args,data-door,data-shadow-row,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/shadow.tsx|div|aria-disabled,aria-label,className,data-args,data-door,data-key-context,data-shadow-pad,role,tabIndex|1",
+        "tag": "div",
+        "role": "group",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/shell.tsx|div|className,data-key-context,tabIndex|1",
+        "tag": "div",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|input|aria-label,autoComplete,className,data-args,data-door,data-opens,defaultValue,disabled,name,onBlur,onClick,readOnly,ref,spellCheck,title,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onClick",
+          "onBlur"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|form|className,onSubmit|2",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|input|aria-label,autoComplete,className,data-door,name,placeholder,spellCheck,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|form|className,onSubmit|3",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|input|aria-label,autoComplete,autoFocus,className,data-args,data-door,defaultValue,name,onBlur,spellCheck,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|span|onClick|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/explorer.tsx|span|className,onClick|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/insert.tsx|input|aria-label,className,data-local,onChange,placeholder,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "local"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|input|aria-label,autoComplete,className,data-args,data-door,data-key-context,defaultValue,onBlur,ref,spellCheck,title,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|span|onClick|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|span|className,onClick|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|span|className,key,onClick,style|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|div|aria-disabled,aria-expanded,aria-level,aria-selected,className,data-args,data-door,data-drop-position,onClick,onContextMenu,role,style,tabIndex,title|1",
+        "tag": "div",
+        "role": "treeitem",
+        "handlers": [
+          "onClick",
+          "onContextMenu"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|span|aria-disabled,className,data-args,data-door,tabIndex,title|1",
+        "tag": "span",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|button|className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|button|className,data-args,data-door,onClick,title,type|2",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|form|className,data-args,data-door,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/layers.tsx|input|aria-label,autoComplete,className,disabled,onChange,placeholder,spellCheck,title,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/styles.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/sidebar/styles.tsx|input|aria-label,className,disabled,onBlur,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/snap-settings.tsx|form|className,onSubmit|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "wraps-door"
+      },
+      {
+        "key": "src/editor/shell/snap-settings.tsx|input|data-key-context,defaultChecked,name,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/snap-settings.tsx|input|className,data-key-context,defaultValue,inputMode,name,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/snap-settings.tsx|button|aria-disabled,className,data-door,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/splitter.tsx|div|aria-label,aria-orientation,aria-valuemax,aria-valuemin,aria-valuenow,className,data-args,data-door,data-key-context,role,tabIndex|1",
+        "tag": "div",
+        "role": "separator",
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/status-bar.tsx|button|className,data-crumb,key,tabIndex,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/status-bar.tsx|button|className,data-crumb-more,tabIndex,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/status-bar.tsx|button|aria-expanded,aria-haspopup,aria-label,className,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/status-bar.tsx|div|aria-label,className,data-key-context,ref,role,style,tabIndex|1",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/status-bar.tsx|button|aria-disabled,className,data-args,data-door,onClick,role,type|1",
+        "tag": "button",
+        "role": "menuitem",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/top-bar.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-door,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/top-bar.tsx|div|aria-label,className,data-key-context,ref,role,tabIndex|1",
+        "tag": "div",
+        "role": "menu",
+        "handlers": [],
+        "owner": "none"
+      },
+      {
+        "key": "src/editor/shell/top-bar.tsx|button|aria-checked,className,data-args,data-door,onClick,role,type|1",
+        "tag": "button",
+        "role": "menuitemradio",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/value-presets.tsx|button|aria-disabled,aria-label,className,data-args,data-door,data-preset-of,onClick,style,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variable-suggestions.tsx|button|aria-selected,className,data-args,data-door,id,key,onClick,role,tabIndex,title,type|1",
+        "tag": "button",
+        "role": "option",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|button|aria-disabled,aria-selected,className,data-args,data-door,onClick,role,tabIndex,title,type|1",
+        "tag": "button",
+        "role": "option",
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|button|aria-disabled,aria-expanded,aria-haspopup,aria-label,className,data-args,data-door,onClick,ref,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|input|aria-label,className,disabled,onBlur,ref,spellCheck|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|form|className,data-args,data-door,onSubmit,title|2",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/variables.tsx|input|aria-label,className,disabled,onBlur,ref,spellCheck|2",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/viewport-width.tsx|form|className,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/editor/shell/viewport-width.tsx|input|aria-label,className,disabled,inputMode,onBlur,onChange,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange",
+          "onBlur"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/shell/viewport-width.tsx|input|aria-label,className,disabled,max,min,onChange,step,type,value|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onChange"
+        ],
+        "owner": "inside-door"
+      },
+      {
+        "key": "src/editor/timeline/panel.tsx|button|aria-disabled,aria-haspopup,aria-label,className,data-args,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/modules/layout-composer/ui/overlay.tsx|div|aria-label,className,data-cursor,data-door,data-key-context,data-layout-stage,data-measured,data-viewport-height,data-viewport-width,ref,style,tabIndex|1",
+        "tag": "div",
+        "role": null,
+        "handlers": [],
+        "owner": "door"
+      },
+      {
+        "key": "src/modules/layout-composer/ui/panel.tsx|button|aria-disabled,className,data-door,onClick,title,type|1",
+        "tag": "button",
+        "role": null,
+        "handlers": [
+          "onClick"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/modules/layout-composer/ui/panel.tsx|form|className,data-args,data-door,onSubmit,title|1",
+        "tag": "form",
+        "role": null,
+        "handlers": [
+          "onSubmit"
+        ],
+        "owner": "door"
+      },
+      {
+        "key": "src/modules/layout-composer/ui/panel.tsx|input|aria-label,className,data-key-context,defaultValue,disabled,min,onBlur,onInput,ref,spellCheck,type|1",
+        "tag": "input",
+        "role": null,
+        "handlers": [
+          "onBlur",
+          "onInput"
+        ],
+        "owner": "inside-door"
+      }
+    ]
+  }
+}

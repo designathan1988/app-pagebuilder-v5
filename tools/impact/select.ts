@@ -11,6 +11,9 @@
 //   definition changed, or plays a scenario that changed; a spec file that changed runs whole. What every browser test
 //   stands on (the test support, the harness, the build) runs the whole suite, and so does a change the map cannot
 //   place — always with its reason, never silently.
+// - Detectors without a browser: the groups of the model of the store and the mutants of the catalogue the change
+//   reaches (tools/impact/detectors.ts), when the caller hands the choice.
+import type { DetectorChoice } from './detectors.ts';
 import { meets, type Lines } from './diff.ts';
 
 export interface Change {
@@ -53,6 +56,8 @@ export interface ImpactInput {
   readonly changedKeys: (older: string, newer: string) => ReadonlySet<string>;
   // the spec files that use a file: import it (statically, transitively), or name it (a fixture, a data file)
   readonly usersOf: (file: string) => readonly string[];
+  // the detectors without a browser a set of changed files reaches (tools/impact/detectors.ts); none when absent
+  readonly detectors?: (files: readonly string[]) => DetectorChoice;
 }
 
 export interface Impact {
@@ -64,6 +69,8 @@ export interface Impact {
   readonly browserAll: readonly string[];
   // the browser tests selected, each with why
   readonly browser: ReadonlyMap<string, readonly string[]>;
+  // the groups of the model of the store and the mutants of the catalogue the change reaches, each with why
+  readonly detectors: DetectorChoice;
   readonly notes: readonly string[];
 }
 
@@ -209,6 +216,7 @@ export function selectImpact(input: ImpactInput): Impact {
     genCheck,
     browserAll,
     browser: browserAll.length > 0 ? new Map() : browser,
+    detectors: input.detectors?.(input.changes.map((change) => posix(change.file))) ?? { models: new Map(), mutants: new Map() },
     notes,
   };
 }

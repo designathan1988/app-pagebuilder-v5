@@ -1,0 +1,16 @@
+{
+  "mutante": "M04",
+  "aplicado": "M04",
+  "acusou": true,
+  "execucoes": 57,
+  "conta": {
+    "passos": 237,
+    "entradasMax": 4,
+    "desfeitos": 27,
+    "fusoes": 3,
+    "gestos": 2,
+    "digitacoes": 2
+  },
+  "ms": 86,
+  "falha": "Property failed after 3 tests\n{ seed: 20261008, path: \"2:3:5:7:6:5:5:5:5\", endOnFailure: true }\nCounterexample: [\"aurora\",Inserir(container),Inserir(container),Desfazer,Rajada(width,0) /*replayPath=\"JQn:F\"*/]\nShrunk 8 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: uma entrada nova não esvaziou a pilha de refazer"
+}

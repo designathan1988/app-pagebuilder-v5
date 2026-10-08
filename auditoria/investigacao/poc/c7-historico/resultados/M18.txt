@@ -1,0 +1,16 @@
+{
+  "mutante": "M18",
+  "aplicado": "M18",
+  "acusou": true,
+  "execucoes": 40,
+  "conta": {
+    "passos": 280,
+    "entradasMax": 9,
+    "desfeitos": 17,
+    "fusoes": 14,
+    "gestos": 51,
+    "digitacoes": 29
+  },
+  "ms": 86,
+  "falha": "Property failed after 6 tests\n{ seed: 20261008, path: \"5:0:2:1:2:3:3:2:1:1:2:3\", endOnFailure: true }\nCounterexample: [\"aurora\",Adicionar(1),Gesto(0,cancel,com comando de fora) /*replayPath=\"mA7:F\"*/]\nShrunk 11 time(s)\n\nHint: Enable verbose mode in order to have the list of all failing values encountered during the run\nCausa: depois do gesto o histórico tem 0 entradas e devia ter 1"
+}

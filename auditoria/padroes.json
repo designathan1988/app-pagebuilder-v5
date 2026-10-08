@@ -1,0 +1,237 @@
+{
+  "versao": 1,
+  "alvos": {
+    "codigo": {
+      "incluir": ["src/**/*.ts", "src/**/*.tsx"],
+      "excluir": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/core/testing/**", "src/generated/**", "src/**/vendor/**", "src/**/*.typecheck.ts"]
+    },
+    "manifesto": { "incluir": ["manifest/commands/*.json"], "excluir": [] }
+  },
+  "padroes": [
+    {
+      "id": "P-E01",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "^(export\\s+)?let\\s+\\w+",
+      "flags": "m",
+      "justificativa": "variável mutável de módulo: sobrevive à chamada que a escreveu e é lida por outra entrada",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let"
+    },
+    {
+      "id": "P-E02",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "^(export\\s+)?const\\s+\\w+[^=\\n]*=\\s*new\\s+(Map|Set|WeakMap|WeakSet)\\b",
+      "flags": "m",
+      "justificativa": "coleção compartilhada no módulo: um registro ou cache que outras entradas leem e escrevem",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    },
+    {
+      "id": "P-E03",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "^  let\\s+\\w+",
+      "flags": "m",
+      "justificativa": "let no corpo de uma função de topo: pega o estado fechado nas fábricas, como createStore",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let"
+    },
+    {
+      "id": "P-E04",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "^(export\\s+)?(abstract\\s+)?class\\s",
+      "flags": "m",
+      "justificativa": "cada classe obriga um item de estado com os campos dela",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes"
+    },
+    {
+      "id": "P-E05",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\buse(State|Reducer)\\s*[<(]",
+      "flags": "",
+      "justificativa": "estado de componente React",
+      "fonte": "https://react.dev/reference/react/useState"
+    },
+    {
+      "id": "P-E06",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\b(useRef|createRef)\\s*[<(]",
+      "flags": "",
+      "justificativa": "ref: um valor que sobrevive à renderização e não a dispara",
+      "fonte": "https://react.dev/reference/react/useRef"
+    },
+    {
+      "id": "P-E07",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\bcreateContext\\s*[<(]",
+      "flags": "",
+      "justificativa": "contexto React: um valor lido pela árvore inteira",
+      "fonte": "https://react.dev/reference/react/createContext"
+    },
+    {
+      "id": "P-E08",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\b(useMemo|useCallback|memo)\\s*[<(]",
+      "flags": "",
+      "justificativa": "memoização: um cache que sobrevive entre renderizações",
+      "fonte": "https://react.dev/reference/react/useMemo"
+    },
+    {
+      "id": "P-E09",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\bcreate\\w*Store\\s*[<(]",
+      "flags": "",
+      "justificativa": "criação de store: o dono do estado que as entradas leem e escrevem",
+      "fonte": "https://react.dev/reference/react/useSyncExternalStore"
+    },
+    {
+      "id": "P-E10",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\b(localStorage|sessionStorage|indexedDB)\\b",
+      "flags": "",
+      "justificativa": "armazenamento do navegador: estado que sobrevive à página",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+    },
+    {
+      "id": "P-E11",
+      "tipo": "estado",
+      "alvo": "codigo",
+      "regex": "\\b(activeElement|\\.focus\\s*\\(|\\.blur\\s*\\(|getSelection\\s*\\(|contentEditable|contenteditable|scrollTop|scrollLeft|scrollTo\\s*\\(|scrollIntoView\\s*\\(|contentDocument|contentWindow|setPointerCapture|releasePointerCapture)",
+      "flags": "",
+      "justificativa": "estado do navegador exigido pela Fase 3: foco, seleção de texto, rolagem, documento do iframe e captura de ponteiro",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement"
+    },
+    {
+      "id": "P-N01",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\.addEventListener\\s*\\(",
+      "flags": "",
+      "justificativa": "ouvinte do DOM: uma forma de o código começar a executar",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener"
+    },
+    {
+      "id": "P-N02",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\.on[a-z]+\\s*=(?!=)",
+      "flags": "",
+      "justificativa": "ouvinte por propriedade (onload, onmessage)",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/load_event"
+    },
+    {
+      "id": "P-N03",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\bon[A-Z]\\w*=\\{",
+      "flags": "",
+      "justificativa": "handler declarado no JSX",
+      "fonte": "https://react.dev/learn/responding-to-events"
+    },
+    {
+      "id": "P-N04",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\buse(Layout)?Effect\\s*\\(",
+      "flags": "",
+      "justificativa": "efeito de montagem e desmontagem",
+      "fonte": "https://react.dev/reference/react/useEffect"
+    },
+    {
+      "id": "P-N05",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\b(setTimeout|setInterval|requestAnimationFrame|requestIdleCallback|queueMicrotask)\\s*\\(",
+      "flags": "",
+      "justificativa": "temporizadores, quadros e microtarefas",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/setTimeout"
+    },
+    {
+      "id": "P-N06",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\bnew\\s+(Resize|Mutation|Intersection|Performance)Observer\\b",
+      "flags": "",
+      "justificativa": "observadores de redimensionamento, mutação, interseção e desempenho",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver"
+    },
+    {
+      "id": "P-N07",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "(\\.postMessage\\s*\\(|['\"]message['\"]|\\bonmessage\\b)",
+      "flags": "",
+      "justificativa": "mensagens entre o editor e o iframe do canvas",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage"
+    },
+    {
+      "id": "P-N08",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "(\\.then\\s*\\(|\\.catch\\s*\\(|\\.finally\\s*\\(|\\bawait\\s)",
+      "flags": "",
+      "justificativa": "continuação de Promise: o código volta a rodar quando ela resolve",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then"
+    },
+    {
+      "id": "P-N09",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\.subscribe\\s*\\(",
+      "flags": "",
+      "justificativa": "assinatura de store: um ouvinte chamado a cada mudança",
+      "fonte": "https://react.dev/reference/react/useSyncExternalStore"
+    },
+    {
+      "id": "P-N10",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\buseSyncExternalStore\\s*\\(",
+      "flags": "",
+      "justificativa": "leitura reativa de store num componente",
+      "fonte": "https://react.dev/reference/react/useSyncExternalStore"
+    },
+    {
+      "id": "P-N11",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "^(await\\s|[\\w$.]+\\s*\\(|for\\s*\\(|if\\s*\\()",
+      "flags": "m",
+      "justificativa": "efeito de topo de módulo: o boot que roda ao importar o arquivo",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules"
+    },
+    {
+      "id": "P-N12",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\bimport\\s*\\(",
+      "flags": "",
+      "justificativa": "carga dinâmica: um módulo que só carrega quando a entrada o pede",
+      "fonte": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import"
+    },
+    {
+      "id": "P-N13",
+      "tipo": "entrada",
+      "alvo": "codigo",
+      "regex": "\\b(componentDidMount|componentDidUpdate|componentWillUnmount|componentDidCatch|getDerivedStateFromError)\\b",
+      "flags": "",
+      "justificativa": "ciclo de vida de componente de classe",
+      "fonte": "https://react.dev/reference/react/Component"
+    },
+    {
+      "id": "P-N14",
+      "tipo": "entrada",
+      "alvo": "manifesto",
+      "regex": "^\\s*\"kind\":\\s*\"",
+      "flags": "m",
+      "justificativa": "cada porta de comando do manifesto é uma entrada",
+      "fonte": "https://react.dev/reference/react-dom/components/common"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+# TRC-guides.toggleVisible
+
+- **Chamada:** `src/app/commands.ts:473` `'guides.toggleVisible': toggleGuidesVisible,`
+- **Argumentos:** o tratador recebe `(context, args)`; `args` é o objeto vazio do manifesto `manifest/commands/view.json:2765` `"args": {},`, sem campos nomeados.
+- **Ramos que dependem dos argumentos:** nenhum: toda porta envia `args` vazio `manifest/commands/view.json:2765` `"args": {},`, então nenhum ramo do trecho muda com um valor de argumento.
+
+## Passos
+
+1. `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` — o despacho chama o tratador que a tabela guarda sob `'guides.toggleVisible'`; o argumento é o objeto vazio.
+2. `src/editor/view/overlays.ts:45` `export const toggleGuidesVisible: RegisteredHandler<'guides.toggleVisible', EditorUi> = registerHandler(` — o tratador de `guides.toggleVisible`.
+3. `src/editor/view/overlays.ts:47` `({ state }) => flip(state.ui, 'guidesHidden', toggleGuidesVisible.command),` — inverte o interruptor que esconde as guias manuais. [lê: EST-L01-037 via flip]
+4. `src/editor/view/overlays.ts:20` `function flip(ui: EditorUi, which: Switch, command: CommandId) {` — o interruptor invertido, com a mensagem do que passou a mostrar.
+5. `src/editor/view/overlays.ts:13` `function flipped(ui: EditorUi, which: Switch): EditorUi {` — as preferências viradas.
+6. `src/editor/view/overlays.ts:14` `const { [which]: on, ...rest } = ui.preferences;` — o valor atual do interruptor. [lê: EST-L01-037 via flipped]
+7. `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };` — R3: ligado, tira a chave; desligado, grava-a. [escreve: EST-L01-037 via flipped]
+8. `src/editor/view/overlays.ts:23` `return { kind: 'change' as const, ui: next, message: switched(command, NEGATIVE.includes(which) ? !set : set) };` — o `Outcome` com o estado novo e a mensagem; `guidesHidden` é negativo, então o texto é o invertido do interruptor. [escreve: EST-L01-037 via flip]
+9. `src/editor/view/overlays.ts:19` `const NEGATIVE: readonly Switch[] = ['rulersHidden', 'guidesHidden', 'smartGuidesOff', 'equalSpacingOff'];` — os interruptores ditos ao contrário.
+10. `src/core/store/store.ts:544` `ui: outcome.ui ?? before.ui,` — a store adota o estado do editor que o tratador devolveu. [escreve: EST-L01-037 via run]
+11. `src/core/store/store.ts:548` `const changed = documentChanged || !deepEqual(before.selection, next.selection) || next.ui !== before.ui || next.message !== before.message;` — o `ui` novo torna `changed` verdadeiro.
+12. `src/core/store/store.ts:551` `const committed = commit(next, id);` — o estado novo é validado e fixado.
+13. `src/core/store/store.ts:320` `state = next;` — a store publica o estado. [escreve: EST-L01-037 via publish] [escreve: EST-L01-033 via publish]
+14. `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();` — os assinantes são avisados. [lê: EST-L01-002 via publish]
+
+## Ramos
+
+- R1 `src/core/store/store.ts:408` `if (!isBuilt(entry)) return { status: 'not-available-yet' };` — o tratador está registrado `src/editor/view/overlays.ts:45` `export const toggleGuidesVisible: RegisteredHandler<'guides.toggleVisible', EditorUi> = registerHandler(`; o lado "não disponível" não é tomado e o despacho segue para `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);`.
+- R2 `src/core/store/store.ts:416` `if (predicate && !predicate.test(state, layeredNow(at), args)) {` — o predicado de `guides.toggleVisible` é `always` `manifest/commands/view.json:2767` `"predicate": "always",`, cuja função `src/core/commands/registry.ts:195` `export const always = registerPredicate('always', () => true);` devolve verdadeiro sempre; o lado da recusa não é tomado.
+- R3 `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };` — com a chave `guidesHidden` presente, ela sai; ausente, entra com `true`.
+- R4 `src/editor/view/overlays.ts:48` `(state) => state.ui.preferences.guidesHidden !== true,` — as guias manuais estão à mostra enquanto a chave `guidesHidden` não é `true`; a porta aparece marcada nesse estado.
+- R5 `src/editor/view/overlays.ts:23` `return { kind: 'change' as const, ui: next, message: switched(command, NEGATIVE.includes(which) ? !set : set) };` — `guidesHidden` está na lista `NEGATIVE` `src/editor/view/overlays.ts:19` `const NEGATIVE: readonly Switch[] = ['rulersHidden', 'guidesHidden', 'smartGuidesOff', 'equalSpacingOff'];`, então a mensagem diz o contrário do valor guardado `!set`.
+- R6 `src/core/store/store.ts:548` `const changed = documentChanged || !deepEqual(before.selection, next.selection) || next.ui !== before.ui || next.message !== before.message;` — `next.ui !== before.ui` é verdadeiro porque `flipped` devolve sempre um objeto de estado do editor novo `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`; o lado "sem mudança" não é tomado e o estado é publicado em `src/core/store/store.ts:320` `state = next;`.
+
+## Fronteiras assíncronas
+
+- nenhuma: o caminho do tratador é síncrono; `src/core/store/store.ts:434` `outcome = entry.run(handlerContext(confirmed, at), args);` chama o tratador e a store publica no mesmo despacho `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`.
+
+## Estado
+
+- lê: EST-L01-037
+- escreve: EST-L01-037 (o estado do editor), EST-L01-033 (a mensagem)
+
+## Resultado
+
+- **Estado final:** EST-L01-037 com `ui.preferences.guidesHidden` em `true` ou sem a chave `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`.
+- **Re-renderizado:** os componentes inscritos no estado do editor são avisados por `src/core/store/store.ts:325` `for (const listener of [...listeners]) listener();`; as guias relêem o interruptor `src/editor/canvas/guides.tsx:20` `const guides = useEditorState((s) => (s.ui.preferences.guidesHidden === true ? NONE : guidesOf(s.document, openedPage(s))));`.
+- **DOM do editor:** a porta do interruptor aparece marcada ou não `src/editor/view/overlays.ts:48` `(state) => state.ui.preferences.guidesHidden !== true,`.
+- **DOM do canvas:** as guias sobre a página aparecem ou somem pela leitura `src/editor/canvas/guides.tsx:20` `const guides = useEditorState((s) => (s.ui.preferences.guidesHidden === true ? NONE : guidesOf(s.document, openedPage(s))));`; o documento não muda e `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);` é falso.
+
+## Regras
+
+- G1: n/a — o comando não grava no documento nem num contexto de edição; o tratador só grava a preferência `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`.
+- G2: ok `src/editor/store.ts:223` `const at = context ?? beforeCommand(id, args, changesDocument);` — `beforeCommand` guarda a digitação pendente antes do comando `src/editor/input/pending.ts:82` `keepTyping();`, exceto com o foco dentro do próprio campo `src/editor/input/pending.ts:81` `if (!changesDocument && focused !== null && within(typing, focused)) return undefined;`.
+- G3: ok — a única porta de `guides.toggleVisible` (o interruptor Manual guides do diálogo de guias e grelhas) chega à tabela `src/app/commands.ts:473` `'guides.toggleVisible': toggleGuidesVisible,` e manda só a intenção de inverter `src/editor/view/overlays.ts:47` `({ state }) => flip(state.ui, 'guidesHidden', toggleGuidesVisible.command),`.
+- G4: n/a — o trecho não desenha elemento algum sobre o canvas; o tratador não toca o DOM `src/editor/view/overlays.ts:23` `return { kind: 'change' as const, ui: next, message: switched(command, NEGATIVE.includes(which) ? !set : set) };`.
+- G5: n/a — o trecho não desenha nem mede painel, barra ou rótulo; só grava a preferência `src/editor/view/overlays.ts:15` `return { ...ui, preferences: on === true ? rest : { ...rest, [which]: true } };`.
+- G6: n/a — o comando não escreve a seleção; o resultado não leva `selection` `src/core/store/store.ts:522` `const chosen = outcome.selection ?? before.selection;`.
+- G7: n/a — o comando não muda o documento; o `documentChanged` é falso `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);`.
+- INT: ok — sem `patches` o documento não é tocado `src/core/store/store.ts:500` `own = applyPatches(before.document, outcome.patches ?? []);` aplica zero remendos e `src/core/store/store.ts:518` `const documentChanged = applied.applied.length > 0 && !deepEqual(before.document, applied.document);` é falso.
+
+## Limpeza
+
+- Nenhum ouvinte, timer ou observador é criado neste trecho; não há remoção a citar `src/editor/view/overlays.ts:45` `export const toggleGuidesVisible: RegisteredHandler<'guides.toggleVisible', EditorUi> = registerHandler(`.
+
+## Medições
+
+- nenhuma: os passos do tratador não leem nem calculam valor do navegador; o interruptor é uma preferência `src/editor/view/overlays.ts:14` `const { [which]: on, ...rest } = ui.preferences;`.

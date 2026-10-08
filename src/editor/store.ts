@@ -36,6 +36,8 @@ import { siteScripts } from './forms/script.ts';
 import { deriveData } from '../core/data/derive.ts';
 import { wiring } from './wiring.ts';
 import { beforeCommand, heldTyping, keepTyping } from './input/pending.ts';
+import { historyBreaches } from '../core/history/invariants.ts';
+import { restoreEditContext } from './view/edit-context.ts';
 
 export type EditorStore = Store<EditorUi>;
 export type EditorState = StoreState<EditorUi>;
@@ -143,6 +145,10 @@ export function createEditorStore(options: EditorStoreOptions = {}): EditorStore
     editing: { takeOver },
     initial: { document, selection: options.restored?.selection ?? [], ui: recoveryUi(narrowStart(initialEditorUi(preferences, workspace), workspace === undefined && options.narrow === true), options.recovery ?? null), message: options.restored?.recovered === true ? message('status.save.recovered') : null },
     freeze: options.freeze ?? import.meta.env.DEV,
+    // an undo and a redo give back the breakpoint, state, class and keyframe the change was made in (DCS-009)
+    restoreContext: restoreEditContext,
+    // the rules of the history at every publication, in development and tests (the build a person uses drops them)
+    ...(import.meta.env.DEV ? { invariants: historyBreaches } : {}),
     // the page of a selected node opens (an undo on another page); Layers unfolds what hides a selected node; a text
     // edit and a rename end once their node is not the selection
     // alone, and when an undoable command runs
