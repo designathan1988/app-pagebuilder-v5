@@ -2666,7 +2666,7 @@
   "layout.door.distribution": "Distribute along",
   "layout.door.strategy": "Arrangement",
   "layout.door.stack": "Stack here",
-  "layout.door.unstack": "Keep the drawn arrangement here",
+  "layout.door.unstack": "Keep as drawn here",
   "layout.door.columns": "Columns here",
   "layout.door.hide": "Hide here",
   "layout.door.show": "Show here",

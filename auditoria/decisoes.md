@@ -206,3 +206,7 @@
 - **Origem:** Lote 5 (Fase 9). O JavaScript de produção tem 3.680.975 bytes (858.514 com gzip) num só arquivo.
 - **Rastreamento:** os maiores blocos são o manifesto de comandos (os JSON de `manifest/commands/`, lidos inteiros no boot por `src/manifest/runtime.ts`; em `style.json`, 163 de 180 KB compactos são as portas, usadas em execução), `react-dom`, `css-tree`, o executor de movimento (`src/editor/motion/runtime/compose.ts`) e o compositor de layout. Os tratadores do compositor entram na tabela de comandos pela `src/app/modules.ts` e rodam de forma síncrona no `dispatch`.
 - **Decidido:** preserva-se o comportamento. Carregar módulos sob demanda tornaria assíncrono o despacho de comandos e o desfazer deles, e cortar campos do manifesto mudaria o contrato que o app lê. Nenhuma divisão de código nesta rodada.
+
+## DCS-027 — o rótulo de manter a disposição desenhada num breakpoint
+- **Origem:** DEF-0594. O botão ocupa a coluna do painel do compositor, e o texto não cabia.
+- **Decidido:** o texto passa a seguir o padrão dos botões vizinhos (ação + "aqui"): "Keep as drawn here" / "Manter como desenhado aqui". O comando, a porta e o comportamento não mudam; o texto é igualmente claro e sem abreviação.

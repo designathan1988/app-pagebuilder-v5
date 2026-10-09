@@ -76,8 +76,13 @@
 
 /* the Timeline */
 
+/* the dock body's whole line, and never wider: a flex item of the wrapping dock body, it took its content's width
+   (1,540 px in an 840 px body) and the whole dock scrolled sideways, its form out of sight; the track scrolls inside its
+   own scroller (DEF-0591; CLAUDE.md G5, every item that grows says how it shrinks) */
 .motion-timeline {
   display: flex;
+  flex: 1 1 100%;
+  min-width: 0;
   min-height: 0;
   height: 100%;
 }

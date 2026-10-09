@@ -88,9 +88,11 @@ function CommandBarDialog() {
         const asked = query.trim().toLowerCase();
         const all = namedProperties();
         const named = [...all.filter((one) => one.id === asked), ...all.filter((one) => one.id !== asked)];
+        // found by its CSS name and by the name the inspector shows for it, in the interface's language: in Portuguese
+        // "alin" found no property and "cor" no colour, since the CSS names are English words (DEF-0589)
         return named.flatMap((property: NamedProperty): BarEntry[] => {
           const args = { property: property.id };
-          return !isDoorBuilt(entry) || !appliesNow(entry, args, store) ? [] : [{ entry, args, label: t(entry.door.labelKey as MessageId, { property: property.id }), key: entryKey(entry, args) }];
+          return !isDoorBuilt(entry) || !appliesNow(entry, args, store) ? [] : [{ entry, args, label: t(entry.door.labelKey as MessageId, { property: property.id }), key: entryKey(entry, args), also: [t(property.labelKey as MessageId)] }];
         });
       }
       if (kind === 'set-property') {

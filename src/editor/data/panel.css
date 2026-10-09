@@ -90,10 +90,11 @@
   min-width: 0;
 }
 
+/* the part's name, a word or two of the catalogue, wraps under the element's name rather than being cut: "alternative
+   text" read "alternativ…" in the sidebar (DEF-0592; CLAUDE.md G5); the element's own name, the person's, keeps its
+   ellipsis and its title */
 .data-target__name .data-column__type {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 /* the tables: a grid of fields that scrolls sideways within the panel */
@@ -119,6 +120,12 @@
 
 .data-grid__table td .input {
   min-width: var(--size-tag-field);
+}
+
+/* a column's type menu as wide as the type it shows: squeezed to a column of short values it read "N" for Number
+   (DEF-0590); the table scrolls sideways, so the column takes the room */
+.data-grid__table th .input {
+  min-width: max-content;
 }
 
 .data-grid__number {

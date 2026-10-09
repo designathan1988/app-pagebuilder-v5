@@ -450,7 +450,9 @@
 
 /* a row whose name does not fit beside its details gives the name their room (sidebar/name-first.ts) */
 .row[data-name-first] > .row__meta[data-region='layers-row-details'],
-.row__main[data-name-first] > .row__meta {
+.row__main[data-name-first] > .row__meta,
+.row__main[data-name-first] > .row__gen,
+.row__main > .row__meta:empty {
   display: none;
 }
 

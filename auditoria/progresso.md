@@ -60,8 +60,27 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
 
 - **Fechamento (2026-10-09):** a suíte inteira com o código final, uma vez, na condição padrão (regra nova do `CLAUDE.md`, seção 0): 2.930 de 2.930 em 30,3 min. Sem falha, não houve `--last-failed`. A passada Windows encadeada foi cancelada pela regra. Os servidores de medição foram encerrados.
 
+- **Lote 6 (2026-10-09), uso real — feito:**
+  - Os 57 fluxos de `tools/ui/flows.ts` rodaram nas condições padrão e Windows (114 execuções) sem incidente, erro de console nem expectativa falha. As 418 fotos foram revisadas por quatro subagentes, e cada achado foi conferido aqui pela foto ou por medida.
+  - Houve também uma sessão de uso em pt-BR a 1280×720 (15 passos), sem erro.
+  - Defeitos do app corrigidos:
+    - DEF-0589: a paleta não achava propriedade pelo nome em português;
+    - DEF-0590: o menu de tipo da prévia do CSV mostrava "N";
+    - DEF-0591: o painel Movimento rolava de lado;
+    - DEF-0592: o nome da parte mapeada era cortado;
+    - DEF-0593: o nome do arquivo no Explorer era cortado, e os detalhes não voltavam;
+    - DEF-0594: um rótulo do compositor passava da borda (DCS-027).
+  - Prova: `tests/e2e/paineis-cabem.spec.ts`, 5 casos que falham sem as correções e passam nas duas condições, e um caso novo em `command-bar-other-names.spec.ts`.
+  - Achados conferidos e mantidos:
+    - a faixa de abas de página rola, como num navegador;
+    - a tabela da prévia rola de lado por desenho;
+    - os campos vazios do compositor são valores não definidos;
+    - o chip encostado no rótulo é a DEC-70;
+    - o campo de largura em foco já foi medido no Lote 3.
+  - Specs das áreas (117) nas duas condições: 116 de 117. A falha era da paleta e foi corrigida (`alsoScore`); os 15 casos da paleta passam nas duas condições. Detectores 117 de 117; typecheck e lint sem erro.
+
 ## Próximo passo
-**Defeitos do app que o usuário vê, achados usando o editor** (`CLAUDE.md`, seção 0, "Produção primeiro"). Comece por uma sessão de uso nas duas condições, com fotos olhadas; cada achado vira DEF-, corrigido com prova, em lotes por área.
+**Mais uso real** (`CLAUDE.md`, seção 0, "Produção primeiro"): os fluxos não cobrem a interface em pt-BR a 1280×720, porque procuram rótulos em inglês. Uma sessão manual mais longa nessa tela (inserir, estilizar em dois breakpoints, estado hover, classe, quadro-chave, exportar) é o próximo lote.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

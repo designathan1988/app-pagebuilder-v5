@@ -1248,3 +1248,39 @@
 - Sintoma: `lote-navegador.spec.ts` "com o armazenamento cheio…" falhava 1 vez em 5 sozinho, e 3 em 12: o aviso `status.save.journalInDatabase` não era dito.
 - Causa: a exclusão chegava com a gravação da seleção ainda em curso; o laço do `flush` (`src/editor/persistence/autosave.ts:307`) grava a revisão seguinte direto no IndexedDB, sem tentar o diário, e nenhum aviso é devido (o documento está salvo). O teste esperava o aviso em qualquer tempo.
 - Prova: o caso espera a seleção chegar ao IndexedDB (e o diário da abertura sair do localStorage) antes de excluir; 20 de 20 sozinho, 7 de 7 do spec nas duas condições.
+
+## DEF-0589 — em pt-BR a paleta de comandos não achava propriedade pelo nome em português
+- Status: corrigido (Lote 6)
+- Sintoma: com a interface em pt-BR, "alin" e "#alin" não listavam nenhuma propriedade, e "cor" não trazia "Cor do texto" nem "Fundo"; em inglês, "align" lista text-align e as demais, porque o nome CSS é inglês. Visto na sessão de uso em pt-BR a 1280×720.
+- Causa: `src/editor/shell/command-bar.tsx`: as entradas "Editar a propriedade" casavam só o rótulo com o nome CSS, sem o nome que o inspector mostra.
+- Prova: cada entrada leva o nome do inspector no idioma da interface como nome alternativo (`also`), e um nome alternativo só casa quando cada palavra digitada começa uma palavra dele (`alsoScore` em `src/editor/command-bar/command-bar.ts`: sem isso, "wrap in a" achava "Text wrapping"). Caso novo em `tests/e2e/command-bar-other-names.spec.ts`; sem a correção falha em "alinhar texto", com ela passa; os 15 casos dos specs da paleta passam nas duas condições.
+
+## DEF-0590 — na prévia de importação, o menu de tipo da coluna mostrava "N" em vez de "Number"
+- Status: corrigido (Lote 6)
+- Sintoma: no painel Dados, a prévia do CSV encolhia o menu de tipo até a largura dos valores da coluna ("6,50") e escondia o tipo escolhido.
+- Causa: `src/editor/data/panel.css`: o menu no `th` não tinha largura mínima; a tabela rola de lado, então o cabeçalho pode ocupar a largura do menu.
+- Prova: `tests/e2e/paineis-cabem.spec.ts` (o menu tem pelo menos a largura do texto do tipo escolhido); falha sem a correção, passa nas duas condições.
+
+## DEF-0591 — o painel Movimento rolava de lado e escondia o formulário
+- Status: corrigido (Lote 6)
+- Sintoma: com uma linha do tempo aberta, o corpo da doca (840 px) tinha 1.564 px de conteúdo: o painel inteiro rolava de lado, e na condição Windows aparecia a barra horizontal com metade do conteúdo fora de vista.
+- Causa: `src/editor/motion/ui/motion.css`: `.motion-timeline`, item de um flex com quebra de linha, não declarava como encolhe (G5) e tomava a largura do conteúdo; a trilha já tem o próprio scroller.
+- Prova: `paineis-cabem.spec.ts` (nenhum corpo de doca rola de lado); medido: depois da correção só o scroller da trilha rola.
+
+## DEF-0592 — o nome da parte mapeada era cortado ("alternativ…")
+- Status: corrigido (Lote 6)
+- Sintoma: em Conectar campos, "Photo / alternative text" aparecia "alternativ…".
+- Causa: `src/editor/data/panel.css`: a linha do nome da parte tinha reticências; é texto do catálogo, de uma ou duas palavras.
+- Prova: a linha quebra sob o nome do elemento (o nome do elemento, dado da pessoa, segue com reticências e dica); `paineis-cabem.spec.ts`.
+
+## DEF-0593 — no Explorer, o nome do arquivo era cortado ao lado do selo "generated", e os detalhes não voltavam
+- Status: corrigido (Lote 6)
+- Sintoma: na condição Windows, "contact.h…"; e uma linha que tirava os detalhes uma vez não os trazia de volta.
+- Causa: `src/editor/shell/sidebar/name-first.ts`: o selo não contava como detalhe; o campo de detalhes vazio ocupava 12 px; e a regra de volta comparava com a largura do nome, que no Explorer não estica.
+- Prova: o selo é detalhe, o campo vazio some, e a volta conta o espaço livre da linha; `paineis-cabem.spec.ts` (nenhum nome cortado; "index.html" mantém o selo nas duas condições).
+
+## DEF-0594 — o rótulo "Keep the drawn arrangement here" passava da borda do botão
+- Status: corrigido (Lote 6)
+- Sintoma: na condição Windows o texto ia 1 px além da área do botão, e em pt-BR ("Manter a organização desenhada aqui") ainda mais; a quebra de linha seria "wrapped" para a guarda de tela.
+- Causa: o rótulo mais longo que a coluna do painel do compositor.
+- Prova: o rótulo segue o padrão dos vizinhos ("Stack here", "Hide here"): "Keep as drawn here" / "Manter como desenhado aqui" (DCS-027); `paineis-cabem.spec.ts`.

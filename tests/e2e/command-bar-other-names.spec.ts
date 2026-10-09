@@ -25,3 +25,19 @@ test('in Portuguese the bar finds an element by its English name and its tag, an
   await page.keyboard.press('Enter');
   await expect.poll(() => page.evaluate(() => (window as unknown as { __builderTestPort: { document: () => { pages: { tree: { children: { type: string }[] } }[] } } }).__builderTestPort.document().pages[0]?.tree.children.map((c) => c.type))).toContain('header');
 });
+
+// DEF-0589: in Portuguese a property is found by the name the inspector shows for it, not only by its English CSS
+// name: "alin" found no property and "cor" no colour
+test('in Portuguese the bar finds a property by the name the inspector shows', runs(CTRL_K, LANGUAGE), async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openEditor(page, { project: 'aurora', commands: [{ command: 'selection.select', args: { target: 'n-title' } }] });
+  await openMenu(page, 'language');
+  await page.locator(`[data-door="${LANGUAGE}"]`).first().click();
+  const options = page.locator('[data-region="command-palette"] [role="option"]');
+  for (const [typed, offered] of [['alinhar texto', 'Editar a propriedade text-align'], ['cor do texto', 'Editar a propriedade color'], ['#alin', 'Editar a propriedade text-align']] as const) {
+    await runDoor(page, CTRL_K);
+    await page.keyboard.type(typed);
+    await expect(options.filter({ hasText: new RegExp(`^${offered}$`) }), typed).toHaveCount(1);
+    await page.keyboard.press('Escape');
+  }
+});

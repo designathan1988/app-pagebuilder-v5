@@ -265,7 +265,6 @@
   flex-wrap: wrap;
   gap: var(--space-4);
 }
-
 .layout-panel__item {
   display: flex;
   align-items: center;

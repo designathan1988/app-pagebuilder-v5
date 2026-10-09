@@ -104,6 +104,16 @@ export function matchScore(query: string, label: string): number | null {
   return first !== undefined && text.startsWith(first) ? score + 1 : score;
 }
 
+// How well a query matches another name of an entry (BarEntry.also): every word of the query starts a word of the
+// name, never a piece inside a word nor an initial. Another name is only a way in to an entry its label does not
+// match, and a loose match let "wrap in a" reach "Text wrapping" ("in" inside "wrapping") once every property answered
+// to its inspector name (DEF-0589).
+function alsoScore(query: string, name: string): number | null {
+  const words = wordsOf(query);
+  const nameWords = wordsOf(name);
+  return words.every((word) => nameWords.some((one) => one.startsWith(word))) ? matchScore(query, name) : null;
+}
+
 // The parts of a label the query's words match, as the bar marks them (the canonical palette: "Exp" of "Export
 // project"):
 // each word where matchScore found it, at the start of a word of the label, else anywhere in it; initials and a label
@@ -148,7 +158,7 @@ export function shownEntries(query: string, offered: readonly BarEntry[], recent
   return pool
     .flatMap((e, index) => {
       const own = matchScore(words, e.label);
-      const other = own === null ? Math.max(-Infinity, ...(e.also ?? []).flatMap((name) => matchScore(words, name) ?? [])) : -Infinity;
+      const other = own === null ? Math.max(-Infinity, ...(e.also ?? []).flatMap((name) => alsoScore(words, name) ?? [])) : -Infinity;
       const score = own ?? (other === -Infinity ? null : other - ALSO_RANK);
       return score === null ? [] : [{ e, score, index }];
     })
