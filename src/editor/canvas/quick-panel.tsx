@@ -499,14 +499,15 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
     return () => window.cancelAnimationFrame(frame);
   }, [open]);
   if (!shown || node === null) return null;
-  if (!open && !drawn) {
-    return CHIP_DOOR === null ? null : <Chip entry={CHIP_DOOR} open={false} at={at} measuring={measuring} buttonRef={chip} />;
-  }
-  // the frame of the close: the chip is drawn beside the panel, which the measuring class already hides, so the focus
-  // has somewhere connected to go before the panel leaves the page. The chip takes the box the panel had: it is the
-  // position it takes anyway, and it keeps the frame from showing it anywhere else
-  const leaving = !open;
-  const atLeaving = placed === null || placed.id !== node.id ? undefined : { left: placed.box.x, top: placed.box.y };
+  // The collapsed chip, the same element from the frame of a close on (its key keeps its place among the panel's
+  // siblings: react.dev, Preserving and Resetting State), so the focus a close gives it stays on it (DEF-0533). Until
+  // its own placing is made it stands where the panel of this element last stood, drawn: a focused element hidden by
+  // the measuring class loses the focus (HTML Standard, the focus fixup rule), which fell to the body.
+  const lastBox = placed !== null && placed.id === node.id ? { left: placed.box.x, top: placed.box.y } : undefined;
+  const collapsed = CHIP_DOOR === null || open ? null : (
+    <Chip key="chip" entry={CHIP_DOOR} open={false} at={current === null ? lastBox : at} measuring={current === null && lastBox === undefined ? ' is-measuring' : ''} buttonRef={chip} />
+  );
+  if (!open && !drawn) return <>{collapsed}</>;
   // the context of the writes (A3.8): the class the style target names, the state and the breakpoint in view
   const contextLabel = [contextTarget === null ? null : `.${contextTarget}`, contextState === null ? null : t(contextState as MessageId), contextBreakpoint === null ? null : wordsOf(JSON.parse(contextBreakpoint) as ReturnType<typeof breakpointWords>, t)].filter((part) => part !== null).join(' · ');
   const actions = FIELDS.filter((entry) => isAction(entry) && applicable.split(' ').includes(entry.ref));
@@ -531,6 +532,7 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
   return (
     <>
     <div
+      key="panel"
       ref={panel}
       className={`quick-panel${measuring}`}
       style={{ ...at, maxWidth: current?.widest, maxHeight: current === null ? undefined : `min(${TALLEST_SHARE * 100}vh, ${current.tallest}px)` }}
@@ -570,7 +572,7 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
         </section> : null}
       </div>
     </div>
-      {leaving && CHIP_DOOR !== null ? <Chip entry={CHIP_DOOR} open={false} at={atLeaving} measuring="" buttonRef={chip} /> : null}
+      {collapsed}
     </>
   );
 }

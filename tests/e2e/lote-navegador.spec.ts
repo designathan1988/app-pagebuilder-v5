@@ -183,6 +183,11 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
     await holdInPage('.quick-panel');
     await page.keyboard.press('Escape');
     await expect(page.locator('.quick-panel'), 'o painel rápido fecha').toHaveCount(0);
+    // the focus stays on the chip, the same element the close gave it to (DEF-0533: a frame later it was mounted again
+    // and the focus fell to the body; measured in Chrome before and after the correction)
+    await expect.poll(() => page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), { message: 'o foco fica no chip depois do fecho' }).toBe(true);
+    await page.waitForTimeout(50);
+    expect(await page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), 'o foco continua no chip um instante depois').toBe(true);
   });
   await cycle('o nó inserido e apagado', async () => {
     await page.locator(`[data-door="${INSERT}"][data-args*='"entry":"section"']`).first().click();
@@ -214,7 +219,6 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
     await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'a página trocada sai do quadro').toHaveCount(0);
   });
 
-  console.log('limpezas:', await page.evaluate(() => (globalThis as unknown as { __chipCleanups?: number }).__chipCleanups ?? -1));
   expect(alive, 'controles que continuam vivos depois da coleta de lixo').toEqual([]);
 });
 
