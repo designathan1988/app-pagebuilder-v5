@@ -264,8 +264,11 @@ function gestureSafe(store: EditorStore): EditorStore {
     },
     dispatch: (id, args, context) => {
       const changesDocument = UNDOABLE.get(id) === true;
+      // the field's own command keeps or cancels its typing itself (input/pending.ts): what it moves (a new animation
+      // puts a keyframe under the playhead) never keeps the typing again, which ran the command twice (DEF-0535)
+      const own = heldTyping()?.owns(id, (args ?? {}) as Readonly<Record<string, unknown>>) === true;
       const at = context ?? beforeCommand(id, args, changesDocument);
-      const edited = heldTyping() === null ? null : editedKey(store.getState());
+      const edited = heldTyping() === null || own ? null : editedKey(store.getState());
       let result: DispatchResult;
       if (open === null) result = store.dispatch(id, args, at);
       else if (!changesDocument) {

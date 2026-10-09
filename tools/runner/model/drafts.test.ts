@@ -325,3 +325,23 @@ describe('o rascunho da sessão e o contexto da digitação', () => {
     expect(restored, 'o contexto restaurado é o quadro-chave em que o valor foi digitado').toEqual(typedOn);
   });
 });
+
+// A field's own command keeps or cancels its typing itself: what the command moves never keeps the typing again (the
+// New animation field's Enter: the animation it makes puts a keyframe under the playhead, the context of the edit
+// moves, and the typing was kept a second time — the command ran twice and was refused; DEF-0535).
+describe('o comando do próprio campo e o contexto que ele muda', () => {
+  it('o Enter do campo de nova animação cria a animação uma vez', async () => {
+    const store = storeOf();
+    dispatch(store, 'selection.select', { target: 'n-title' });
+    dispatch(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
+    const drawn = mount(store, createElement(PanelField, { entry: door('animation.create#timeline-new-animation'), value: '', label: 'name' }));
+    const input = drawn.host.querySelector('input') as HTMLInputElement;
+    type(input, 'fade-in');
+    submit(input);
+    await settle();
+    const node = [...walk(store.getState().document.pages[0]?.tree ?? (undefined as never))].find((n) => n.id === 'n-title');
+    expect(node?.animations?.map((a) => a.name), 'uma animação fade-in').toEqual(['fade-in']);
+    expect(store.getState().refused, `o comando não rodou de novo e foi recusado: ${said(store) ?? ''}`).not.toBe(true);
+    drawn.stop();
+  });
+});
