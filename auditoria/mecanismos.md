@@ -49,6 +49,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
   - `tools/impact/run.ts` — roda os modelos e os mutantes escolhidos.
 - **Falhas de aceitação que precisa acusar:** uma mudança em `src/core/history/history.ts` que não escolhe o modelo do histórico nem os mutantes M01 a M05; uma mudança em `tools/runner/mutants.ts` que não escolhe todos os mutantes.
 - **Tempo medido (2026-10-08):** a escolha de quatro mudanças em 52 ms: `src/core/history/history.ts` escolhe os cinco grupos e M01 a M05 (hoje também M28); `tools/runner/mutants.ts` escolhe os cinco grupos e todos os mutantes; `src/editor/shell/preview.tsx` e `README.md` não escolhem nenhum.
+- **Acréscimo (2026-10-09, DEF-0569):** o grafo segue o `import.meta.glob` e os caminhos lidos do disco; o seletor ganhou o grupo de detectores `impact` (`tools/runner/model/impact.test.ts`), com os mutantes M138 e M139.
 
 ## MEC-05 — contratos de campo e porta css pelo lexer
 - **Capacidade:** C5 (controlador global de entradas e saídas), opções A, B e C do relatório.

@@ -41,40 +41,72 @@ export function selectDetectors(files: readonly string[], reaches: (group: Detec
   return { models, mutants };
 }
 
-// ---- the module graph of each group, read from the disk (static relative imports, as tools/impact/sources.ts reads)
+// ---- the module graph of each group, read from the disk (static relative imports, as tools/impact/sources.ts reads),
+// the files an import.meta.glob of the graph takes (the manifest comes in by src/manifest/runtime.ts that way), and the
+// files the graph's modules read from the disk by a path written in them (a fixture, the generated map: DEF-0569)
 const IMPORT = /(?:import|export)\s(?!type\s)[^'"]*?from\s+['"](\.{1,2}\/[^'"]+)['"]|import\s+['"](\.{1,2}\/[^'"]+)['"]/g;
+const GLOB = /import\.meta\.glob(?:<[^>]*>)?\(\s*['"](\.{1,2}\/[^'"]+)['"]/g;
+// a path of the project written in a module, up to an interpolation in a template (manifest/features/fixtures/${…})
+const DISK_PATH = /['"`]((?:manifest|src)\/[^'"`$\s]*)/g;
 const posix = (file: string) => file.split(path.sep).join('/');
-const graphs = new Map<Detector, ReadonlySet<string>>();
-function graphOf(group: Detector): ReadonlySet<string> {
+// a glob of Vite's (the project writes `*` and `{a,b}`) as a pattern of whole paths
+function globPattern(glob: string): RegExp {
+  // `**` crosses folders, `*` stays in one, `{a,b}` is either
+  const part = (text: string) =>
+    text
+      .replace(/[.+^()|[\]\\]/g, '\\$&')
+      .replace(/\*/g, '[^/]*')
+      .replace(/\{([^}]*)\}/g, (_whole, options: string) => `(?:${options.split(',').join('|')})`);
+  return new RegExp(`^${glob.split('**').map(part).join('.*')}$`);
+}
+// the files of the disk an import.meta.glob takes: the folder before its first wildcard, walked
+function globbed(glob: string): string[] {
+  const base = glob.slice(0, glob.search(/[*{]/) < 0 ? glob.length : glob.search(/[*{]/)).replace(/[^/]*$/, '');
+  const pattern = globPattern(glob);
+  if (!fs.existsSync(base)) return [];
+  return (fs.readdirSync(base, { recursive: true }) as string[]).map((one) => posix(path.join(base, one))).filter((one) => pattern.test(one));
+}
+interface Graph {
+  readonly modules: ReadonlySet<string>;
+  // the paths its modules read from the disk: a file, or a folder (a path that ends with /)
+  readonly disk: readonly string[];
+}
+const graphs = new Map<Detector, Graph>();
+function graphOf(group: Detector): Graph {
   const held = graphs.get(group);
   if (held !== undefined) return held;
   const seen = new Set<string>();
+  const disk = new Set<string>();
   const queue = [`tools/runner/model/${group}.test.ts`];
   while (queue.length > 0) {
     const file = queue.pop() as string;
     if (seen.has(file)) continue;
     seen.add(file);
-    let text = '';
-    try {
-      text = fs.readFileSync(file, 'utf8');
-    } catch {
-      // a file gone imports nothing
-    }
+    // a file gone imports nothing
+    const text = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
     for (const m of text.matchAll(IMPORT)) queue.push(posix(path.normalize(path.join(path.dirname(file), m[1] ?? m[2] ?? ''))));
+    for (const m of text.matchAll(GLOB)) queue.push(...globbed(posix(path.normalize(path.join(path.dirname(file), m[1] ?? '')))));
+    if (file.startsWith('tools/')) for (const m of text.matchAll(DISK_PATH)) disk.add(m[1] ?? '');
   }
-  graphs.set(group, seen);
-  return seen;
+  const graph = { modules: seen, disk: [...disk].filter((one) => one !== '') };
+  graphs.set(group, graph);
+  return graph;
 }
-// the files a group reads from the disk besides what it imports: the inventory scans every source file of src/ and
-// compares manifest/generated/inventory.json, built from the manifest (tools/runner/model/inventory.test.ts); the lint
-// loads the project's configuration and its rules (tools/runner/model/lint.test.ts)
+// the files a group reads from the disk that no path written in it names: the inventory scans every source file of
+// src/ and compares manifest/generated/inventory.json, built from the manifest (tools/runner/model/inventory.test.ts);
+// the lint loads the project's configuration and its rules (tools/runner/model/lint.test.ts); the catalogues' plurals
+// and the browser's compatibility read every source file of src/ (i18n.test.ts, compat.test.ts)
 const READ_FROM_DISK: Partial<Record<Detector, RegExp>> = {
   inventory: /^(src\/.*(?<!\.test)\.tsx?|manifest\/.*\.json)$/,
   lint: /^(src\/.*(?<!\.test)\.tsx?|eslint\.config\.js|tools\/lint\/.*\.ts)$/,
   manifest: /^manifest\/.*\.json$/,
   'ui-fit': /^(src\/.*\.css|src\/i18n\/locales\/.*\.json|manifest\/(commands\/.*|generated\/ui-widths)\.json)$/,
+  i18n: /^src\/.*(?<!\.test)\.tsx?$/,
+  compat: /^src\/.*(?<!\.test)\.tsx?$/,
 };
 export const graphReaches = (group: Detector, file: string): boolean => {
   const posixFile = file.replaceAll('\\', '/');
-  return graphOf(group).has(posixFile) || (READ_FROM_DISK[group]?.test(posixFile) ?? false);
+  const graph = graphOf(group);
+  const read = graph.disk.some((one) => (one.endsWith('/') ? posixFile.startsWith(one) : posixFile === one));
+  return graph.modules.has(posixFile) || read || (READ_FROM_DISK[group]?.test(posixFile) ?? false);
 };

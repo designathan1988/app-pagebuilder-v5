@@ -1023,3 +1023,33 @@
   - a fixture aurora depois de seis edições reais, exigindo que cada uma rode: largura, opacidade, classe criada, animação criada, `aria-hidden` ligado e duplicação.
 - **Detector:** o grupo `storage` (MEC-14). Mutante M137 (a leitura do projeto reordena as chaves do documento), acusado pelos dois casos.
 - **Verificação:** detectores 25 arquivos e 112 testes sem falha; os 137 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0569 — o seletor de impacto não vê o manifesto carregado por `import.meta.glob` nem os arquivos que os grupos leem do disco
+- **Status:** corrigido
+- **Citação:** `tools/impact/detectors.ts:45` `const IMPORT = /(?:import|export)\s(?!type\s)[^'"]*?from\s+['"](\.{1,2}\/[^'"]+)['"]|import\s+['"](\.{1,2}\/[^'"]+)['"]/g;` e `src/manifest/runtime.ts:30` `const singleModules = import.meta.glob<unknown>('../../manifest/{checks,elements,environment,interactions,layout,properties}.json', { eager: true, import: 'default' });`
+- **Causa:** o grafo de cada grupo segue só os `import` relativos.
+  - O manifesto entra no app por `import.meta.glob` (`src/manifest/runtime.ts`), e o grafo não o segue.
+  - A lista do que os grupos leem do disco (`READ_FROM_DISK`) é escrita à mão. Ela não traz as fixtures que o arnês lê para todos os grupos de modelo, o mapa gerado que o grupo `machine` compara (`manifest/generated/behavior.json` e `.md`), nem os catálogos e o `src/` que os grupos `i18n` e `compat` varrem.
+
+  Fonte: verificação integral, grupo E, MEC-04, achados 1 e 2.
+- **Efeito:** medido pelo verificador:
+  - mudar `manifest/interactions.json` escolhe só `inventory` e `manifest`, embora o grupo `machine` falhe com outro `drag.threshold`;
+  - `manifest/generated/behavior.md` não escolhe grupo nenhum;
+  - `manifest/features/fixtures/aurora.json` escolhe só `inventory` e `manifest`.
+
+  `npm run test:changed` deixa de rodar o grupo que acusaria a mudança.
+- **Alcance:** a escolha dos grupos do seletor de impacto (MEC-04).
+- **Arquivos da correção:** `tools/impact/detectors.ts`, um detector, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** `tools/impact/detectors.ts`:
+  - O grafo de cada grupo segue os `import.meta.glob` relativos dos seus módulos (`GLOB`): o padrão do Vite que o projeto escreve, com `*`, `**` e `{a,b}`, vira um padrão de caminho, e a pasta antes do primeiro curinga é percorrida (`globbed`).
+  - O grafo também colhe os caminhos `manifest/…` e `src/…` escritos nos módulos de `tools/` (`DISK_PATH`): uma pasta, quando o caminho termina em `/` ou numa interpolação de template (`manifest/features/fixtures/${…}`), ou um arquivo.
+  - A lista explícita ganhou o `i18n` e o `compat`, que varrem `src/` inteiro.
+  - Medido depois da correção:
+    - `manifest/interactions.json` escolhe 21 grupos, entre eles `machine`, `history`, `fields` e `style`;
+    - `manifest/generated/behavior.json` escolhe `machine`, `inventory` e `manifest`;
+    - `behavior.md` escolhe `machine`;
+    - `manifest/features/fixtures/aurora.json` escolhe os 18 grupos que leem fixtures.
+- **Detector:** o grupo novo `impact` (`tools/runner/model/impact.test.ts`; o catálogo ganhou o grupo em `Detector` e na lista de todos), caso "escolhe os grupos que leem o que mudou: o manifesto, o mapa gerado e as fixtures", com as mudanças que o verificador mediu. Mutantes acusados:
+  - M138: o grafo sem o glob, que dá "manifest/interactions.json não escolhe machine (escolhe inventory, manifest, impact)";
+  - M139: o grafo sem os caminhos do disco, que dá "manifest/generated/behavior.md não escolhe machine (escolhe nada)".
+- **Verificação:** detectores 26 arquivos e 113 testes sem falha; os 139 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.

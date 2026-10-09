@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit' | 'command-group' | 'canvas';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit' | 'command-group' | 'canvas' | 'impact';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit', 'command-group', 'canvas'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit', 'command-group', 'canvas', 'impact'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -186,6 +186,8 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M135', file: 'src/editor/shell/sidebar/layers.tsx', from: "  const collapsed = useEditorState((s) => s.ui.layers.collapsed);", to: "  const collapsed = useEditorState((s) => s.ui).layers.collapsed;", breaks: "o painel Camadas lê o estado do editor inteiro e redesenha a cada mudança dele, o zoom incluído (DEF-0567: nenhuma vista do app era contada)", source: 'DEF-0567', detectors: ['render'] },
   { id: 'M136', file: 'src/editor/store.ts', from: "  return useSyncExternalStore(store.subscribe, () => select(store.getState()));", to: "  return useSyncExternalStore(() => () => undefined, () => select(store.getState()));", breaks: "uma vista não assina a store e não redesenha quando a fatia que lê muda (DEF-0567: a testemunha de commits passava com a montagem)", source: 'DEF-0567', detectors: ['render'] },
   { id: 'M137', file: 'src/core/project/archive.ts', from: "  return { document };\n}", to: "  return { document: { pages: document.pages, ...document } };\n}", breaks: "abrir um projeto reordena as chaves do documento, e o project.json salvo depois difere do aberto (DCS-001; DEF-0568: nenhum detector guardava a ida e volta byte a byte)", source: 'DEF-0568', detectors: ['storage'] },
+  { id: 'M138', file: 'tools/impact/detectors.ts', from: "    for (const m of text.matchAll(GLOB)) queue.push(...globbed(posix(path.normalize(path.join(path.dirname(file), m[1] ?? '')))));\n", to: "", breaks: "o grafo não segue o import.meta.glob, e uma mudança do manifesto não escolhe os grupos que o leem (o código de antes do DEF-0569)", source: 'DEF-0569', detectors: ['impact'] },
+  { id: 'M139', file: 'tools/impact/detectors.ts', from: "    if (file.startsWith('tools/')) for (const m of text.matchAll(DISK_PATH)) disk.add(m[1] ?? '');\n", to: "", breaks: "o grafo não vê os arquivos que os grupos leem do disco, e uma mudança do mapa gerado ou de uma fixture não escolhe o grupo que a acusaria (o código de antes do DEF-0569)", source: 'DEF-0569', detectors: ['impact'] },
 ];
 
 export const ALL_DETECTORS = ALL;
