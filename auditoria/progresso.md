@@ -58,8 +58,10 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - Specs da área (128) nas duas condições: 128 de 128 na Windows; na padrão, só o caso da cota falhou, e foi corrigido. `lote-navegador`: 7 de 7 nas duas.
   - Detectores 117 de 117; typecheck e lint sem erro.
 
+- **Fechamento (2026-10-09):** a suíte inteira com o código final, uma vez, na condição padrão (regra nova do `CLAUDE.md`, seção 0): 2.930 de 2.930 em 30,3 min. Sem falha, não houve `--last-failed`. A passada Windows encadeada foi cancelada pela regra. Os servidores de medição foram encerrados.
+
 ## Próximo passo
-**Fechamento:** a suíte inteira nas duas condições com o código final (saídas `final-*.txt` no scratchpad); falha que restar vira DEF-, corrigida com prova. Depois, o relatório ao dono.
+**Defeitos do app que o usuário vê, achados usando o editor** (`CLAUDE.md`, seção 0, "Produção primeiro"). Comece por uma sessão de uso nas duas condições, com fotos olhadas; cada achado vira DEF-, corrigido com prova, em lotes por área.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".
