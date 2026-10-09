@@ -16,7 +16,8 @@ const filesIn = (dir: string) => (fs.existsSync(at(dir)) ? fs.readdirSync(at(dir
 
 // the header of a generated table names the package versions it was generated from: say which one moved
 const stale: string[] = [];
-for (const file of filesIn(GENERATED_DIR)) {
+// only the JSON tables carry a header (the folder holds the behaviour map's Markdown too: DEF-0570)
+for (const file of filesIn(GENERATED_DIR).filter((one) => one.endsWith('.json'))) {
   const header = (JSON.parse(read(file) ?? '{}') as { $generated?: { from?: Record<string, string> } }).$generated;
   for (const [pkg, version] of Object.entries(header?.from ?? {})) {
     const installed = packageVersion(pkg);

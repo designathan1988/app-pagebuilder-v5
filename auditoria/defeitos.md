@@ -1053,3 +1053,14 @@
   - M138: o grafo sem o glob, que dá "manifest/interactions.json não escolhe machine (escolhe inventory, manifest, impact)";
   - M139: o grafo sem os caminhos do disco, que dá "manifest/generated/behavior.md não escolhe machine (escolhe nada)".
 - **Verificação:** detectores 26 arquivos e 113 testes sem falha; os 139 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0570 — `npm run gen:check` quebra ao ler `manifest/generated/behavior.md` como JSON
+- **Status:** corrigido
+- **Citação:** `tools/gen/check.ts:20` `  const header = (JSON.parse(read(file) ?? '{}') as { $generated?: { from?: Record<string, string> } }).$generated;`
+- **Causa:** a conferência dos cabeçalhos lê como JSON todo arquivo de `manifest/generated/`. Desde o MEC-06 (253b9a36) a pasta guarda também o mapa `behavior.md`, que é Markdown.
+- **Efeito:** `npm run gen:check` termina com `SyntaxError: Unexpected token '#', "# Behaviou"... is not valid JSON` (medido em 2026-10-09) e não confere nenhum arquivo gerado.
+- **Alcance:** a conferência dos arquivos gerados.
+- **Arquivos da correção:** `tools/gen/check.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** a conferência dos cabeçalhos lê só os arquivos `.json` da pasta (`tools/gen/check.ts`).
+- **Detector:** nenhum grupo roda o `gen:check`, então não cabe mutante no catálogo. A prova é a execução: antes, o `SyntaxError` citado; depois, `gen:check: manifest/generated/css-properties.json, manifest/generated/css-compat.json, manifest/generated/html-elements.json, manifest/generated/icons.json, src/generated/ids.ts, src/generated/commands.ts, src/generated/value-lists.ts, src/ui/icons.svg are up to date.`, sem arquivo gerado alterado.
+- **Verificação:** detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
