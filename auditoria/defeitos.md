@@ -984,3 +984,16 @@
   - Na base da sessão (4fcd3d43), 8 falhas em 120; no código de agora, 2 em 120.
   - A bissecção que apontava o DEF-0555 (1 em 60 contra 0 em 60) foi desfeita por essa amostra maior.
   - Registrada em `progresso.md` para investigar.
+## DEF-0566 — a colagem clicada no menu não passa por detector nenhum
+- **Status:** corrigido
+- **Citação:** `src/editor/doors/door.tsx:112` `      afterRead(store, readClipboard(), (content) => dispatch(entry.command.id, { ...given, [clipboard]: content }));`
+- **Causa:** o DEF-0513 tem duas portas que leem a área de transferência: a tecla (`src/editor/input/keymap.ts`) e a porta clicada (`src/editor/doors/door.tsx`). O grupo `races` só instala o keymap (verificação integral, grupo B, DEF-0513, achado 1). Voltar a porta clicada ao código de antes não era acusado.
+- **Efeito:** uma regressão na porta do menu Editar › Colar, do menu de contexto ou da barra de comandos (a colagem cai no contexto de quando a leitura chega, não no de quando foi pedida, DCS-019) passaria pelos detectores.
+- **Alcance:** as portas clicadas de `clipboard.paste`.
+- **Arquivos da correção:** `tools/runner/model/races.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o caso da corrida sorteia também a porta.
+  - A colagem vem pela tecla (Ctrl+V pelo keymap) ou pelo clique na porta Colar do menu Editar (a `DoorControl` de verdade, montada no happy-dom).
+  - O caso exige que cada porta passe pelos dois desfechos, colada e recusada com o aviso.
+- **Detector:** o grupo `races` (MEC-11). Mutante M134 (a porta clicada lendo sem o `afterRead`, o código de antes do DEF-0513), acusado: "clique, select: colada em n-footer#1 (status.pasted.after), sem a corrida em n-hero#3".
+- **Verificação:** detectores 25 arquivos e 109 testes sem falha; os 134 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
