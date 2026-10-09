@@ -110,6 +110,11 @@ export function contextPredicate(predicate: string, context: ElementContext | nu
       return transformable(context.box, display);
     case 'inlineOrCell':
       return has(display, 'inline') || has(display, 'table-cell');
+    // (imagePainting, the background image's fields, keeps no answer: props-background writes their values before an
+    // image, and the background's own row adds the image through them; decisoes.md, DCS-028)
+    // a box that clips its overflow on the inline axis: text-overflow says how the clipped text ends there
+    case 'clippingBox':
+      return own.overflowX === undefined ? null : own.overflowX !== 'visible';
     case 'flexItem':
       return parentShows('flex');
     case 'gridItem':

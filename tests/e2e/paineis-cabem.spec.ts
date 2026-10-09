@@ -5,6 +5,8 @@ import { expect, installClock, test, type Page } from '../support/test.ts';
 import { openEditor } from '../support/editor.ts';
 import { FLOWS } from '../../tools/ui/flows.ts';
 import { playFlow } from '../../tools/ui/play.ts';
+import fs from 'node:fs';
+import { control, runDoor } from './door.ts';
 
 async function playUpTo(page: Page, name: string, steps: number): Promise<void> {
   const flow = FLOWS.find((one) => one.name === name);
@@ -69,4 +71,55 @@ test('a Layout Composer action as wide as the panel keeps its words inside (DEF-
   await expect(actions.first()).toBeVisible();
   const over = await actions.evaluateAll((all) => all.filter((one) => one.scrollWidth > one.clientWidth).map((one) => one.textContent));
   expect(over).toEqual([]);
+});
+
+// DEF-0598: with All properties open, a section header lay half under the top of the Inspector's scrolled list, under
+// Find a property ("PINTURA" cut, after editing Font size). While a section's rows pass under the top, its header stays
+// whole there; and a field brought into view by the focus stops below that header, never under it.
+test('a section header of the Inspector stays whole at the top while its rows scroll under it (DEF-0598)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'project.open#menu-file');
+  await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync('manifest/features/fixtures/aurora.json') });
+  // at 1280 px the sidebar opens closed: the Layers come with it
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-insert');
+  await control(page, 'selection.select#layers-row', { args: { target: 'n-intro' } }).click();
+  await runDoor(page, 'inspector.setMode#inspector-mode-all');
+  const list = page.locator('.inspector-scroll');
+  // every place of the list, a row's height apart: the sections whose rows lie under its top, and their headers
+  const wrong = await list.evaluate(async (scroller) => {
+    const out: string[] = [];
+    const frame = () => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+    for (let at = 0; at <= scroller.scrollHeight - scroller.clientHeight; at += 13) {
+      scroller.scrollTop = at;
+      await frame();
+      const top = scroller.getBoundingClientRect().top;
+      for (const section of scroller.querySelectorAll('.inspector-section')) {
+        const header = section.querySelector<HTMLElement>('.inspector-section__header');
+        if (header === null) continue;
+        const box = section.getBoundingClientRect();
+        const head = header.getBoundingClientRect();
+        // its rows under the top, with room above its content's end for the whole header (the header leaves with the
+        // section's last row, pushed by the next header, as a grouped list's header does)
+        const own = getComputedStyle(section);
+        const end = box.bottom - (parseFloat(own.paddingBottom) || 0) - (parseFloat(own.borderBottomWidth) || 0);
+        if (box.top < top - 0.5 && end >= top + head.height + 0.5) {
+          if (Math.abs(head.top - top) > 0.5) out.push(`${header.textContent ?? ''} at ${at}: ${(head.top - top).toFixed(1)} px from the top`);
+        }
+      }
+    }
+    return out;
+  });
+  expect(wrong).toEqual([]);
+  // a field reached by the keyboard right below a header comes into view below it
+  await list.evaluate((scroller) => { scroller.scrollTop = scroller.scrollHeight; });
+  const field = page.locator('[data-door="style.set#inspector-background-color"] input').first();
+  await field.focus();
+  const covered = await field.evaluate((input) => {
+    const r = input.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + 2);
+    return hit === null || !input.contains(hit) ? `${hit?.className ?? 'nothing'} over the field` : '';
+  });
+  expect(covered).toBe('');
 });

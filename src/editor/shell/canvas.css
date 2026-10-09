@@ -18,13 +18,15 @@
   container: centre / inline-size;
 }
 
-/* a narrow centre (a 1280 px window with both side panels): the canvas toolbar's buttons keep their icons and their
-   names as tooltips, and the frame bar keeps its width field without the range beside it, so neither runs off */
-@container centre (max-width: 820px) {
-  .canvas-toolbar .door:has(.icon) .door__label {
-    display: none;
-  }
+/* a canvas toolbar its buttons' names do not fit (measured, canvas.tsx CanvasToolbar; DEF-0596): the buttons keep
+   their icons and their names as tooltips */
+.canvas-toolbar.is-compact .door:has(.icon) .door__label {
+  display: none;
+}
 
+/* a narrow centre (a 1280 px window with both side panels): the frame bar keeps its width field without the range
+   beside it, so it does not run off */
+@container centre (max-width: 820px) {
   .viewport-width__range {
     display: none;
   }
@@ -667,6 +669,9 @@
 .chrome__handle {
   --handle-x: 50%;
   --handle-y: 50%;
+  /* where the dot lies from its anchor: centred, unless the handle says outside (chrome.tsx dotOutward) */
+  --handle-dx: -50%;
+  --handle-dy: -50%;
   position: absolute;
   z-index: var(--z-canvas-handle);
   width: var(--space-6);
@@ -681,11 +686,13 @@
   left: var(--handle-x);
   width: var(--space-4);
   height: var(--space-4);
-  /* the canonical handle (.ov-h): an 8 px square, barely rounded, ringed in the selection colour */
+  /* the canonical handle (.ov-h): an 8 px square, barely rounded, ringed in the selection colour; drawn outside the
+     element on the handle's side (--handle-dx, --handle-dy, chrome.tsx dotOutward), so it never covers the element's
+     content (DEF-0597) */
   border-radius: var(--radius-xs);
   background: var(--color-canvas-handle);
   outline: 1.5px solid var(--color-canvas-selection);
-  translate: -50% -50%;
+  translate: var(--handle-dx) var(--handle-dy);
   /* the dot overhangs the element across its edge: only the hit area, outside the element, takes a press, or a short
      element's middle would be its handles' */
   pointer-events: none;

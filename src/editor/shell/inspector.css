@@ -387,6 +387,8 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  /* a field brought into view (the focus, a find) stops below the section header held at the top (DEF-0598) */
+  scroll-padding-top: var(--size-row);
   scrollbar-width: thin;
 }
 
@@ -566,7 +568,16 @@
 
 .inspector-section:has(.inspector-section__header[aria-expanded='false']) { padding-bottom: 0; }
 
+/* The section's header stays whole at the top of the scrolled list while its section is under it (DEF-0598: a
+   header half under the scroll area's edge read cut, "PINTURA" under Find a property), and leaves with its section. Its
+   background reaches across the panel's width, over the rows passing under it and their gutter. */
 .inspector-section__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 100vmax var(--color-surface);
+  clip-path: inset(0 -100vmax);
   align-self: stretch;
   height: var(--size-row);
   margin-left: calc(var(--space-2) * -1);

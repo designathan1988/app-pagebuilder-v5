@@ -84,3 +84,28 @@ test('add a property offers a list property for a list and not for a section', r
   await page.keyboard.press('Enter');
   await expect.poll(() => page.frameLocator('.frame__page').locator('[data-node="n-perks"]').evaluate((el) => getComputedStyle(el).listStyleType)).toBe('square');
 });
+
+// text-overflow shows while the element's box clips its overflow (clippingBox): the manifest named the predicate and the
+// inspector drew the field on every element, where it does nothing. Looked for through Find a property, which opens what
+// applies.
+test('text-overflow shows once the box clips its overflow', runs(OPEN, ROW, 'style.set#inspector-overflow'), async ({ page }) => {
+  await openAurora(page);
+  const TEXT_OVERFLOW = 'style.set#inspector-text-overflow';
+  const find = page.locator('[data-region="inspector-style"] input[type="search"]').first();
+  await select(page, 'n-intro');
+  // a paragraph laid out as a block takes no alignment of a flex or grid container: the matrix is not drawn (it was, for a
+  // moment, while this case was written)
+  await expect(drawn(page, 'style.setAlignment#inspector-alignment-matrix'), 'no alignment matrix on a block').toHaveCount(0);
+  await find.fill('text-overflow');
+  await expect(page.locator('.status-bar__message')).toContainText('text-overflow');
+  await expect(drawn(page, TEXT_OVERFLOW), 'no text-overflow while the box does not clip').toHaveCount(0);
+  await find.fill('');
+  await openStyleControl(page, 'style.set#inspector-overflow');
+  const overflow = drawn(page, 'style.set#inspector-overflow').locator('input').first();
+  await overflow.click();
+  await page.keyboard.press('Control+A');
+  await page.keyboard.type('hidden');
+  await page.keyboard.press('Enter');
+  await find.fill('text-overflow');
+  await expect(drawn(page, TEXT_OVERFLOW), 'text-overflow once the box clips').toHaveCount(1);
+});

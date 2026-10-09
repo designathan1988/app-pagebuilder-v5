@@ -210,3 +210,20 @@
 ## DCS-027 — o rótulo de manter a disposição desenhada num breakpoint
 - **Origem:** DEF-0594. O botão ocupa a coluna do painel do compositor, e o texto não cabia.
 - **Decidido:** o texto passa a seguir o padrão dos botões vizinhos (ação + "aqui"): "Keep as drawn here" / "Manter como desenhado aqui". O comando, a porta e o comportamento não mudam; o texto é igualmente claro e sem abreviação.
+
+## DCS-028 — as condições de propriedade "previstas" e a imagem de fundo
+- **Origem:** inventário de pendências de 2026-10-09: `manifest/references.json` marca 27 predicados e 4 codecs como `planned`.
+- **Rastreamento:**
+  - 25 dos 27 predicados estão implementados em `src/core/style/applies.ts`, por tipo de elemento ou por contexto calculado. O `references.json` só reconhece o que `registerPredicate` registra, um mecanismo para comandos, então o status `planned` é registro e não falta de código.
+  - Os 4 codecs (`shadow-list`, `text-shadow-list`, `background-layers` e `alignment-matrix`) têm editores próprios, cobertos pelos cenários.
+  - Faltavam 2 respostas: `clippingBox`, implementado no DEF-0595, e `imagePainting`.
+- **Decidido:** `imagePainting` continua sem resposta e preserva o comportamento atual. Os cenários de `props-background` gravam tamanho, posição e repetição do fundo antes de haver imagem (10 falharam quando a condição escondeu esses campos), e a linha do fundo, por onde se acrescenta a imagem, depende das mesmas propriedades.
+
+## DCS-029 — DEC-70: rótulo e chip sobre o texto de cima (medido, para o dono decidir)
+- **Origem:** foto de uso de 2026-10-09: com o Intro selecionado, rótulo e chip cobrem "Welcome to Aurora".
+- **Medida (1280×720, escala 1,25, px CSS):** linha do título y 192–218; rótulo y 211–227 (7 px sobre a linha, de "Welcome t"); chip x 185–209, y 203–227 (15 px sobre o "o" de "to"); entre o título e o Intro, 11 px. Foto `auditoria/fotos/lote7/13-dec70-intro.png`.
+- **Decidido:** nada muda (DEC-70 é do dono). O rótulo já deixa passar o clique quando está sobre texto (`is-covering`).
+
+## DCS-030 — o ponto da alça na borda da vista do canvas
+- **Origem:** DEF-0597. Fora do elemento, o ponto de um elemento colado à borda da página (Hero, CardATitle) seria recortado pela camada do canvas.
+- **Decidido:** ali o ponto fica centrado na borda, como antes, meio visível; num texto colado à borda da própria página ele ainda cobre metade da primeira letra ("Monthly", foto `auditoria/fotos/lote7/08-carda-alcas.png`). Preserva o comportamento anterior nesse caso. Fora do elemento, o ponto pode cair sobre um vizinho que começa colado à borda: o canto inferior esquerdo do Hero toca o topo do "M" de "Monthly" (foto `auditoria/fotos/lote7/14-referencia-hero-monthly.png`). Fica para o dono escolher entre o ponto fora (o elemento selecionado sempre legível) e o centrado (metade sobre cada um).

@@ -122,8 +122,35 @@ function CanvasToolbar() {
   const toggleOrder = slotsIn('canvas-toolbar').find((s) => s.kind === 'door' && s.entry.door.args.panel === 'canvas-tools')?.order ?? 0;
   // the canvas tools come first (Select, Layout): what the toolbar holds before its view segments
   const firstSegment = slotsIn('canvas-toolbar').find((s) => s.kind === 'door' && drawnAs(s.entry) === 'segment')?.order ?? 1;
+  // The buttons keep their names while the toolbar holds them, measured against its own width (CLAUDE.md G5), and show
+  // their icons alone, the names kept as tooltips, only where they do not fit: a fixed limit of the centre's width
+  // (820 px) hid the names with 230 px free beside them (DEF-0596). The width the names take is read with them drawn,
+  // the bar drawn whole for the reading and put back before the frame is painted, so the names of the language drawn
+  // now are the ones judged: a width kept from an earlier reading held the names of the other language, and English,
+  // 12 px shorter than Portuguese, stayed icons alone with room for its names.
+  const t = useT();
+  const bar = useRef<HTMLDivElement>(null);
+  const [compact, setCompact] = useState(false);
+  useLayoutEffect(() => {
+    const element = bar.current;
+    if (element === null) return;
+    const fit = () => {
+      const drawnCompact = element.classList.contains('is-compact');
+      element.classList.remove('is-compact');
+      const overflows = element.scrollWidth > element.clientWidth + 0.5;
+      element.classList.toggle('is-compact', drawnCompact);
+      setCompact(overflows);
+    };
+    fit();
+    // the bar's width, and its groups' widths: a group grows with no change of the bar's own (a hint shown), and is
+    // judged again; the names of another language change no width while they are hidden, so the language is a cause
+    const observer = new ResizeObserver(fit);
+    observer.observe(element);
+    for (const child of element.children) observer.observe(child);
+    return () => observer.disconnect();
+  }, [toolsOpen, t]);
   return (
-    <div className="canvas-toolbar" data-region="canvas-toolbar" data-key-context="toolbar">
+    <div ref={bar} className={`canvas-toolbar${compact ? ' is-compact' : ''}`} data-region="canvas-toolbar" data-key-context="toolbar">
       {firstSegment > 1 ? (
         <>
           <div className="canvas-toolbar__tools" role="group">

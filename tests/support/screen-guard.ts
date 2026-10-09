@@ -148,6 +148,21 @@ export function screenFindings(input: { readonly english: readonly string[] | nu
     clips.set(p, box);
     return box;
   };
+  // whether what was hit belongs to a sticky element of the scroller that holds `el` too (within a few levels of the hit)
+  const scrollerOf = (e: Element | null): Element | null => {
+    for (let p = e?.parentElement ?? null; p !== null; p = p.parentElement) {
+      const o = style(p).overflowY;
+      if (o === 'auto' || o === 'scroll') return p;
+    }
+    return null;
+  };
+  const stuckOver = (hit: Element, el: Element): boolean => {
+    let sticky: Element | null = hit;
+    for (let i = 0; sticky !== null && i < 4 && style(sticky).position !== 'sticky'; i += 1) sticky = sticky.parentElement;
+    if (sticky === null || style(sticky).position !== 'sticky') return false;
+    const scroller = scrollerOf(sticky);
+    return scroller !== null && scroller === scrollerOf(el);
+  };
   // the part of a box a person sees: clipped by every ancestor that clips, up to a fixed layer
   const seen = (el: Element, r: DOMRect): [number, number, number, number] | null => {
     const [cl, ct, cr, cb] = clipOf(el.parentElement);
@@ -318,7 +333,10 @@ export function screenFindings(input: { readonly english: readonly string[] | nu
           const above = hit !== null && !own && ((hit.closest(LAYERS) !== null && el.closest(LAYERS) !== hit.closest(LAYERS)) || (windowLayer(hit) !== null && windowLayer(hit) !== windowLayer(el)) || shield(hit, el));
           // what a test mounts over the editor for its own proof (data-test-harness) is no part of the screen
           const harness = hit !== null && hit.closest('[data-test-harness]') !== null;
-          if (hit !== null && !own && !above && !harness) covering.push(hit);
+          // a header held at the top of the list it heads (position: sticky; the Inspector's sections, DEF-0598) is
+          // the scroller's edge for what passes under it: what lies there is scrolled out of view, not covered
+          const scrolledUnder = hit !== null && !own && stuckOver(hit, el);
+          if (hit !== null && !own && !above && !harness && !scrolledUnder) covering.push(hit);
           else free += 1;
           if (free >= 3 || covering.length >= 3) break;
         }

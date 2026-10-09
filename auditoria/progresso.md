@@ -84,8 +84,16 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - O documento ficou com cada valor no seu contexto: `desktop.base.font-size` 18px, `tablet.base.font-size` 14px, `desktop.hover.color` #b9512a e a classe "destaque". O desfazer e o refazer devolveram 5 passos, e a exportação gerou `site.zip`.
   - Sem erro de console nem incidente; as 11 fotos foram olhadas.
 
+- **Lote 7 (2026-10-09), canvas e inspector, defeitos vistos nas fotos de uso — feito:**
+  - DEF-0595: text-overflow só numa caixa que corta.
+  - DEF-0596: a barra do canvas escondia os nomes "Tela / Dividido / Código" com espaço; a medida nova também falhava ao trocar o idioma no limite (inglês sem nomes a 1156 px).
+  - DEF-0597: a alça esquerda cobria a primeira letra ("resh coffee"); o ponto vai para fora onde a vista tem espaço (DCS-030, com o caso da borda da página e do vizinho colado para o dono).
+  - DEF-0598: o cabeçalho de seção do inspector aparecia cortado; agora fica preso no topo enquanto a seção passa.
+  - DEC-70 medida e registrada para o dono (DCS-029): rótulo 7 px e chip 15 px sobre "Welcome to Aurora".
+  - Fotos em `auditoria/fotos/lote7/`. Specs da área (128) nas duas condições: 123 + 5 referências visuais atualizadas (as do Explorer ainda mostravam o "index.ht…" do DEF-0593); detectores 117 de 117; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
+
 ## Próximo passo
-Nada pendente dos lotes. Quando o dono pedir uma nova rodada: mais uso real (fluxos com quadros-chave e dados em pt-BR) e o quadro de `onUp` sob carga (`otimizacoes.md`, "O que fica para uma próxima rodada").
+Sessão de uso real por área, começando por inserir e camadas (todos os grupos do Inserir, soltar em lugares diferentes, desfazer/refazer; renomear, reordenar, esconder e travar com nomes longos), nas duas condições.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

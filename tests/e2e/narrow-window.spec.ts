@@ -3,7 +3,7 @@
 // stays reachable.
 import { expect, test } from '../support/test.ts';
 import { openEditor } from '../support/editor.ts';
-import { control, runDoor, runs } from './door.ts';
+import { control, openMenu, runDoor, runs } from './door.ts';
 
 const PHONE = 'view.setBreakpoint#toolbar-breakpoint-tabs-phone';
 const INSERT = 'workspace.setPanelOpen#toolbar-activity-bar-insert';
@@ -75,4 +75,57 @@ test('in a narrow window the sidebar opens beside the canvas, never over it, and
   // the canvas's key context is the page's body (focus/focus.ts focusTheCanvas)
   await expect.poll(() => page.evaluate(() => document.activeElement === document.body), { message: 'Escape took the focus to the canvas' }).toBe(true);
   await expect(page.locator('.sidebar')).toBeVisible();
+});
+
+// DEF-0596: with the Insert panel open at 1280 × 720 the canvas toolbar hid the names of its buttons (Canvas, Split,
+// Code) with room beside them for the names, by a fixed limit of the centre's width; and at the width where only the
+// shorter language's names fit, a change of language kept the icons alone, judged by the other language's names. The
+// names are drawn exactly while they fit the bar, in either language, after any change of width or language.
+test('the canvas toolbar keeps its buttons names while they fit, in either language', runs(INSERT, 'preferences.setLanguage#menu-language-en', 'preferences.setLanguage#menu-language-pt-br'), async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  await runDoor(page, INSERT);
+  await expect(page.locator('.sidebar')).toBeVisible();
+  const bar = page.locator('.canvas-toolbar');
+  // whether the names are drawn, and whether they would fit, read with the bar drawn whole for the reading
+  const read = () => bar.evaluate((el) => {
+    const compact = el.classList.contains('is-compact');
+    const named = [...el.querySelectorAll('.segmented .door__label')].every((label) => label.getBoundingClientRect().width > 0);
+    el.classList.remove('is-compact');
+    const fits = el.scrollWidth <= el.clientWidth + 0.5;
+    const zoom = el.querySelector('.canvas-toolbar__zoom');
+    if (zoom === null) throw new Error('no zoom menu in the canvas toolbar');
+    const free = Math.round(zoom.getBoundingClientRect().left - Math.max(...[...el.children].filter((c) => c !== zoom).map((c) => c.getBoundingClientRect().right)));
+    el.classList.toggle('is-compact', compact);
+    return { named, fits, free };
+  });
+  const language = async (id: 'en' | 'pt-br') => {
+    await openMenu(page, 'view');
+    await page.getByRole('menuitem', { name: /^(Idioma|Language)$/ }).hover();
+    await page.locator(`[data-door="preferences.setLanguage#menu-language-${id}"]`).click();
+    await expect(page.locator('[data-menu="file"]')).toHaveText(id === 'en' ? 'File' : 'Arquivo');
+  };
+  await language('pt-br');
+  const pt = await read();
+  expect(pt.named, 'the names drawn with room for them beside the Insert panel').toBe(true);
+  await language('en');
+  const en = await read();
+  expect(en.named).toBe(true);
+  // a window where the names of one language fit and the other's do not
+  const width = 1280 - Math.round((pt.free + en.free) / 2);
+  expect(Math.abs(pt.free - en.free), 'the languages take different widths').toBeGreaterThan(2);
+  for (const id of ['pt-br', 'en', 'pt-br', 'en'] as const) {
+    await language(id);
+    await page.setViewportSize({ width, height: 720 });
+    await expect.poll(async () => { const now = await read(); return now.named === now.fits; }, { message: `${id} at ${width}: names drawn exactly while they fit` }).toBe(true);
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await expect.poll(async () => (await read()).named, { message: `${id} at 1280: the names back` }).toBe(true);
+    await page.setViewportSize({ width, height: 720 });
+  }
+  // a change of language at that width, with no change of width after it
+  for (const id of ['pt-br', 'en', 'pt-br'] as const) {
+    await language(id);
+    await expect.poll(async () => { const now = await read(); return now.named === now.fits; }, { message: `${id} chosen at ${width}` }).toBe(true);
+  }
+  expect(await bar.evaluate((el) => el.scrollWidth <= el.clientWidth + 0.5), 'the bar holds its buttons').toBe(true);
 });

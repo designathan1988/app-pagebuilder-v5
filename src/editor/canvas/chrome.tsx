@@ -118,6 +118,25 @@ const handlePoint = (handle: string, b: { x: number; y: number; width: number; h
 
 
 
+// Where a handle's dot lies from its edge point: wholly outside the element, on the handle's side (a west handle's dot
+// left of the left edge, a corner's beyond both edges), its ring clear of the element too; centred on the edge, half of
+// it lay over the element and covered the first letter of a text that begins at its edge (DEF-0597: "Fresh coffee"
+// read "resh coffee"). Along the other axis it stays centred on the edge's middle. Where the canvas in view ends at the
+// edge (a section as wide as the page, the page's top), a dot outside would be cut away with the layer: there it stays
+// centred on the edge, as before, half of it in view.
+const dotOutward = (side: string, box: Box, room: Box, need: number): Record<'--handle-dx' | '--handle-dy', string> => {
+  const before = (start: number, edge: number) => edge - start >= need;
+  const after = (end: number, edge: number) => end - edge >= need;
+  // past the dot's ring too (its outline, 1.5 px in canvas.css .chrome__handle::after)
+  const OUT_BEFORE = 'calc(-100% - 1.5px)';
+  const OUT_AFTER = '1.5px';
+  const CENTRED = '-50%';
+  return {
+    '--handle-dx': side.includes('w') ? (before(room.x, box.x) ? OUT_BEFORE : CENTRED) : side.includes('e') ? (after(room.x + room.width, box.x + box.width) ? OUT_AFTER : CENTRED) : CENTRED,
+    '--handle-dy': side.includes('n') ? (before(room.y, box.y) ? OUT_BEFORE : CENTRED) : side.includes('s') ? (after(room.y + room.height, box.y + box.height) ? OUT_AFTER : CENTRED) : CENTRED,
+  };
+};
+
 // How many siblings on each side of the selected element are measured for the handles: the ones sharing a handle's
 // edge (in a grid a good number of columns away). A very long child list is not measured whole, per frame.
 const HANDLE_KIN = 8;
@@ -264,6 +283,9 @@ interface Layout {
   readonly measuredFor: string;
   // --space-6: the side of a resize handle's square, read with the rest of the layer's own measures
   readonly handleSize: number;
+  // the part of the layer the stage shows, in the layer's pixels: a handle's dot is drawn outside its element where it
+  // stays inside this (dotOutward)
+  readonly room: Box;
 }
 
 // The distances a resize in flow measures (item 4.5): the gap from the box being resized to its nearest sibling
@@ -321,7 +343,7 @@ const startHeld = (handle: string, starts: Layout['starts']): boolean => {
   return (side.includes('n') && !starts.y) || (side.includes('w') && !starts.x);
 };
 
-const EMPTY: Layout = { selected: [], union: null, hovered: null, label: null, toolbar: null, band: null, rotate: null, yielded: [], starts: null, size: null, rotation: 0, hoverSize: null, distances: [], neighbours: [], handleSize: 24, measuredFor: '' };
+const EMPTY: Layout = { selected: [], union: null, hovered: null, label: null, toolbar: null, band: null, rotate: null, yielded: [], starts: null, size: null, rotation: 0, hoverSize: null, distances: [], neighbours: [], handleSize: 24, measuredFor: '', room: { x: 0, y: 0, width: 0, height: 0 } };
 
 // whether two pieces of what the chrome draws read the same (the layout is compared as its text, so an unchanged
 // measure is not drawn again)
@@ -833,7 +855,8 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
           hoverSize,
           distances,
           neighbours,
-          handleSize: zone > 0 ? zone : 24
+          handleSize: zone > 0 ? zone : 24,
+          room: visibleCanvas(origin)
         };
         const moved = last === null || !same(last, next);
         last = next;
@@ -892,10 +915,12 @@ function ResizeHandles({ box, shown }: { readonly box: Box; readonly shown: Layo
     // the stylesheet draws it — turning slides it along the neighbours' boxes with the element
     const hit = shown.rotation === 0 ? handleHitBox(handleSide(handle), box, shown.handleSize, shown.neighbours) : null;
     const spot = handlePoint(handle, box);
+    // the dot (--space-4) and its ring need half a handle's square beside the edge
+    const outward = dotOutward(handleSide(handle), box, shown.room, shown.handleSize / 2);
     const where: CSSProperties =
       hit === null
-        ? { ...spot, ...spun(shown.rotation, box, spot) }
-        : ({ left: hit.box.x, top: hit.box.y, translate: 'none', '--handle-x': `${hit.at.x * 100}%`, '--handle-y': `${hit.at.y * 100}%` } as CSSProperties);
+        ? ({ ...spot, ...spun(shown.rotation, box, spot), ...outward } as CSSProperties)
+        : ({ left: hit.box.x, top: hit.box.y, translate: 'none', '--handle-x': `${hit.at.x * 100}%`, '--handle-y': `${hit.at.y * 100}%`, ...outward } as CSSProperties);
     return (
       <div
         key={entry.ref}

@@ -8,7 +8,14 @@ Este arquivo contém **requisitos e regras de trabalho**. Ele não descreve o es
 O trabalho estava lento demais pelo ritual, não pelo código. Valem estas regras:
 - **Lotes por área:** corrija de 5 a 10 defeitos da mesma área por vez. Dentro do lote, rode só o grupo de detectores da área (`npx vitest run --config tools/runner/model/vitest.config.ts tools/runner/model/<grupo>.test.ts`) e o spec de navegador da área.
 - **Portões completos uma vez por lote:** todos os detectores, `npm run typecheck`, `npm run lint`, os mutantes novos (`BUILDER_MUTANT=<id>`) e um commit com push.
-- **Catálogo inteiro de mutantes e suíte inteira de navegador:** só no fim de uma etapa.
+- **Catálogo inteiro de mutantes e suíte inteira de navegador:** só no fim de uma etapa, **uma vez**, numa só condição (a padrão). Falhou algo: corrija e rode só o que falhou (`npx playwright test --last-failed`), nas duas condições. Nunca repita a suíte inteira.
+- **Produção primeiro (2026-10-09):** o tempo vai para defeitos do app que o usuário vê. Rodada de teste sem defeito do app a corrigir não é lote. Um caso que só falha com a máquina ocupada (tempo de quadro, leitura cedo demais) é registrado e não abre investigação no meio do lote.
+- **Fim de lote:** encerre os servidores e navegadores que você abriu (`vite preview`, Chrome de medição).
+- **Foto vista é foto corrigida (2026-10-09):** o dono cobrou fotos de uso com defeitos à vista e o registro "sem defeito" (commit 8c0d871d). Valem estas regras:
+  - Toda foto do app que você tirar, você abre e examina antes da próxima ação.
+  - Procure o que o usuário veria de errado: texto coberto, cortado ou escondido (inclusive por alça, rótulo ou chip do editor); controle que some ou encolhe havendo espaço; cabeçalho cortado; sobreposição; desalinhamento; idioma trocado.
+  - Cada coisa vista vira DEF e é corrigida no mesmo lote. Se esbarrar numa decisão do dono (seção 6), registre em `decisoes.md` e leve a foto ao dono no relatório. Ignorar não é opção.
+  - Proibido escrever "sem defeito" sobre fotos sem uma linha por foto dizendo o que foi conferido nela.
 - **Ferramenta de teste nova** só quando um defeito do app pedir. Não conserte ferramenta por conserto.
 - **Sem perguntas:** decisão de produto vai para `auditoria/decisoes.md` com a opção que preserva o comportamento atual, e o trabalho segue.
 - **Subagentes** para o mecânico (rodar, medir, capturar) e para a conferência cética antes de declarar um lote feito.
@@ -108,7 +115,7 @@ Após toda escrita: esquema de cada bloco válido; IDs únicos; nenhum bloco ór
 | Catálogo de mutantes | `tools/runner/mutants.ts` (`node tools/runner/mutants-run.ts`) |
 
 ## 8. Navegador
-- **Specs:** `npx playwright test <arquivos>`, com `E2E_WORKERS=3`. O `playwright.config.ts` monta o build e sobe o servidor sozinho; liste todos os arquivos de uma rodada num único comando e nunca rode duas execuções ao mesmo tempo (cada uma reconstrói `dist/`). Use a fixture `tests/support/test.ts`, que já confere a guarda de tela, o feed de incidentes e o console.
+- **Specs:** `npx playwright test <arquivos>`, com `E2E_WORKERS=2` no máximo (com 3 o PC do dono travou, 2026-10-09; o hook `guarda-navegador` bloqueia sem o limite). O `playwright.config.ts` monta o build e sobe o servidor sozinho; liste todos os arquivos de uma rodada num único comando e nunca rode duas execuções ao mesmo tempo (cada uma reconstrói `dist/`). Use a fixture `tests/support/test.ts`, que já confere a guarda de tela, o feed de incidentes e o console.
 - **Proibido** no laço do lote: `npm test`, `npm run e2e` e `npx playwright test` sem arquivos (a suíte inteira passa de uma hora).
 - **Duas condições de tela:** padrão, e Windows real com `E2E_SCROLLBARS=shown E2E_SCALE=1.25`. `tests/e2e/espaco.spec.ts` cobre 1280×720 em pt-BR e 1440×900 em inglês.
 - **Usar como o usuário:** `npm run build:e2e`, `PORT=5320 npm run preview` em segundo plano e `npm run ui -- <fluxo>` (fluxos em `tools/ui/flows.ts`), ou Playwright headless com `chromium.launch({ channel: 'chrome', headless: true })`. Não use o painel de navegador do app: oculto, ele para de desenhar quadros. Um editor por página.

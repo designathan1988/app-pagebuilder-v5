@@ -421,3 +421,37 @@ test('the selection label keeps its place at its element when the page is wider 
   await expect.poll(async () => Math.round(((await label.boundingBox())?.x ?? 0) - frame.x), 'the label starts at the frame line').toBe(-2);
   await expect(label, 'out of sight, not over the panels').toHaveCSS('visibility', 'hidden');
 });
+
+// DEF-0597: a side handle's dot was drawn centred on the edge, half of it over the element, and covered the first
+// letter of a text that begins at its edge ("Fresh coffee" read "resh coffee" with the Intro selected). The dots lie
+// outside the element where the canvas in view has room for them: no dot lies over the first or the last letter.
+test('the side handles of a selected text leave its first and last letters in view', runs(OPEN, ROW, W, E), async ({ page }) => {
+  await control(page, ROW, { args: { target: 'n-intro' } }).click();
+  await expect(handle(page, W)).toHaveCount(1);
+  await expect(handle(page, E)).toHaveCount(1);
+  await nextFrames(page);
+  // a dot takes no press (its hit area does): made pressable here, only to find it under a point
+  await page.addStyleTag({ content: '.chrome__handle::after { pointer-events: auto !important; }' });
+  const covered = await page.evaluate(() => {
+    const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
+    const text = iframe?.contentDocument?.querySelector('[data-node="n-intro"]')?.firstChild;
+    if (!iframe?.contentDocument || !text || text.nodeType !== Node.TEXT_NODE) throw new Error('no Intro text');
+    const frame = iframe.getBoundingClientRect();
+    const zoom = iframe.currentCSSZoom;
+    const inner = iframe.contentDocument;
+    const glyph = (at: number) => {
+      const range = inner.createRange();
+      range.setStart(text, at);
+      range.setEnd(text, at + 1);
+      const r = range.getBoundingClientRect();
+      return { left: frame.x + r.left * zoom, right: frame.x + r.right * zoom, middle: frame.y + (r.top + r.height / 2) * zoom };
+    };
+    const length = text.textContent?.length ?? 0;
+    const first = glyph(0);
+    const last = glyph(length - 1);
+    const under = (x: number, y: number) => document.elementsFromPoint(x, y).some((e) => e.closest('.chrome__handle') !== null);
+    return { first: under(first.left + 1, first.middle) || under((first.left + first.right) / 2, first.middle), last: under(last.right - 1, last.middle) || under((last.left + last.right) / 2, last.middle) };
+  });
+  expect(covered.first, 'no handle lies over the first letter').toBe(false);
+  expect(covered.last, 'no handle lies over the last letter').toBe(false);
+});

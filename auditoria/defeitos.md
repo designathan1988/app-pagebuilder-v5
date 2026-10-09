@@ -1284,3 +1284,27 @@
 - Sintoma: na condição Windows o texto ia 1 px além da área do botão, e em pt-BR ("Manter a organização desenhada aqui") ainda mais; a quebra de linha seria "wrapped" para a guarda de tela.
 - Causa: o rótulo mais longo que a coluna do painel do compositor.
 - Prova: o rótulo segue o padrão dos vizinhos ("Stack here", "Hide here"): "Keep as drawn here" / "Manter como desenhado aqui" (DCS-027); `paineis-cabem.spec.ts`.
+
+## DEF-0595 — o campo text-overflow aparecia em todo elemento, onde não tem efeito
+- Status: corrigido (Lote 7)
+- Sintoma: o inspector oferecia text-overflow em qualquer elemento; ele só age numa caixa que corta o conteúdo (overflow-x diferente de visible).
+- Causa: `src/core/style/applies.ts`: o manifesto declara a condição `clippingBox` para text-overflow, e `contextPredicate` não a respondia.
+- Prova: caso novo em `tests/e2e/props-element-specific.spec.ts` (sem o campo com overflow visible; com ele depois de overflow hidden); 3 de 3 nas duas condições. Na mesma rodada, uma versão intermediária do filtro mostrou a matriz de alinhamento num parágrafo; foi desfeita, e o caso passou a conferir que ela não aparece num elemento block.
+
+## DEF-0596 — a barra do canvas escondia os nomes "Tela / Dividido / Código" com espaço livre
+- Status: corrigido (Lote 7)
+- Sintoma: com o painel Inserir aberto a 1280×720, os botões da barra do canvas ficavam só com ícones, com uns 120 px livres; e, no limite, trocar para o inglês (12 px mais curto) mantinha só os ícones.
+- Causa: `src/editor/shell/canvas.css`: limite fixo `@container centre (max-width: 820px)`; depois, em `canvas.tsx` `CanvasToolbar`, a largura guardada de uma leitura no outro idioma.
+- Prova: `narrow-window.spec.ts`, "keeps its buttons names while they fit": falha no commit anterior (nomes escondidos a 1280) e na medida intermediária (inglês a 1156 px sem nomes); passa nas duas condições.
+
+## DEF-0597 — a alça esquerda da seleção cobria a primeira letra do texto
+- Status: corrigido (Lote 7)
+- Sintoma: com o Intro selecionado, "Fresh coffee" aparecia como "resh coffee": o ponto da alça oeste ficava centrado na borda, metade sobre o elemento.
+- Causa: `src/editor/shell/canvas.css` `.chrome__handle::after` (`translate: -50% -50%`); agora `chrome.tsx` `dotOutward` desenha o ponto fora, onde a vista do canvas tem espaço (DCS-030).
+- Prova: `resize-handles.spec.ts`, "leave its first and last letters in view": falha com o ponto centrado, passa nas duas condições.
+
+## DEF-0598 — o cabeçalho de seção do inspector aparecia cortado sob a busca
+- Status: corrigido (Lote 7)
+- Sintoma: em "Todas as propriedades", depois de editar "Tamanho da fonte", "PINTURA" ficava pela metade no topo da lista, sob "Encontrar uma propriedade".
+- Causa: `src/editor/shell/inspector.css` `.inspector-section__header` rolava com as linhas; agora fica preso no topo enquanto a seção passa (`sticky`), e `scroll-padding-top` deixa o campo em foco abaixo dele. A guarda de tela passou a ler o que passa sob um cabeçalho preso como rolado, não coberto.
+- Prova: `paineis-cabem.spec.ts`, "stays whole at the top while its rows scroll under it": falha sem o `sticky` (Layout a −13 px), passa nas duas condições.
