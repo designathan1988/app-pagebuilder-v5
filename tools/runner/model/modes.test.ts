@@ -15,7 +15,12 @@ import { sharedOf } from '../../../src/editor/input/pointer/common.ts';
 import { createEditorStore, type EditorStore } from '../../../src/editor/store.ts';
 import type { Gesture } from '../../../src/core/store/store.ts';
 import { manifest } from '../../../src/manifest/runtime.ts';
+import { walk, type DocNode } from '../../../src/core/document/model.ts';
+import { storedValue } from '../../../src/core/style/stored.ts';
+import { MODEL_RULES } from '../../../src/editor/store.ts';
 import { fixture } from './harness.ts';
+
+const walkTree = (tree: DocNode | undefined): Iterable<DocNode> => (tree === undefined ? [] : walk(tree));
 
 const memory = (): { read(): string | null; write(text: string): void } => {
   let held: string | null = null;
@@ -113,4 +118,38 @@ describe('os modos de interação contra a tabela', () => {
       { numRuns: 40 },
     );
   }, 300_000);
+});
+
+// The arrows of a positioned selection (spec absolute-nudge) hand a direction, and the one conversion of the keymap
+// (stepped) makes it the gesture's step of the manifest, Shift's the larger: every key door of the gesture moves by
+// the same step, never by one of its own (DCS-023, rule G3).
+describe('o passo das setas de empurrar', () => {
+  const constant = (id: string): number => {
+    const value = manifest.interactions.constants.find((c) => c.id === id)?.value;
+    if (typeof value !== 'number') throw new Error(`interactions.json não tem o número ${id}`);
+    return value;
+  };
+  it('cada seta move o elemento posicionado pelo passo do manifesto, e com Shift pelo passo maior', () => {
+    const found: string[] = [];
+    for (const [key, axis, sign] of [['ArrowRight', 'left', 1], ['ArrowLeft', 'left', -1], ['ArrowDown', 'top', 1], ['ArrowUp', 'top', -1]] as const) {
+      for (const [shift, step] of [[false, constant('nudge.step')], [true, constant('nudge.shiftStep')]] as const) {
+        const e = editor();
+        try {
+          const dispatch = e.store.dispatch as (id: string, args: unknown) => unknown;
+          dispatch('style.set', { property: 'position', value: 'absolute' });
+          dispatch('style.set', { property: 'left', value: '100px' });
+          dispatch('style.set', { property: 'top', value: '100px' });
+          document.body.dispatchEvent(new KeyboardEvent('keydown', { key, code: key, shiftKey: shift, bubbles: true, cancelable: true }));
+          const id = e.store.getState().selection[0];
+          const node = id === undefined ? undefined : [...walkTree(e.store.getState().document.pages[0]?.tree)].find((n) => n.id === id);
+          const held = node === undefined ? undefined : storedValue(node, axis, MODEL_RULES);
+          const expected = `${100 + sign * step}px`;
+          if (held !== expected) found.push(`${shift ? 'Shift+' : ''}${key}: ${axis} ${String(held)} (esperado ${expected})`);
+        } finally {
+          e.stop();
+        }
+      }
+    }
+    expect(found, 'setas que não movem pelo passo do manifesto').toEqual([]);
+  });
 });
