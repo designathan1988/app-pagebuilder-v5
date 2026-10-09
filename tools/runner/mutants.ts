@@ -46,7 +46,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M15', file: 'src/core/store/store.ts', from: 'selection: [], history: EMPTY_HISTORY, message: outcome.message', to: 'selection: [], history: state.history, message: outcome.message', breaks: 'abrir outro projeto mantém o histórico do anterior', source: 'prova C7', detectors: ['pages'] },
   { id: 'M16', file: 'src/editor/store.ts', from: 'const at = context ?? beforeCommand(id, args, changesDocument);', to: 'const at = context;', breaks: 'um comando roda sem gravar antes a digitação pendente', source: 'prova C7', detectors: ['history', 'text'] },
   { id: 'M17', file: 'src/editor/input/pending.ts', from: '  if (held !== null && held.field !== typing.field) {\n    if (waitWhile()) inLine.push(held);\n    else keepTyping();\n  }\n', to: '', breaks: 'um campo novo descarta a digitação pendente do anterior', source: 'prova C7', detectors: ['history', 'text'] },
-  { id: 'M18', file: 'src/editor/store.ts', from: '      waiting.push(() => void store.dispatch(id, args, asked));', to: '', breaks: 'um comando que chega durante um gesto se perde', source: 'prova C7', detectors: ['history'] },
+  { id: 'M18', file: 'src/editor/store.ts', from: '    waiting.push(() => void store.dispatch(id, args as never, asked));', to: '', breaks: 'um comando que chega durante um gesto se perde', source: 'prova C7', detectors: ['history'] },
   {
     id: 'M19',
     file: 'src/editor/input/pending.ts',
@@ -165,6 +165,8 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M114', file: 'src/editor/focus/focus.ts', from: "    stage.addEventListener('blur', () => stage.removeAttribute('tabindex'), { once: true });", to: "    region.addEventListener('blur', () => stage.removeAttribute('tabindex'), { once: false });", breaks: "um ouvinte com { once: false } nunca sai e passa no lint pela palavra once (antes do DEF-0554)", source: 'DEF-0554', detectors: ['lint'] },
   { id: 'M115', file: 'src/editor/focus/focus.ts', from: "    stage.addEventListener('blur', () => stage.removeAttribute('tabindex'), { once: true });", to: "    const w = window;\n    w.addEventListener('blur', () => stage.removeAttribute('tabindex'));", breaks: "um ouvinte de window por um apelido local nunca sai e passa no lint como objeto criado pela função (antes do DEF-0554)", source: 'DEF-0554', detectors: ['lint'] },
   { id: 'M116', file: 'src/editor/canvas/frame.tsx', from: "    return () => observer.disconnect();", to: "    return () => view.observer.disconnect();", breaks: "um observador que nunca é desligado passa no lint porque outro objeto com o mesmo último nome é desligado (antes do DEF-0554)", source: 'DEF-0554', detectors: ['lint'] },
+  { id: 'M117', file: 'src/editor/store.ts', from: "      else if (!changesDocument && !opensRefused(id, args)) {", to: "      else if (!changesDocument) {", breaks: "um comando de fora que abre uma camada roda pelo gesto aberto e a camada abre sobre ele (o código de antes do DEF-0555)", source: 'DEF-0555', detectors: ['modes'] },
+  { id: 'M118', file: 'src/core/store/store.ts', from: "    return ui === state.ui ? null : ui;", to: "    return ui === state.ui ? null : null;", breaks: "a leitura do estado que um comando deixaria não vê a camada que ele abre, e a tabela de modos volta a só acusar depois (DEF-0555)", source: 'DEF-0555', detectors: ['modes'] },
 ];
 
 export const ALL_DETECTORS = ALL;

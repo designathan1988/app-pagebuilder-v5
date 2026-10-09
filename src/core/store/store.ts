@@ -128,6 +128,9 @@ export interface Store<Ui> {
   commandGroupOpen(): boolean;
   // Whether a gesture is open: its changes are drawn, not committed yet (autosave keeps only committed work)
   gestureOpen(): boolean;
+  // The editor state the command would leave now, or null when it would not run or would leave it as it is: nothing
+  // changes (the handler's outcome is read and dropped)
+  uiAfter<Id extends CommandId>(id: Id, args: CommandArgs[Id]): Ui | null;
   // Whether the command would run now with these arguments: it is built, its availability predicate holds and its
   // handler does not refuse. Nothing changes: the handler's outcome is read and dropped (handlers are pure). The
   // context menu shows only the commands that apply to the selection.
@@ -610,8 +613,27 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     }
   };
 
+  // the editor state a command would leave now, as run() would make it (its handler's, then what follows the command),
+  // read and dropped (handlers are pure): null when it would not run, or would leave the editor state as it is. The
+  // editor's store reads it before a command runs inside an open gesture, so a layer the gesture refuses never opens
+  // (src/editor/store.ts, gestureSafe; DEF-0555).
+  const uiAfter = <Id extends CommandId>(id: Id, args: CommandArgs[Id]): Ui | null => {
+    // refusal() runs the predicate and the handler as run() does, and says a failure of either as a refusal
+    if (refusal(id, args) !== null) return null;
+    const entry = table[id];
+    const command = commands.get(id);
+    if (!command) throw new Error(`unknown command ${id}`);
+    if (!isBuilt(entry)) return null;
+    const outcome = entry.run(handlerContext(), args);
+    if (outcome.kind !== 'change') return null;
+    const ran: StoreState<Ui> = { ...state, selection: outcome.selection ?? state.selection, ui: outcome.ui ?? state.ui };
+    const ui = options.followCommand?.(ran, command, args)?.ui ?? ran.ui;
+    return ui === state.ui ? null : ui;
+  };
+
   return {
     getState: () => state,
+    uiAfter,
     gestureOpen: () => open !== null,
     sequenceOpen: () => sequence !== null,
     commandGroupOpen: () => group !== null,

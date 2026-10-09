@@ -776,3 +776,26 @@
 
   Com a regra de antes, nenhum dos três é acusado.
 - **Verificação:** a do DEF-0553.
+## DEF-0555 — um comando de fora abre durante um gesto um modo que a tabela recusa, e o modo fica aberto
+- **Status:** corrigido
+- **Citação:** `src/editor/store.ts:202` `    const before = modesOf(safe);` e `src/editor/store.ts:203` `    const result = run();`
+- **Causa:** `inGesture`, o ponto único por onde passa todo comando que roda com um gesto do ponteiro aberto (`gestureSafe` em `src/editor/store.ts`), roda o comando e só depois compara os modos com a tabela `REFUSED_WHILE` (`src/editor/input/modes.ts`). A tabela acusa uma camada aberta durante o gesto, mas não a impede de abrir: em desenvolvimento e nos testes lança, e no build vai ao feed de incidentes (`refusedMode`).
+- **Efeito:** com um arraste em curso, um comando que chega de fora e não muda o documento roda pelo gesto. É o caso de uma leitura de arquivo que terminou, do assistente ou de um temporizador. Se ele abre uma camada, a camada fica aberta sobre o gesto. Exemplo: `commandBar.open` deixa a barra de comandos aberta (verificação integral, grupo F, MEC-10, sonda "modos": `commandBarOpenAfter: true`). O registro do MEC-10 diz que esses modos não abrem enquanto outro está ativo.
+- **Alcance:** todo comando que não muda o documento despachado com um gesto aberto, por fora (`dispatch`) ou pelo próprio gesto (`gesture().dispatch`).
+- **Arquivos da correção:** `src/core/store/store.ts`, `src/editor/input/modes.ts`, `src/editor/store.ts`, `tools/runner/model/modes.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** `state.ui` (as camadas) e a fila dos comandos que esperam o fim do gesto (`waiting` de `gestureSafe`).
+- **Correção:**
+  - A store do núcleo ganhou `uiAfter(id, args)` (`src/core/store/store.ts`). É uma leitura irmã de `refusal`: o estado do editor que o comando deixaria, pelo tratador e pelo `followCommand`, lido e descartado (os tratadores são puros).
+  - `modesWith(store, ui)` (`src/editor/input/modes.ts`) dá os modos com esse estado.
+  - Em `gestureSafe` (`src/editor/store.ts`), um comando que não muda o documento e abriria um modo que o gesto aberto recusa espera o fim do gesto (`afterGesture`, a mesma fila `waiting` dos que mudam o documento), no contexto em que foi pedido. Vale vindo de fora ou pelo próprio gesto.
+  - Os movimentos do gesto, que mudam o documento a cada passo, não são lidos antes. Todo comando segue conferido depois de rodar, como defeito (`refusedMode`).
+  - O trecho do M18 mudou de lugar para `afterGesture` e foi atualizado no catálogo; o grupo `history` continua a acusá-lo.
+- **Detector:** o grupo `modes` (MEC-10), caso "não abre um modo que o gesto recusa: espera o fim do gesto e abre depois": gesto aberto, `commandBar.open` despachado de fora; nada lança, a barra fica fechada durante o gesto e abre depois. Mutantes acusados:
+  - M117: o caminho de fora sem a leitura prévia, o código de antes;
+  - M118: `uiAfter` que nunca vê a mudança.
+- **Verificação:**
+  - detectores 25 arquivos e 99 testes sem falha;
+  - os 118 trechos do catálogo no código;
+  - `npm run typecheck` e `npm run lint` com saída 0;
+  - os testes unitários de `src/core/store`, `src/editor/store.test.ts` e `src/editor/input`: 75 de 75;
+  - os testes de navegador da barra de comandos e dos arrastes (`command-bar`, `drag-level-keys-escape`, `drag-selection`, `drag-reorder-canvas`, `E2E_WORKERS=2`, prioridade baixa): 23 de 23.

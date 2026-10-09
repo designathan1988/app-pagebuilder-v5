@@ -4,9 +4,12 @@
 // (input/pending.ts), and the layers the store holds open (the context menu, the command bar, a dialog, a picker, a
 // rename, a text edit, the preview, a confirmation). REFUSED_WHILE is the table of what never opens while another mode
 // is on: during a pointer gesture the keys are the gesture's (input/keymap.ts), and a command from outside it (a file
-// read that resolved, the assistant, a timer) runs through it. The editor's store checks the table at every command
-// that runs inside an open gesture (store.ts, gestureSafe), and the generated map shows it (tools/map/behavior.ts).
+// read that resolved, the assistant, a timer) runs through it. The editor's store reads the table before a command
+// that changes no document runs inside an open gesture, from the editor state it would leave (modesWith): one that
+// would open a refused mode waits for the gesture's end (DEF-0555); every command is checked again once it ran
+// (store.ts, gestureSafe), and the generated map shows the table (tools/map/behavior.ts).
 import type { EditorStore } from '../store.ts';
+import type { EditorUi } from '../state.ts';
 import { openContextMenu } from '../menus/context-menu.ts';
 import { previewing } from '../view/preview.ts';
 import { heldTyping } from './pending.ts';
@@ -24,8 +27,12 @@ export const REFUSED_WHILE = {
 
 // the modes a store is in now
 export function modesOf(store: EditorStore): ReadonlySet<Mode> {
+  return modesWith(store, store.getState().ui);
+}
+
+// the modes a store would be in with this editor state (what a command would leave: Store.uiAfter), the rest as it is
+export function modesWith(store: EditorStore, ui: EditorUi): ReadonlySet<Mode> {
   const state = store.getState();
-  const { ui } = state;
   const shared = sharedOf(store);
   const on: Record<Mode, boolean> = {
     'pointer-gesture': shared.open !== null && shared.open !== shared.session,

@@ -39,7 +39,7 @@ import { beforeCommand, heldTyping, keepsWaitWhile, keepTyping, keepWhatWaited }
 import { historyBreaches } from '../core/history/invariants.ts';
 import { restoreEditContext } from './view/edit-context.ts';
 import { reportError } from '../core/incidents.ts';
-import { modeBreaches, modesOf } from './input/modes.ts';
+import { modeBreaches, modesOf, modesWith } from './input/modes.ts';
 import { capturedFollowsSelection } from './capture/selection.ts';
 
 export type EditorStore = Store<EditorUi>;
@@ -195,14 +195,26 @@ function gestureSafe(store: EditorStore): EditorStore {
     open = null;
     for (const run of waiting.splice(0)) run();
   };
+  // whether a command would open, now, a mode the open gesture refuses (the table of input/modes.ts), read before it
+  // runs from the editor state it would leave (Store.uiAfter): such a command waits for the gesture's end, as a change
+  // of the document does, so the layer never opens over the gesture (DEF-0555: it opened, and the table only said so)
+  const opensRefused = (id: CommandId, args: unknown): boolean => {
+    const ui = store.uiAfter(id, args as never);
+    return ui !== null && modeBreaches(modesOf(safe), modesWith(safe, ui)).length > 0;
+  };
   // a command run inside the open gesture, the gesture's own (its keys, its moves) or one from outside it: the modes
-  // it opens are checked against the table of what never opens during a gesture (input/modes.ts)
+  // it opened are checked again against the table once it ran, a defect if one opened all the same
   const inGesture = (id: CommandId, run: () => DispatchResult): DispatchResult => {
     const before = modesOf(safe);
     const result = run();
     const breaches = modeBreaches(before, modesOf(safe));
     if (breaches.length > 0) refusedMode(id, breaches);
     return result;
+  };
+  // a command that waits for the open gesture's end, in the context it was asked in
+  const afterGesture = (id: CommandId, args: unknown, asked: EditContext | undefined): DispatchResult => {
+    waiting.push(() => void store.dispatch(id, args as never, asked));
+    return { status: 'done', changed: false };
   };
   const safe: EditorStore = {
     ...store,
@@ -254,7 +266,9 @@ function gestureSafe(store: EditorStore): EditorStore {
       const gesture = store.gesture();
       open = gesture;
       return {
-        dispatch: (id, args) => inGesture(id, () => gesture.dispatch(id, args)),
+        // the gesture's own moves change the document at every pointer move and open no layer: only a command that
+        // changes no document is read before it runs
+        dispatch: (id, args) => (UNDOABLE.get(id) !== true && opensRefused(id, args) ? afterGesture(id, args, undefined) : inGesture(id, () => gesture.dispatch(id, args))),
         commit: () => {
           gesture.commit();
           settle();
@@ -274,14 +288,10 @@ function gestureSafe(store: EditorStore): EditorStore {
       const edited = heldTyping() === null || own ? null : editedKey(store.getState());
       let result: DispatchResult;
       if (open === null) result = store.dispatch(id, args, at);
-      else if (!changesDocument) {
+      else if (!changesDocument && !opensRefused(id, args)) {
         const gesture = open;
         result = inGesture(id, () => gesture.dispatch(id, args));
-      } else {
-        const asked = at ?? editContextOf(store.getState());
-        waiting.push(() => void store.dispatch(id, args, asked));
-        result = { status: 'done', changed: false };
-      }
+      } else result = afterGesture(id, args, at ?? editContextOf(store.getState()));
       if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();
       return result;
     },

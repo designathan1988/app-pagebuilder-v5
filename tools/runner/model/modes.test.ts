@@ -153,3 +153,27 @@ describe('o passo das setas de empurrar', () => {
     expect(found, 'setas que não movem pelo passo do manifesto').toEqual([]);
   });
 });
+
+// A command from outside an open gesture (a file read that resolved, the assistant, a timer) that would open a mode the
+// table refuses waits for the gesture's end and runs then, in order (DEF-0555: it ran through the gesture, the layer
+// opened over it, and the table only said so afterwards).
+describe('um comando de fora durante o gesto', () => {
+  it('não abre um modo que o gesto recusa: espera o fim do gesto e abre depois', () => {
+    const e = editor();
+    try {
+      openGesture(e);
+      let thrown: string | null = null;
+      try {
+        (e.store.dispatch as (id: string, args: unknown) => unknown)('commandBar.open', {});
+      } catch (error) {
+        thrown = String(error);
+      }
+      const during = e.store.getState().ui.commandBar === true;
+      closeGesture(e);
+      const after = e.store.getState().ui.commandBar === true;
+      expect({ thrown, during, after }, 'a barra de comandos pedida de fora durante o gesto').toEqual({ thrown: null, during: false, after: true });
+    } finally {
+      e.stop();
+    }
+  });
+});
