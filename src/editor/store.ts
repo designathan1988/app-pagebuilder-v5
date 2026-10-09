@@ -35,7 +35,7 @@ import { initialEditorUi, type EditorUi } from './state.ts';
 import { siteScripts } from './forms/script.ts';
 import { deriveData } from '../core/data/derive.ts';
 import { wiring } from './wiring.ts';
-import { beforeCommand, heldTyping, keepTyping } from './input/pending.ts';
+import { beforeCommand, heldTyping, keepsWaitWhile, keepTyping, keepWhatWaited } from './input/pending.ts';
 import { historyBreaches } from '../core/history/invariants.ts';
 import { restoreEditContext } from './view/edit-context.ts';
 import { reportError } from '../core/incidents.ts';
@@ -184,6 +184,8 @@ export function createEditorStore(options: EditorStoreOptions = {}): EditorStore
 // asked in.
 const UNDOABLE = new Map(manifest.commands.map((c) => [c.id as CommandId, c.history.undoable] as const));
 function gestureSafe(store: EditorStore): EditorStore {
+  // a keep of the person's typing waits while the assistant's command group holds the editor (DEF-0528)
+  keepsWaitWhile(() => store.commandGroupOpen());
   let open: Gesture | null = null;
   const waiting: (() => void)[] = [];
   const settle = () => {
@@ -205,9 +207,39 @@ function gestureSafe(store: EditorStore): EditorStore {
       keepTyping();
       return store.sequence();
     },
+    // The group's own commands pass the check every dispatch passes: one that moves what a field edits asks its typing
+    // kept, which waits for the group's end (input/pending.ts); the end, however it comes (a commit, a cancel, a
+    // command that failed and closed the group), runs what waited (DEF-0528).
     commandGroup: (busy) => {
       keepTyping();
-      return store.commandGroup(busy);
+      const group = store.commandGroup(busy);
+      const ended = () => {
+        if (!group.active()) keepWhatWaited();
+      };
+      return {
+        active: () => group.active(),
+        dispatch: (id, args) => {
+          const edited = heldTyping() === null ? null : editedKey(store.getState());
+          try {
+            const result = group.dispatch(id, args);
+            if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();
+            return result;
+          } finally {
+            ended();
+          }
+        },
+        commit: () => {
+          try {
+            group.commit();
+          } finally {
+            ended();
+          }
+        },
+        cancel: () => {
+          group.cancel();
+          ended();
+        },
+      };
     },
     answer: (confirmed) => {
       keepTyping();

@@ -26,24 +26,58 @@ export interface Typing {
 
 let held: Typing | null = null;
 
+// While a command group holds the editor (the assistant's turn), no edit of the person's can be kept: the group refuses
+// it with its busy words (src/core/store/store.ts). A keep asked then waits, the typing still held, and runs once the
+// group has ended, in the context the typing began in; a typing another field begins meanwhile puts the one held in
+// line, kept first. Dropping it there lost the typing with its text still in the field (DEF-0528).
+let waitWhile: () => boolean = () => false;
+const inLine: Typing[] = [];
+let owed = false;
+
+// What makes a keep wait: the editor store names its command group (src/editor/store.ts).
+export function keepsWaitWhile(blocked: () => boolean): void {
+  waitWhile = blocked;
+}
+
+// The group has ended: the keeps asked while it held the editor run now, in order.
+export function keepWhatWaited(): void {
+  if (waitWhile()) return;
+  for (const typing of inLine.splice(0)) typing.keep();
+  if (owed) {
+    owed = false;
+    keepTyping();
+  }
+}
+
 // A field holds typing not kept yet: it is the one held, and a typing another field held is kept first.
 export function holdTyping(typing: Typing): void {
-  if (held !== null && held.field !== typing.field) keepTyping();
+  if (held !== null && held.field !== typing.field) {
+    if (waitWhile()) inLine.push(held);
+    else keepTyping();
+  }
   held = typing;
 }
 
 // A field's typing was kept or cancelled.
 export function releaseTyping(field: HTMLElement): void {
-  if (held?.field === field) held = null;
+  if (held?.field === field) {
+    held = null;
+    owed = false;
+  }
+  for (let index = inLine.length - 1; index >= 0; index -= 1) if (inLine[index]?.field === field) inLine.splice(index, 1);
 }
 
 // The typing held now, if any.
 export const heldTyping = (): Typing | null => held;
 
-// Keeps the typing held now, if any.
+// Keeps the typing held now, if any; while a command group holds the editor, once it has ended.
 export function keepTyping(): void {
   const typing = held;
   if (typing === null) return;
+  if (waitWhile()) {
+    owed = true;
+    return;
+  }
   held = null;
   typing.keep();
 }

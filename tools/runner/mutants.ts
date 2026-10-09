@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit' | 'command-group';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit', 'command-group'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -45,7 +45,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M14', file: 'src/core/store/store.ts', from: 'if (documentChanged && gesture === null && ownedGroup === null) {', to: 'if (gesture === null && ownedGroup === null) {', breaks: 'uma mudança só de seleção entra no histórico', source: 'prova C7', detectors: ['history'] },
   { id: 'M15', file: 'src/core/store/store.ts', from: 'selection: [], history: EMPTY_HISTORY, message: outcome.message', to: 'selection: [], history: state.history, message: outcome.message', breaks: 'abrir outro projeto mantém o histórico do anterior', source: 'prova C7', detectors: ['pages'] },
   { id: 'M16', file: 'src/editor/store.ts', from: 'const at = context ?? beforeCommand(id, args, changesDocument);', to: 'const at = context;', breaks: 'um comando roda sem gravar antes a digitação pendente', source: 'prova C7', detectors: ['history', 'text'] },
-  { id: 'M17', file: 'src/editor/input/pending.ts', from: '  if (held !== null && held.field !== typing.field) keepTyping();', to: '', breaks: 'um campo novo descarta a digitação pendente do anterior', source: 'prova C7', detectors: ['history', 'text'] },
+  { id: 'M17', file: 'src/editor/input/pending.ts', from: '  if (held !== null && held.field !== typing.field) {\n    if (waitWhile()) inLine.push(held);\n    else keepTyping();\n  }\n', to: '', breaks: 'um campo novo descarta a digitação pendente do anterior', source: 'prova C7', detectors: ['history', 'text'] },
   { id: 'M18', file: 'src/editor/store.ts', from: '      waiting.push(() => void store.dispatch(id, args, asked));', to: '', breaks: 'um comando que chega durante um gesto se perde', source: 'prova C7', detectors: ['history'] },
   {
     id: 'M19',
@@ -56,7 +56,7 @@ export const MUTANTS: readonly Mutant[] = [
     source: 'C2',
     detectors: ['style'],
     equivalent:
-      'com a digitação pendente, o contexto atual é sempre o da digitação: toda troca de camada, classe, quadro-chave ou seleção passa pela store do editor, que grava a digitação na hora (src/editor/store.ts, a linha que compara editedKey antes e depois do comando; M27 acusa a falta dela), e o rascunho restaurado troca antes o breakpoint para o dele (src/editor/persistence/drafts.ts, setBreakpoint na restauração); um comando do campo nunca encontra outro contexto',
+      'fora de um grupo de comandos, com a digitação pendente o contexto atual é sempre o da digitação: toda troca de camada, classe, quadro-chave ou seleção passa pela store do editor, que grava a digitação na hora (src/editor/store.ts, a linha que compara editedKey antes e depois do comando; M27 acusa a falta dela), e o rascunho restaurado troca antes o breakpoint para o dele (src/editor/persistence/drafts.ts, setBreakpoint na restauração). Dentro de um grupo (o turno do assistente), o grupo pode trocar o contexto com a digitação pendente, que espera o fim dele (DEF-0528); mas todo comando próprio de um campo muda o documento e é recusado com as palavras de ocupado em qualquer contexto (src/core/store/store.ts, run: um comando desfazível de fora do grupo), e a gravação que esperou roda com o contexto da digitação passado explicitamente, sem passar por esta linha (o detector command-group confere o valor gravado no contexto da digitação). Um comando do campo nunca grava noutro contexto. Antes do DEF-0528, o grupo deixava o contexto mudar sem esperar a gravação, e a justificativa anterior, que não citava o grupo, era falsa (verificação integral de 2026-10-09, grupos E e I)',
   },
   { id: 'M20', file: 'src/editor/input/pending.ts', from: '  if (target instanceof Node && within(typing, target)) return;\n  keepTyping();\n', to: '  if (target instanceof Node && within(typing, target)) return;\n', breaks: 'um toque fora do campo não grava a digitação pendente antes de agir (G2)', source: 'C2', detectors: ['history', 'text'] },
   { id: 'M21', file: 'src/editor/store.ts', from: 'styleClass: state.ui.styleTarget ?? null, keyframe: keyframeTarget(state) };', to: 'styleClass: state.ui.styleTarget ?? null };', breaks: 'o contexto da edição sai sem o quadro-chave', source: 'C2', detectors: ['style'] },
@@ -123,6 +123,11 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M72', file: 'src/core/elements/svg.ts', from: '(ANIMATED_VALUES.has(lower) && scriptedItem(value))', to: "(ANIMATED_VALUES.has(lower) && (scripted(value) || (lower === 'values' && value.split(';').some(scripted))))", breaks: 'o sanitizador do SVG divide values antes de decodificar, e um ; escrito &#59; esconde o javascript: (o código de antes do DEF-0525)', source: 'DEF-0525', detectors: ['import'] },
   { id: 'M73', file: 'src/editor/input/held-draft.ts', from: 'const holding = (): HTMLElement | null => (typedIn !== null && heldTyping()?.field === typedIn ? typedIn : null);', to: 'const holding = (): HTMLElement | null => (field.current !== null && heldTyping()?.field === field.current ? field.current : null);', breaks: 'um campo que sai da página com a digitação pendente não a grava: a saída procura o campo pela ref, que o React já soltou (o código de antes do DEF-0526)', source: 'DEF-0526', detectors: ['drafts'] },
   { id: 'M74', file: 'src/editor/canvas/edit-handles.tsx', from: '[valueArg(entry)]: typed.current }', to: "[valueArg(entry)]: input.current?.value ?? '' }", breaks: 'a banda digitada grava o texto lido do campo, que não existe mais quando ela sai da página (o código de antes do DEF-0526)', source: 'DEF-0526', detectors: ['drafts'] },
+  { id: 'M75', file: 'src/core/store/store.ts', from: 'context: current.context ?? contextAt(before),', to: 'context: contextAt(before),', breaks: 'o desfazer de um grupo devolve o contexto de quando o grupo abriu (o código de antes do DEF-0527)', source: 'DEF-0527', detectors: ['command-group'] },
+  { id: 'M76', file: 'src/editor/input/pending.ts', from: '  if (waitWhile()) {\n    owed = true;\n    return;\n  }\n  held = null;\n  typing.keep();', to: '  held = null;\n  typing.keep();', breaks: 'a gravação pedida durante o grupo roda na hora, é recusada como ocupado e a digitação sai do registro (o código de antes do DEF-0528)', source: 'DEF-0528', detectors: ['command-group'] },
+  { id: 'M77', file: 'src/editor/input/pending.ts', from: '    if (waitWhile()) inLine.push(held);\n    else keepTyping();', to: '    keepTyping();', breaks: 'um campo que começa a digitar durante o grupo descarta a digitação do anterior', source: 'DEF-0528', detectors: ['command-group'] },
+  { id: 'M78', file: 'src/editor/store.ts', from: '            if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();\n', to: '', breaks: 'um comando do grupo que muda o que o campo edita não pede a gravação da digitação (o código de antes do DEF-0528)', source: 'DEF-0528', detectors: ['command-group'] },
+  { id: 'M79', file: 'src/editor/store.ts', from: '        if (!group.active()) keepWhatWaited();\n', to: '', breaks: 'o fim do grupo não roda as gravações que esperaram por ele', source: 'DEF-0528', detectors: ['command-group'] },
 ];
 
 export const ALL_DETECTORS = ALL;

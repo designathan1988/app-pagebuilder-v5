@@ -235,6 +235,8 @@ interface OpenGesture {
   command: CommandId | null;
   patches: Patch[];
   inverses: Patch[];
+  // a command group's: the context its first change of the document was made in (DCS-009, DEF-0527)
+  context?: EditContext;
 }
 
 export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
@@ -560,6 +562,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
         gesture.inverses.unshift(...applied.inverses);
       } else if (documentChanged && ownedGroup !== null) {
         ownedGroup.command ??= id;
+        ownedGroup.context ??= contextAt(before, at);
         ownedGroup.patches.push(...applied.applied);
         ownedGroup.inverses.unshift(...applied.inverses);
       }
@@ -609,7 +612,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       if (open !== null) throw new Error('a pointer gesture is open');
       if (sequence !== null) throw new Error('a command sequence is open');
       if (state.confirmation != null) throw new Error('a confirmation is waiting');
-      const current = { before: state as StoreState<unknown>, busy, mergeable: lastMergeable, command: null as CommandId | null, patches: [] as Patch[], inverses: [] as Patch[] };
+      const current: OpenGesture & { readonly busy: Message; readonly mergeable: string | null } = { before: state as StoreState<unknown>, busy, mergeable: lastMergeable, command: null, patches: [], inverses: [] };
       group = current;
       const cancel = () => {
         if (group !== current) return;
@@ -642,8 +645,9 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
               inverses: current.inverses,
               selectionBefore: before.selection,
               selectionAfter: state.selection,
-              // a group is made where it was opened
-              context: contextAt(before),
+              // a group is recorded where its first change was made: a turn that moves to another breakpoint and edits
+              // there gives that breakpoint back on undo (DCS-009, DEF-0527)
+              context: current.context ?? contextAt(before),
               at: clock.now(),
               coalesceKey: null,
               message: state.message !== before.message ? state.message : null
