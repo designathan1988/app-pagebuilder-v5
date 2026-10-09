@@ -154,6 +154,63 @@ test('the label and the chip keep their places at every zoom, scrolled, rotated 
   }
 });
 
+// D-1: the breakpoint tabs attached to the frame's top — their bottom on the frame's top line (the page's, or the
+// badges' drawn over it at a breakpoint or state other than the base), the first one starting where the stage shows the
+// frame (its left edge, or the stage's where the frame runs past it)
+async function tabsOnFrame(page: Page): Promise<{ readonly bottom: number; readonly start: number } | null> {
+  return page.evaluate(() => {
+    const page = document.querySelector('.frame__page')?.getBoundingClientRect();
+    const badges = [...document.querySelectorAll('[data-region="canvas-frame"] [data-canvas-badge]')].map((b) => b.getBoundingClientRect());
+    const frame = page === undefined ? undefined : { left: page.left, top: Math.min(page.top, ...badges.map((b) => b.top)) };
+    const stage = document.querySelector('[data-canvas-stage]')?.getBoundingClientRect();
+    const tabs = [...document.querySelectorAll('[data-region="canvas-breakpoints"] button')].map((t) => t.getBoundingClientRect());
+    if (frame === undefined || stage === undefined || tabs.length === 0) return null;
+    const round = (n: number) => Math.round(n * 2) / 2 + 0;
+    return { bottom: round(Math.max(...tabs.map((t) => t.bottom)) - frame.top), start: round(Math.min(...tabs.map((t) => t.left)) - Math.max(frame.left, stage.left)) };
+  });
+}
+
+test('the breakpoint tabs stay attached to the frame’s top at every zoom and breakpoint (D-1)', runs(OPEN, FIT, 'view.zoomTo#menu-zoom-25', 'view.zoomTo#menu-zoom-400', 'view.setBreakpoint#toolbar-breakpoint-tabs-tablet', 'view.setBreakpoint#toolbar-breakpoint-tabs-phone'), async ({ page }) => {
+  await expect.poll(() => tabsOnFrame(page), { message: 'fit' }).toEqual({ bottom: 0, start: 0 });
+  for (const zoom of ['25', '400']) {
+    await openMenu(page, 'zoom');
+    await control(page, `view.zoomTo#menu-zoom-${zoom}`).click();
+    await expect.poll(() => tabsOnFrame(page), { message: `zoom ${zoom} %` }).toEqual({ bottom: 0, start: 0 });
+  }
+  await control(page, FIT).click();
+  for (const breakpoint of ['tablet', 'phone']) {
+    await control(page, `view.setBreakpoint#toolbar-breakpoint-tabs-${breakpoint}`).click();
+    await expect.poll(() => tabsOnFrame(page), { message: breakpoint }).toEqual({ bottom: 0, start: 0 });
+  }
+});
+
+// DEC-70, the narrow element at the page's top: the logo lies under the tabs and is too narrow for the label and the
+// chip to move past them over it, so they stand just under it — the label's top on the frame's line below, its start on
+// the frame's left, the chip touching its right, neither over a tab
+test('a narrow element under the breakpoint tabs has its label and chip just under it (DEC-70)', runs(OPEN, ROW), async ({ page }) => {
+  await select(page, 'c-logo');
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const frame = document.querySelector('[data-chrome="selection"]');
+          const label = document.querySelector('[data-chrome="label"]:not(.is-measuring)');
+          const chip = document.querySelector('.quick-panel-chip:not(.is-measuring)');
+          if (frame === null || label === null || chip === null || getComputedStyle(label).visibility === 'hidden') return null;
+          const edge = parseFloat(getComputedStyle(frame).outlineWidth) || 0;
+          const f = frame.getBoundingClientRect();
+          const l = label.getBoundingClientRect();
+          const c = chip.getBoundingClientRect();
+          const meets = (a: DOMRect, b: DOMRect) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+          const tabs = [...document.querySelectorAll('[data-region="canvas-breakpoints"] button')].map((t) => t.getBoundingClientRect());
+          const round = (n: number) => Math.round(n * 2) / 2 + 0;
+          return { top: round(l.top - (f.bottom + edge)), start: round(l.left - (f.left - edge)), chip: round(c.left - l.right), overTabs: tabs.some((t) => meets(l, t) || meets(c, t)) };
+        }),
+      { message: 'c-logo' },
+    )
+    .toEqual({ top: 0, start: 0, chip: 0, overTabs: false });
+});
+
 test('the open quick panel stands on the label’s right, level with its top, whole beside a label near the canvas edge', runs(OPEN, ROW, 'quickPanel.setOpen#chip'), async ({ page }) => {
   await select(page, 'c-subscribe');
   await page.locator('.quick-panel-chip').click();
