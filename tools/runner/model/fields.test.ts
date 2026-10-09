@@ -154,3 +154,19 @@ describe('os contratos dos campos de valor', () => {
     expect(missing).toEqual([]);
   });
 });
+
+// DEF-0605: an Enter in a field the element holds no value of its own in, nothing typed, was refused as '"" is not a
+// value this field takes'. It asks for nothing: no refusal, no change. Where the element holds a value, the empty text
+// keeps the refusal (DCS-031).
+it('Enter num campo vazio sem valor próprio não recusa nem muda nada; com valor próprio, a recusa continua', () => {
+  const store = storeOn();
+  const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
+  expect(dispatch('selection.select' as CommandId, { target: 'n-intro' }).status).toBe('done');
+  const before = store.getState().document;
+  for (const property of ['letter-spacing', 'width', 'font-size', 'margin']) {
+    expect(dispatch('style.set' as CommandId, { property, value: '' }).status, `${property} vazio`).not.toBe('refused');
+  }
+  expect(store.getState().document, 'o documento como estava').toBe(before);
+  expect(dispatch('style.set' as CommandId, { property: 'letter-spacing', value: '3px' }).status).toBe('done');
+  expect(dispatch('style.set' as CommandId, { property: 'letter-spacing', value: '' }).status, 'vazio com valor próprio').toBe('refused');
+});

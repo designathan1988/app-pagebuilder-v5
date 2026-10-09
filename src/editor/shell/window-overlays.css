@@ -1010,6 +1010,11 @@
 }
 
 /* the timeline's values in the code face, the small radius, no edge (the canonical .f) */
+/* a text the command refused, kept in the field to be mended (DEF-0607) */
+.panel-field .panel-field__text[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
 .timeline__side .panel-field__text {
   border-color: transparent;
   border-radius: var(--radius-xs);

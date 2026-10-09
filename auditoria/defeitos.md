@@ -1338,3 +1338,33 @@
 - Sintoma: arrastando uma camada a 1280×720 com a barra lateral aberta, a barra mostrava "Tela / Dividido / Código" e a dica cortada em "↑↓ nível · Esc cancela ·…".
 - Causa: `src/editor/shell/canvas.tsx` `CanvasToolbar` media só a barra (a dica encolhe sem transbordar) e não via a dica chegar; agora a dica cortada também conta e a barra é medida de novo quando um filho entra ou sai. Com cinco teclas, a 1280 com a barra lateral, a dica ainda termina em reticências (texto inteiro no título).
 - Prova: `narrow-window.spec.ts`, "takes the room of the buttons names": falha sem a correção na condição Windows, passa nas duas.
+
+## DEF-0604 — o texto digitado para um elemento ficava no campo do próximo, e um Enter o gravava lá
+- Status: corrigido (Lote 9)
+- Sintoma: digitar 3 em "Entre letras" do Title e clicar no Intro gravava 3px no Title (certo), mas o campo do Intro guardava "3": ao focá-lo aparecia "3", e Enter gravava 3px no Intro.
+- Causa: `src/editor/shell/field.tsx` (`NumberField` e `TextStyleField`): o efeito que põe no campo o valor do elemento só rodava quando o valor mostrado mudava; Title e Intro mostravam o mesmo (sem valor próprio). Agora roda também a cada seleção e contexto (`editedKey`).
+- Prova: detector `drafts`, dois casos ("o campo mostra o valor do novo elemento"); mutantes M145 e M146.
+
+## DEF-0605 — Enter num campo sem valor, sem digitar nada, mostrava erro
+- Status: corrigido (Lote 9)
+- Sintoma: com o Intro selecionado, focar "Entre letras" (ou Largura, Tamanho da fonte, Altura da linha) e dar Enter dizia '"" não é um valor aceito por este campo.' em vermelho.
+- Causa: `src/core/style/set.ts` (tratador de `style.set`) recusava o texto vazio; agora, sem valor próprio na camada editada, não faz nada (DCS-031).
+- Prova: detector `fields`, "Enter num campo vazio sem valor próprio"; mutante M147.
+
+## DEF-0606 — um nome de classe recusado fechava o campo e apagava o que foi digitado
+- Status: corrigido (Lote 9)
+- Sintoma: em "+ Classe", digitar "destaque com nome longo" e dar Enter fechava a janelinha; só a barra de status dizia o motivo, e era preciso digitar tudo de novo.
+- Causa: `src/editor/shell/class-bar.tsx` (`ApplyClass`, `SaveAsClass`): o envio fechava sempre; agora fecha só se o comando aceita, e o nome recusado fica marcado no campo.
+- Prova: `settings-class-management.spec.ts`, "stays in its field to be mended": falha sem a correção, passa nas duas condições.
+
+## DEF-0607 — o nome de uma nova animação recusado esvaziava o campo, sem dizer a regra
+- Status: corrigido (Lote 9)
+- Sintoma: na Linha do tempo, "Entrada suave do texto" + Enter esvaziava o campo; a barra de status dizia só "… não é um nome de animação.".
+- Causa: `src/editor/shell/panel-field.tsx` `keep`: voltava ao valor do documento (vazio) antes de saber da recusa; agora um nome novo recusado fica marcado no campo (DCS-032). A mensagem `status.animation.nameInvalid` passou a dizer a regra, como a de classe.
+- Prova: detector `drafts`, "o nome de animação recusado fica no campo"; mutante M148.
+
+## DEF-0608 — a opacidade em foco mostrava 1 onde o rosto dizia 100 %
+- Status: corrigido (Lote 9)
+- Sintoma: em repouso o campo Opacidade dizia "100 %"; ao clicar nele aparecia "1", e a pessoa não sabia em que escala digitar.
+- Causa: `src/editor/shell/field.tsx` (`TextStyleField`): o `input` recebia o valor CSS, e só o rosto lia a faixa 0–1 como porcentagem; agora o `input` recebe o mesmo texto ("100%"), que o campo já lê de volta (50% é 0,5).
+- Prova: detector `drafts`, "o campo de opacidade guarda o texto do rosto"; mutante M149.

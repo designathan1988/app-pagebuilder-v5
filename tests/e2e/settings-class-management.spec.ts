@@ -71,3 +71,24 @@ test('a reserved custom attribute is refused locally and its draft stays with it
   await expect(name).toHaveValue('');
   expect((await project(page)).pages[0]?.tree.children[0]?.classes).toEqual([]);
 });
+
+// DEF-0606: a name + Class refused (a space in it) closed the popover and lost what was typed, its reason in the status
+// bar alone. The name stays in the field, marked, to be mended; once mended, the popover closes on the class applied.
+test('a class name refused in + Class stays in its field to be mended', runs(INSERT, TILE, STYLE, ADD_CLASS), async ({ page }) => {
+  await startWithButton(page);
+  await control(page, STYLE).click();
+  await control(page, ADD_CLASS).click();
+  const field = page.locator('.class-popup__panel input[name="name"]');
+  await expect(field).toBeFocused();
+  await page.keyboard.type('call to action');
+  await page.keyboard.press('Enter');
+  await expect(field, 'the name refused stays').toHaveValue('call to action');
+  await expect(field).toHaveAttribute('aria-invalid', 'true');
+  expect((await project(page)).classes ?? []).toEqual([]);
+  await page.keyboard.press('Control+A');
+  await page.keyboard.type('call-to-action');
+  await expect(field).not.toHaveAttribute('aria-invalid', 'true');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.class-popup__panel')).toHaveCount(0);
+  expect((await project(page)).pages[0]?.tree.children[0]?.classes).toEqual(['call-to-action']);
+});

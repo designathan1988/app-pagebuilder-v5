@@ -1655,7 +1655,7 @@
   "status.animation.keyframeDeleted": "Deleted the keyframe at {offset}% of {name}.",
   "status.animation.keyframeMoved": "Moved the keyframe of {name} to {offset}%.",
   "status.animation.keyframeTaken": "A keyframe already sits at {offset}%.",
-  "status.animation.nameInvalid": "{name} is no name for an animation.",
+  "status.animation.nameInvalid": "\"{name}\" is not an animation name: it starts with an unaccented letter, _ or -, then unaccented letters, digits, _ and -.",
   "status.animation.nameTaken": "An animation named {name} already exists.",
   "status.animation.offsetOutOfRange": "{offset} is no keyframe offset: 0 to 100 percent.",
   "status.animation.renamed": "Renamed {oldName} to {name}.",

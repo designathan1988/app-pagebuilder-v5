@@ -208,6 +208,11 @@
   padding: var(--space-1);
 }
 
+/* a name the command refused, kept in the field to be mended (DEF-0606) */
+.class-popup__form .input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
 .affects {
   margin: 0;
   font-size: var(--fs-caption);

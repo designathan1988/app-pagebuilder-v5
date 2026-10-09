@@ -1655,7 +1655,7 @@
   "status.animation.keyframeDeleted": "Quadro-chave em {offset}% de {name} excluído.",
   "status.animation.keyframeMoved": "Quadro-chave de {name} movido para {offset}%.",
   "status.animation.keyframeTaken": "Já há um quadro-chave em {offset}%.",
-  "status.animation.nameInvalid": "{name} não é um nome de animação.",
+  "status.animation.nameInvalid": "\"{name}\" não é um nome de animação: começa com uma letra sem acento, _ ou -, depois letras sem acento, dígitos, _ e -.",
   "status.animation.nameTaken": "Já existe uma animação chamada {name}.",
   "status.animation.offsetOutOfRange": "{offset} não é um deslocamento de quadro-chave: de 0 a 100 por cento.",
   "status.animation.renamed": "{oldName} renomeada para {name}.",

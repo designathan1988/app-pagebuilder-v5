@@ -6,7 +6,7 @@
     "doors": 1362,
     "scenarios": 1831,
     "modules": 493,
-    "lines": 86052,
+    "lines": 86110,
     "fields": 207,
     "interactive": 257
   },
@@ -4840,10 +4840,12 @@
         "owner": "none"
       },
       {
-        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,placeholder,spellCheck|1",
+        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,onInput,placeholder,spellCheck|1",
         "tag": "input",
         "role": null,
-        "handlers": [],
+        "handlers": [
+          "onInput"
+        ],
         "owner": "local"
       },
       {
@@ -4865,10 +4867,12 @@
         "owner": "none"
       },
       {
-        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,placeholder,spellCheck|2",
+        "key": "src/editor/shell/class-bar.tsx|input|aria-label,className,data-autofocus,data-key-context,data-local,name,onInput,placeholder,spellCheck|2",
         "tag": "input",
         "role": null,
-        "handlers": [],
+        "handlers": [
+          "onInput"
+        ],
         "owner": "local"
       },
       {
@@ -5726,7 +5730,7 @@
         "owner": "inside-door"
       },
       {
-        "key": "src/editor/shell/panel-field.tsx|input|className,disabled,id,list,onBlur,onChange,placeholder,ref,spellCheck,title,type,value|1",
+        "key": "src/editor/shell/panel-field.tsx|input|aria-invalid,className,disabled,id,list,onBlur,onChange,placeholder,ref,spellCheck,title,type,value|1",
         "tag": "input",
         "role": null,
         "handlers": [

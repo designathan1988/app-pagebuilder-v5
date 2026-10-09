@@ -102,8 +102,17 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - Uso: 13 peças de todos os grupos, 3 arrastes para o canvas, renomear com nome longo, ocultar, travar, reordenar arrastando, desfazer e refazer: documento, mensagens e histórico conferidos, sem erro de console nem incidente. Fotos em `auditoria/fotos/lote8/`.
   - Specs da área (97) nas duas condições: 97 de 97 na Windows; na padrão, a rotação falhou numa zona de canto dentro de elemento baixo, corrigida (7 de 7) e `visual.spec` 14 de 14. Detectores 118 de 118; typecheck e lint sem erro.
 
+- **Lote 9 (2026-10-09), inspector e contexto, uso real — feito:**
+  - DEF-0604: o texto digitado para um elemento ficava no campo do próximo, e um Enter o gravava lá (M145, M146).
+  - DEF-0605: Enter num campo sem valor, sem digitar, mostrava erro (M147; DCS-031 para o vazio com valor próprio).
+  - DEF-0606 e DEF-0607: um nome novo recusado (classe, animação) fechava ou esvaziava o campo; agora fica marcado (DCS-032; a FD2 continua para campos com valor). A mensagem de nome de animação passou a dizer a regra (M148).
+  - DEF-0608: a opacidade em foco mostrava 1 onde o rosto dizia 100 % (M149).
+  - Conferidos no uso: G1 com troca de seleção, breakpoint, estado e classe no meio da digitação (cada valor no seu contexto), quadro-chave em 0 %, Configurações e Interações. DCS-033: a agulha a 0,97 s grava no estilo base (para o dono).
+  - Specs da área nas duas condições: 101 de 101 (padrão) e 115 de 115 (Windows, com `visual.spec`); `visual.spec` padrão 14 de 14. Detectores 123 de 123; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
+  - Achado para o lote de exportação: nomes de classe com acento são aceitos no registro, mas várias regras são só ASCII (`src/core/render/clean.ts`, `src/core/events/interactions.ts`, `src/core/motion/read.ts`).
+
 ## Próximo passo
-Sessão de uso real do inspector (Estilo, Configurações e Interações, campos com unidade, cor e menu, digitação no meio de uma troca de seleção) e do contexto (breakpoints, hover/focus, classes, quadros-chave), nas duas condições.
+Sessão de uso real de exportar e pré-visualizar (com uma classe de nome acentuado), dados e CSV, componentes, páginas e arquivos, paleta de comandos, menus e verificações; depois a troca de idioma no meio do trabalho, nas duas condições.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

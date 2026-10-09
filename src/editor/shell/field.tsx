@@ -47,7 +47,7 @@ import { cssFamily, familyOf, isFontFile } from '../../core/files/fonts.ts';
 import { afterGesture, registerRepeat, registerSlider } from '../input/pointer.ts';
 import { wheelStep } from '../input/wheel-step.ts';
 import { pointerViews } from '../input/pointer/views.ts';
-import { MODEL_RULES, editContextOf, useEditorState, useStore, type EditorState, type EditorStore, layeredRules } from '../store.ts';
+import { MODEL_RULES, editContextOf, editedKey, useEditorState, useStore, type EditorState, type EditorStore, layeredRules } from '../store.ts';
 import { styleClassOf, styleSource } from '../inspector/style-target.ts';
 import { useMenuLayer } from '../doors/menu.tsx';
 import { useT, useValueLabel } from '../text.ts';
@@ -637,9 +637,13 @@ export function NumberField({ entry, door, property, label, bare = false, labell
   // whether the person typed since the field last showed the document's value: the field's own draft, never document
   // state
   const command = entry.command.id;
+  const edited = useEditorState(editedKey);
   useEffect(() => {
     const element = input.current;
     if (element === null) return;
+    // Shown again for every element and context it shows (store.ts editedKey), not only when the value it shows
+    // changes: two elements showing the same (both unset) kept the text typed for the first in the field of the
+    // second, and an Enter there wrote it to the second (DEF-0604: the Title's letter-spacing went to the Intro)
     // a keyword is shown as CSS writes it in every language, a word of the person's language typed is read back as its
     // keyword (keyword-words.ts)
     const face = shown;
@@ -652,7 +656,7 @@ export function NumberField({ entry, door, property, label, bare = false, labell
       draft.current.typed = recordFieldInput(element, new Event('input'));
       if (draft.current.typed) hold.current();
     });
-  }, [shown, said, t, store]);
+  }, [shown, said, t, store, edited]);
   useEffect(() => {
     const element = input.current;
     const typing = draft.current;
@@ -938,6 +942,13 @@ export interface FieldPart {
   args(text: string, held: string | undefined): Record<string, unknown>;
 }
 
+// The text a field of a 0 to 1 range (opacity) holds for a value, as its face reads it: a percentage ("100%" for 1);
+// any other text as it is
+function percentText(value: string, range: { readonly min: number; readonly max: number } | undefined): string {
+  if (range?.min !== 0 || range.max !== 1 || value.trim() === '' || !Number.isFinite(Number(value))) return value;
+  return `${String(Number((Number(value) * 100).toFixed(2)))}%`;
+}
+
 export function TextStyleField({
   entry,
   door,
@@ -1052,12 +1063,17 @@ export function TextStyleField({
   const listed = useMemo(() => suggestions.filter((value) => !tokenSuggestions.includes(value)), [suggestions, tokenSuggestions]);
   // the item checked: the value the element holds, else the one the page computes (the audit's S-027: no mark at all)
   const checkedValue = shown !== '' ? shown : mixed ? '' : effective.trim();
+  const editedFor = useEditorState(editedKey);
   useEffect(() => {
     const element = input.current;
     if (element === null) return;
+    // Shown again for every element and context it shows (store.ts editedKey), not only when the value it shows
+    // changes: two elements showing the same (both unset) kept the text typed for the first in the field of the
+    // second, and an Enter there wrote it to the second (DEF-0604: the Title's letter-spacing went to the Intro)
     // a keyword is shown as CSS writes it, and a word typed in the person's language read back as its keyword
-    // (keyword-words.ts)
-    const face = shown;
+    // (keyword-words.ts); a value of a 0 to 1 range is read as a percentage, as the field's face says it: focused, the
+    // opacity read 1 where its face said 100 % (DEF-0608), and the text it holds is read back the same (50% is 0.5)
+    const face = percentText(shown, readRange);
     element.value = face;
     draft.current.typed = false;
     releaseTyping(element);
@@ -1067,7 +1083,7 @@ export function TextStyleField({
       draft.current.typed = recordFieldInput(element, new Event('input'));
       if (draft.current.typed) hold.current();
     });
-  }, [shown, said, t, store]);
+  }, [shown, said, t, store, editedFor, readRange]);
   useEffect(() => {
     const element = input.current;
     const typing = draft.current;

@@ -228,3 +228,15 @@
 ## DCS-030 — o ponto da alça na borda da vista do canvas
 - **Origem:** DEF-0597. Fora do elemento, o ponto de um elemento colado à borda da página (Hero, CardATitle) seria recortado pela camada do canvas.
 - **Decidido:** ali o ponto fica centrado na borda, como antes, meio visível; num texto colado à borda da própria página ele ainda cobre metade da primeira letra ("Monthly", foto `auditoria/fotos/lote7/08-carda-alcas.png`). Preserva o comportamento anterior nesse caso. Fora do elemento, o ponto pode cair sobre um vizinho que começa colado à borda: o canto inferior esquerdo do Hero toca o topo do "M" de "Monthly" (foto `auditoria/fotos/lote7/14-referencia-hero-monthly.png`). Fica para o dono escolher entre o ponto fora (o elemento selecionado sempre legível) e o centrado (metade sobre cada um).
+
+## DCS-031 — o texto vazio num campo com valor próprio
+- **Origem:** DEF-0605. Enter com o campo vazio e sem valor próprio passou a não fazer nada.
+- **Decidido:** com valor próprio na camada editada, o texto vazio continua recusado com a mensagem de hoje; tirar o valor continua sendo o botão de redefinir. Preserva o comportamento atual; se o dono preferir que esvaziar e dar Enter remova o valor, é uma mudança só em `style.set`.
+
+## DCS-032 — um nome novo recusado fica no campo; um valor recusado segue a FD2
+- **Origem:** DEF-0606 e DEF-0607. Em "+ Classe" e em "Nova animação", um nome recusado (com espaço) fechava a janelinha ou esvaziava o campo, e o texto digitado sumia.
+- **Decidido:** um campo que dá nome a algo novo (não há valor do documento para mostrar de volta) mantém o nome recusado, marcado, e a mensagem diz a regra. Os campos com valor do documento continuam com a regra da FD2: depois da recusa, mostram de novo o valor do documento, com a mensagem ao lado.
+
+## DCS-033 — a agulha da Linha do tempo perto de um quadro-chave
+- **Origem:** uso de 2026-10-09: um clique no rótulo "1 s" da régua parou a agulha em 0,97 s; a opacidade digitada foi para o estilo base do elemento ("Opacidade de Intro: 1."), não para o quadro-chave de 100 %.
+- **Decidido:** sem mudança (comportamento atual: a gravação vai ao quadro-chave só com a agulha sobre ele; o painel diz "Em 97%" e oferece "Adicionar quadro-chave"). Fica para o dono decidir se a agulha deve encostar no quadro-chave a poucos pixels.

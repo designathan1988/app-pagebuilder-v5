@@ -26,6 +26,7 @@ import { keyframeTarget } from '../../../src/editor/timeline/playhead.ts';
 import { heldTyping, keepTypingBefore } from '../../../src/editor/input/pending.ts';
 import { GuidesGridsDialog } from '../../../src/editor/shell/guides-grids.tsx';
 import { PanelField } from '../../../src/editor/shell/panel-field.tsx';
+import { Field } from '../../../src/editor/shell/inspector-controls.tsx';
 import { createEditorStore, editContextOf, MODEL_RULES, StoreContext, type EditorStore } from '../../../src/editor/store.ts';
 import type { CommandId } from '../../../src/generated/ids.ts';
 import { manifest } from '../../../src/manifest/runtime.ts';
@@ -348,6 +349,23 @@ describe('o comando do próprio campo e o contexto que ele muda', () => {
     expect(store.getState().refused, `o comando não rodou de novo e foi recusado: ${said(store) ?? ''}`).not.toBe(true);
     drawn.stop();
   });
+
+  // DEF-0607 (DCS-032): a new animation's name refused (a space in it) emptied the field, what was typed lost. A name
+  // for something new stays, marked, to be mended; a field with a value of the document shows it again (FD2).
+  it('o nome de animação recusado fica no campo, marcado', async () => {
+    const store = storeOf();
+    dispatch(store, 'selection.select', { target: 'n-title' });
+    dispatch(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
+    const drawn = mount(store, createElement(PanelField, { entry: door('animation.create#timeline-new-animation'), value: '', label: 'name' }));
+    const input = drawn.host.querySelector('input') as HTMLInputElement;
+    type(input, 'Entrada suave');
+    submit(input);
+    await settle();
+    const kept = { value: input.value, invalid: input.getAttribute('aria-invalid') };
+    drawn.stop();
+    expect(kept, 'o nome recusado no campo').toEqual({ value: 'Entrada suave', invalid: 'true' });
+    expect(store.getState().refused, 'o comando recusou').toBe(true);
+  });
 });
 
 // A field shows the document's value again after its command refused what it held (the audit's FD2); the keys typed
@@ -557,6 +575,71 @@ describe('o contexto da primeira tecla (G1)', () => {
     const first = leaves(store)[0];
     const second = nodes(store).find((n) => n.id === other);
     expect({ primeiro: first === undefined ? null : (storedValue(first, 'width', MODEL_RULES) ?? null), segundo: second === undefined ? null : (storedValue(second, 'width', MODEL_RULES) ?? null) }, 'onde o valor foi gravado').toEqual({ primeiro: '33px', segundo: null });
+  });
+
+  // DEF-0604: the field kept the text typed for the first element once the selection moved to a second that shows the
+  // same (both unset): it read "33px" there, and an Enter wrote it to the second. It shows the second's own value.
+  it('a seleção trocada com o foco no campo: o campo mostra o valor do novo elemento, não o texto digitado', async () => {
+    const store = storeOf();
+    const first = leaves(store)[0]?.id;
+    const other = nodes(store).find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.id !== first)?.id;
+    dispatch(store, 'selection.select', { target: first });
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stop = installKeymap(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const width = () => [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('quick-panel-width'));
+    const field = width();
+    if (field === undefined) throw new Error('no width field');
+    type(field, '33px');
+    act(() => {
+      field.focus();
+      dispatch(store, 'selection.select', { target: other });
+    });
+    await frames(2);
+    const second = nodes(store).find((n) => n.id === other);
+    const shown = width()?.value ?? null;
+    drawn.stop();
+    stop();
+    expect(second === undefined ? null : (storedValue(second, 'width', MODEL_RULES) ?? null), 'o segundo sem largura própria (o caso)').toBeNull();
+    expect(shown, 'o campo do segundo elemento').toBe('');
+  });
+
+  // the same in the Style tab's length field (a NumberField: Letter spacing), as the use session met it (DEF-0604)
+  it('a seleção trocada com o foco no campo de comprimento do inspector: o campo mostra o valor do novo elemento', async () => {
+    const store = storeOf();
+    const first = leaves(store)[0]?.id;
+    const other = nodes(store).find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.id !== first)?.id;
+    dispatch(store, 'selection.select', { target: first });
+    const stop = installKeymap(store, window);
+    const drawn = mount(store, createElement(Field, { entry: door('style.set#inspector-letter-spacing') }));
+    await frames(2);
+    const field = drawn.host.querySelector<HTMLInputElement>('input');
+    if (field === null) throw new Error('no letter-spacing field');
+    type(field, '3');
+    act(() => {
+      field.focus();
+      dispatch(store, 'selection.select', { target: other });
+    });
+    await frames(2);
+    const shown = drawn.host.querySelector<HTMLInputElement>('input')?.value ?? null;
+    drawn.stop();
+    stop();
+    expect(shown, 'o campo do segundo elemento').toBe('');
+  });
+
+  // DEF-0608: the opacity's face said 100 % and, focused, its input held 1; it holds the face's text, read back alike
+  it('o campo de opacidade guarda o texto do rosto: 0.5 é 50%', async () => {
+    const store = storeOf();
+    const first = leaves(store)[0]?.id;
+    dispatch(store, 'selection.select', { target: first });
+    dispatch(store, 'style.set', { property: 'opacity', value: '0.5' });
+    const drawn = mount(store, createElement(Field, { entry: door('style.set#inspector-opacity') }));
+    await frames(2);
+    const held = drawn.host.querySelector<HTMLInputElement>('input.input')?.value ?? null;
+    drawn.stop();
+    expect(held, 'o texto do campo').toBe('50%');
   });
 });
 

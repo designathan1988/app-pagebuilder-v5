@@ -406,5 +406,17 @@ export const setStyleCommand = registerHandler('style.set', (given, { property, 
     const clash = primary === null ? undefined : recipe.declarations.find((d) => storedValue(primary.node, d.property, context.rules) !== undefined);
     if (clash !== undefined) return { kind: 'refused', message: message('status.recipe.conflict', { recipe: propertyName(property, context.rules), property: propertyName(clash.property, context.rules) }) };
   }
+  // An Enter in a field the elements hold no value of their own in (the text empty, nothing typed) asks for nothing:
+  // nothing is written and nothing is said. It was refused as '"" is not a value this field takes' (DEF-0605). A text
+  // emptied where a value is held keeps the refusal (decisoes.md, DCS-031).
+  if (value.trim() === '' && (context.keyframe ?? null) === null && nothingHeld(context, property)) return { kind: 'change' as const };
   return writePropertyText(context, property, value);
 });
+
+// whether none of the elements a write goes to (their holders: a class targeted, a component) holds a value of the
+// property, or of its longhands, in the layer edited
+function nothingHeld<Ui>(context: HandlerContext<Ui>, property: string): boolean {
+  const nodes = context.state.selection.map((id) => locate(context.state.document, id)).filter((found) => found !== null);
+  const parts = [property, ...(context.rules.compositeFacts.get(property)?.longhands ?? [])];
+  return styleHolders(context, nodes).every((held) => parts.every((one) => heldAt(held.node, one, context.rules) === undefined));
+}

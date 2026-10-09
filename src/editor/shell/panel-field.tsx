@@ -68,6 +68,13 @@ export function PanelField({
   const store = useStore();
   const [draft, setDraft] = useState(value);
   const [edited, setEdited] = useState(false);
+  // A name for something new (a new animation: the document holds no value for the field) refused by the command stays
+  // in the field, marked, to be mended: there is no value of the document to show again, and the field went empty,
+  // what was typed lost (DEF-0607; decisoes.md, DCS-032). A field with a value of the document shows it again after a
+  // refusal (the audit's FD2).
+  const [invalid, setInvalid] = useState(false);
+  const refusedNow = useRef(false);
+  const newName = value === '';
   const input = useRef<HTMLInputElement>(null);
   const row = useRef<HTMLDivElement>(null);
   // the text typed now, for the keep the registry runs outside a render (a press elsewhere, the focus leaving)
@@ -79,19 +86,23 @@ export function PanelField({
   const id = `panel-field-${entry.ref.replaceAll('#', '-')}-${String(args.animation ?? args.interaction ?? '')}`;
   // the door run with a text in its free argument (typed and kept, or a curve chosen beside the field), in the context
   // the typing began in when the registry keeps it
-  const runWith = (chosen: string, context?: EditContext) => {
+  // whether the command refused the text
+  const runWith = (chosen: string, context?: EditContext): boolean => {
     const argument = textArgument(entry, args);
-    if (argument === null || chosen === value) return;
+    if (argument === null || chosen === value) return false;
     const outcome = (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...args, [argument]: chosen }, context);
     if (outcome.status === 'done') onDone?.();
+    return outcome.status === 'refused';
   };
   // the typing is held in the one registry of typing (input/held-draft.ts, rule G2): a press elsewhere, a command from
   // outside, the focus leaving or the field going keep it; what the document holds shows again once it is kept
   const keepHeld = useRef<(context: EditContext) => void>(() => undefined);
   useEffect(() => {
     keepHeld.current = (context) => {
-      setEdited(false);
-      runWith(accept === undefined ? typed.current : accept(typed.current), context);
+      const refused = runWith(accept === undefined ? typed.current : accept(typed.current), context) && newName;
+      refusedNow.current = refused;
+      setInvalid(refused);
+      if (!refused) setEdited(false);
     };
   });
   const command = entry.command.id as CommandId;
@@ -108,8 +119,13 @@ export function PanelField({
     event.preventDefault();
     // nothing typed since the field last showed the document's value: nothing to keep (the draft is that old value)
     if (!edited) return;
+    const refused = runWith(accept === undefined ? draft : accept(draft)) && newName;
+    setInvalid(refused);
+    if (refused) {
+      input.current?.select();
+      return;
+    }
     setEdited(false);
-    runWith(accept === undefined ? draft : accept(draft));
     held.current?.done();
   };
   const ready = door.built && !disabled;
@@ -135,7 +151,9 @@ export function PanelField({
           placeholder={placeholder}
           disabled={!ready}
           list={list.length > 0 ? `${id}-list` : undefined}
+          aria-invalid={invalid ? true : undefined}
           onChange={(event) => {
+            setInvalid(false);
             setEdited(true);
             setDraft(event.target.value);
             typed.current = event.target.value;
@@ -143,8 +161,9 @@ export function PanelField({
           }}
           // left, the typing is kept (rule G2, DEF-0514), and the document's value shows again (the audit's FD2)
           onBlur={() => {
+            refusedNow.current = false;
             held.current?.left();
-            setEdited(false);
+            if (!refusedNow.current) setEdited(false);
           }}
         />
         {/* the curve that applies: the value, else what the empty field shows it takes (its placeholder) */}

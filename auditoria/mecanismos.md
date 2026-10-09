@@ -272,3 +272,6 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 
 ## MEC-25 — onde o Inserir põe o elemento com um contêiner que não o aceita
 - Caso novo no grupo `structure` (`tools/runner/model/structure.test.ts`): com a lista do Aurora selecionada, a tabela entra logo depois dela; com uma seção selecionada, o contêiner entra dentro. Acusa DEF-0601 (mutante M144).
+
+## MEC-26 — o campo mostra o valor do elemento e do contexto em que está
+- Dois casos no grupo `drafts` (`tools/runner/model/drafts.test.ts`), com os campos reais (o Width do painel rápido e o Letter spacing do inspector): digitado num elemento e trocada a seleção com o foco no campo, o campo mostra o valor do novo elemento. Acusa DEF-0604 (mutantes M145 e M146).

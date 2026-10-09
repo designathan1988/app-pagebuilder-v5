@@ -54,14 +54,35 @@ function useSharedClasses(): readonly string[] {
   return text === '' ? [] : text.split(SEPARATOR);
 }
 
-// A command run with a typed argument, once no gesture is open.
-function useTyped(entry: DoorEntry | undefined, arg: string): (text: string) => void {
+// A command run with a typed argument, once no gesture is open; `ran` hears whether it was refused.
+function useTyped(entry: DoorEntry | undefined, arg: string): (text: string, ran?: (refused: boolean) => void) => void {
   const store = useStore();
-  return (text) => {
+  return (text, ran) => {
     if (entry === undefined) return;
-    afterGesture(store, () => (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, [arg]: text }));
+    afterGesture(store, () => {
+      const result = (store.dispatch as (id: CommandId, a: unknown) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, [arg]: text });
+      ran?.(result.status === 'refused');
+    });
   };
 }
+
+// The name typed in a class popover, sent: the popover closes once the command takes it; a name refused stays in the
+// field, marked, its reason in the status bar, for the person to mend (rule G2: a name with a space closed the field
+// and lost what was typed, DEF-0606)
+function keepName(event: FormEvent<HTMLFormElement>, run: (text: string, ran?: (refused: boolean) => void) => void, close: () => void): void {
+  event.preventDefault();
+  const field = event.currentTarget.elements.namedItem('name') as HTMLInputElement | null;
+  run(field?.value ?? '', (refused) => {
+    if (!refused) {
+      close();
+      return;
+    }
+    field?.setAttribute('aria-invalid', 'true');
+    field?.select();
+  });
+}
+// a name mended clears its mark
+const unmark = (event: FormEvent<HTMLInputElement>) => event.currentTarget.removeAttribute('aria-invalid');
 
 export function TargetChips() {
   const t = useT();
@@ -91,12 +112,7 @@ function ApplyClass() {
   const offered = useEditorState((s) => classesOf(s.document).map((c) => c.name).filter((name) => !shared.includes(name)).join(SEPARATOR));
   const door = useDoor(APPLY ?? (DOORS[0] as DoorEntry), {}, undefined, APPLY !== undefined && ready(APPLY));
   if (APPLY === undefined) return null;
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const field = event.currentTarget.elements.namedItem('name') as HTMLInputElement | null;
-    run(field?.value ?? '');
-    setOpen(false);
-  };
+  const submit = (event: FormEvent<HTMLFormElement>) => keepName(event, run, () => setOpen(false));
   return (
     <span className="class-popup">
       <button
@@ -129,7 +145,7 @@ function ApplyClass() {
               ))}
           <form className="class-popup__form" onSubmit={submit}>
             {/* the field takes the focus as the list opens: the person types a new name at once */}
-            <input className="input" name="name" data-autofocus spellCheck={false} placeholder={t('inspector.className')} aria-label={t('inspector.className')} data-local="class-name" data-key-context="dialog" />
+            <input className="input" name="name" data-autofocus spellCheck={false} placeholder={t('inspector.className')} aria-label={t('inspector.className')} data-local="class-name" data-key-context="dialog" onInput={unmark} />
           </form>
         </Popover>
       ) : null}
@@ -145,12 +161,7 @@ function SaveAsClass() {
   const run = useTyped(SAVE, 'name');
   const door = useDoor(SAVE ?? (DOORS[0] as DoorEntry), {}, undefined, SAVE !== undefined && ready(SAVE));
   if (SAVE === undefined) return null;
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const field = event.currentTarget.elements.namedItem('name') as HTMLInputElement | null;
-    run(field?.value ?? '');
-    setOpen(false);
-  };
+  const submit = (event: FormEvent<HTMLFormElement>) => keepName(event, run, () => setOpen(false));
   return (
     <span className="class-popup">
       <button
@@ -171,7 +182,7 @@ function SaveAsClass() {
       {open ? (
         <Popover onDismiss={() => setOpen(false)} anchor={trigger} className="class-popup__panel" label={door.label}>
           <form className="class-popup__form" onSubmit={submit}>
-            <input className="input" name="name" data-autofocus spellCheck={false} placeholder={t('inspector.className')} aria-label={t('inspector.className')} data-local="class-name" data-key-context="dialog" />
+            <input className="input" name="name" data-autofocus spellCheck={false} placeholder={t('inspector.className')} aria-label={t('inspector.className')} data-local="class-name" data-key-context="dialog" onInput={unmark} />
           </form>
         </Popover>
       ) : null}
