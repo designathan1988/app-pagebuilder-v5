@@ -13,6 +13,7 @@ import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
 import { createEditorStore, StoreContext, useEditorState, type EditorStore, type EditorState } from '../../../src/editor/store.ts';
 import type { CommandId } from '../../../src/generated/ids.ts';
+import { LayersSection } from '../../../src/editor/shell/sidebar/layers.tsx';
 import { fixture } from './harness.ts';
 
 (globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -57,16 +58,37 @@ describe('quantas vezes uma vista redesenha', () => {
     };
     const drawn = mount(store, createElement(View));
     expect(drawn.reads(), 'a montagem desenha a vista uma vez').toBe(1);
-    // the slice changes: one redraw, one commit
+    // the slice changes: one redraw, one commit more than the mount's (DEF-0567: the mount's own commit made the check
+    // pass with none)
+    const mounted = drawn.commits();
     act(() => void dispatch(store, 'selection.select', { target: firstElement(store) }));
     expect(drawn.reads(), 'a seleção mudou: a vista redesenha').toBe(2);
-    expect(drawn.commits(), 'a seleção mudou: um commit').toBeGreaterThanOrEqual(1);
+    expect(drawn.commits(), 'a seleção mudou: um commit').toBe(mounted + 1);
     // another part of the state changes: no redraw
     const readsBefore = drawn.reads();
     const commitsBefore = drawn.commits();
     act(() => void dispatch(store, 'view.zoomIn', {}));
     expect(drawn.reads(), 'o zoom mudou e a vista da seleção não redesenha').toBe(readsBefore);
     expect(drawn.commits(), 'o zoom mudou e a vista da seleção não é comprometida').toBe(commitsBefore);
+    drawn.stop();
+  });
+});
+
+// A view of the app itself (the investigation's C8 asked the readers of the document, not a view written here): the
+// Layers panel, which reads the document and the selection, commits when the selection changes and not when only the
+// zoom does (DEF-0567).
+describe('quantas vezes o painel Camadas redesenha', () => {
+  it('a seleção muda e o painel redesenha; o zoom muda e o painel não redesenha', () => {
+    const store = storeOf();
+    const drawn = mount(store, createElement(LayersSection));
+    const mounted = drawn.commits();
+    expect(mounted, 'a montagem do painel é comprometida').toBeGreaterThan(0);
+    act(() => void dispatch(store, 'selection.select', { target: firstElement(store) }));
+    const selected = drawn.commits();
+    expect(selected, 'a seleção mudou: o painel redesenha').toBeGreaterThan(mounted);
+    act(() => void dispatch(store, 'view.zoomIn', {}));
+    act(() => void dispatch(store, 'view.zoomIn', {}));
+    expect(drawn.commits(), 'o zoom mudou duas vezes e o painel Camadas não redesenha').toBe(selected);
     drawn.stop();
   });
 });

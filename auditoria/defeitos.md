@@ -997,3 +997,16 @@
   - O caso exige que cada porta passe pelos dois desfechos, colada e recusada com o aviso.
 - **Detector:** o grupo `races` (MEC-11). Mutante M134 (a porta clicada lendo sem o `afterRead`, o código de antes do DEF-0513), acusado: "clique, select: colada em n-footer#1 (status.pasted.after), sem a corrida em n-hero#3".
 - **Verificação:** detectores 25 arquivos e 109 testes sem falha; os 134 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0567 — o contador de render conta só uma vista escrita no teste, e a testemunha de commits passa sem commit
+- **Status:** corrigido
+- **Citação:** `tools/runner/model/render.test.ts:63` `    expect(drawn.commits(), 'a seleção mudou: um commit').toBeGreaterThanOrEqual(1);`
+- **Causa:** a conferência dos commits na mudança da seleção pede pelo menos 1, mas a montagem já conta 1 commit, então ela passa mesmo que a seleção não produza commit nenhum. O grupo conta uma vista de seis linhas escrita no próprio teste e nenhuma vista do app; o C8 pedia contar os leitores do documento (verificação integral, grupo G, MEC-18, achado 1).
+- **Efeito:** das duas testemunhas que o registro do MEC-18 cita, só `reads` provava o redesenho; e uma vista do app que redesenhasse a cada publicação passaria.
+- **Alcance:** o grupo `render` (MEC-18).
+- **Arquivos da correção:** `tools/runner/model/render.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** a testemunha de commits exige exatamente um commit a mais que o da montagem. O grupo ganhou o caso "quantas vezes o painel Camadas redesenha", com o `LayersSection` de verdade: ele redesenha quando a seleção muda e não redesenha com duas mudanças de zoom.
+- **Detector:** o grupo `render` (MEC-18). Mutantes acusados:
+  - M135: o painel Camadas lê o estado do editor inteiro, e o caso do painel o acusa no zoom;
+  - M136: `useEditorState` sem assinar a store, e os dois casos o acusam.
+- **Verificação:** detectores 25 arquivos e 110 testes sem falha; os 136 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
