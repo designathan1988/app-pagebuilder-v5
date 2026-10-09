@@ -341,8 +341,15 @@ test('the east handle of a full-width element resizes from its whole box, even w
   const box = await boxOf(handle(page, E));
   if (box === null) throw new Error('the east handle is not drawn');
   const centre = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
-  // the premise: at its centre the drawn handle is clipped away and the stage lies under the pointer
-  expect(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.hasAttribute('data-canvas-stage') ?? false, centre), 'the stage lies under the handle centre').toBe(true);
+  // the premise: past the frame's right edge the drawn handle is clipped away and the stage lies under its centre;
+  // where the page's own scrollbar is drawn (Windows, E2E_SCROLLBARS=shown) the section ends that much short of the
+  // frame's edge, and the handle itself lies under its centre — either way the press below must resize (DEF-0576)
+  const under = await page.evaluate(({ x, y }) => {
+    const right = document.querySelector('.frame__page')?.getBoundingClientRect().right ?? 0;
+    const element = document.elementFromPoint(x, y);
+    return { past: x > right, stage: element?.hasAttribute('data-canvas-stage') ?? false, handle: element?.hasAttribute('data-resize-handle') ?? false };
+  }, centre);
+  expect(under.past ? under.stage : under.handle, under.past ? 'the stage lies under the handle centre, past the frame' : 'the handle lies under its centre, inside the frame').toBe(true);
   const zoom = await zoomOf(page);
   const before = await declared(page, 'n-hero');
   await page.mouse.move(centre.x, centre.y);

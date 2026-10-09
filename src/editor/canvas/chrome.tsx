@@ -731,7 +731,11 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
         const chipWidth = chipBox?.offsetWidth ?? 0;
         // the chip rests on the frame as the label does: taller than the label, it rises above the label's top
         const chipRise = Math.max(0, (chipBox?.offsetHeight ?? 0) - (size?.height ?? 0));
-        const key = JSON.stringify([first, size, tools, mode, edge, turn, chipWidth, chipRise, Math.round(origin.x), Math.round(origin.y), Math.round(origin.width), Math.round(origin.height)]);
+        // the breakpoint tabs attached to the page's top (D-1) are the editor's own: the label, the toolbar above it
+        // and the chip beside it never lie over them (clearedLabel; CLAUDE.md, rule G5). Part of the key: tabs that
+        // grow (their names in another language, DEF-0575) place the label again
+        const tabs = [...document.querySelectorAll(EDITOR_CONTROLS)].map((el) => local(el.getBoundingClientRect())).filter((b): b is Box => b !== null && b.width > 0 && b.height > 0);
+        const key = JSON.stringify([first, size, tools, mode, edge, turn, chipWidth, chipRise, Math.round(origin.x), Math.round(origin.y), Math.round(origin.width), Math.round(origin.height), tabs.map((b) => [Math.round(b.x), Math.round(b.width)])]);
         if (first === undefined || size === null) {
           placed = null;
           placedToolbar = null;
@@ -743,9 +747,6 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
           const gap = parseFloat(getComputedStyle(layer.current as HTMLDivElement).getPropertyValue('--space-1')) || 0;
           const content = contentBoxes(iframe).map((b) => local(b) as Box);
           pageText = content;
-          // the breakpoint tabs attached to the page's top (D-1) are the editor's own: the label, the toolbar above it
-          // and the chip beside it never lie over them (clearedLabel; CLAUDE.md, rule G5)
-          const tabs = [...document.querySelectorAll(EDITOR_CONTROLS)].map((el) => local(el.getBoundingClientRect())).filter((b): b is Box => b !== null && b.width > 0 && b.height > 0);
           const labelFrame = turn === 0 || first === undefined ? first : turnedFrame(first, turn, edge);
           const one = selectionLabelBox(labelFrame, size, edge, content);
           const spot = clearedLabel(one, labelFrame, edge, { above: Math.max(tools === null ? 0 : gap + tools.height, chipRise), width: Math.max(size.width + chipWidth, tools?.width ?? 0) }, tabs, content);
@@ -865,10 +866,11 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
     const stop = onPageChange(tick);
     // the arrangement is judged again whenever a control of the stage is drawn, removed or moved by its own component
     // (the anchor tabs, the chip, the panel, the bands draw after this layer: a judgement made before them left a
-    // resize handle under an anchor's tab, the complete run of 2026-10-06; arrangement.ts, DEC-75)
+    // resize handle under an anchor's tab, the complete run of 2026-10-06; arrangement.ts, DEC-75), and whenever a text
+    // of the stage changes, which changes its width (the breakpoint tabs' names in another language, DEF-0575)
     const stage = layer.current?.closest('[data-canvas-stage]');
     const drawn = new MutationObserver(tick);
-    if (stage) drawn.observe(stage, { subtree: true, childList: true, attributes: true, attributeFilter: ['style', 'class'] });
+    if (stage) drawn.observe(stage, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['style', 'class'] });
     return () => {
       cancelAnimationFrame(request);
       stop();

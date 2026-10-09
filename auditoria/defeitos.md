@@ -1164,3 +1164,15 @@
 - Sintoma: `tests/e2e/draft-recovery.spec.ts` "quick panel draft…" falhava de forma intermitente com a máquina ocupada: "the quick panel opens from its chip". O app está certo: depois da recarga, com o editor desenhado, o painel volta fechado (15 de 15, medido).
 - Causa: `tests/e2e/door.ts:169` `if ((await chip.count()) > 0) {` lê o chip sem esperar; logo depois da recarga ainda não há chip (0 chips e 0 rótulos em 15 de 15 com a CPU 6× lenta), e nada abre o painel. A asserção `await expect(field).toHaveCount(0);` do spec passava antes do desenho.
 - Prova: com a CPU 6× lenta (`Emulation.setCPUThrottlingRate`), 8 falhas em 15 antes; 30 de 30 depois de `openQuickPanel` esperar o chip e de o spec ler o painel fechado só com o chip desenhado.
+
+## DEF-0575 — o rótulo da seleção fica sobre a aba de breakpoint depois da troca de idioma
+- Status: corrigido (Lote 3)
+- Sintoma: com um elemento no topo da página selecionado, trocar a interface para pt-BR alarga as abas (a última termina em 695 px, antes em 678 px), e o rótulo continua em x=680, sobre a aba "Celular 390", até o ponteiro se mover (medido por 3 s). Visto na foto `12-door.png` do fluxo `smart-fields`.
+- Causa: `src/editor/canvas/chrome.tsx`, `useChromeLayout`: a chave que decide reposicionar o rótulo não tinha as caixas das abas, e o observador do palco não via mudança de texto (`characterData`), então nada reposicionava o rótulo quando as abas mudavam de largura.
+- Prova: caso "the label past the breakpoint tabs follows them when the language widens them (DEF-0575)" em `tests/e2e/selection-label-touches.spec.ts`. Sem a correção falha (`overTabs: true`); com ela passa. Os 12 specs do canvas passam nas duas condições.
+
+## DEF-0576 — a premissa do caso da alça leste vale só sem barra de rolagem visível
+- Status: corrigido (Lote 3)
+- Sintoma: `tests/e2e/resize-handles.spec.ts` "the east handle of a full-width element…" falhava 4 de 4 na condição Windows. O app está certo: a barra de rolagem da página (15 px) faz a seção terminar antes da borda da moldura, e o centro da alça é a própria alça, que recebe o clique.
+- Causa: `tests/e2e/resize-handles.spec.ts:345` exigia o palco sob o centro da alça em qualquer condição.
+- Prova: a premissa confere o palco quando o centro passa da moldura e a alça quando não passa. O spec deu 14 de 14 nas duas condições; antes, 4 falhas em 4 na condição Windows.

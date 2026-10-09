@@ -184,6 +184,16 @@ test('the breakpoint tabs stay attached to the frame’s top at every zoom and b
   }
 });
 
+// DEF-0575: the tabs' names in Portuguese are wider; the header's label, moved just past the last tab, moves past it
+// again as soon as the language changes, never left over the last tab until something else redraws the chrome
+test('the label past the breakpoint tabs follows them when the language widens them (DEF-0575)', runs(OPEN, ROW, 'preferences.setLanguage#menu-language-pt-br'), async ({ page }) => {
+  await select(page, 'c-header');
+  await expect.poll(() => clearOfTabs(page), { message: 'English' }).toEqual({ top: 0, chip: 0, overTabs: false });
+  await runDoor(page, 'preferences.setLanguage#menu-language-pt-br');
+  await expect(page.locator('[data-region="canvas-breakpoints"] button').filter({ hasText: 'Celular' })).toHaveCount(1);
+  await expect.poll(() => clearOfTabs(page), { message: 'Portuguese' }).toEqual({ top: 0, chip: 0, overTabs: false });
+});
+
 // DEC-70, the narrow element at the page's top: the logo lies under the tabs and is too narrow for the label and the
 // chip to move past them over it, so they stand just under it — the label's top on the frame's line below, its start on
 // the frame's left, the chip touching its right, neither over a tab
