@@ -70,7 +70,18 @@
 /* a field's type menu as wide as its longest type and its arrow, as the preview's type menus (DEF-0590): squeezed
    beside a field's name it read "Yes or" for "Yes or no" (DEF-0612); the name's field, free text, gives the room. The
    menus that list the fields (a filter, a sort) keep the row's room: their widest choice is a field's name; and the
-   new field's form keeps it too, where the name and Add field share the row (pressed to nothing beside the menu) */
+   new field's form keeps it too, where the name and Add field share the row (pressed to nothing beside the menu). The
+   type's box follows its menu, or the menu ran under the field's Delete; the name's box gives the room */
+.data-field--type {
+  flex: none;
+}
+
+/* the name's box beside it starts from nothing and takes the rest, so the row keeps the name, the type and Delete on
+   one line (a name's 76 px basis sent Delete under them) */
+.data-fields__row:has(> .data-field--type) > .data-field:not(.data-field--type) {
+  flex-basis: 0;
+}
+
 .data-field--type select.input {
   min-width: max-content;
 }

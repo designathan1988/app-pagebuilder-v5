@@ -1391,7 +1391,7 @@
 - Status: corrigido (Lote 10)
 - Sintoma: no painel Dados, depois de importar um CSV com uma coluna sim/não, o menu de tipo do campo ficava estreito ao lado do nome e cortava o texto.
 - Causa: `src/editor/data/panel.css`: o menu de tipo dividia a linha com o nome do campo (`flex: 1`), mais estreito que o tipo e a seta; agora o menu de tipo de cada campo (`.data-field--type`, em `grid.tsx`) tem a largura dos seus tipos. Os menus que listam campos (filtro, ordem) e o formulário de campo novo ficam como estão.
-- Prova: `paineis-cabem.spec.ts`, "a menu of a collection field shows its whole choice": falha sem a correção (76,5 < 94), passa nas duas condições.
+- Prova: `paineis-cabem.spec.ts`, "a menu of a collection field shows its whole choice": falha sem a correção (76,5 < 94), passa nas duas condições. Na primeira versão o menu cresceu e passou por baixo da lixeira do campo (seta coberta, foto 147); a caixa do tipo passou a acompanhar o menu, e o caso confere que nenhum controle da linha cruza o vizinho (falha sem isso: 226,5 > 213).
 
 ## DEF-0613 — com uma página de nome longo, os botões da barra de cima ficavam um sobre o outro
 - Status: corrigido (Lote 10)

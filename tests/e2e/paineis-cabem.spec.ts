@@ -240,6 +240,15 @@ test('a menu of a collection field shows its whole choice (DEF-0612)', async ({ 
     return drawn + 0.5 < natural ? [`${select.selectedOptions[0]?.textContent ?? ''}: ${drawn.toFixed(1)} < ${natural.toFixed(1)}`] : [];
   }));
   expect(short).toEqual([]);
+  // and no control of a field's row runs under its neighbour (the menu grown under the field's Delete)
+  const crossed = await page.locator('.data-fields__row').evaluateAll((rows) => rows.flatMap((row) => {
+    const controls = [...row.querySelectorAll('input, select, button')].map((one) => one.getBoundingClientRect()).filter((r) => r.width > 0).sort((a, b) => a.left - b.left);
+    return controls.slice(1).flatMap((now, i) => {
+      const before = controls[i];
+      return before !== undefined && now.top < before.bottom && before.top < now.bottom && now.left + 0.5 < before.right ? [`${before.right.toFixed(1)} > ${now.left.toFixed(1)}`] : [];
+    });
+  }));
+  expect(crossed).toEqual([]);
 });
 
 // DEF-0613: a page with a long name made the page switcher of the top bar 640 px wide at 1280, and the bar's actions
