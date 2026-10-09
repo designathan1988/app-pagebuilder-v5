@@ -124,17 +124,21 @@ const handlePoint = (handle: string, b: { x: number; y: number; width: number; h
 // read "resh coffee"). Along the other axis it stays centred on the edge's middle. Where the canvas in view ends at the
 // edge (a section as wide as the page, the page's top), a dot outside would be cut away with the layer: there it stays
 // centred on the edge, as before, half of it in view.
-const dotOutward = (side: string, box: Box, room: Box, need: number): Record<'--handle-dx' | '--handle-dy', string> => {
-  const before = (start: number, edge: number) => edge - start >= need;
-  const after = (end: number, edge: number) => end - edge >= need;
-  // past the dot's ring too (its outline, 1.5 px in canvas.css .chrome__handle::after)
-  const OUT_BEFORE = 'calc(-100% - 1.5px)';
-  const OUT_AFTER = '1.5px';
-  const CENTRED = '-50%';
+type Lie = 'before' | 'after' | 'centred';
+const dotLies = (side: string, box: Box, room: Box, need: number): { readonly x: Lie; readonly y: Lie } => {
+  const along = (start: boolean, end: boolean, edgeFrom: number, edgeTo: number, roomFrom: number, roomTo: number): Lie =>
+    start ? (edgeFrom - roomFrom >= need ? 'before' : 'centred') : end ? (roomTo - edgeTo >= need ? 'after' : 'centred') : 'centred';
   return {
-    '--handle-dx': side.includes('w') ? (before(room.x, box.x) ? OUT_BEFORE : CENTRED) : side.includes('e') ? (after(room.x + room.width, box.x + box.width) ? OUT_AFTER : CENTRED) : CENTRED,
-    '--handle-dy': side.includes('n') ? (before(room.y, box.y) ? OUT_BEFORE : CENTRED) : side.includes('s') ? (after(room.y + room.height, box.y + box.height) ? OUT_AFTER : CENTRED) : CENTRED,
+    x: along(side.includes('w'), side.includes('e'), box.x, box.x + box.width, room.x, room.x + room.width),
+    y: along(side.includes('n'), side.includes('s'), box.y, box.y + box.height, room.y, room.y + room.height),
   };
+};
+// the dot's ring (its outline, 1.5 px in canvas.css .chrome__handle::after): the dot lies past it too
+const DOT_RING = 1.5;
+const SHIFT: Record<Lie, string> = { before: `calc(-100% - ${DOT_RING}px)`, after: `${DOT_RING}px`, centred: '-50%' };
+const dotOutward = (side: string, box: Box, room: Box, need: number): Record<'--handle-dx' | '--handle-dy', string> => {
+  const lies = dotLies(side, box, room, need);
+  return { '--handle-dx': SHIFT[lies.x], '--handle-dy': SHIFT[lies.y] };
 };
 
 // How many siblings on each side of the selected element are measured for the handles: the ones sharing a handle's
@@ -806,7 +810,10 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
         // the zone move off and the handle come back, a frame each, for as long as the element stayed turned
         const keep = arranged.filter((one) => one.layer === 'chip' || one.layer === 'panel' || one.layer === 'handle' || one.layer === 'anchor').map((one) => one.box);
         const labels = arranged.filter((one) => one.layer === 'label').map((one) => one.box);
-        const rotate = single === undefined ? null : placeRotationZones(single, origin, zone, gapTo, spin, keep, labels, pageText);
+        // the zones stand their distance from the handles' dots, which lie wholly outside the element (dotOutward):
+        // a dot and its ring past the edge, beyond the half a centred dot took (the zone's glyph touched the east dot
+        // of a small button, DEF-0600)
+        const rotate = single === undefined ? null : placeRotationZones(single, origin, zone, gapTo, spin, keep, labels, pageText, gapTo + gapTo / 2 + DOT_RING);
         // the optional controls a press would not reach under what is drawn over them give way
         const yielded = [...yieldingAt([...stageRoot.querySelectorAll('[data-arrange-key]')], (x, y) => document.elementFromPoint(x, y), ARRANGED_SELECTOR)].sort();
         // the hovered element's size in CSS px, and, with Alt held, its distances to the one selected element

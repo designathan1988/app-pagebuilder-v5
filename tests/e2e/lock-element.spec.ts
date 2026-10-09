@@ -358,3 +358,23 @@ test('the lock survives an immediate reload and is in the saved project', runs(O
   const saved = JSON.parse((unzip(fs.readFileSync(await file.path())).get('project.json') as Buffer).toString('utf8')) as unknown;
   expect(saved).toEqual(locked);
 });
+
+// DEF-0602: a locked row drew the open lock, and a hidden row the open eye — the glyph of the state it was not in. A
+// toggle on draws its state's glyph (the manifest's pressedIcon): the closed lock and the crossed eye; off, the open
+// lock and the eye again.
+test('a locked row draws the closed lock and a hidden row the crossed eye', runs(OPEN, ROW, LOCK, EYE), async ({ page }) => {
+  const glyph = (ref: string, target: string) => control(page, ref, { args: { target } }).locator('use').getAttribute('href');
+  expect(await glyph(LOCK, 'n-card-c')).toBe('#lock-open');
+  expect(await glyph(EYE, 'n-card-b')).toBe('#eye');
+  await control(page, ROW, { args: { target: 'n-card-c' } }).hover();
+  await control(page, LOCK, { args: { target: 'n-card-c' } }).click();
+  await control(page, ROW, { args: { target: 'n-card-b' } }).hover();
+  await control(page, EYE, { args: { target: 'n-card-b' } }).click();
+  await expect(control(page, LOCK, { args: { target: 'n-card-c' } })).toHaveAttribute('aria-pressed', 'true');
+  expect(await glyph(LOCK, 'n-card-c'), 'locked: the closed lock').toBe('#lock');
+  expect(await glyph(EYE, 'n-card-b'), 'hidden: the crossed eye').toBe('#eye-off');
+  await control(page, ROW, { args: { target: 'n-card-c' } }).hover();
+  await control(page, LOCK, { args: { target: 'n-card-c' } }).click();
+  await expect(control(page, LOCK, { args: { target: 'n-card-c' } })).toHaveAttribute('aria-pressed', 'false');
+  expect(await glyph(LOCK, 'n-card-c'), 'unlocked again: the open lock').toBe('#lock-open');
+});

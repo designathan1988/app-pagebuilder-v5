@@ -615,6 +615,9 @@ const doorCommon = {
   // the icon its control shows; null for a key or a pointer gesture, a text-only control, or an item whose icon
   // comes from the item (an element's icon, a file's type). A toolbar door and an icon button always have one.
   icon: iconName.nullable(),
+  // the icon a toggle button shows while its state is on (a locked layer's closed lock, a hidden one's crossed eye);
+  // absent: its icon whatever the state (DEF-0602: a locked layer showed the open lock)
+  pressedIcon: iconName.optional(),
   disabledReasonKey: i18nKey,
   placement: placementSchema,
   adapter: adapterSchema,

@@ -164,7 +164,16 @@ export function placement(
     const up = locate(document, primary.parent.id);
     if (up) return { parent: up, index: primary.index + 1 };
   }
-  if (primary && rules.elements.get(primary.node.type)?.content === 'children') return { parent: primary, index: primary.node.children.length };
+  if (primary && rules.elements.get(primary.node.type)?.content === 'children') {
+    // a selected container that does not take the new element (a list takes only its items) is followed by it, as a
+    // leaf is, where its parent takes it: a table clicked with a list selected was refused, "<ul> only accepts <li>"
+    // (DEF-0601)
+    const up = incoming !== undefined && primary.parent ? locate(document, primary.parent.id) : null;
+    if (up && incoming !== undefined && placementRefusal(document, rules, primary.node.id, [incoming]) !== null && placementRefusal(document, rules, up.node.id, [incoming]) === null) {
+      return { parent: up, index: primary.index + 1 };
+    }
+    return { parent: primary, index: primary.node.children.length };
+  }
   if (primary?.parent) {
     const up = locate(document, primary.parent.id);
     if (up) return { parent: up, index: primary.index + 1 };

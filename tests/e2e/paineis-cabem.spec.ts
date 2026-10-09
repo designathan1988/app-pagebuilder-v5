@@ -123,3 +123,37 @@ test('a section header of the Inspector stays whole at the top while its rows sc
   });
   expect(covered).toBe('');
 });
+
+// DEF-0599: a Layers row's tag stands in the room its actions keep, so it takes none from the name; a long name still
+// sent it away ("Formulário c…" lost its "form", an empty end beside it). A row whose name is cut keeps its tag.
+test('a Layers row whose name is cut keeps its tag beside it (DEF-0599)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'project.open#menu-file');
+  await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync('manifest/features/fixtures/aurora.json') });
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-insert');
+  await control(page, 'selection.select#layers-row', { args: { target: 'n-card-a-title' } }).click();
+  // a deep element with a long name: the Form with fields, inserted in a card
+  const tile = page.locator('.sidebar [data-door="element.insert#elements-tile"]').filter({ hasText: 'Form with fields' });
+  await tile.scrollIntoViewIfNeeded();
+  await tile.click();
+  await page.mouse.move(1, 700);
+  // renamed long, as a person names a part of the page
+  const row = page.locator('.sidebar .row--tree.is-selected .row__name');
+  await expect(row).toHaveText('Form with fields');
+  await row.dblclick();
+  await page.keyboard.press('Control+A');
+  await page.keyboard.type('Sign-up form with every field');
+  await page.keyboard.press('Enter');
+  await expect(row).toHaveText('Sign-up form with every field');
+  await page.mouse.move(1, 700);
+  const bare = await page.locator('.sidebar .row--tree').evaluateAll((rows) => rows.flatMap((row) => {
+    const name = row.querySelector<HTMLElement>('.row__name');
+    const tag = row.querySelector<HTMLElement>('.row__meta');
+    if (name === null || tag === null || name.scrollWidth <= name.clientWidth + 0.5) return [];
+    return tag.offsetWidth > 0 ? [] : [`${name.textContent ?? ''} without its ${tag.textContent ?? ''}`];
+  }));
+  expect(bare).toEqual([]);
+  expect(await page.locator('.sidebar .row--tree .row__name').evaluateAll((names) => names.some((n) => n.scrollWidth > n.clientWidth + 0.5)), 'a name cut, as the case needs').toBe(true);
+});

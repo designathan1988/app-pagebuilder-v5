@@ -192,6 +192,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M141', file: 'src/i18n/locales/pt-BR.json', from: '"property.verticalAlign": "Posição vertical",', to: '"property.verticalAlign": "Alinhamento vertical",', breaks: 'o rótulo de vertical-align em pt-BR quebra em duas linhas no inspector (o texto de antes do DEF-0573)', source: 'DEF-0573', detectors: ['ui-fit'] },
   { id: 'M142', file: 'src/core/document/validate.ts', from: "bad(at === undefined ? '/pages' : `${at}/attributes/${orphan.attribute}`,", to: "bad('/pages',", breaks: 'a recusa de um arquivo com uma referência quebrada diz só "/pages", sem o elemento nem o atributo (o código de antes do DEF-0577)', source: 'DEF-0577', detectors: ['robustness'] },
   { id: 'M143', file: 'src/editor/persistence/autosave.ts', from: '    journalNow(true);\n', to: '    journalNow(draft);\n', breaks: 'a seleção feita logo antes de recarregar, com a gravação ociosa ainda pendente, some na recarga (o código de antes do DEF-0585)', source: 'DEF-0585', detectors: ['lifetime'] },
+  { id: 'M144', file: 'src/core/structure/insert.ts', from: "placementRefusal(document, rules, primary.node.id, [incoming]) !== null && placementRefusal", to: "false && placementRefusal", breaks: 'com uma lista selecionada, uma tabela clicada no Inserir é recusada ("<ul> só aceita <li>") em vez de entrar logo depois da lista (o código de antes do DEF-0601)', source: 'DEF-0601', detectors: ['structure'] },
 ];
 
 export const ALL_DETECTORS = ALL;

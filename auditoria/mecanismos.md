@@ -269,3 +269,6 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
   - `tools/runner/mutants.ts` — o grupo `canvas` e o mutante M87.
 - **Falhas de aceitação que precisa acusar:** DEF-0539.
 - **Mutantes:** M87, acusado.
+
+## MEC-25 — onde o Inserir põe o elemento com um contêiner que não o aceita
+- Caso novo no grupo `structure` (`tools/runner/model/structure.test.ts`): com a lista do Aurora selecionada, a tabela entra logo depois dela; com uma seção selecionada, o contêiner entra dentro. Acusa DEF-0601 (mutante M144).

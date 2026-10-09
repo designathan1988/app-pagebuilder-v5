@@ -1,6 +1,7 @@
 // A narrow window keeps the editor inside it (the code audit's U-010): at 1024 × 768 the window does not scroll
 // sideways — the panels keep their widths and the canvas toolbar scrolls within itself — and every breakpoint tab
 // stays reachable.
+import fs from 'node:fs';
 import { expect, test } from '../support/test.ts';
 import { openEditor } from '../support/editor.ts';
 import { control, openMenu, runDoor, runs } from './door.ts';
@@ -128,4 +129,33 @@ test('the canvas toolbar keeps its buttons names while they fit, in either langu
     await expect.poll(async () => { const now = await read(); return now.named === now.fits; }, { message: `${id} chosen at ${width}` }).toBe(true);
   }
   expect(await bar.evaluate((el) => el.scrollWidth <= el.clientWidth + 0.5), 'the bar holds its buttons').toBe(true);
+});
+
+// DEF-0603: a hint of the canvas toolbar (a drag's keys) shrank to an ellipsis beside the buttons' names. While a hint
+// shows cut, the names give it their room: the bar draws its icons alone; once the hint goes, the names come back.
+test('a hint of the canvas toolbar takes the room of the buttons names while it is cut', runs(INSERT), async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'project.open#menu-file');
+  await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync('manifest/features/fixtures/aurora.json') });
+  await runDoor(page, INSERT);
+  const bar = page.locator('.canvas-toolbar');
+  const state = () => bar.evaluate((el) => ({
+    named: [...el.querySelectorAll('.segmented .door__label')].every((label) => label.getBoundingClientRect().width > 0),
+    hints: [...el.querySelectorAll<HTMLElement>('.canvas-toolbar__hint')].map((hint) => hint.scrollWidth > hint.clientWidth + 0.5),
+  }));
+  expect((await state()).named, 'the names drawn before the drag').toBe(true);
+  // a Layers row dragged over another: the drag's hint shows
+  const from = await control(page, 'selection.select#layers-row', { args: { target: 'n-card-c' } }).boundingBox();
+  const to = await control(page, 'selection.select#layers-row', { args: { target: 'n-card-a' } }).boundingBox();
+  if (from === null || to === null) throw new Error('no rows');
+  await page.mouse.move(from.x + 40, from.y + from.height / 2);
+  await page.mouse.down();
+  for (let i = 1; i <= 12; i += 1) await page.mouse.move(from.x + 40, from.y + from.height / 2 + ((to.y + 3 - from.y - from.height / 2) * i) / 12);
+  await expect.poll(async () => (await state()).hints.length, { message: 'the drag hint shows' }).toBe(1);
+  await expect.poll(async () => { const now = await state(); return !now.hints.some(Boolean) || !now.named; }, { message: 'a cut hint has the names room' }).toBe(true);
+  await page.keyboard.press('Escape');
+  await page.mouse.up();
+  await expect.poll(async () => (await state()).named, { message: 'the names back once the hint goes' }).toBe(true);
 });

@@ -1937,6 +1937,10 @@
       "reader": "src/editor/doors/door.tsx"
     },
     {
+      "field": "commands:commands[].entryPoints[].pressedIcon",
+      "reader": "src/editor/doors/door.tsx"
+    },
+    {
       "field": "commands:commands[].entryPoints[].drawnAs",
       "reader": "src/editor/doors/door.tsx"
     },

@@ -222,6 +222,7 @@
 ## DCS-029 — DEC-70: rótulo e chip sobre o texto de cima (medido, para o dono decidir)
 - **Origem:** foto de uso de 2026-10-09: com o Intro selecionado, rótulo e chip cobrem "Welcome to Aurora".
 - **Medida (1280×720, escala 1,25, px CSS):** linha do título y 192–218; rótulo y 211–227 (7 px sobre a linha, de "Welcome t"); chip x 185–209, y 203–227 (15 px sobre o "o" de "to"); entre o título e o Intro, 11 px. Foto `auditoria/fotos/lote7/13-dec70-intro.png`.
+- **Outros casos vistos no Lote 8:** o rótulo do novo Título esconde "Monthly" inteiro (`auditoria/fotos/lote8/30-inserir-Titulo.png`); o da lista cobre o botão "Enviar" (`34-inserir-Naoordenada.png`); o do cartão renomeado "Cartão de assinatura mensal com desconto" esconde "Monthly" (`50-camadas-renomeado.png`). Quanto mais longo o nome e mais junto o elemento de cima, mais texto fica coberto.
 - **Decidido:** nada muda (DEC-70 é do dono). O rótulo já deixa passar o clique quando está sobre texto (`is-covering`).
 
 ## DCS-030 — o ponto da alça na borda da vista do canvas

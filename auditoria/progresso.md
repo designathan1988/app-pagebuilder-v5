@@ -92,8 +92,18 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - DEC-70 medida e registrada para o dono (DCS-029): rótulo 7 px e chip 15 px sobre "Welcome to Aurora".
   - Fotos em `auditoria/fotos/lote7/`. Specs da área (128) nas duas condições: 123 + 5 referências visuais atualizadas (as do Explorer ainda mostravam o "index.ht…" do DEF-0593); detectores 117 de 117; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
 
+- **Lote 8 (2026-10-09), Inserir e Camadas, uso real — feito:**
+  - DEF-0599: em Camadas um nome longo levava embora o tag e deixava um vazio ("Form…" sem "form").
+  - DEF-0600: o ícone de girar encostava no ponto da alça; a zona fica fora dos pontos (dentro do canto, a distância de antes).
+  - DEF-0601: com uma lista selecionada, tabela, abas, cartão, vídeo e modal eram recusados; agora entram logo depois da lista (M144).
+  - DEF-0602: a camada travada mostrava o cadeado aberto e a oculta o olho aberto (`pressedIcon` no manifesto).
+  - DEF-0603: a dica do arraste ficava cortada ao lado dos nomes da barra do canvas.
+  - Mais casos da DEC-70 na DCS-029 (rótulo sobre "Monthly", "Enviar", "Weekly").
+  - Uso: 13 peças de todos os grupos, 3 arrastes para o canvas, renomear com nome longo, ocultar, travar, reordenar arrastando, desfazer e refazer: documento, mensagens e histórico conferidos, sem erro de console nem incidente. Fotos em `auditoria/fotos/lote8/`.
+  - Specs da área (97) nas duas condições: 97 de 97 na Windows; na padrão, a rotação falhou numa zona de canto dentro de elemento baixo, corrigida (7 de 7) e `visual.spec` 14 de 14. Detectores 118 de 118; typecheck e lint sem erro.
+
 ## Próximo passo
-Sessão de uso real por área, começando por inserir e camadas (todos os grupos do Inserir, soltar em lugares diferentes, desfazer/refazer; renomear, reordenar, esconder e travar com nomes longos), nas duas condições.
+Sessão de uso real do inspector (Estilo, Configurações e Interações, campos com unidade, cor e menu, digitação no meio de uma troca de seleção) e do contexto (breakpoints, hover/focus, classes, quadros-chave), nas duas condições.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

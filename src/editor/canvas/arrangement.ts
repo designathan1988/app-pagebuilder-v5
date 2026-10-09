@@ -59,11 +59,12 @@ export const ROTATION_SIDES: readonly string[] = ['nw', 'ne', 'se', 'sw'];
 // distance outside its corner, held inside the canvas — inside the corner on a side where outside would leave the
 // canvas, at the canvas's edge when even the corner lies beyond it; then outside the corner beside its vertical side,
 // then beside its horizontal side, then inside the corner. Each place turns with the element about its centre (the
-// zone is round: turning it is moving it) and is held inside the canvas.
-export function rotationPlaces(element: Box, area: { readonly width: number; readonly height: number }, size: number, gap: number, side: string, rotation: number): readonly Point[] {
+// zone is round: turning it is moving it) and is held inside the canvas. `outward`: the distance of the places outside
+// the element, past the handles' dots (DEF-0600); `gap` the one inside the corner.
+export function rotationPlaces(element: Box, area: { readonly width: number; readonly height: number }, size: number, gap: number, side: string, rotation: number, outward = gap): readonly Point[] {
   const west = side.includes('w');
   const north = side.includes('n');
-  const outside = { x: west ? element.x - gap - size : element.x + element.width + gap, y: north ? element.y - gap - size : element.y + element.height + gap };
+  const outside = { x: west ? element.x - outward - size : element.x + element.width + outward, y: north ? element.y - outward - size : element.y + element.height + outward };
   const insideX = west ? element.x + gap : element.x + element.width - gap - size;
   const insideY = north ? element.y + gap : element.y + element.height - gap - size;
   const first = {
@@ -96,10 +97,10 @@ export function placeMovable(places: readonly Point[], size: number, keep: reado
 // The four zones of the one selected element, in ROTATION_SIDES order: each placed in turn, the zones placed before it
 // among the controls it leaves pressable.
 type Area = { readonly width: number; readonly height: number };
-export function placeRotationZones(element: Box, area: Area, size: number, gap: number, rotation: number, keep: readonly Box[], rather: readonly Box[], avoid: readonly Box[] = []): readonly (Point | null)[] {
+export function placeRotationZones(element: Box, area: Area, size: number, gap: number, rotation: number, keep: readonly Box[], rather: readonly Box[], avoid: readonly Box[] = [], outward = gap): readonly (Point | null)[] {
   const placed: Box[] = [];
   return ROTATION_SIDES.map((side) => {
-    const spot = placeMovable(rotationPlaces(element, area, size, gap, side, rotation), size, [...keep, ...placed], rather, avoid);
+    const spot = placeMovable(rotationPlaces(element, area, size, gap, side, rotation, outward), size, [...keep, ...placed], rather, avoid);
     if (spot !== null) placed.push({ x: spot.x, y: spot.y, width: size, height: size });
     return spot;
   });

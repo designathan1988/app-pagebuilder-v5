@@ -297,6 +297,7 @@
           "labelKey": "command.lock",
           "faceLabelKey": null,
           "icon": "lock-open",
+          "pressedIcon": "lock",
           "disabledReasonKey": "refusal.nothingSelected",
           "placement": {
             "region": "layers-row",
@@ -417,6 +418,7 @@
           "labelKey": "command.hideOnPage",
           "faceLabelKey": null,
           "icon": "eye",
+          "pressedIcon": "eye-off",
           "disabledReasonKey": "refusal.nothingSelected",
           "placement": {
             "region": "layers-row",

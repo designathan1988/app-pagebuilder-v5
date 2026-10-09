@@ -266,7 +266,8 @@ export function DoorControl({ entry, args = {}, children, expanded, className, l
   const drawnAs = d.kind === 'toolbar' || d.kind === 'panel-control' ? d.drawnAs : 'button';
   // a toggle button says whether its state is on (the door's pressed, manifest data)
   const pressed = toggle || ((d.kind === 'toolbar' || d.kind === 'panel-control') && d.pressed);
-  const iconName = ownIcon !== undefined ? ownIcon : d.icon;
+  // a toggle on shows its state's own icon where the manifest gives one (pressedIcon)
+  const iconName = ownIcon !== undefined ? ownIcon : pressed && door.current && d.pressedIcon !== undefined ? d.pressedIcon : d.icon;
   const icon = iconName !== null ? <Icon name={iconName} size={drawnAs === 'icon-button' ? 'md' : 'sm'} /> : null;
   const common = {
     type: 'button' as const,

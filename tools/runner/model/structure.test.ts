@@ -96,3 +96,27 @@ it('o aninhamento das tags: o validador recusa o que os comandos de colocação 
   expect(outcome.status, 'controls num vídeo dentro de um link é recusado').toBe('refused');
   expect(store.getState().document, 'o documento ficou como estava').toBe(before);
 });
+
+// DEF-0601: with a container selected that does not take the element clicked in the Insert panel (a list takes only
+// its items), the element goes right after the container, where its parent takes it, as after a leaf; a container
+// that takes it still holds it (control: a section takes a container).
+it('inserir com uma lista selecionada: o que ela não aceita vai logo depois dela; uma seção recebe dentro', () => {
+  const memory = () => ({ read: () => null, write: () => undefined });
+  const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: fixture('aurora'), selection: ['n-perks'] }, ports: { readOnly: () => false }, freeze: true });
+  const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
+  const parentOf = (id: string) => {
+    for (const page of store.getState().document.pages) for (const node of walk(page.tree)) if (node.children.some((child) => child.id === id)) return node;
+    return null;
+  };
+  const listParent = parentOf('n-perks');
+  if (listParent === null) throw new Error('no parent of n-perks');
+  const at = listParent.children.findIndex((child) => child.id === 'n-perks');
+  expect(dispatch('element.insert' as CommandId, { entry: 'template-table' }).status, 'uma tabela com a lista selecionada').toBe('done');
+  const table = store.getState().selection[0] ?? '';
+  expect(parentOf(table)?.id, 'a tabela fica no pai da lista').toBe(listParent.id);
+  expect(parentOf(table)?.children.findIndex((child) => child.id === table), 'logo depois da lista').toBe(at + 1);
+  expect(validateDocument(store.getState().document, [], MODEL_RULES)).toEqual([]);
+  expect(dispatch('selection.select' as CommandId, { target: 'n-hero' }).status).toBe('done');
+  expect(dispatch('element.insert' as CommandId, { entry: 'container' }).status).toBe('done');
+  expect(parentOf(store.getState().selection[0] ?? '')?.id, 'um contêiner com a seção selecionada fica dentro dela').toBe('n-hero');
+});

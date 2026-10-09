@@ -182,3 +182,40 @@ for (const angle of ['-30deg', '30deg', '-45deg']) {
     expect(frames[0]?.split(' | ')[1], 'no resize handle shown under another control').toBe('');
   });
 }
+
+// DEF-0600: the resize handles' dots lie wholly outside the element (DEF-0597), and a rotation zone placed a fixed
+// distance outside it touched them (the turn glyph against the east dot of a small button). A zone outside the element
+// stands clear of the band its dots take beyond the edge: the dot and its ring.
+test('a rotation zone outside the element stands clear of the handles dots', runs(OPEN, ROW, HANDLE), async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openEditor(page);
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, OPEN);
+  await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync(FIXTURE) });
+  const touching: string[] = [];
+  for (const id of ['n-title', 'n-card-a', 'n-card-c', 'n-perks', 'n-note']) {
+    await control(page, ROW, { args: { target: id } }).click();
+    await expect(page.locator('[data-canvas-overlay] [data-rotate-zone]').first()).toBeAttached();
+    touching.push(...(await page.evaluate((id) => {
+      const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
+      const element = iframe?.contentDocument?.querySelector(`[data-node="${id}"]`);
+      const dot = document.querySelector('.chrome__handle');
+      if (!iframe || !element) throw new Error(`no ${id} on the canvas`);
+      const f = iframe.getBoundingClientRect();
+      const r = element.getBoundingClientRect();
+      const z = iframe.currentCSSZoom;
+      const box = { left: f.left + r.left * z, top: f.top + r.top * z, right: f.left + r.right * z, bottom: f.top + r.bottom * z };
+      // the band a dot takes past the edge: its side and its ring on both sides
+      const after = dot === null ? null : getComputedStyle(dot, '::after');
+      const band = after === null ? 0 : parseFloat(after.width) + 2 * (parseFloat(after.outlineWidth) || 0);
+      return [...document.querySelectorAll('[data-canvas-overlay] [data-rotate-zone]')].flatMap((zone) => {
+        const q = zone.getBoundingClientRect();
+        const outside = q.right <= box.left || q.left >= box.right || q.bottom <= box.top || q.top >= box.bottom;
+        if (!outside) return [];
+        const gap = Math.max(box.left - q.right, q.left - box.right, box.top - q.bottom, q.top - box.bottom);
+        return gap + 0.5 < band ? [`${id} ${zone.getAttribute('data-rotate-zone') ?? ''}: ${gap.toFixed(1)} px from the edge, the dots take ${band.toFixed(1)}`] : [];
+      });
+    }, id)));
+  }
+  expect(touching).toEqual([]);
+});

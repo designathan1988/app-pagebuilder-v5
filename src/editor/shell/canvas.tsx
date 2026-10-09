@@ -134,20 +134,37 @@ function CanvasToolbar() {
   useLayoutEffect(() => {
     const element = bar.current;
     if (element === null) return;
+    // A hint shown (a drag's keys, the mode in force) is read whole beside the names, or the names give it their room:
+    // it shrinks to an ellipsis only where even the icons alone leave it short (DEF-0603: "Esc cancela ·…" while a
+    // layer was dragged, beside the names)
     const fit = () => {
       const drawnCompact = element.classList.contains('is-compact');
       element.classList.remove('is-compact');
-      const overflows = element.scrollWidth > element.clientWidth + 0.5;
+      const cut = [...element.querySelectorAll<HTMLElement>('.canvas-toolbar__hint')].some((hint) => hint.scrollWidth > hint.clientWidth + 0.5);
+      const overflows = cut || element.scrollWidth > element.clientWidth + 0.5;
       element.classList.toggle('is-compact', drawnCompact);
       setCompact(overflows);
     };
     fit();
-    // the bar's width, and its groups' widths: a group grows with no change of the bar's own (a hint shown), and is
-    // judged again; the names of another language change no width while they are hidden, so the language is a cause
+    // the bar's width, and its groups' widths: a group grows with no change of the bar's own, and is judged again; the
+    // names of another language change no width while they are hidden, so the language is a cause; and a hint that
+    // comes or goes is a child of its own, observed as it comes
     const observer = new ResizeObserver(fit);
-    observer.observe(element);
-    for (const child of element.children) observer.observe(child);
-    return () => observer.disconnect();
+    const watch = () => {
+      observer.disconnect();
+      observer.observe(element);
+      for (const child of element.children) observer.observe(child);
+    };
+    watch();
+    const children = new MutationObserver(() => {
+      watch();
+      fit();
+    });
+    children.observe(element, { childList: true });
+    return () => {
+      observer.disconnect();
+      children.disconnect();
+    };
   }, [toolsOpen, t]);
   return (
     <div ref={bar} className={`canvas-toolbar${compact ? ' is-compact' : ''}`} data-region="canvas-toolbar" data-key-context="toolbar">

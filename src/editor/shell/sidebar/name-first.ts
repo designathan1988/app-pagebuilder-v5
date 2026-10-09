@@ -31,9 +31,16 @@ export function fitNames(list: HTMLElement): void {
     }
     const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
     if (!('nameFirst' in row.dataset)) {
-      if (name.scrollWidth > name.clientWidth + TOLERANCE) {
-        // the details' width with the gaps before them: the room they take back
-        row.dataset.detailsWidth = String(details.filter((one) => one.offsetWidth > 0).reduce((sum, one) => sum + one.offsetWidth + gap, 0));
+      // the room the details take from the name: their width, their margins and the gaps before them. A Layers row's
+      // tag stands in the room its actions keep (its right margin is negative, sidebar.css .row--tree .row__meta):
+      // there it takes none, and its leaving gave the name nothing — "Form…" lost its "form" beside an empty end
+      // (DEF-0599)
+      const taken = details.filter((one) => one.offsetWidth > 0).reduce((sum, one) => {
+        const style = getComputedStyle(one);
+        return sum + one.offsetWidth + Math.max(0, parseFloat(style.marginLeft) || 0) + (parseFloat(style.marginRight) || 0) + gap;
+      }, 0);
+      if (name.scrollWidth > name.clientWidth + TOLERANCE && taken > TOLERANCE) {
+        row.dataset.detailsWidth = String(taken);
         row.dataset.nameFirst = '';
       }
       continue;

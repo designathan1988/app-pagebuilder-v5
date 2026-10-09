@@ -1308,3 +1308,33 @@
 - Sintoma: em "Todas as propriedades", depois de editar "Tamanho da fonte", "PINTURA" ficava pela metade no topo da lista, sob "Encontrar uma propriedade".
 - Causa: `src/editor/shell/inspector.css` `.inspector-section__header` rolava com as linhas; agora fica preso no topo enquanto a seção passa (`sticky`), e `scroll-padding-top` deixa o campo em foco abaixo dele. A guarda de tela passou a ler o que passa sob um cabeçalho preso como rolado, não coberto.
 - Prova: `paineis-cabem.spec.ts`, "stays whole at the top while its rows scroll under it": falha sem o `sticky` (Layout a −13 px), passa nas duas condições.
+
+## DEF-0599 — em Camadas, um nome longo levava embora o tag e deixava um vazio
+- Status: corrigido (Lote 8)
+- Sintoma: depois de inserir "Formulário com campos" num cartão, a linha mostrava "Form…" sem "form" e com espaço vazio à direita.
+- Causa: `src/editor/shell/sidebar/name-first.ts` `fitNames` escondia os detalhes quando o nome não cabia, mas em Camadas o tag fica no espaço reservado às ações (margem negativa) e não tira espaço do nome.
+- Prova: `paineis-cabem.spec.ts`, "keeps its tag beside it (DEF-0599)": falha sem a correção ("without its form"), passa nas duas condições.
+
+## DEF-0600 — o ícone de girar encostava no ponto da alça
+- Status: corrigido (Lote 8)
+- Sintoma: num botão pequeno, o ícone de girar ficava colado ao ponto leste ("□↻"); com o ponto desenhado fora (DEF-0597), a zona a 8 px da borda tocava os pontos.
+- Causa: `src/editor/canvas/chrome.tsx`: a distância da zona (`--space-4`) contava com o ponto centrado; agora soma o resto do ponto e o anel.
+- Prova: `rotation-handle.spec.ts`, "stands clear of the handles dots": falha com 8 px (as zonas a 8 px, os pontos ocupam 10), passa nas duas condições.
+
+## DEF-0601 — com uma lista selecionada, inserir uma tabela (ou abas, cartão, vídeo, modal) era recusado
+- Status: corrigido (Lote 8)
+- Sintoma: depois de inserir uma lista, clicar em Tabela 2 × 2 no Inserir dizia "Recusado. <ul> só aceita <li>." e nada entrava.
+- Causa: `src/core/structure/insert.ts` `placement` punha o elemento dentro de qualquer contêiner selecionado; agora, se o contêiner não o aceita e o pai aceita, entra logo depois dele, como depois de uma folha.
+- Prova: detector `structure`, "inserir com uma lista selecionada"; mutante M144.
+
+## DEF-0602 — a camada travada mostrava o cadeado aberto, e a oculta o olho aberto
+- Status: corrigido (Lote 8)
+- Sintoma: em Camadas, travar o CardC deixava na linha o cadeado aberto (pressionado), e ocultar um cartão deixava o olho aberto: o desenho dizia o estado oposto.
+- Causa: `manifest/commands/nodes.json`: o botão de alternância tinha um só ícone; agora `pressedIcon` (esquema em `src/manifest/schema.ts`) e `DoorControl` (`src/editor/doors/door.tsx`) desenham o do estado ligado.
+- Prova: `lock-element.spec.ts`, "draws the closed lock": falha sem a correção (`#lock-open`), passa nas duas condições.
+
+## DEF-0603 — a dica do arraste ficava cortada ao lado dos nomes da barra do canvas
+- Status: corrigido (Lote 8)
+- Sintoma: arrastando uma camada a 1280×720 com a barra lateral aberta, a barra mostrava "Tela / Dividido / Código" e a dica cortada em "↑↓ nível · Esc cancela ·…".
+- Causa: `src/editor/shell/canvas.tsx` `CanvasToolbar` media só a barra (a dica encolhe sem transbordar) e não via a dica chegar; agora a dica cortada também conta e a barra é medida de novo quando um filho entra ou sai. Com cinco teclas, a 1280 com a barra lateral, a dica ainda termina em reticências (texto inteiro no título).
+- Prova: `narrow-window.spec.ts`, "takes the room of the buttons names": falha sem a correção na condição Windows, passa nas duas.
