@@ -188,6 +188,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Falhas de aceitação que precisa acusar:** um atributo `on…` que atravessa a captura; um vetor que atravessa o sanitizador do SVG.
 - **Mutantes:** M60 (o filtro de eventos tirado da captura) e M61 (o filtro de eventos tirado do sanitizador do SVG), acusados.
 - **Tempo medido:** grupo `import` 2,5 s (7 casos, 23 vetores perigosos e 11 seguros).
+- **Acréscimo (2026-10-09, DEF-0550 e DEF-0551):** o describe "os atributos booleanos" — um documento salvo com o texto de um booleano é recusado, uma página importada guarda um booleano do HTML pela presença e o `aria-hidden` pela palavra, e a exportação escreve `aria-hidden="true"`. Mutantes M106 a M109, acusados. O grupo passou a 11 casos.
 
 ## MEC-17 — o que o app exige dos navegadores
 - **Capacidade:** C8 (as classes "isolamento do iframe", "postMessage" e "compatibilidade", sem navegador).

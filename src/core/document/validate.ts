@@ -247,6 +247,9 @@ const PAGE_FILE = /^([^/\\]+\/)*[^/\\]+\.html$/;
 export function attributeValueRefusal(name: string, value: unknown, rules: ModelRules): string | null {
   const facts = rules.attributeValues.get(name);
   if (facts === undefined || typeof value === 'boolean') return null;
+  // a boolean attribute is true or absent (core/elements/attributes.ts): the text "true" would be on for one reader and
+  // off for another, and the output would write it as a value (DEF-0550)
+  if (facts.valueType === 'boolean') return `${name} is true or absent, not "${String(value)}"`;
   const text = String(value);
   if (facts.valueType === 'number' && !Number.isFinite(Number(text))) return `${name} takes a number, not "${text}"`;
   if (facts.valueType === 'keyword' && facts.keywords.length > 0 && !facts.keywords.includes(text)) return `${name} is one of ${facts.keywords.join(', ')}, not "${text}"`;

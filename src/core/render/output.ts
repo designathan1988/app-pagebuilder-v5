@@ -8,6 +8,7 @@ import { codecOf } from '../style/codecs.ts';
 import { buttonKind, pageLanguage } from '../export/names.ts';
 import { isPageSetting } from '../page/settings.ts';
 import { viewBoxOf } from '../elements/svg.ts';
+import { writtenByWord } from '../elements/word-states.ts';
 
 // The manifest data the page's output needs, on the canvas and in the export: the elements, their attributes' HTML
 // names, the breakpoints, the states' pseudo-classes and the recipes.
@@ -210,8 +211,9 @@ export function elementAttributes(
       element.set('rel', 'noopener noreferrer');
       continue;
     }
-    // a boolean attribute is written by its name alone (true); a text attribute with an empty value keeps its ""
-    const written = value === true ? true : resolve(name, String(value));
+    // a boolean attribute is written by its name alone (true), a word state by the word (aria-hidden="true",
+    // core/elements/word-states.ts); a text attribute with an empty value keeps its ""
+    const written = value === true ? (writtenByWord(name) ? 'true' : true) : resolve(name, String(value));
     if (written === null) continue;
     (root && isPageSetting(model.appliesTo.get(id), node.type) ? page : element).set(name, written);
   }

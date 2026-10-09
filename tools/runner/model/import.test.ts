@@ -12,7 +12,11 @@ import { capturedProblems, unsafeCapturedAttribute, unsafeCapturedElement, type 
 import { sanitizedSvgMarkup } from '../../../src/core/elements/svg.ts';
 import { capturedHtml } from '../../../src/core/render/captured.ts';
 import { readProject } from '../../../src/core/project/archive.ts';
-import { previewPage } from '../../../src/core/export/export.ts';
+import { exportPage, previewPage } from '../../../src/core/export/export.ts';
+import { validateDocument } from '../../../src/core/document/validate.ts';
+import { importHtmlCommand } from '../../../src/core/import/import.ts';
+import { documentOf, runHandler } from '../../../src/core/testing/handlers.ts';
+import type { PickedFile } from '../../../src/generated/commands.ts';
 import { MODEL_RULES } from '../../../src/editor/store.ts';
 
 const HTML = 'http://www.w3.org/1999/xhtml';
@@ -199,5 +203,40 @@ describe('o que uma página importada pode carregar', () => {
       expect(read.markup).toContain('<rect');
       expect(read.markup).toContain('fill="#f00"');
     }
+  });
+});
+
+// A boolean attribute is true or absent (src/core/elements/attributes.ts), whatever road it took: a saved document
+// with its text ("true") is refused, so no reader has to guess (DEF-0550: the quick panel's switch read it as on and
+// the inspector's as off); an imported page keeps a boolean of HTML by its presence and a word state (aria-hidden) by
+// its word, as Chrome reads it; and the output writes a word state by its word, since aria-hidden="" hides nothing
+// (DEF-0551, src/core/elements/word-states.ts).
+describe('os atributos booleanos', () => {
+  const opened = (value: unknown) => {
+    const project = JSON.parse(fs.readFileSync('manifest/features/fixtures/aurora.json', 'utf8')) as { pages: { tree: { children: { attributes: Record<string, unknown> }[] } }[] };
+    const first = project.pages[0]?.tree.children[0];
+    if (first === undefined) throw new Error('a fixture aurora tem um elemento na primeira página');
+    first.attributes.ariaHidden = value;
+    return readProject(project, MODEL_RULES);
+  };
+
+  it('um documento salvo com o texto de um booleano é recusado, e com o booleano é lido', () => {
+    expect('document' in opened(true), 'o booleano verdadeiro').toBe(true);
+    for (const text of ['true', 'false', '']) expect('refused' in opened(text), `o texto "${text}"`).toBe(true);
+  });
+
+  it('a importação lê um booleano do HTML pela presença e um estado ARIA pela palavra, e a exportação o escreve pela palavra', () => {
+    const html = '<!doctype html><html><body aria-hidden="true"><p id="a" aria-hidden="false">a</p><p id="b" aria-hidden="">b</p><p id="c" aria-hidden="TRUE">c</p><p id="d" aria-hidden="undefined">d</p><p id="e" aria-hidden="yes">e</p><input id="f" disabled="false"></body></html>';
+    const file: PickedFile = { name: 'index.html', type: 'text/html', bytes: btoa(html) };
+    const ran = runHandler(importHtmlCommand, documentOf({ pages: [] }), { files: [file] }, { confirmed: true });
+    if (ran.outcome.kind !== 'change') throw new Error(JSON.stringify(ran.outcome));
+    const tree = ran.document.pages[0]?.tree;
+    if (tree === undefined) throw new Error('a importação fez uma página');
+    expect(validateDocument(ran.document, [], MODEL_RULES), 'o documento importado é válido').toEqual([]);
+    const byId = (id: string) => tree.children.find((one) => one.attributes.id === id)?.attributes;
+    const kept = { body: tree.attributes.ariaHidden, a: byId('a')?.ariaHidden, b: byId('b')?.ariaHidden, c: byId('c')?.ariaHidden, d: byId('d')?.ariaHidden, e: byId('e')?.ariaHidden, f: byId('f')?.disabled };
+    expect(kept, 'o que a importação guardou').toEqual({ body: true, a: undefined, b: undefined, c: true, d: undefined, e: true, f: true });
+    const exported = exportPage(ran.document, 0, MODEL_RULES).html;
+    expect(exported.match(/aria-hidden(="[^"]*")?/g), 'o aria-hidden escrito na exportação').toEqual(['aria-hidden="true"', 'aria-hidden="true"', 'aria-hidden="true"']);
   });
 });

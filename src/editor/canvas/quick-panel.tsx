@@ -209,7 +209,7 @@ function QuickField({ entry, node, context, twoColumn }: { readonly entry: DoorE
     if (facts.valueType === 'boolean') {
       const arg = Object.entries(args).find(([, written]) => written.type === 'boolean')?.[0];
       if (arg === undefined) return null;
-      const on = node.attributes[attribute] === true || node.attributes[attribute] === 'true';
+      const on = node.attributes[attribute] === true;
       return (
         <button
           type="button"

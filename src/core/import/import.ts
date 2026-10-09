@@ -43,6 +43,7 @@ import { followCssUrls } from '../files/references.ts';
 import { importDestination } from './destinations.ts';
 import { childrenRefusal } from '../elements/content-model.ts';
 import { readAddress } from '../elements/address.ts';
+import { booleanFromHtml } from '../elements/word-states.ts';
 import { sanitizedSvgMarkup } from '../elements/svg.ts';
 import { fileBytes, pickedFilePath, resolveHref, typeOfFile } from '../files/files.ts';
 import { rewriteSrcsetUrls } from '../files/srcset.ts';
@@ -656,6 +657,8 @@ function build(child: MarkupChild, builder: Builder, ancestors: readonly string[
     const id = attributeNamed(html, type, rules);
     if (id !== null) {
       const facts = rules.attributeValues.get(id);
+      // a boolean by its presence, a word state by its word (core/elements/word-states.ts): aria-hidden="false" is off
+      if (facts?.valueType === 'boolean' && booleanFromHtml(html, value) === null) continue;
       const kept = facts?.valueType === 'boolean' ? true : facts?.valueType === 'number' ? Number(value) : facts?.valueType === 'url' ? (importedPath(builder, value) ?? value) : html === 'srcset' ? rewriteSrcsetUrls(value, address => importedPath(builder, address) ?? address) : value;
       if (attributeValueRefusal(id, kept, rules) !== null) {
         if (builder.mode === 'import') builder.report.attributes.push(line);
@@ -1610,8 +1613,12 @@ function pageFrom(file: PickedFile, builder: Builder): Page {
       continue;
     }
     const id = attributeNamed(html, rules.root.type, rules);
-    if (id !== null && attributeValueRefusal(id, value, rules) === null) {
-      attributes = { ...attributes, [id]: value };
+    // a boolean is kept as the model keeps it, true or absent, never as its text (DEF-0550, DEF-0551)
+    const boolean = id !== null && rules.attributeValues.get(id)?.valueType === 'boolean';
+    if (boolean && booleanFromHtml(html, value) === null) continue;
+    const kept = boolean ? true : value;
+    if (id !== null && attributeValueRefusal(id, kept, rules) === null) {
+      attributes = { ...attributes, [id]: kept };
       continue;
     }
     if (customAttributeRefusal(html, rules) === null && customAttributeValueRefusal(html, value) === null) customAttributes = { ...customAttributes, [html]: value };
