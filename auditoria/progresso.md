@@ -121,8 +121,10 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - Conferidos no uso: exportação com classe acentuada e hover (CSS e HTML certos), prévia com a interação de classe (alterna nos cliques), os cinco menus, paleta de comandos, Verificações, troca de idioma com digitação pendente (gravada), página nova, componente e instância, importação de CSV com vírgula decimal e sim/não.
   - Specs da área nas duas condições: padrão 62 de 62 (depois de um ajuste de "index.html" que a referência do Explorer pegou); Windows 61 de 62 — a falha (`preview-mode.spec.ts:81`, `h1` da prévia lido cedo demais com a máquina ocupada) passou 3 de 3 sozinha nas duas condições. Detectores 124 de 124; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
 
+- **Fim da etapa dos lotes 7 a 10 (2026-10-09):** catálogo inteiro de mutantes, 152, com 149 acusados e 3 equivalentes com motivo (M19, M25, M30), 100 % dos não equivalentes, em 294 s. A suíte inteira de navegador não rodou: o pedido do dono desta rodada a proíbe; cada lote rodou os specs da sua área nas duas condições.
+
 ## Próximo passo
-Fim de etapa: o catálogo inteiro de mutantes e a suíte inteira de navegador, uma vez, na condição padrão (CLAUDE.md, seção 0); falhou algo, só o que falhou nas duas condições.
+Decisões do dono pendentes: DEC-70 (rótulo e chip sobre o texto de cima, DCS-029), o ponto da alça na borda da página e sobre o vizinho (DCS-030), o texto vazio com valor próprio (DCS-031) e a agulha perto do quadro-chave (DCS-033). Depois, nova sessão de uso: movimento (painel Movimento e comportamentos) e o quadro de `onUp` sob carga (`otimizacoes.md`).
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".
