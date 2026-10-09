@@ -5497,6 +5497,11 @@
             "Alt"
           ],
           "optional": true
+        },
+        "targets": {
+          "type": "nodes",
+          "values": [],
+          "optional": true
         }
       },
       "availability": {
@@ -10160,6 +10165,11 @@
           "type": "json",
           "values": [],
           "optional": true
+        },
+        "targets": {
+          "type": "nodes",
+          "values": [],
+          "optional": true
         }
       },
       "availability": {
@@ -10446,6 +10456,11 @@
         },
         "span": {
           "type": "integer",
+          "values": [],
+          "optional": true
+        },
+        "targets": {
+          "type": "nodes",
           "values": [],
           "optional": true
         }

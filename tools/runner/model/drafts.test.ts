@@ -250,3 +250,33 @@ describe('o fecho do painel rápido com a digitação pendente', () => {
     });
   }
 });
+
+// The band's value belongs to the elements it was typed for (rule G1: the context includes the elements): the selection
+// changed with the focus still in the field keeps the value at once, on the element of the first key (DEF-0530).
+describe('a banda digitada e a seleção que muda', () => {
+  it('a seleção muda com o foco na banda: o valor vai ao elemento da primeira tecla (G1)', async () => {
+    const store = storeOf();
+    const first = firstElement(store);
+    const drawn = CASES[1]?.mount(store);
+    if (drawn === undefined) throw new Error('no band case');
+    const input = drawn.host.querySelector('input') as HTMLInputElement;
+    type(input, '12');
+    const tree = store.getState().document.pages[0]?.tree;
+    const other = tree === undefined ? undefined : [...walk(tree)].find((n) => n.id !== first && n.type !== MODEL_RULES.root.type)?.id;
+    act(() => void dispatch(store, 'selection.select', { target: other }));
+    await settle();
+    const padding = (id: string | undefined) => JSON.stringify([...walk(store.getState().document.pages[0]?.tree ?? (tree as never))].find((n) => n.id === id)?.styles ?? {});
+    expect(padding(first), 'o elemento da primeira tecla recebeu o valor').toContain('"padding-top":"12px"');
+    expect(padding(other), 'o elemento selecionado depois não recebeu o valor').not.toContain('"padding-top":"12px"');
+    drawn.stop();
+  });
+
+  it('todo comando de estilo de um campo toma os elementos para que o valor foi digitado (targets)', () => {
+    // the doors a person types a style value into: the inspector's fields, the quick panel's and the canvas's handles
+    // (a band's typed field); a command bound to one node by its own `target` has its element already
+    const typedInto = manifest.doors.filter((d) => d.command.id.startsWith('style.') && ['inspector-field', 'quick-panel', 'canvas-handle'].includes(d.door.kind));
+    expect(typedInto.length, 'a conferência alcança as portas de campo de estilo').toBeGreaterThan(200);
+    const missing = [...new Set(typedInto.filter((d) => !('targets' in d.command.args) && !('target' in d.command.args)).map((d) => d.command.id))];
+    expect(missing, 'comandos de campo de estilo sem targets: o campo descartaria a digitação ou gravaria noutro elemento').toEqual([]);
+  });
+});

@@ -11,7 +11,7 @@ import { message, registerHandler } from '../commands/registry.ts';
 import { locate } from '../document/model.ts';
 import type { ModelRules } from '../document/validate.ts';
 import { commandOf, manifest, numberConstantAt } from '../../manifest/runtime.ts';
-import { propertyName, readValue, shownText, writeStyle } from './set.ts';
+import { propertyName, readValue, shownText, withTargets, writeStyle } from './set.ts';
 import { storedValue } from './stored.ts';
 import { argumentRefused } from '../store/args.ts';
 
@@ -113,10 +113,14 @@ function editedTracks(held: string | undefined, edit: TrackEdit): string | { rea
   return withTrackSet(held, edit.track, edit.value);
 }
 
-export const setGridTracksCommand = registerHandler('style.setGridTracks', (context, { property, track, value, edit }) => {
+export const setGridTracksCommand = registerHandler('style.setGridTracks', (given, { property, track, value, edit, targets }) => {
   if (typeof property !== 'string' || (typeof track !== 'number' && (typeof edit !== 'object' || edit === null || Array.isArray(edit)))) {
     return { kind: 'refused', message: argumentRefused(typeof property !== 'string' ? 'property' : 'track') };
   }
+  // the elements its value was typed for, when a press selected another before the field kept it (set.ts
+  // withTargets; DEF-0530)
+  const context = withTargets(given, targets);
+  if (context === null) return { kind: 'change' };
   const { state, rules } = context;
   const primary = state.selection[0] === undefined ? null : locate(state.document, state.selection[0]);
   if (primary === null) return { kind: 'change' };

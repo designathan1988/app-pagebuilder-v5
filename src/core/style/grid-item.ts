@@ -6,7 +6,7 @@
 import { message, registerHandler } from '../commands/registry.ts';
 import { locate, type DocNode } from '../document/model.ts';
 import type { ModelRules } from '../document/validate.ts';
-import { longhandValues, propertyName, readValue, writeStyle } from './set.ts';
+import { longhandValues, propertyName, readValue, withTargets, writeStyle } from './set.ts';
 import { storedValue } from './stored.ts';
 import { argumentRefused } from '../store/args.ts';
 
@@ -39,10 +39,14 @@ function gridItemValue(now: { readonly start: number | null; readonly span: numb
   return first === '' ? `span ${String(nextSpan)}` : `${first} / span ${String(nextSpan)}`;
 }
 
-export const setGridItemCommand = registerHandler('style.setGridItem', (context, { property, start, span }) => {
+export const setGridItemCommand = registerHandler('style.setGridItem', (given, { property, start, span, targets }) => {
   if (typeof property !== 'string' || (start !== undefined && typeof start !== 'number') || (span !== undefined && typeof span !== 'number')) {
     return { kind: 'refused', message: argumentRefused(typeof property !== 'string' ? 'property' : typeof start !== 'number' && start !== undefined ? 'start' : 'span') };
   }
+  // the elements its value was typed for, when a press selected another before the field kept it (set.ts
+  // withTargets; DEF-0530)
+  const context = withTargets(given, targets);
+  if (context === null) return { kind: 'change' };
   const { state, rules } = context;
   const primary = state.selection[0] === undefined ? null : locate(state.document, state.selection[0]);
   if (primary === null) return { kind: 'change' };

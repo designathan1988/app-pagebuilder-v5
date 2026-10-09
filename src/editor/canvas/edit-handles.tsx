@@ -238,9 +238,12 @@ export function TypedBand({ entry, box, value }: { readonly entry: DoorEntry; re
   // the text the field holds, kept at every key: the registry may keep it after the field left the page, when its input
   // is gone (DEF-0526)
   const typed = useRef(String(value));
+  // the elements selected at the first key: the value goes to them, whatever is selected when it is kept (G1, DEF-0530)
+  const typedFor = useRef<readonly string[] | null>(null);
   // the band's command with the text the field holds, in the context the typing began in when the registry keeps it
   const write = (context?: EditContext) => {
-    (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, { ...entry.door.args, ...stands, [valueArg(entry)]: typed.current }, context);
+    const args = { ...entry.door.args, ...stands, [valueArg(entry)]: typed.current, ...(typedFor.current === null ? {} : { targets: [...typedFor.current] }) };
+    (store.dispatch as (id: CommandId, a: unknown, c?: EditContext) => DispatchResult)(entry.command.id as CommandId, args, context);
   };
   const writeHeld = useRef<(context: EditContext) => void>(() => undefined);
   useEffect(() => {
@@ -274,6 +277,7 @@ export function TypedBand({ entry, box, value }: { readonly entry: DoorEntry; re
         spellCheck={false}
         onInput={(event) => {
           typed.current = event.currentTarget.value;
+          typedFor.current ??= store.getState().selection;
           held.current?.typed();
         }}
         onBlur={() => {

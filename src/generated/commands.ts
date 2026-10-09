@@ -301,7 +301,7 @@ export interface CommandArgs {
   "element.wrapContainer": Record<string, never>;
   "element.wrapGrid": Record<string, never>;
   "style.set": { readonly property: StyleTargetId; readonly value: string; readonly targets?: readonly NodeId[] };
-  "style.setSpacing": { readonly box: "padding" | "margin"; readonly sides: "all" | "top" | "right" | "bottom" | "left"; readonly value: string; readonly modifier?: "Shift" | "Alt" };
+  "style.setSpacing": { readonly box: "padding" | "margin"; readonly sides: "all" | "top" | "right" | "bottom" | "left"; readonly value: string; readonly modifier?: "Shift" | "Alt"; readonly targets?: readonly NodeId[] };
   "inspector.toggleSpacingLink": { readonly box: "padding" | "margin" };
   "style.setBorder": { readonly sides: "all" | "top" | "right" | "bottom" | "left"; readonly width?: string; readonly style?: string; readonly color?: string; readonly targets?: readonly NodeId[] };
   "style.setRadius": { readonly corners: "all" | "top-left" | "top-right" | "bottom-right" | "bottom-left"; readonly value: string; readonly targets?: readonly NodeId[] };
@@ -318,8 +318,8 @@ export interface CommandArgs {
   "field.scrub": { readonly property: StyleTargetId; readonly value: string; readonly distance: number; readonly modifier?: "Shift" | "Alt" };
   "field.setUnit": { readonly property: StyleTargetId; readonly value: string; readonly unit: string };
   "field.cancel": { readonly property: StyleTargetId };
-  "style.setGridTracks": { readonly property: StyleTargetId; readonly track?: number; readonly value?: string; readonly edit?: JsonValue };
-  "style.setGridItem": { readonly property: StyleTargetId; readonly start?: number; readonly span?: number };
+  "style.setGridTracks": { readonly property: StyleTargetId; readonly track?: number; readonly value?: string; readonly edit?: JsonValue; readonly targets?: readonly NodeId[] };
+  "style.setGridItem": { readonly property: StyleTargetId; readonly start?: number; readonly span?: number; readonly targets?: readonly NodeId[] };
   "grid.enterEdit": { readonly target?: NodeId };
   "grid.exitEdit": Record<string, never>;
   "grid.addTrack": { readonly property: StyleTargetId };

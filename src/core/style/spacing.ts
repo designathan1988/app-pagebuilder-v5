@@ -10,14 +10,18 @@ import { message, registerHandler, type Outcome } from '../commands/registry.ts'
 import { locate, type NodeId } from '../document/model.ts';
 import type { Patch } from '../history/transaction.ts';
 import { firstLockRefusal } from '../nodes/flags.ts';
-import { propertyName, readValue, styleHolders, writeDeclarations } from './set.ts';
+import { propertyName, readValue, styleHolders, withTargets, writeDeclarations } from './set.ts';
 
 // the box whose negative values the browser never takes, refused with their own word
 const NO_NEGATIVE = 'padding';
 // whether a box's sides may be negative (a margin; a padding never)
 export const mayBeNegative = (box: string): boolean => box !== NO_NEGATIVE;
 
-export const setSpacingCommand = registerHandler('style.setSpacing', (context, { box, sides, value }): Outcome<never> => {
+export const setSpacingCommand = registerHandler('style.setSpacing', (given, { box, sides, value, targets }): Outcome<never> => {
+  // the elements its value was typed for, when a press selected another before the field kept it (set.ts
+  // withTargets; DEF-0530)
+  const context = withTargets(given, targets);
+  if (context === null) return { kind: 'change' };
   const { state, rules } = context;
   const composite = rules.compositeFacts.get(box);
   if (composite === undefined) throw new Error(`style.setSpacing: ${box} is no box composite of properties.json`);

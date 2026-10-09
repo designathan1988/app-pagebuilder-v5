@@ -984,8 +984,9 @@ export function TextStyleField({
         const now = store.getState().selection;
         const same = now.length === targets.length && now.every((id, i) => id === targets[i]);
         // a press that selected another element: the value goes to the elements it was typed for (the command's
-        // targets, as style.set's: the audit's FD1); a command that takes none keeps it only on the same selection
-        if (!same && (targets.length === 0 || !('targets' in entry.command.args))) return;
+        // targets, as style.set's: the audit's FD1); every style command of a field takes them (DEF-0530), and one
+        // that does not is refused with words by its argument check, never dropped here
+        if (!same && targets.length === 0) return;
         (store.dispatch as Dispatch)(entry.command.id, same ? args : { ...args, targets: [...targets] }, context);
       });
     };
