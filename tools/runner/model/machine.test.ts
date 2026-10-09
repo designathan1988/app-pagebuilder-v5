@@ -1,8 +1,9 @@
 // The machines of the editor against their map (the investigation's C3 and C6; tools/map/): the gesture machine's
 // table, run from the code, is the one manifest/generated/behavior.json holds (run its generator,
 // tools/map/generate.ts, when the code changed it); every combination the machine ignores is declared with why; and
-// the rules the owner decided hold: the same pointer pressed again with its gesture open (its release lost)
-// cancels the open gesture and opens the new one (decisoes.md, DCS-013); another pointer does not join it.
+// the rules the owner decided hold: a pointer pressed with a gesture open, the same one (its release lost) or another,
+// cancels the open gesture and opens the new one (decisoes.md, DCS-013; DEF-0556); another pointer's moves and
+// release do not join it.
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { IDLE, step, type Press } from '../../../src/editor/input/pointer/machine.ts';
@@ -25,13 +26,17 @@ describe('as máquinas do editor e o mapa gerado', () => {
     expect(Object.keys(IGNORED_ON_PURPOSE).filter((c) => !ignored.includes(c)), 'declarada como ignorada e a máquina faz algo').toEqual([]);
   });
 
-  it('o mesmo ponteiro apertado de novo com o gesto aberto cancela o gesto e abre o novo (DCS-013)', () => {
+  it('um ponteiro apertado com o gesto aberto, o mesmo ou outro, cancela o gesto e abre o novo (DCS-013)', () => {
     for (const phase of ['pressed', 'dragging'] as const) {
       const open = { phase, pointer: 1, start: { x: 0, y: 0 }, press } as const;
-      const again = step(open, { type: 'down', pointer: 1, at: { x: 9, y: 9 }, press });
-      expect(again.effect, `${phase} + down do mesmo ponteiro`).toBe('restart');
-      expect(again.machine).toEqual({ phase: 'pressed', pointer: 1, start: { x: 9, y: 9 }, press });
-      expect(step(open, { type: 'down', pointer: 2, at: { x: 9, y: 9 }, press })).toEqual({ machine: open, effect: null });
+      for (const pointer of [1, 2]) {
+        const again = step(open, { type: 'down', pointer, at: { x: 9, y: 9 }, press });
+        expect(again.effect, `${phase} + down do ponteiro ${pointer}`).toBe('restart');
+        expect(again.machine).toEqual({ phase: 'pressed', pointer, start: { x: 9, y: 9 }, press });
+      }
+      // the moves and the release of another pointer do not join the open gesture
+      expect(step(open, { type: 'move', pointer: 2, at: { x: 90, y: 90 } })).toEqual({ machine: open, effect: null });
+      expect(step(open, { type: 'up', pointer: 2 })).toEqual({ machine: open, effect: null });
     }
     expect(step(IDLE, { type: 'down', pointer: 1, at: { x: 0, y: 0 }, press }).effect).toBe('press');
   });

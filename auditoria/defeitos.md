@@ -799,3 +799,25 @@
   - `npm run typecheck` e `npm run lint` com saída 0;
   - os testes unitários de `src/core/store`, `src/editor/store.test.ts` e `src/editor/input`: 75 de 75;
   - os testes de navegador da barra de comandos e dos arrastes (`command-bar`, `drag-level-keys-escape`, `drag-selection`, `drag-reorder-canvas`, `E2E_WORKERS=2`, prioridade baixa): 23 de 23.
+## DEF-0556 — a máquina de gestos e a tabela gerada ignoram o toque de outro ponteiro com o gesto aberto, que a DCS-013 manda cancelar e recomeçar
+- **Status:** corrigido
+- **Citação:** `src/editor/input/pointer/machine.ts:90` `  if (event.type === 'down' || event.pointer !== machine.pointer) return { machine, effect: null };` e `tools/map/gesture-table.ts:41` `  'pressed + down(p2)': 'another pointer (a second finger, a pen) does not join the gesture',`
+- **Causa:** a DCS-013 responde à pergunta D-E do relatório da investigação (`auditoria/investigacao/relatorio.md`, "Um segundo `down` com o gesto aberto") com a opção (2), cancelar o gesto aberto e começar o novo, sem distinguir o ponteiro. A correção do DEF-0510 a aplicou só ao mesmo ponteiro (efeito `restart`). Para outro ponteiro a máquina devolve `null`, a tabela gerada o declara ignorado de propósito, e o detector `machine` afirma que "outro ponteiro não entra". O dono do ponteiro faz outra coisa: cancela o gesto aberto em todo `down` enquanto há um ponteiro pressionado (`src/editor/input/pointer/events.ts:52`, `pointerPressing()`). Fonte: verificação integral, grupo A, DEF-0510, achado 2.
+- **Efeito:**
+  - a tabela gerada (`manifest/generated/behavior.json` e `.md`) descreve um comportamento que o dono do ponteiro não tem;
+  - quando o pressionado já caiu (o `up` de outro ponteiro), o toque de outro ponteiro passa pela máquina, que o ignora: o gesto do primeiro fica aberto e o toque novo não abre o seu.
+- **Alcance:** a máquina de gestos (`step`), a tabela gerada e o caso DCS-013 do grupo `machine`.
+- **Arquivos da correção:** `src/editor/input/pointer/machine.ts`, `tools/map/gesture-table.ts`, `manifest/generated/behavior.json`, `manifest/generated/behavior.md`, `tools/runner/model/machine.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** a fase da máquina de gestos (`ps.machine`).
+- **Correção:**
+  - A máquina (`step`, `src/editor/input/pointer/machine.ts`) devolve `restart` para todo `down` com o gesto aberto, do mesmo ponteiro ou de outro, e o toque novo abre o seu gesto. Os movimentos e a soltura de outro ponteiro continuam fora do gesto.
+  - O dono do ponteiro já cancelava nesse caso, e o `lost` dele (`events.ts`), que pergunta à máquina, passa a valer também quando o pressionado já caiu.
+  - As duas combinações saíram da lista do que é ignorado de propósito (`tools/map/gesture-table.ts`), e a tabela foi regerada (`node tools/map/generate.ts`): `pressed --> pressed : down(p2) / restart` e `dragging --> pressed : down(p2) / restart`.
+- **Detector:** o grupo `machine` (MEC-06). O caso DCS-013 passou a exigir `restart` do ponteiro 1 e do 2, e que o movimento e a soltura do 2 não entrem. A tabela gravada é conferida contra o código. Mutantes acusados:
+  - M119: a máquina restrita ao mesmo ponteiro, o código de antes;
+  - M36, com o trecho atualizado para a linha nova.
+- **Verificação:**
+  - detectores 25 arquivos e 99 testes sem falha;
+  - os 119 trechos do catálogo no código;
+  - `npm run typecheck` e `npm run lint` com saída 0;
+  - os testes de navegador de ponteiro (`pointer`, `marquee-select`, `edicao-pendente`, `drag-selection`, `drag-level-keys-escape`, `E2E_WORKERS=2`, prioridade baixa): 39 de 39.

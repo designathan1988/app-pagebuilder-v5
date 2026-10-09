@@ -70,8 +70,8 @@ export type MachineEvent =
   | { readonly type: 'cancel' };
 
 // what the owner does on a transition: open the gesture's transaction and run the press's door, start the drag of
-// the press's source, commit the transaction, or cancel it; or, the same pointer pressed again while its gesture is
-// open (its release was lost), cancel the open gesture and open the new press's (decisoes.md, DCS-013)
+// the press's source, commit the transaction, or cancel it; or, a pointer pressed while a gesture is open (the same
+// one, its release lost, or another), cancel the open gesture and open the new press's (decisoes.md, DCS-013)
 export type Effect = 'press' | 'drag' | 'commit' | 'cancel' | 'restart' | null;
 
 export const IDLE: Machine = { phase: 'idle' };
@@ -82,12 +82,13 @@ export function step(machine: Machine, event: MachineEvent, dragThreshold = DRAG
     if (event.type !== 'down') return { machine, effect: null };
     return { machine: { phase: 'pressed', pointer: event.pointer, start: event.at, press: event.press }, effect: 'press' };
   }
-  // the same pointer pressed again with its gesture open: its release never came; the open gesture ends, cancelled, and
-  // the new press begins (DCS-013, as Excalidraw's maybeCleanupAfterMissingPointerUp ends the gesture a lost
-  // pointerup left)
-  if (event.type === 'down' && event.pointer === machine.pointer) return { machine: { phase: 'pressed', pointer: event.pointer, start: event.at, press: event.press }, effect: 'restart' };
-  // another pointer (a second finger, a pen) does not join the gesture
-  if (event.type === 'down' || event.pointer !== machine.pointer) return { machine, effect: null };
+  // a pointer pressed with a gesture open, the same one (its release never came) or another (a second finger, a pen):
+  // the open gesture ends, cancelled, and the new press begins (DCS-013, the owner's D-E: "a second down with the
+  // gesture open", whatever its pointer, as the pointer owner cancels it, events.ts onDown; as Excalidraw's
+  // maybeCleanupAfterMissingPointerUp ends the gesture a lost pointerup left; DEF-0556)
+  if (event.type === 'down') return { machine: { phase: 'pressed', pointer: event.pointer, start: event.at, press: event.press }, effect: 'restart' };
+  // another pointer's moves and release do not join the gesture
+  if (event.pointer !== machine.pointer) return { machine, effect: null };
   if (event.type === 'up') return { machine: IDLE, effect: 'commit' };
   if (machine.phase === 'pressed' && Math.hypot(event.at.x - machine.start.x, event.at.y - machine.start.y) >= dragThreshold) {
     return { machine: { ...machine, phase: 'dragging' }, effect: 'drag' };

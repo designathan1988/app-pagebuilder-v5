@@ -62,7 +62,7 @@
           "phase": "pressed",
           "event": "down(p2)",
           "next": "pressed",
-          "effect": null
+          "effect": "restart"
         },
         {
           "phase": "pressed",
@@ -109,8 +109,8 @@
         {
           "phase": "dragging",
           "event": "down(p2)",
-          "next": "dragging",
-          "effect": null
+          "next": "pressed",
+          "effect": "restart"
         },
         {
           "phase": "dragging",
@@ -175,10 +175,6 @@
           "why": "nothing is open to cancel"
         },
         {
-          "combination": "pressed + down(p2)",
-          "why": "another pointer (a second finger, a pen) does not join the gesture"
-        },
-        {
           "combination": "pressed + move(p1, below the threshold)",
           "why": "below drag.threshold a press stays a press (a click)"
         },
@@ -189,10 +185,6 @@
         {
           "combination": "pressed + up(p2)",
           "why": "another pointer does not end the gesture"
-        },
-        {
-          "combination": "dragging + down(p2)",
-          "why": "another pointer does not join the gesture"
         },
         {
           "combination": "dragging + move(p1, below the threshold)",

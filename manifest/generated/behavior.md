@@ -8,10 +8,12 @@ stateDiagram-v2
   idle --> pressed : down(p1) / press
   idle --> pressed : down(p2) / press
   pressed --> pressed : down(p1) / restart
+  pressed --> pressed : down(p2) / restart
   pressed --> dragging : move(p1, at the threshold) / drag
   pressed --> idle : up(p1) / commit
   pressed --> idle : cancel / cancel
   dragging --> pressed : down(p1) / restart
+  dragging --> pressed : down(p2) / restart
   dragging --> idle : up(p1) / commit
   dragging --> idle : cancel / cancel
 ```
@@ -24,11 +26,9 @@ Ignored on purpose:
 - idle + up(p1): a release with no press (pressed outside the window): nothing to end
 - idle + up(p2): a release with no press: nothing to end
 - idle + cancel: nothing is open to cancel
-- pressed + down(p2): another pointer (a second finger, a pen) does not join the gesture
 - pressed + move(p1, below the threshold): below drag.threshold a press stays a press (a click)
 - pressed + move(p2): another pointer does not join the gesture
 - pressed + up(p2): another pointer does not end the gesture
-- dragging + down(p2): another pointer does not join the gesture
 - dragging + move(p1, below the threshold): the drag follows the pointer through its owner (events.ts onMove), which draws it; the machine stays dragging
 - dragging + move(p1, at the threshold): the drag follows the pointer through its owner, which draws it; the machine stays dragging
 - dragging + move(p2): another pointer does not join the gesture
