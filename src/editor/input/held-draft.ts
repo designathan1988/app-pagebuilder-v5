@@ -27,14 +27,16 @@ export function heldDraft(
   command: CommandId,
   keep: RefObject<(context: EditContext) => void>,
 ): HeldDraft {
-  const holding = (): HTMLElement | null => {
-    const element = field.current;
-    return element !== null && heldTyping()?.field === element ? element : null;
-  };
+  // The element the typing was held for, kept from its first key: when the field goes, React has already let go of the
+  // field's ref by the time the effect's cleanup runs (refs are detached in the commit, before the cleanups of the
+  // passive effects), so the field's own element is the only way the leave still finds its typing (DEF-0526).
+  let typedIn: HTMLElement | null = null;
+  const holding = (): HTMLElement | null => (typedIn !== null && heldTyping()?.field === typedIn ? typedIn : null);
   return {
     typed: () => {
       const element = field.current;
-      if (element === null || holding() !== null) return;
+      if (element === null || holding() === element) return;
+      typedIn = element;
       const context = editContextOf(store.getState());
       holdTyping({ field: element, region: region.current ?? element, context, owns: (id) => id === command, keep: () => keep.current(context) });
     },

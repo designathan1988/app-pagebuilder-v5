@@ -148,6 +148,17 @@ describe('os campos de valor contra o registro de pendências e o tratador', () 
       expect(one.kept(store), `${one.name}: o campo perdeu o foco e o valor digitado não foi gravado`).toBe(true);
       drawn.stop();
     });
+    // the field goes with its typing pending and the focus still in it: the dialog closed by its Escape, the panel or
+    // the band unmounted (DEF-0526)
+    it(`${one.name}: o valor digitado é gravado quando o campo sai da página (G2)`, async () => {
+      const store = storeOf();
+      const drawn = one.mount(store);
+      const input = one.input(drawn.host);
+      type(input, one.typed);
+      drawn.stop();
+      await settle();
+      expect(one.kept(store), `${one.name}: o campo saiu da página e o valor digitado não foi gravado`).toBe(true);
+    });
   }
 
   it('Enter com texto vazio ou não numérico chega ao tratador, que recusa com aviso (G3)', async () => {

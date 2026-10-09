@@ -417,3 +417,15 @@
 - **Detector:** o grupo `import`: cinco atributos de animação na lista dos que executam (`values` com um item, `to`, `from`, `by`), três valores comuns na lista dos que ficam, e dois vetores no corpus do SVG (`0&#59javascript:` e `0&#x3bjavascript:`). Mutantes M71 (a captura sem a conferência, o código de antes) e M72 (o sanitizador dividindo antes de decodificar, o código de antes), acusados.
 - **Verificação:** a mesma do DEF-0524.
 
+## DEF-0526 — um campo de valor que sai da página com a digitação pendente não a grava
+- **Status:** corrigido
+- **Citação:** no código de antes, `src/editor/input/held-draft.ts:31` `    const element = field.current;` (a saída procurava a digitação pela ref do campo) e `src/editor/canvas/edit-handles.tsx:240` `    const text = input.current?.value ?? '';` (a banda lia o texto do campo na hora de gravar).
+- **Causa:** o ponto único `heldDraft` (DEF-0514) achava a digitação do campo por `field.current`; quando o campo sai da página, o React solta as refs no commit, antes de rodar a limpeza dos efeitos passivos, então a limpeza que chama `left()` achava `null` e não gravava. A banda digitada, além disso, lia o texto de `input.current` na hora da gravação, e gravava `''`.
+- **Efeito:** no diálogo Guias e grades, 7 em Colunas e Esc: o diálogo fecha sem gravar, e o 7 entra no documento no próximo comando sem relação; um campo de painel que sai da página só grava no toque seguinte; a banda digitada que sai da página perde o valor e o comando seguinte mostra a recusa `status.value.invalid`. Fere a G2 ("um painel fecha": o registro grava antes). Achado pelos verificadores B e F da verificação integral.
+- **Alcance:** os três campos de `heldDraft`: o campo de painel (`PanelField`), a banda digitada (`TypedBand`) e os campos de valor das grades (`GridField`).
+- **Itens de estado tocados:** o registro de digitação (`src/editor/input/pending.ts`, `held`), sem mudança de forma.
+- **Arquivos da correção:** `src/editor/input/held-draft.ts`, `src/editor/canvas/edit-handles.tsx`, `tools/runner/model/drafts.test.ts`, `tools/runner/mutants.ts`.
+- **Correção:** `heldDraft` guarda o elemento segurado desde a primeira tecla e acha a digitação por ele (`src/editor/input/held-draft.ts:34` `  const holding = (): HTMLElement | null => (typedIn !== null && heldTyping()?.field === typedIn ? typedIn : null);`); a banda guarda o texto a cada tecla e grava esse texto (`src/editor/canvas/edit-handles.tsx:243`). Pesquisa: a ordem do commit do React 19 (as refs soltas na fase de mutação, antes da limpeza dos efeitos passivos), conferida pelo verificador C em `react-dom-client.development.js` da versão instalada (19.3.0).
+- **Detector:** o grupo `drafts` (MEC-12): o caso novo "o valor digitado é gravado quando o campo sai da página (G2)", nos três campos (digita e desmonta, sem tirar o foco). Mutantes M73 (a saída pela ref, o código de antes; acusado nos três campos) e M74 (a banda lendo o campo, o código de antes; acusado na banda); sem mutante, 13 de 13.
+- **Verificação:** detectores 22 arquivos e 66 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
+
