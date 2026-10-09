@@ -243,10 +243,18 @@ export const lengthPercentage = registerCodec('length-percentage', {
   },
 });
 
+// a text in lower case for its ASCII letters only, as CSS compares its identifiers (CSS Values 4, 4.1)
+function asciiLower(text: string): string {
+  return text.replace(/[A-Z]/g, (letter) => letter.toLowerCase());
+}
+
 const keyword = registerCodec('keyword', {
+  // a keyword is read ASCII case-insensitively and kept in the spelling the property lists (CSS Values 4, 4.1:
+  // pointer-events' visiblePainted; DEF-0561: the typed text in lower case never met it)
   read(text, facts) {
-    const typed = text.trim().toLowerCase();
-    return facts.keywords.includes(typed) ? { kind: 'keyword', keyword: typed } : null;
+    const typed = asciiLower(text.trim());
+    const found = facts.keywords.find((one) => asciiLower(one) === typed);
+    return found === undefined ? null : { kind: 'keyword', keyword: found };
   },
   write(value) {
     return value.kind === 'keyword' ? value.keyword : '';

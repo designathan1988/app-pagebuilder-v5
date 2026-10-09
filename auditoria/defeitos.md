@@ -863,3 +863,53 @@
 - **Correção:** o caso lê pelo `readProject` a fixture aurora rotulada como versão 3, com `__proto__` e `constructor` na raiz e `__proto__` num nó, como o `JSON.parse` os dá (chaves próprias). Exige que não lance, que `Object.prototype` fique como estava e que um documento lido tenha o protótipo comum, sem nada herdado do arquivo.
 - **Detector:** o grupo `robustness` (MEC-13). Mutante M121, acusado ("o documento lido tem o protótipo comum: expected { polluted: 'yes' }").
 - **Verificação:** detectores 25 arquivos e 99 testes sem falha; os 123 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0560 — o grupo `fields` prova o registro dos codecs dos longhands sem unidade, não a aceitação
+- **Status:** corrigido
+- **Citação:** `tools/runner/model/fields.test.ts:48` `    for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured && c.units.length > 0)) {`
+- **Causa:** o laço de ida e volta e de aceitação só roda nas propriedades com unidades. Os quatro longhands de grade (`grid-line`) e os dois de transição (`property-list`, `keyword-list`) do DEF-0509 ficam fora dele, assim como toda propriedade de palavra-chave. Um codec registrado que recusasse todo texto passaria pelos casos do grupo (verificação integral, grupo A, DEF-0509, achado 2).
+- **Efeito:** o caso novo de aceitação, rodado sobre o código de hoje, achou o DEF-0561. Com o mutante M124 (o codec `grid-line` registrado e recusando todo texto), os casos de antes passam.
+- **Alcance:** a prova do DEF-0509 e de toda propriedade sem unidade no grupo `fields` (MEC-05).
+- **Arquivos da correção:** `tools/runner/model/fields.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o caso "toda palavra-chave que uma propriedade oferece e a sintaxe aceita é lida, com ou sem unidades" (`tools/runner/model/fields.test.ts`). Em toda propriedade registrada, toda palavra-chave da lista do contrato que a sintaxe do lexer aceita tem de ser lida por `readValue`, com um piso de 50 palavras conferidas para o caso não ficar vazio.
+- **Detector:** o grupo `fields` (MEC-05). Mutante M124 (o codec `grid-line` registrado e recusando todo texto), acusado pelo caso novo; com o grupo de antes (`git stash` do arquivo do teste), 6 de 6 passaram com ele.
+- **Verificação:** detectores 25 arquivos e 101 testes sem falha; os 126 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0; os testes de navegador dos campos (`field-refusal`, `field-history`, `inspector-number-fields`, `inspector-fields`, `number-fields-one-rule`, `draft-recovery`, `quick-panel`, `edicao-pendente`, `font-menu-draft`, `E2E_WORKERS=2`, prioridade baixa): 73 de 73.
+## DEF-0561 — o campo de `pointer-events` recusa `visiblePainted`, `visibleFill` e `visibleStroke`, que ele mesmo oferece
+- **Status:** corrigido
+- **Citação:** `src/core/style/codecs.ts:248` `    const typed = text.trim().toLowerCase();` e `src/core/style/codecs.ts:249` `    return facts.keywords.includes(typed) ? { kind: 'keyword', keyword: typed } : null;`
+- **Causa:** o codec `keyword` põe o texto em minúsculas e o procura na lista de palavras-chave da propriedade. A lista guarda a grafia da especificação, e três valores de `pointer-events` têm maiúsculas no meio (`visiblePainted`, `visibleFill`, `visibleStroke`). O texto em minúsculas nunca casa com eles. Pelo CSS Values and Units 4, seção 4.1 ("Keywords are identifiers and are interpreted ASCII case-insensitively"), a comparação é sem diferenciar maiúsculas em ASCII dos dois lados.
+- **Efeito:** o campo `pointer-events` do inspector (`style.set#inspector-pointer-events`) oferece esses três valores na lista gerada (`src/generated/value-lists.ts`, `offers.list: "generated"`), e escolher ou digitar qualquer um deles é recusado. Medido pelo caso novo do DEF-0560: `readValue` dá `null` para os três.
+- **Alcance:** toda propriedade de codec `keyword` cuja lista tem uma palavra-chave com maiúscula; hoje, os três valores de `pointer-events`.
+- **Arquivos da correção:** `src/core/style/codecs.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o codec `keyword` compara sem diferenciar maiúsculas em ASCII dos dois lados e guarda a grafia da lista (`src/core/style/codecs.ts`, `asciiLower`): `VISIBLEFILL` é lido como `visibleFill`. Pesquisa: CSS Values and Units 4, seção 4.1, lida em 2026-10-09.
+- **Detector:** o caso de aceitação do DEF-0560. Mutante M125 (a comparação exata de antes), acusado.
+- **Verificação:** detectores 25 arquivos e 101 testes sem falha; os 126 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0; os testes de navegador dos campos (`field-refusal`, `field-history`, `inspector-number-fields`, `inspector-fields`, `number-fields-one-rule`, `draft-recovery`, `quick-panel`, `edicao-pendente`, `font-menu-draft`, `E2E_WORKERS=2`, prioridade baixa): 73 de 73.
+- **No app** (`pointer-events.mjs` no scratchpad da sessão), no campo `pointer-events` do inspector, com o título selecionado:
+  - **antes da correção** (build sem ela): `visiblePainted` recusado ("não é um valor aceito por este campo");
+  - **depois:** `visiblePainted`, `VISIBLEFILL` (gravado `visibleFill`) e `none` gravados, e o estilo calculado do elemento acompanha (`visiblepainted`, `visiblefill`, `none`).
+
+  O roteiro do antes mostrou também o DEF-0562.
+## DEF-0562 — depois de uma recusa, a primeira tecla digitada no campo some
+- **Status:** corrigido
+- **Citação:** `src/editor/shell/field.tsx:612` `  const said = useEditorState((s) => (draft.current.typed && s.message !== draft.current.message ? s.message ?? CLEARED_MESSAGE : null));` e `src/editor/shell/field.tsx:633` `  }, [shown, said, t, store]);` (o mesmo par em `:973`/`:1048` e `:1545`/`:1561`)
+- **Causa:** o seletor `said` vale a mensagem da store quando ela chega com digitação não gravada, e o efeito que depende dele devolve ao campo o valor do documento (a regra FD2: depois de uma mudança, o campo mostra o documento). O efeito marca `typed = false` dentro dele, mas o valor memorizado de `said` continua com a mensagem. Na tecla seguinte o campo redesenha (o `dismiss` da recusa ao lado do campo), o seletor é avaliado com `typed` de volta a `true` e a mesma mensagem, e passa a `null`. O efeito toma essa volta por uma mensagem nova e roda de novo, apagando a tecla. Medido no Chrome com um registro temporário das dependências do efeito (`recusa-deps.mjs` no scratchpad da sessão). Na recusa, `said` vale `status.value.invalid`. Na tecla `1`, `said` vale `null`, e o efeito roda outra vez com `shown`, `t` e `store` iguais. A pilha da escrita de `value` aponta o corpo do efeito (`recusa-pilha.mjs`).
+- **Efeito:** no app (`recusa-passos.mjs`, `recusa-largura.mjs`, `recusa-depois.mjs`), num campo do inspector:
+  - depois de um valor recusado (`abc` em Largura), a próxima digitação perde a primeira tecla: `120px` grava `20px`;
+  - no campo de palavra-chave (`pointer-events`), `none` vira `"one"` e é recusado de novo, e cada recusa repete o defeito;
+  - depois da segunda recusa, o Ctrl+A também não seleciona, e `200px` vira `"20px00px"`.
+
+  Fere a G2 (digitação nunca some).
+- **Alcance:** os três campos que seguram digitação no registro de pendências: o campo numérico (`NumberField`), o campo de texto de estilo (o componente da linha 973) e o campo de texto do elemento (o da linha 1545).
+- **Arquivos da correção:** `src/editor/shell/field.tsx`, um detector, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** o rascunho de cada campo (`draft.current`), local ao componente.
+- **Correção:** o ponto único `useMessagesWhileTyping` (`src/editor/shell/field.tsx`) substitui o seletor nos três campos.
+  - Ele assina a store e conta uma mensagem que chega com digitação não gravada, marcando-a como vista.
+  - A contagem só cresce, e o efeito que devolve ao campo o valor do documento depende dela: a recusa ainda devolve o valor do documento, e a tecla seguinte não muda a contagem.
+  - O símbolo `CLEARED_MESSAGE` saiu: uma mensagem apagada é uma mudança como outra.
+- **Detector:** o grupo `drafts` (MEC-12), caso "as teclas digitadas depois de um valor recusado chegam inteiras ao comando". Usa o painel rápido de verdade e o keymap, com o campo da largura digitado tecla a tecla. A primeira tecla substitui o texto selecionado: `abc` e Enter (recusado), `120px` e Enter; `xyz` e Enter, `64px` e Enter. Mutante M126 (o seletor de antes), acusado com o efeito medido no navegador: "depois de \"abc\" recusado, \"120px\" digitado gravou 20px".
+- **Verificação:** detectores 25 arquivos e 101 testes sem falha; os 126 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0; os testes de navegador dos campos (`field-refusal`, `field-history`, `inspector-number-fields`, `inspector-fields`, `number-fields-one-rule`, `draft-recovery`, `quick-panel`, `edicao-pendente`, `font-menu-draft`, `E2E_WORKERS=2`, prioridade baixa): 73 de 73.
+- **No app** (`recusa-largura.mjs` e `recusa-depois.mjs` no scratchpad da sessão, build corrigido):
+  - na Largura, `abc` recusado e depois `120px` grava `120px`; `xyz` recusado e depois `200px` grava `200px`;
+  - em `pointer-events`, `xyz` recusado e depois `none` grava `none`; `abc` recusado e depois `visiblePainted` grava `visiblePainted`;
+  - nenhum erro de página.

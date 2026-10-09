@@ -56,8 +56,6 @@ import { compactFieldValue, FieldOriginBadge, FieldValueSlot, useFieldAppearance
 import { restoreFieldDraft } from '../persistence/drafts.ts';
 import { DRAFT_KEPT, markFieldKept, recordFieldInput } from '../input/drafts.ts';
 import { heldTyping, holdTyping, keepTyping, releaseTyping } from '../input/pending.ts';
-// A cleared status is still a change for a field with typing pending; one stable value keeps the store snapshot pure.
-const CLEARED_MESSAGE = Symbol('cleared field message');
 import { floatBelow, type Placed } from './float.ts';
 import { onPageChange } from '../canvas/page-clock.ts';
 import { VariableSuggestions } from './variable-suggestions.tsx';
@@ -164,6 +162,27 @@ export function usePageValues(node: NodeId | null, properties: readonly string[]
     };
   }, [node, properties]);
   return read !== null && read.node === node ? read.values : null;
+}
+
+// How many messages arrived while the field held typing not kept: a change elsewhere (an undo, a refusal, another
+// command's word, a cleared status) during the typing, after which the field shows the document's value again (the
+// audit's FD2). A count that only grows, read once per store change: the key typed after the field showed the
+// document again is never taken for another arrival (DEF-0562: a selector's value went back to null at that key, the
+// field's effect took the change for a new message and wiped the key).
+function useMessagesWhileTyping(draft: RefObject<{ typed: boolean; message: EditorState['message'] }>): number {
+  const store = useStore();
+  const [arrived, setArrived] = useState(0);
+  useEffect(
+    () =>
+      store.subscribe(() => {
+        const now = store.getState().message;
+        if (!draft.current.typed || now === draft.current.message) return;
+        draft.current.message = now;
+        setArrived((count) => count + 1);
+      }),
+    [store, draft],
+  );
+  return arrived;
 }
 
 // The refusal of the field's own command, said beside the field (spec inspector-number-fields, Problems in Pager 3):
@@ -609,7 +628,7 @@ export function NumberField({ entry, door, property, label, bare = false, labell
   const valueLabel = useValueLabel();
   const variables = useTokenSuggestions(property);
   const tokens = [...variables, ...presetsOf(entry)];
-  const said = useEditorState((s) => (draft.current.typed && s.message !== draft.current.message ? s.message ?? CLEARED_MESSAGE : null));
+  const said = useMessagesWhileTyping(draft);
   const available = door.available && primary !== null;
   const input = useRef<HTMLInputElement>(null);
   // whether the person typed since the field last showed the document's value: the field's own draft, never document
@@ -970,7 +989,7 @@ export function TextStyleField({
   const parts = useMemo(() => longhands ?? [property], [longhands, property]);
   const t = useT();
   const { effective, held, mixed, appearance, shown, placeholder, set, anyStored } = useStyleFieldValue(property, parts, part);
-  const said = useEditorState((s) => (draft.current.typed && s.message !== draft.current.message ? s.message ?? CLEARED_MESSAGE : null));
+  const said = useMessagesWhileTyping(draft);
   // Enter in a field of its own form (a command of its own, or a part) and leaving any field keep the text the same way
   const own = ownCommand || part !== null;
   const keepText = useRef<(text: string, targets: readonly string[], context?: EditContext) => void>(() => undefined);
@@ -1542,7 +1561,7 @@ export function TextField({ entry, node, label, keepOnLeave = true }: { readonly
   const field = useRef<HTMLTextAreaElement>(null);
   // whether the person typed since the field last showed the document's text: the field's own draft, never document
   // state
-  const said = useEditorState((s) => (draft.current.typed && s.message !== draft.current.message ? s.message ?? CLEARED_MESSAGE : null));
+  const said = useMessagesWhileTyping(draft);
   const stored = node.text ?? '';
   const target = node.id;
   const command = entry.command.id;

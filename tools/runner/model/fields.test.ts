@@ -77,6 +77,24 @@ describe('os contratos dos campos de valor', () => {
     expect(breaks.slice(0, 12)).toEqual([]);
   });
 
+  // The acceptance of the properties with no unit too (the grid lines, the transition lists: DEF-0509's longhands,
+  // whose codecs the loop above never reaches; DEF-0560): every keyword a property offers that its syntax takes is
+  // read, so a codec registered that refuses every text is accused, not only a codec that is missing.
+  it('toda palavra-chave que uma propriedade oferece e a sintaxe aceita é lida, com ou sem unidades', () => {
+    const context = contextOf(storeOn());
+    const refused: string[] = [];
+    let read = 0;
+    for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured)) {
+      for (const keyword of contract.keywords) {
+        if (matchImplemented(contract.property, keyword) !== null) continue;
+        read += 1;
+        if (readValue(context, contract.property, keyword) === null) refused.push(`${contract.property} (codec ${contract.codec}): "${keyword}"`);
+      }
+    }
+    expect(read, 'palavras-chave conferidas').toBeGreaterThan(50);
+    expect(refused, 'palavras-chave oferecidas e recusadas').toEqual([]);
+  });
+
   it('a vírgula decimal do pt-BR é lida como ponto', () => {
     const context = contextOf(storeOn());
     for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured && c.units.includes('px'))) {

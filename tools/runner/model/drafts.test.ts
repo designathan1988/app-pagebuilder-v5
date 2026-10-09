@@ -13,6 +13,7 @@ import { describe, expect, it } from 'vitest';
 import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
 import { walk } from '../../../src/core/document/model.ts';
+import { storedValue } from '../../../src/core/style/stored.ts';
 import { TypedBand } from '../../../src/editor/canvas/edit-handles.tsx';
 import { QuickPanel } from '../../../src/editor/canvas/quick-panel.tsx';
 import { installKeymap } from '../../../src/editor/input/keymap.ts';
@@ -343,5 +344,55 @@ describe('o comando do próprio campo e o contexto que ele muda', () => {
     expect(node?.animations?.map((a) => a.name), 'uma animação fade-in').toEqual(['fade-in']);
     expect(store.getState().refused, `o comando não rodou de novo e foi recusado: ${said(store) ?? ''}`).not.toBe(true);
     drawn.stop();
+  });
+});
+
+// A field shows the document's value again after its command refused what it held (the audit's FD2); the keys typed
+// next are the person's, every one of them (rule G2; DEF-0562: the first key after a refusal was wiped, 120px kept as
+// 20px). The real quick panel and keymap, a value field typed in key by key as a person types it, Enter after each.
+describe('a digitação depois de uma recusa', () => {
+  // keys typed one at a time over what the field holds, all of it selected first (Ctrl+A), as the browser inserts them:
+  // the first key replaces the selection, the others go at the end
+  const keys = (input: HTMLInputElement, text: string) => {
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+    for (const [index, key] of [...text].entries()) {
+      act(() => {
+        input.focus();
+        setter?.call(input, index === 0 ? key : `${input.value}${key}`);
+        input.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: key }));
+      });
+    }
+  };
+  const enter = (input: HTMLInputElement) => act(async () => void input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true })));
+  it('as teclas digitadas depois de um valor recusado chegam inteiras ao comando', async () => {
+    const store = storeOf();
+    const tree = store.getState().document.pages[0]?.tree;
+    const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+    dispatch(store, 'selection.select', { target: leaf?.id });
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stop = installKeymap(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const field = [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('quick-panel-width'));
+    expect(field, 'o painel desenhou o campo da largura').toBeDefined();
+    if (field === undefined) throw new Error('no width field');
+    const width = () => {
+      const node = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === leaf?.id);
+      return node === undefined ? null : (storedValue(node, 'width', MODEL_RULES) ?? null);
+    };
+    const found: string[] = [];
+    for (const [refused, kept] of [['abc', '120px'], ['xyz', '64px']] as const) {
+      keys(field, refused);
+      await enter(field);
+      if (store.getState().refused !== true) found.push(`"${refused}" não foi recusado`);
+      keys(field, kept);
+      await enter(field);
+      await frames(2);
+      if (width() !== kept) found.push(`depois de "${refused}" recusado, "${kept}" digitado gravou ${String(width())}`);
+    }
+    drawn.stop();
+    stop();
+    expect(found, 'teclas perdidas depois de uma recusa').toEqual([]);
   });
 });
