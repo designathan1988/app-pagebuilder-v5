@@ -275,3 +275,6 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 
 ## MEC-26 — o campo mostra o valor do elemento e do contexto em que está
 - Dois casos no grupo `drafts` (`tools/runner/model/drafts.test.ts`), com os campos reais (o Width do painel rápido e o Letter spacing do inspector): digitado num elemento e trocada a seleção com o foco no campo, o campo mostra o valor do novo elemento. Acusa DEF-0604 (mutantes M145 e M146).
+
+## MEC-27 — uma só gramática de nome de classe
+- Caso no grupo `structure`: uma classe com acento aplicada pelo registro serve na interação que alterna classe, no escopo e no leitor do movimento, e o documento continua válido. Acusa DEF-0609 (mutantes M150 a M152).

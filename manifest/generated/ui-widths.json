@@ -1,7 +1,7 @@
 {
   "$generated": {
     "by": "tools/ui-fit/measure.spec.ts",
-    "css": "223ec5a080b31691f9dca1adf2f3700a26828d3460624b422db90ce565a1992f"
+    "css": "a6b3c54869b120dfd31651f05a8ea78ae589558e3a7642f39a7d1a108199cfdf"
   },
   "regions": {
     "activity-bar": {
@@ -5152,7 +5152,7 @@
     },
     "pages.switch#explorer-page-row": {
       "default": {
-        "width": 105.5,
+        "width": 66,
         "fontSize": 11,
         "fontWeight": 400,
         "letterSpacing": 0,
@@ -5160,7 +5160,7 @@
         "text": "index.html"
       },
       "windows": {
-        "width": 105.5,
+        "width": 66,
         "fontSize": 11,
         "fontWeight": 400,
         "letterSpacing": 0,
@@ -5168,7 +5168,7 @@
         "text": "index.html"
       },
       "ptbr": {
-        "width": 105.5,
+        "width": 66,
         "fontSize": 11,
         "fontWeight": 400,
         "letterSpacing": 0,
@@ -5204,7 +5204,7 @@
     },
     "pages.switch#toolbar-top-bar-page-switcher": {
       "default": {
-        "width": 1583.4375,
+        "width": 653.859375,
         "fontSize": 12,
         "fontWeight": 400,
         "letterSpacing": 0,
@@ -5212,7 +5212,7 @@
         "text": "index.html"
       },
       "windows": {
-        "width": 1583.4375,
+        "width": 653.859375,
         "fontSize": 12,
         "fontWeight": 400,
         "letterSpacing": 0,
@@ -5220,7 +5220,7 @@
         "text": "index.html"
       },
       "ptbr": {
-        "width": 1583.4375,
+        "width": 425.375,
         "fontSize": 12,
         "fontWeight": 400,
         "letterSpacing": 0,

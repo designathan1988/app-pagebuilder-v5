@@ -385,9 +385,12 @@
 .row--page .row__main .row__meta {
   position: absolute;
   right: var(--space-3);
-  /* never wider than the room the name leaves it (.row__page-name's margin): a long file name ends in an ellipsis
-     instead of running back over the page's name (jornada03 plan, stage 5: row__meta) */
-  max-width: 50%;
+  /* never wider than the room the name leaves it (.row__page-name's margin, less a gap): a long file name ends in an
+     ellipsis instead of running back over the page's name (jornada03 plan, stage 5: row__meta); half the row was
+     wider than that room, and "about-us-and-our…" lay over the name (DEF-0610) */
+  max-width: calc(var(--space-10) * 2 + var(--space-3) - var(--space-2));
+  /* the gap from the name is the width's own (less a gap): no inner gap besides, or "index.html" read "index.htm…" */
+  padding-left: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -707,6 +710,16 @@
   margin-top: var(--space-2);
   font-weight: var(--weight-semibold);
   color: var(--color-text-muted);
+}
+
+/* the Components group's header holds no caret (it never collapses): laid out as the other groups' (a door's flex row,
+   its border and padding), its name where theirs begins and its count at the end (DEF-0611: it read "Components1") */
+.palette-group__header--static {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) 0 calc(var(--space-2) * 2 + var(--space-6));
+  border: 1px solid transparent;
 }
 
 .palette-group__count {

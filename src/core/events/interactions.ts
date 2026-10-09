@@ -21,6 +21,7 @@ import { readAddress } from '../elements/address.ts';
 import { animationsOf } from '../animation/animation.ts';
 import { manifest } from '../../manifest/runtime.ts';
 import { MAX_DELAY, interactionProblems } from './interaction-rule.ts';
+import { IDENTIFIER_SOURCE } from '../text/identifier.ts';
 
 ;
 
@@ -43,8 +44,10 @@ const enumValues = (entry: DoorRef | null, argument: string): readonly string[] 
 const TRIGGERS: readonly string[] = enumValues(addDoor(), 'trigger');
 const ACTIONS: readonly string[] = enumValues(addDoor(), 'action');
 
-// a class the toggle-class action toggles and the scope names: a CSS class name's grammar (core/design/classes.ts)
-const CLASS_NAME = /^-?[_a-zA-Z][_a-zA-Z0-9-]*$/;
+// a class the toggle-class action toggles and the scope names: the one grammar of a class name, the registry's
+// (core/text/identifier.ts, letters of any language): a copy of ASCII letters alone refused "botão-principal", the
+// list offered (DEF-0609)
+const CLASS_NAME = new RegExp(`^${IDENTIFIER_SOURCE}$`, 'u');
 
 // whether the element is a form (the trigger is the element's own submit)
 const isForm = (node: DocNode): boolean => node.tag === 'form';
@@ -131,7 +134,7 @@ const fieldLabel = (field: string): MessageId => (optionLabel(fieldDoor(field), 
 function optionsFrom(node: DocNode, action: string, text: string): { readonly change: Partial<Interaction> } | { readonly refused: Message } {
   const typed = text.trim();
   if (needsClassName(action)) {
-    if (!CLASS_NAME.test(typed)) return { refused: message('status.interactions.notApplicable', { name: typed }) };
+    if (!CLASS_NAME.test(typed)) return { refused: message('status.classes.badName', { name: typed }) };
     return { change: { className: typed } };
   }
   if (needsAnimation(action)) {
@@ -279,7 +282,7 @@ function changedByText(node: DocNode, interaction: Interaction, field: string, t
       void _dropped;
       return { next: rest };
     }
-    if (!CLASS_NAME.test(typed)) return { refused: message('status.interactions.notApplicable', { name: typed }) };
+    if (!CLASS_NAME.test(typed)) return { refused: message('status.classes.badName', { name: typed }) };
     return { next: { ...interaction, scope: typed } };
   }
   return { refused: message('status.interactions.notApplicable', { name: { key: fieldLabel(field) } }) };
@@ -322,7 +325,7 @@ export function updateInteractionCommand<Ui>(make: PickMaking<Ui>): RegisteredHa
       next = { ...next, target: wanted.target as NodeId };
     }
     if (typeof wanted.scope === 'string') {
-      if (wanted.scope !== '' && !CLASS_NAME.test(wanted.scope)) return { kind: 'refused', message: message('status.interactions.notApplicable', { name: wanted.scope }) };
+      if (wanted.scope !== '' && !CLASS_NAME.test(wanted.scope)) return { kind: 'refused', message: message('status.classes.badName', { name: wanted.scope }) };
       next = { ...next, scope: wanted.scope };
     }
     if (typeof wanted.trigger === 'string') {

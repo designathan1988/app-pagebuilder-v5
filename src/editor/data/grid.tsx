@@ -44,7 +44,7 @@ function Fields({ collection }: { readonly collection: Collection }): ReactNode 
       {collection.fields.map((field) => (
         <div key={field.key} className="data-fields__row">
           <DoorField entry={FIELD_LABEL} args={{ collection: collection.name, field: field.key }} name="label" value={field.label} />
-          <DoorField entry={FIELD_TYPE} args={{ collection: collection.name, field: field.key }} name="type" value={field.type} options={types} />
+          <DoorField entry={FIELD_TYPE} args={{ collection: collection.name, field: field.key }} name="type" value={field.type} options={types} className="data-field--type" />
           <DoorControl entry={FIELD_REMOVE} args={{ collection: collection.name, field: field.key }} label={t('data.removeFieldNamed', { label: field.label })} />
         </div>
       ))}

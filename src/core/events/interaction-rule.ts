@@ -4,6 +4,7 @@
 // the generated argument types, so the type check fails while the two differ (a missing or an extra key).
 import type { CommandArgs } from '../../generated/commands.ts';
 import { readAddress } from '../elements/address.ts';
+import { IDENTIFIER_SOURCE } from '../text/identifier.ts';
 
 type AddArgs = CommandArgs['interactions.add'];
 const TRIGGERS: Readonly<Record<NonNullable<AddArgs['trigger']>, true>> = {
@@ -16,8 +17,10 @@ const ACTIONS: Readonly<Record<NonNullable<AddArgs['action']>, true>> = {
 // the longest wait an action takes (10 s): a longer one reads as a site that does not answer
 export const MAX_DELAY = 10_000;
 
-// a class the toggle-class action toggles and the scope names: a CSS class name's grammar (core/design/classes.ts)
-const CLASS_NAME = /^-?[_a-zA-Z][_a-zA-Z0-9-]*$/;
+// a class the toggle-class action toggles and the scope names: the registry's grammar (core/text/identifier.ts,
+// DEF-0609); an animation it plays: an animation's name (core/animation/animation.ts)
+const CLASS_NAME = new RegExp(`^${IDENTIFIER_SOURCE}$`, 'u');
+const ANIMATION_NAME = /^-?[_a-zA-Z][_a-zA-Z0-9-]*$/;
 
 // The trust boundary of an element's interactions (the audit's EV2): what the document validator reads of every node
 // that holds some, and what interactions.add reads of the options a door hands it. An interaction is an object of the
@@ -35,7 +38,7 @@ export function interactionProblems(value: unknown, nodeIds: ReadonlySet<string>
   if (typeof held.action !== 'string' || !Object.hasOwn(ACTIONS, held.action)) bad('action', `"${String(held.action)}" is no action (${Object.keys(ACTIONS).join(', ')})`);
   if ('target' in held && (typeof held.target !== 'string' || !nodeIds.has(held.target))) bad('target', `"${String(held.target)}" names no element of the document`);
   for (const field of ['className', 'scope'] as const) if (field in held && (typeof held[field] !== 'string' || !CLASS_NAME.test(held[field] as string))) bad(field, `"${String(held[field])}" is no class name`);
-  if ('animation' in held && (typeof held.animation !== 'string' || !CLASS_NAME.test(held.animation))) bad('animation', `"${String(held.animation)}" is no animation name`);
+  if ('animation' in held && (typeof held.animation !== 'string' || !ANIMATION_NAME.test(held.animation))) bad('animation', `"${String(held.animation)}" is no animation name`);
   if ('address' in held && (typeof held.address !== 'string' || !readAddress(held.address).ok)) bad('address', `"${String(held.address)}" is not an address this page can use`);
   if ('newTab' in held && held.newTab !== true) bad('newTab', 'newTab is true, or absent');
   if ('once' in held && typeof held.once !== 'boolean') bad('once', 'once is true or false');

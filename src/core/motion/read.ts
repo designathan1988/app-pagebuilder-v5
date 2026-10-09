@@ -10,6 +10,7 @@
 // are motion's own references and are checked by document.ts.
 import type { NodeId } from '../../generated/commands.ts';
 import { addressAllowed } from '../elements/address.ts';
+import { IDENTIFIER_SOURCE } from '../text/identifier.ts';
 import { EFFECTS, TARGETS, TRIGGERS, isEffectKind, isTargetKind, isTriggerKind, type TriggerParameter } from './catalog.ts';
 import { createEasing } from './easing.ts';
 import { RUNTIME_BEHAVIOURS, TRANSFORM_PARTS, type Behaviour, type Effect, type Marker, type MotionInteraction, type MotionKeyframe, type MotionTarget, type MotionTimeline, type PropertyTrack, type TimelineAction, type Trigger } from './model.ts';
@@ -25,7 +26,8 @@ export type Read<T> = { readonly ok: true; readonly value: T } | { readonly ok: 
 // ---------------------------------------------------------------- grammars
 
 // a CSS class name (core/design/classes.ts has the same grammar for the class bar)
-export const CLASS_NAME = /^-?[_a-zA-Z][_a-zA-Z0-9-]*$/;
+// a class name: the registry's grammar, letters of any language (core/text/identifier.ts, DEF-0609)
+export const CLASS_NAME = new RegExp(`^${IDENTIFIER_SOURCE}$`, 'u');
 // a @keyframes name, the grammar core/animation/animation.ts reads
 const ANIMATION_NAME = /^-?[_a-zA-Z][_a-zA-Z0-9-]*$/;
 // a CSS property as the official data writes it, or a custom property

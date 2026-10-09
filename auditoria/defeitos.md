@@ -1368,3 +1368,39 @@
 - Sintoma: em repouso o campo Opacidade dizia "100 %"; ao clicar nele aparecia "1", e a pessoa não sabia em que escala digitar.
 - Causa: `src/editor/shell/field.tsx` (`TextStyleField`): o `input` recebia o valor CSS, e só o rosto lia a faixa 0–1 como porcentagem; agora o `input` recebe o mesmo texto ("100%"), que o campo já lê de volta (50% é 0,5).
 - Prova: detector `drafts`, "o campo de opacidade guarda o texto do rosto"; mutante M149.
+
+## DEF-0609 — a classe "botão-principal" do registro era recusada pela interação que alterna classe
+- Status: corrigido (Lote 10)
+- Sintoma: a lista do campo da interação oferecia "botão-principal", e escolhê-la dizia "Este gatilho não se aplica a botão-principal.".
+- Causa: `src/core/events/interactions.ts`, `interaction-rule.ts` e `src/core/motion/read.ts` tinham cópias só ASCII do nome de classe; agora usam a gramática única de `src/core/text/identifier.ts`, e a recusa de nome de classe diz a regra (`status.classes.badName`).
+- Prova: detector `structure`, "uma classe com acento do registro serve na interação"; mutantes M150, M151 e M152.
+
+## DEF-0610 — o nome do arquivo de uma página longa ficava por cima do nome da página no Explorer
+- Status: corrigido (Lote 10)
+- Sintoma: renomeada para "About us and our long coffee roasting story", a linha mostrava "About us and our lo" e "about-us-and-our…" escritos um sobre o outro.
+- Causa: `src/editor/shell/sidebar.css` `.row--page .row__main .row__meta`: `max-width: 50%` da linha, maior que o espaço que o nome deixa; agora é esse espaço (a margem do nome, menos um respiro).
+- Prova: `paineis-cabem.spec.ts`, "keeps its file name off the page name": falha sem a correção (−41,5 px), passa nas duas condições.
+
+## DEF-0611 — o grupo Componentes do Inserir dizia "Components1"
+- Status: corrigido (Lote 10)
+- Sintoma: depois de criar um componente, o título do grupo no Inserir aparecia "Components1", a contagem grudada no nome, fora do alinhamento dos outros grupos.
+- Causa: `src/editor/shell/sidebar.css`: o cabeçalho estático (`.palette-group__header--static`, sem seta) era um bloco, sem a linha flexível das portas dos outros grupos; agora tem a mesma disposição.
+- Prova: `paineis-cabem.spec.ts`, "the Components group header … lines up": falha sem a correção (nome em 50, contagem em 122), passa nas duas condições.
+
+## DEF-0612 — o menu de tipo de um campo da coleção mostrava "Yes or" em vez de "Yes or no"
+- Status: corrigido (Lote 10)
+- Sintoma: no painel Dados, depois de importar um CSV com uma coluna sim/não, o menu de tipo do campo ficava estreito ao lado do nome e cortava o texto.
+- Causa: `src/editor/data/panel.css`: o menu de tipo dividia a linha com o nome do campo (`flex: 1`), mais estreito que o tipo e a seta; agora o menu de tipo de cada campo (`.data-field--type`, em `grid.tsx`) tem a largura dos seus tipos. Os menus que listam campos (filtro, ordem) e o formulário de campo novo ficam como estão.
+- Prova: `paineis-cabem.spec.ts`, "a menu of a collection field shows its whole choice": falha sem a correção (76,5 < 94), passa nas duas condições.
+
+## DEF-0613 — com uma página de nome longo, os botões da barra de cima ficavam um sobre o outro
+- Status: corrigido (Lote 10)
+- Sintoma: a 1280 px, com a página "Sobre nós e a nossa longa história de torrefação" aberta, o seletor de página ocupava 640 px; "Pré-visualizar" e "Exportar ZIP" encolhiam com o texto por cima um do outro, e "Comandos" ficava sob desfazer.
+- Causa: `src/editor/shell/top-bar.css`: o seletor (`.top-bar__pages`) não encolhia (`min-width: auto`), e os botões de ação encolhiam; agora o seletor cede o espaço, com nome e arquivo em reticências (texto inteiro na dica, `top-bar.tsx`), e as ações não encolhem.
+- Prova: `paineis-cabem.spec.ts`, "the top bar keeps its actions whole": falha sem a correção ("Preview" e "Export ZIP" cortados), passa nas duas condições.
+
+## DEF-0614 — em pt-BR, o formulário de campo novo da coleção mostrava o tipo como "T"
+- Status: corrigido (Lote 10)
+- Sintoma: no painel Dados em pt-BR, "Adicionar campo" (mais longo que "Add field") tomava a linha; o menu de tipo mostrava "T" e o nome do campo "Nome".
+- Causa: `src/editor/data/panel.css` `.data-fields__add`: nome, tipo e botão numa linha sem quebra; agora a linha quebra, o nome mantém uma largura legível e o menu a largura dos seus tipos.
+- Prova: `paineis-cabem.spec.ts`, "the new field form … reads whole in Portuguese": falha sem a correção, passa nas duas condições.

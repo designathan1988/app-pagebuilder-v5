@@ -41,8 +41,11 @@ function PageSwitcher({ entry }: { readonly entry: DoorEntry }) {
           if (door.available) layer.toggle();
         }}
       >
-        <b>{page?.name}</b>
-        <span className="top-bar__file">{page?.file}</span>
+        {/* each whole in its tooltip: a long one ends in an ellipsis (top-bar.css, DEF-0613) */}
+        <b title={page?.name}>{page?.name}</b>
+        <span className="top-bar__file" title={page?.file}>
+          {page?.file}
+        </span>
         <Icon name={GLYPHS.dropdown} size="xs" />
       </button>
       {layer.open ? (

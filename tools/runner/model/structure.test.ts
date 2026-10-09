@@ -8,6 +8,7 @@ import fc from 'fast-check';
 import { expect, it } from 'vitest';
 import { walk, type DocumentJson } from '../../../src/core/document/model.ts';
 import { validateDocument } from '../../../src/core/document/validate.ts';
+import { CLASS_NAME as MOTION_CLASS_NAME } from '../../../src/core/motion/read.ts';
 import { applyPatches, PatchError, type Path } from '../../../src/core/history/transaction.ts';
 import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
@@ -119,4 +120,22 @@ it('inserir com uma lista selecionada: o que ela não aceita vai logo depois del
   expect(dispatch('selection.select' as CommandId, { target: 'n-hero' }).status).toBe('done');
   expect(dispatch('element.insert' as CommandId, { entry: 'container' }).status).toBe('done');
   expect(parentOf(store.getState().selection[0] ?? '')?.id, 'um contêiner com a seção selecionada fica dentro dela').toBe('n-hero');
+});
+
+// DEF-0609: a class of the registry with a letter of another language ("botão-principal", taken by classes.apply) was
+// refused by an interaction's toggle-class and scope ("This trigger does not apply"), though the field offered it. One
+// grammar of a class name, the registry's, everywhere a class is named.
+it('uma classe com acento do registro serve na interação que alterna classe e no escopo', () => {
+  const memory = () => ({ read: () => null, write: () => undefined });
+  const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: fixture('aurora'), selection: ['n-intro'] }, ports: { readOnly: () => false }, freeze: true });
+  const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
+  expect(dispatch('classes.apply' as CommandId, { className: 'botão-principal' }).status, 'o registro aceita').toBe('done');
+  expect(dispatch('interactions.add' as CommandId, { trigger: 'click', action: 'toggle-class' }).status).toBe('done');
+  expect(dispatch('interactions.update' as CommandId, { interaction: 0, field: 'value', changes: 'botão-principal' }).status, 'a classe a alternar').toBe('done');
+  expect(dispatch('interactions.update' as CommandId, { interaction: 0, changes: { scope: 'botão-principal' } }).status, 'o escopo').toBe('done');
+  const intro = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === 'n-intro');
+  expect(intro?.interactions?.[0], 'a interação gravada').toMatchObject({ className: 'botão-principal', scope: 'botão-principal' });
+  expect(validateDocument(store.getState().document, [], MODEL_RULES)).toEqual([]);
+  // the motion's reader names classes by the same grammar (a scroll trigger's scope, a class operation)
+  expect(['botão-principal', 'cor-primária', '_x', '-y'].filter((name) => !MOTION_CLASS_NAME.test(name)), 'nomes que o movimento recusa').toEqual([]);
 });

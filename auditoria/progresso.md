@@ -111,8 +111,18 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - Specs da área nas duas condições: 101 de 101 (padrão) e 115 de 115 (Windows, com `visual.spec`); `visual.spec` padrão 14 de 14. Detectores 123 de 123; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
   - Achado para o lote de exportação: nomes de classe com acento são aceitos no registro, mas várias regras são só ASCII (`src/core/render/clean.ts`, `src/core/events/interactions.ts`, `src/core/motion/read.ts`).
 
+- **Lote 10 (2026-10-09), exportar, prévia, páginas, componentes, dados, menus e idioma, uso real — feito:**
+  - DEF-0609: a classe "botão-principal" do registro era recusada pela interação (uma gramática de classe só; M150 a M152).
+  - DEF-0610: o arquivo de uma página longa ficava por cima do nome no Explorer.
+  - DEF-0611: o grupo Componentes do Inserir dizia "Components1".
+  - DEF-0612: o menu de tipo de um campo da coleção mostrava "Yes or".
+  - DEF-0613: com uma página de nome longo, os botões da barra de cima ficavam um sobre o outro.
+  - DEF-0614: em pt-BR, o formulário de campo novo mostrava o tipo como "T".
+  - Conferidos no uso: exportação com classe acentuada e hover (CSS e HTML certos), prévia com a interação de classe (alterna nos cliques), os cinco menus, paleta de comandos, Verificações, troca de idioma com digitação pendente (gravada), página nova, componente e instância, importação de CSV com vírgula decimal e sim/não.
+  - Specs da área nas duas condições: padrão 62 de 62 (depois de um ajuste de "index.html" que a referência do Explorer pegou); Windows 61 de 62 — a falha (`preview-mode.spec.ts:81`, `h1` da prévia lido cedo demais com a máquina ocupada) passou 3 de 3 sozinha nas duas condições. Detectores 124 de 124; typecheck e lint sem erro; `ui-widths.json` medido nas três condições.
+
 ## Próximo passo
-Sessão de uso real de exportar e pré-visualizar (com uma classe de nome acentuado), dados e CSV, componentes, páginas e arquivos, paleta de comandos, menus e verificações; depois a troca de idioma no meio do trabalho, nas duas condições.
+Fim de etapa: o catálogo inteiro de mutantes e a suíte inteira de navegador, uma vez, na condição padrão (CLAUDE.md, seção 0); falhou algo, só o que falhou nas duas condições.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

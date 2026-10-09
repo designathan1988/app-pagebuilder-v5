@@ -67,6 +67,29 @@
   min-width: 0;
 }
 
+/* a field's type menu as wide as its longest type and its arrow, as the preview's type menus (DEF-0590): squeezed
+   beside a field's name it read "Yes or" for "Yes or no" (DEF-0612); the name's field, free text, gives the room. The
+   menus that list the fields (a filter, a sort) keep the row's room: their widest choice is a field's name; and the
+   new field's form keeps it too, where the name and Add field share the row (pressed to nothing beside the menu) */
+.data-field--type select.input {
+  min-width: max-content;
+}
+
+/* The new field's form: its name and its type side by side at a width that reads, Add field below them where the
+   row has no room for the three (in pt-BR "Adicionar campo" left the type menu reading "T", DEF-0614) */
+.data-fields__add {
+  flex-wrap: wrap;
+}
+
+.data-fields__add .input {
+  min-width: var(--size-tag-field);
+}
+
+.data-fields__add select.input {
+  flex: none;
+  min-width: max-content;
+}
+
 .data-form textarea.input {
   resize: vertical;
 }

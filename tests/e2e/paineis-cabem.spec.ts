@@ -6,7 +6,7 @@ import { openEditor } from '../support/editor.ts';
 import { FLOWS } from '../../tools/ui/flows.ts';
 import { playFlow } from '../../tools/ui/play.ts';
 import fs from 'node:fs';
-import { control, runDoor } from './door.ts';
+import { control, openMenu, runDoor } from './door.ts';
 
 async function playUpTo(page: Page, name: string, steps: number): Promise<void> {
   const flow = FLOWS.find((one) => one.name === name);
@@ -156,4 +156,152 @@ test('a Layers row whose name is cut keeps its tag beside it (DEF-0599)', async 
   }));
   expect(bare).toEqual([]);
   expect(await page.locator('.sidebar .row--tree .row__name').evaluateAll((names) => names.some((n) => n.scrollWidth > n.clientWidth + 0.5)), 'a name cut, as the case needs').toBe(true);
+});
+
+// DEF-0610: a page with a long name drew its file name ("about-us-and-our…") over the page's name in the Explorer:
+// the file name took half the row, wider than the room the name leaves it. It ends before the name's field.
+test('a page row of the Explorer keeps its file name off the page name (DEF-0610)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openEditor(page);
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-explorer');
+  await runDoor(page, 'pages.add#explorer-add-page');
+  const name = page.locator('input[data-door="pages.rename#explorer-page-name-field"]').nth(1);
+  await expect(name).toBeFocused();
+  await page.keyboard.press('Control+A');
+  await page.keyboard.type('About us and our long coffee roasting story');
+  await page.keyboard.press('Enter');
+  await page.mouse.click(900, 600);
+  await expect(name).not.toBeFocused();
+  const overlap = await name.evaluate((input) => {
+    const row = input.closest('.row--page');
+    const meta = row?.querySelector('.row__meta');
+    if (!row || !meta) throw new Error('no page row or file name');
+    return meta.getBoundingClientRect().left - input.getBoundingClientRect().right;
+  });
+  expect(overlap, 'the file name begins after the page name ends').toBeGreaterThanOrEqual(0);
+  // a short file name reads whole beside it (the room's width took "index.html" to "index.htm…" for a moment)
+  const home = page.locator('.row--page .row__meta').first();
+  await expect(home).toHaveText('index.html');
+  expect(await home.evaluate((meta) => meta.scrollWidth <= meta.clientWidth + 0.5), 'index.html whole').toBe(true);
+});
+
+// DEF-0611: the Components group of the Insert panel read "Components1": its header, which never collapses, was a
+// plain block where the other groups' headers are a door's row, so its count sat against its name. Its name begins
+// where theirs do and its count ends where theirs do.
+test('the Components group header of the Insert panel lines up with the other groups (DEF-0611)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openEditor(page);
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'project.open#menu-file');
+  await (await chooser).setFiles({ name: 'aurora.json', mimeType: 'application/json', buffer: fs.readFileSync('manifest/features/fixtures/aurora.json') });
+  await control(page, 'selection.select#layers-row', { args: { target: 'n-card-a-title' } }).click({ button: 'right' });
+  await control(page, 'components.startCreate#context-menu').click();
+  await page.keyboard.type('Card title');
+  await page.keyboard.press('Enter');
+  const statics = page.locator('.palette-group__header--static');
+  await expect(statics).toHaveCount(1);
+  const place = (header: Element) => {
+    const label = header.querySelector('.door__label')?.getBoundingClientRect();
+    const count = header.querySelector('.palette-group__count')?.getBoundingClientRect();
+    return { label: Math.round(label?.left ?? -1), count: Math.round(count?.right ?? -1) };
+  };
+  const components = await statics.evaluate(place);
+  const other = await page.locator('.palette-group__header:not(.palette-group__header--static)').first().evaluate(place);
+  expect(components, 'the Components header against the first group').toEqual(other);
+});
+
+// DEF-0612: in the collection's fields, the type menu of a yes-or-no field read "Yes or": the menu took the width its
+// row left beside the field's name, narrower than its choice and its arrow. Every type menu of those rows is at least
+// as wide as its types drawn (its max-content width), and the panel does not scroll sideways (the screen guard).
+test('a menu of a collection field shows its whole choice (DEF-0612)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openEditor(page);
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-data');
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'data.preview#data-import');
+  await (await chooser).setFiles({ name: 'coffees.csv', mimeType: 'text/csv', buffer: Buffer.from(['Coffee name,Price,Farm of origin,Available', 'Ethiopia Yirgacheffe,42.5,Konga farm,yes', 'Brazil Cerrado,35,Santa Ines farm,no', ''].join('\n')) });
+  await runDoor(page, 'data.importNew#data-import-new');
+  const menus = page.locator('.data-field--type select.input');
+  await expect(menus.first()).toBeVisible();
+  // the last field made a yes-or-no one, as a person chooses it in its menu
+  await page.locator('.data-field--type select.input').last().selectOption('boolean');
+  await expect(page.locator('.data-field--type select.input').last()).toHaveValue('boolean');
+  const short = await menus.evaluateAll((all) => all.flatMap((menu) => {
+    const select = menu as HTMLSelectElement;
+    const drawn = select.getBoundingClientRect().width;
+    // a copy on its own, out of the row's flex: the width the menu draws its types in
+    const copy = select.cloneNode(true) as HTMLSelectElement;
+    copy.style.position = 'absolute';
+    copy.style.width = 'max-content';
+    copy.style.minWidth = '0';
+    select.parentElement?.appendChild(copy);
+    const natural = copy.getBoundingClientRect().width;
+    copy.remove();
+    return drawn + 0.5 < natural ? [`${select.selectedOptions[0]?.textContent ?? ''}: ${drawn.toFixed(1)} < ${natural.toFixed(1)}`] : [];
+  }));
+  expect(short).toEqual([]);
+});
+
+// DEF-0613: a page with a long name made the page switcher of the top bar 640 px wide at 1280, and the bar's actions
+// shrank under one another (Preview's words under Export's, Commands under Undo). The switcher gives the room away; no
+// control of the bar crosses its neighbour and Preview and Export ZIP read whole.
+test('the top bar keeps its actions whole beside a page with a long name (DEF-0613)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-explorer');
+  await runDoor(page, 'pages.add#explorer-add-page');
+  await expect(page.locator('input[data-door="pages.rename#explorer-page-name-field"]').nth(1)).toBeFocused();
+  await page.keyboard.press('Control+A');
+  await page.keyboard.type('About us and our long coffee roasting story');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.top-bar__page > b')).toHaveText('About us and our long coffee roasting story');
+  const wrong = await page.locator('[data-region="top-bar"]').evaluate((bar) => {
+    const out: string[] = [];
+    const kids = [...bar.children].filter((one) => one.getBoundingClientRect().width > 0);
+    for (let i = 1; i < kids.length; i += 1) {
+      const before = kids[i - 1]?.getBoundingClientRect();
+      const now = kids[i]?.getBoundingClientRect();
+      if (before && now && now.left + 0.5 < before.right) out.push(`${kids[i]?.className ?? ''} over ${kids[i - 1]?.className ?? ''}`);
+    }
+    // what each control draws stays inside it (a shrunk button's words ran over its neighbour)
+    for (const control of bar.querySelectorAll<HTMLElement>(':scope > button, :scope > .menu-anchor > button')) {
+      if (control.scrollWidth > control.clientWidth + 0.5) out.push(`cut: ${control.textContent ?? ''}`);
+    }
+    if (bar.scrollWidth > bar.clientWidth + 0.5) out.push('the bar runs past the window');
+    return out;
+  });
+  expect(wrong).toEqual([]);
+});
+
+// DEF-0614: in pt-BR the new field's form put its name, its type and "Adicionar campo" on one row: the type menu read
+// "T" and the name's field "Nome". The type menu draws its whole choice and the name's field keeps a width that reads.
+test('the new field form of a collection reads whole in Portuguese (DEF-0614)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await openEditor(page);
+  await openMenu(page, 'view');
+  await page.getByRole('menuitem', { name: /^(Idioma|Language)$/ }).hover();
+  await page.locator('[data-door="preferences.setLanguage#menu-language-pt-br"]').click();
+  await expect(page.locator('[data-menu="file"]')).toHaveText('Arquivo');
+  await runDoor(page, 'workspace.setPanelOpen#toolbar-activity-bar-data');
+  const chooser = page.waitForEvent('filechooser');
+  await runDoor(page, 'data.preview#data-import');
+  await (await chooser).setFiles({ name: 'cafes.csv', mimeType: 'text/csv', buffer: Buffer.from(['Nome,Preço', 'Etiópia,42', ''].join('\n')) });
+  await runDoor(page, 'data.importNew#data-import-new');
+  const form = page.locator('.data-fields__add');
+  await expect(form).toBeVisible();
+  const read = await form.evaluate((row) => {
+    const select = row.querySelector('select');
+    const name = row.querySelector('input');
+    if (select === null || name === null) throw new Error('no type menu or name field');
+    const copy = select.cloneNode(true) as HTMLSelectElement;
+    copy.style.position = 'absolute';
+    copy.style.width = 'max-content';
+    copy.style.minWidth = '0';
+    row.appendChild(copy);
+    const natural = copy.getBoundingClientRect().width;
+    copy.remove();
+    return { menu: select.getBoundingClientRect().width + 0.5 >= natural, name: name.getBoundingClientRect().width };
+  });
+  expect(read.menu, 'the type menu draws its whole choice').toBe(true);
+  expect(read.name, 'the name field keeps a width that reads').toBeGreaterThanOrEqual(76);
 });

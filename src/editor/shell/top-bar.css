@@ -30,7 +30,22 @@
   z-index: var(--z-menu-anchor);
 }
 
+/* The page switcher is what gives the bar's room away: a page with a long name and file took 640 px at 1280 and the
+   bar's actions shrank under one another, Preview's words under Export's (DEF-0613). Its name and its file end in an
+   ellipsis, the file first; the actions keep their size. */
+.top-bar > :not(.top-bar__pages, .top-bar__search) {
+  flex-shrink: 0;
+}
+
+.top-bar__pages {
+  display: inline-flex;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
 .top-bar__page {
+  min-width: 0;
+  max-width: 100%;
   padding: 0 var(--space-5);
   border: 1px solid var(--color-border);
   background: var(--color-surface-sunken);
@@ -38,7 +53,20 @@
   gap: var(--space-3);
 }
 
+.top-bar__page > b,
 .top-bar__file {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-bar__page > b {
+  flex-shrink: 1;
+}
+
+.top-bar__file {
+  flex-shrink: 4;
   font-family: var(--font-mono);
   color: var(--color-text-subtle);
 }
