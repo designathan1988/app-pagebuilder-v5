@@ -1064,3 +1064,37 @@
 - **Correção:** a conferência dos cabeçalhos lê só os arquivos `.json` da pasta (`tools/gen/check.ts`).
 - **Detector:** nenhum grupo roda o `gen:check`, então não cabe mutante no catálogo. A prova é a execução: antes, o `SyntaxError` citado; depois, `gen:check: manifest/generated/css-properties.json, manifest/generated/css-compat.json, manifest/generated/html-elements.json, manifest/generated/icons.json, src/generated/ids.ts, src/generated/commands.ts, src/generated/value-lists.ts, src/ui/icons.svg are up to date.`, sem arquivo gerado alterado.
 - **Verificação:** detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0571 — os casos do lote do navegador passam sem passar pelo que conferem
+- **Status:** corrigido
+- **Citação:** `tests/e2e/lote-navegador.spec.ts:128` `  await page.keyboard.press('Control+k');` (a "troca de página" do caso dos quadros longos), `:147` `      (window as unknown as { __probe: WeakRef<Element> }).__probe = new WeakRef(el);`, `:241` `  await cdp.send('Input.imeSetComposition', { text: 'にほんご', selectionStart: 4, selectionEnd: 4 });`, `:276` `  expect(await page.evaluate(() => (window as unknown as { pwned?: number }).pwned), 'o onclick do HTML colado rodou').toBeUndefined();`, `:288` `        return { index, key: `${control.getAttribute('data-door') ?? control.getAttribute('data-local') ?? '?'}#${index}`, hidden: style.visibility === 'hidden' || style.display === 'none' };` e `:368` `test('com o armazenamento cheio o autosave não perde o documento', runs(OPEN, DELETE), async ({ page }) => {`
+- **Causa:** verificação integral, grupo H, MEC-22, achados 1 a 7. Os casos do `lote-navegador.spec.ts` (MEC-22) passam sem passar pelo que conferem:
+  - **Quadros longos:** o caso não troca de página; abre e fecha a barra de comandos.
+  - **Memória:** só o `WeakRef` da última das vinte voltas é conferido.
+  - **Composição (IME):** a composição de `にほんご` faz a consulta não casar com entrada nenhuma, e o Enter não teria o que rodar com ou sem a guarda do keymap.
+  - **`onclick`:** a colagem de HTML externo confere só `window.pwned` da janela do editor, sem clicar no nó e sem ler os atributos do nó colado.
+  - **Cores forçadas:** o caso mede só `visibility` e `display`, que elas não mudam.
+  - **Bidirecional:** o caso não usa `dir="rtl"` (a página aceita, `pageDirection`) e declara `project.open#menu-file`, que não roda.
+  - **Cota:** o caso enche o `localStorage` e não confere o aviso.
+  - **Código sem uso:** sobra o ramo `retido`, sem chamador.
+- **Efeito:** uma regressão em cada uma dessas classes passaria pelo lote: um quadro longo na troca de página, um controle preso em qualquer volta que não a última, a guarda de composição tirada, um `onclick` que atravessasse a colagem, um ícone apagado pelas cores forçadas, a direção da página ignorada, o aviso da cota sumido.
+- **Alcance:** `tests/e2e/lote-navegador.spec.ts` (MEC-22).
+- **Arquivos da correção:** `tests/e2e/lote-navegador.spec.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** `tests/e2e/lote-navegador.spec.ts`, um ajuste por achado:
+  - **Quadros longos:**
+    - o caso cria uma segunda página e troca de página pelas abas, no aquecimento e na medida;
+    - os ajudantes `toPage` e `insertSection` reabrem o Explorer ou o painel de inserir quando o controle sai de vista;
+    - o desfazer do arraste só roda quando o arraste fez uma entrada no histórico (`undoTheDrag`). Medido no laboratório (`abas-pagina.mjs` no scratchpad): o arraste no centro do quadro não grava nada, e o Ctrl+Z seguinte desfazia a página criada.
+  - **Memória:** cada uma das vinte voltas guarda o seu `WeakRef` (`__probes`), o caso exige as vinte, e todo elemento fora do documento que sobreviva à coleta é acusado.
+  - **IME:**
+    - a composição é de `wrap`, que lista entradas (medido no Chrome com `ime-enter.mjs`: o Enter chega com `isComposing=true`, a barra lista "Wrap in a row");
+    - o caso exige entradas listadas durante a composição, nenhum comando no Enter, o texto inteiro depois de confirmado e, como controle, o mesmo Enter fora da composição rodando a entrada.
+  - **`onclick`:** os nós colados são lidos do documento, sem atributo de evento em `attributes` nem em `customAttributes`. O nó colado é clicado no ponto do canvas (o quadro mais o nó vezes o zoom), e `pwned` é lido na janela do editor e na do quadro.
+  - **Cores forçadas:** cada controle desenhado com texto ou ícone tem a cor comparada com o primeiro fundo não transparente dos ancestrais, e o que passa a ter a cor do fundo é acusado.
+  - **Bidirecional:** a página do caso tem `pageDirection: 'rtl'`, e o caso exige `dir="rtl"` no `html` do canvas e a direção calculada `rtl` no parágrafo. A anotação `project.open#menu-file` saiu.
+  - **Cota:**
+    - o `localStorage` é enchido até o último byte (o pedaço cai pela metade quando não cabe; o de 256 KB deixava espaço para o diário, e o aviso não saía);
+    - o caso exige a chave `status.save.journalInDatabase` entre as mensagens ditas (`__builderTestPort.keys()`).
+  - **Código sem uso:** o ramo `retido` saiu.
+- **Detector:** o próprio lote (MEC-22). Prova de que o caso do IME depende da guarda: com a linha `if (event.isComposing || event.keyCode === 229) return;` tirada de `src/editor/input/keymap.ts` só para a rodada (e devolvida depois), o caso falha em "a tecla apertada durante a composição rodou um comando".
+- **Verificação:** `lote-navegador.spec.ts` sozinho, `E2E_WORKERS=1`, prioridade baixa: 7 de 7 na condição padrão e 7 de 7 na condição Windows (`E2E_SCROLLBARS=shown E2E_SCALE=1.25`), nenhum quadro acima de 50 ms com a troca de página. Detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
