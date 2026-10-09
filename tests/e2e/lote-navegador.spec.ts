@@ -295,7 +295,7 @@ test('com cores forçadas e movimento reduzido nenhum controle que se via passa 
 
 // ---------------------------------------------------------------- texto bidirecional
 
-test('um texto com caracteres hebraicos e conteúdo misto aparece certo no canvas, na edição e em Camadas', runs(OPEN, SELECT_ROW), async ({ page }) => {
+test('um texto com caracteres hebraicos e conteúdo misto aparece certo no canvas, na edição e em Camadas', runs(OPEN, SELECT_ROW, 'text.startEdit#canvas-double-click-text-element'), async ({ page }) => {
   test.setTimeout(120_000);
   const MIXED = 'שלום hello 123';
   const project = JSON.stringify({
@@ -339,6 +339,22 @@ test('um texto com caracteres hebraicos e conteúdo misto aparece certo no canva
   expect(layers).toContain('Texto misto');
   const field = await tree(page);
   expect(JSON.stringify(field.selection)).toContain('r-text');
+  // a edição do texto na própria página (um duplo clique): o mesmo texto, na mesma ordem. O ponto sai da posição do
+  // quadro mais a do nó vezes o zoom do quadro (seção 8 do CLAUDE.md): o boundingBox do Playwright não o aplica
+  const at = await page.evaluate((node) => {
+    const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
+    const el = iframe?.contentDocument?.querySelector(`[data-node="${node}"]`);
+    if (iframe === null || iframe === undefined || el === null || el === undefined) throw new Error('o canvas não desenhou o texto');
+    const zoom = iframe.currentCSSZoom;
+    const frame = iframe.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    return { x: frame.left + (rect.left + rect.width / 2) * zoom, y: frame.top + (rect.top + rect.height / 2) * zoom };
+  }, 'r-text');
+  await page.mouse.dblclick(at.x, at.y);
+  const editing = page.frameLocator('.frame__page').locator('[data-node="r-text"]');
+  await expect(editing, 'a edição abre no próprio texto').toHaveAttribute('contenteditable', 'plaintext-only');
+  expect(await editing.innerText()).toBe(MIXED);
+  await page.keyboard.press('Escape');
   await page.locator('[data-region="canvas-frame"]').screenshot({ path: 'test-results/lote-navegador-bidi.png' });
 });
 
