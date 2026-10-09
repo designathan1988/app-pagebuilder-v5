@@ -123,13 +123,24 @@ describe('um texto hostil contra os leitores que o leem', () => {
     expect(Object.getOwnPropertyNames(Object.prototype).sort().join(',')).toBe(before);
   });
 
+  // The saved document goes through the reader File › Open runs (readProject: the depth limit, the migrations from an
+  // older version, the validator), with __proto__ and constructor at its root and in a node, as JSON.parse gives them
+  // (own keys): it is refused or read, never a throw, Object.prototype stays as it was, and a document read keeps the
+  // plain prototype, so nothing it holds is inherited from the file (the verification's group G, finding 1: the case
+  // read nothing)
   it('um documento salvo com chaves __proto__ não polui o protótipo ao ser lido', () => {
     const before = Object.getOwnPropertyNames(Object.prototype).sort().join(',');
-    const document = JSON.parse('{"version":4,"pages":[],"__proto__":{"polluted":"yes"},"constructor":{"prototype":{"polluted":"yes"}}}') as unknown;
-    const applied = applyPatches(document as never, [{ op: 'add', path: ['note'], value: 'x' }]);
-    expect((({}) as Record<string, unknown>).polluted).toBeUndefined();
+    const saved = fixture('aurora');
+    const first = saved.pages[0]?.tree.children[0]?.id;
+    if (first === undefined) throw new Error('a fixture aurora tem um elemento na primeira página');
+    const hostile = '{"__proto__":{"polluted":"yes"},"constructor":{"prototype":{"polluted":"yes"}},' + JSON.stringify({ ...saved, version: 3 }).slice(1).replace(`"id":"${first}"`, `"__proto__":{"polluted":"yes"},"id":"${first}"`);
+    const read = readProject(JSON.parse(hostile) as unknown, MODEL_RULES);
+    expect((({}) as Record<string, unknown>).polluted, 'Object.prototype não foi poluído').toBeUndefined();
     expect(Object.getOwnPropertyNames(Object.prototype).sort().join(',')).toBe(before);
-    expect(applied.document).toBeTruthy();
+    if ('document' in read) {
+      expect(Object.getPrototypeOf(read.document), 'o documento lido tem o protótipo comum').toBe(Object.prototype);
+      expect((read.document as unknown as Record<string, unknown>).polluted, 'nada herdado do arquivo').toBeUndefined();
+    }
   });
 
   // What comes from outside and is deeper or of another shape than any page (DEF-0543, DEF-0544, DEF-0545): refused, or
