@@ -1158,3 +1158,9 @@
 - **Alcance:** `tools/ui-fit/` e o grupo `ui-fit` (MEC-20).
 - **Arquivos da correção:** `tools/ui-fit/check.ts`, `tools/ui-fit/font.ts`, `tools/ui-fit/measure.spec.ts`, `tools/ui-fit/measure.config.ts`, `manifest/generated/ui-widths.json`, `tools/runner/model/ui-fit.test.ts`, `src/i18n/locales/en.json`, `tools/runner/mutants.ts`.
 - **Itens de estado tocados:** nenhum.
+
+## DEF-0574 — o helper do painel rápido decide antes de o editor desenhar o chip
+- Status: corrigido (Lote 2)
+- Sintoma: `tests/e2e/draft-recovery.spec.ts` "quick panel draft…" falhava de forma intermitente com a máquina ocupada: "the quick panel opens from its chip". O app está certo: depois da recarga, com o editor desenhado, o painel volta fechado (15 de 15, medido).
+- Causa: `tests/e2e/door.ts:169` `if ((await chip.count()) > 0) {` lê o chip sem esperar; logo depois da recarga ainda não há chip (0 chips e 0 rótulos em 15 de 15 com a CPU 6× lenta), e nada abre o painel. A asserção `await expect(field).toHaveCount(0);` do spec passava antes do desenho.
+- Prova: com a CPU 6× lenta (`Emulation.setCPUThrottlingRate`), 8 falhas em 15 antes; 30 de 30 depois de `openQuickPanel` esperar o chip e de o spec ler o painel fechado só com o chip desenhado.

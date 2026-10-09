@@ -163,6 +163,9 @@ const QUICK_PANEL_GRIP = 'quick-panel-grip';
 export const inQuickPanel = (d: Door): boolean => d.kind === 'quick-panel' || (d.kind === 'panel-drag' && d.source === QUICK_PANEL_GRIP);
 export async function openQuickPanel(page: Page): Promise<void> {
   const chip = page.locator('[data-quick-panel-chip][aria-expanded="false"]');
+  // the editor draws the chip with the selection's label: decided before it is drawn (a reload on a busy machine), the
+  // count below read none and nothing opened the panel (the intermittent failure of draft-recovery.spec.ts)
+  await expect(page.locator('[data-quick-panel-chip]').first(), 'the editor draws the quick panel chip').toBeAttached();
   // the chip stands beside the selection's label (DEC-70); where the label is out of sight (a wide element's start left
   // of the canvas at 100 %), so is the chip, and a person opens the panel with its shortcut from the canvas (a global
   // shortcut waits while a field holds the focus, DEC-27), the canvas moving the label into view

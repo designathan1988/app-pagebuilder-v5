@@ -53,6 +53,9 @@ for (const item of [
     page.once('dialog', d => d.accept());
     await page.reload();
     if (item.tab === 'quick') {
+      // closed after the reload: read once the editor has drawn the chip, never before (a count of none passes then); a
+      // reload is a whole boot, slower than one action on a busy machine
+      await expect(page.locator('[data-quick-panel-chip][aria-expanded="false"]').first()).toBeAttached({ timeout: 15000 });
       await expect(field).toHaveCount(0);
       await openQuickPanel(page);
     }
