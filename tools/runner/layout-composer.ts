@@ -68,7 +68,11 @@ export async function driveLayout(page: Page, ref: string, gesture: string, modi
     await expect(handle, `step ${ref}: the handle ${String(args.handle)} is drawn`).toBeVisible();
     const box = await handle.boundingBox();
     if (box === null) throw new Error(`step ${ref}: the handle is not laid out`);
-    from = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+    // pressed where the stroke begins when that point is on the handle, so the travel is the stroke's own; its middle
+    // only for a stroke that begins elsewhere (the middle of a region's label moves with the width of its text: a
+    // stroke drawn straight down travelled sideways from it, and the region landed by the face's metrics; DEF-0538)
+    const on = from.x >= box.x && from.x <= box.x + box.width && from.y >= box.y && from.y <= box.y + box.height;
+    if (!on) from = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
   }
   const mode = typeof args.mode === 'string' ? args.mode : 'auto';
   const key = gesture === 'layout-stroke' ? KEY_OF_MODE[mode] : undefined;

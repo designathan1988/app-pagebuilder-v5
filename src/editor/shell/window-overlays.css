@@ -305,6 +305,12 @@
   color: var(--color-text-subtle);
 }
 
+/* the trash's wrapper takes the trash's height: an inline box would keep room under its baseline for the face's
+   descenders, a pixel taller with the interface's own face (DCS-012, DEF-0537) */
+.breakpoints-dialog__remove {
+  display: flex;
+}
+
 /* a breakpoint's trash as tall as its fields (the dialog's 24 px controls), so every row is one height, the base's with
    its word as the others with their trash (the user's review of 2026-10-05, LR2: the 28 px trash made the base's row
    4 px shorter and the rows stood unevenly apart) */
@@ -450,12 +456,15 @@
   translate: -50% 0;
 }
 
-/* the state edited (canvas.tsx StateBadge, spec state-styles): a badge at the right of the frame's tab row */
+/* the state being edited (canvas.tsx StateBadge): at the frame's right, under its breakpoint tabs (D-1: they stand at the
+   frame's top) and under the breakpoint's band when there is one, never over a tab; a name, not a control, so a press
+   there reaches the page (DEF-0536) */
 .canvas-state-badge {
   position: absolute;
-  top: var(--space-1);
+  top: calc(var(--size-frame-tabs) + var(--space-1));
   right: var(--space-2);
   z-index: 2;
+  pointer-events: none;
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--color-mode-state);
@@ -478,6 +487,10 @@
   font: var(--weight-semibold) var(--fs-body) / var(--lh-body) var(--font-ui);
   white-space: nowrap;
   pointer-events: none;
+}
+
+.frame:has(.canvas-breakpoint-badge) .canvas-state-badge {
+  top: calc(var(--size-frame-tabs) + var(--size-target-min) + var(--space-1));
 }
 
 .canvas-breakpoint-badge > span {

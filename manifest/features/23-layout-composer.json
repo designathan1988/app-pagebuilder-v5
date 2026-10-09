@@ -8633,8 +8633,8 @@
                           "parent": null,
                           "name": "Region 2",
                           "box": {
-                            "x": 851,
-                            "y": 434,
+                            "x": 900,
+                            "y": 440,
                             "width": 200,
                             "height": 160
                           },
@@ -8679,15 +8679,15 @@
                   "desktop": {
                     "base": {
                       "padding-top": "40px",
-                      "padding-right": "max(0px, calc((100% - 711px) / 2))",
+                      "padding-right": "max(0px, calc((100% - 760px) / 2))",
                       "padding-bottom": "40px",
-                      "padding-left": "max(0px, calc((100% - 711px) / 2))",
+                      "padding-left": "max(0px, calc((100% - 760px) / 2))",
                       "display": "grid",
                       "grid-template-columns": "minmax(0, 1.8fr) minmax(0, 1fr)",
                       "grid-template-rows": "minmax(360px, auto) minmax(160px, auto)",
                       "grid-template-areas": "\"content .\" \". region-2\"",
-                      "row-gap": "34px",
-                      "column-gap": "151px"
+                      "row-gap": "40px",
+                      "column-gap": "200px"
                     }
                   }
                 }

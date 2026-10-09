@@ -530,3 +530,38 @@
 - **Correção:** no ponto garantidor, a store do editor não grava a digitação depois do comando do próprio campo (`src/editor/store.ts:271` `      const edited = heldTyping() === null || own ? null : editedKey(store.getState());`): o campo a grava ou cancela ele mesmo, e o comando de fora continua gravando quando muda o que o campo edita.
 - **Detector:** o grupo `drafts` (MEC-12), caso "o Enter do campo de nova animação cria a animação uma vez" (o campo real, com a Timeline aberta). Mutante M86 (a conferência sem olhar se o comando é do campo, o código de antes), acusado.
 - **Verificação:** detectores 23 arquivos e 79 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0; os cenários `timeline-animations` da suíte de navegador: 3 de 3 (o que falhava na linha de base passa).
+## DEF-0536 — o selo do estado editado cobre a última aba de breakpoint
+- **Status:** corrigido
+- **Citação:** `src/editor/shell/window-overlays.css:456` `  top: var(--space-1);`
+- **Causa:** o selo "Editing Hover" (`StateBadge`, `src/editor/shell/canvas.tsx`) é posto no canto de cima da moldura, onde ficam as abas de breakpoint (D-1: coladas no topo da moldura); quando as abas chegam à direita da moldura, a última fica sob o selo. O selo também recebe o toque, sobre a página.
+- **Efeito:** com um estado diferente de Base, a guarda de tela acusa `covered` na aba Phone (`view.setBreakpoint#toolbar-breakpoint-tabs-phone under canvas-frame :: div.stage > div.frame > div.canvas-state-badge`, caixa 803,134,81,24 em 1440×900): `tests/e2e/status-bar.spec.ts:84` e o cenário `status-bar › the-breakpoint-and-the-state-the-bar-reads-follow-their-commands` falham na suíte de navegador da linha de base de 2026-10-09. Fere a G5 (família `covered`) e, sobre a página, a G4.
+- **Alcance:** a moldura do canvas com um estado diferente de Base.
+- **Arquivos da correção:** `src/editor/shell/window-overlays.css`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o selo fica abaixo das abas, à direita da moldura (`src/editor/shell/window-overlays.css`, `.canvas-state-badge`: `top: calc(var(--size-frame-tabs) + var(--space-1))`), e abaixo da faixa do breakpoint quando ela aparece (`.frame:has(.canvas-breakpoint-badge) .canvas-state-badge`), sobre a página como a faixa; não recebe o toque (`pointer-events: none`), que chega à página.
+- **Detector:** a guarda de tela da fixture do Playwright (`covered`): `tests/e2e/status-bar.spec.ts:84` e o cenário `status-bar › the-breakpoint-and-the-state-the-bar-reads-follow-their-commands` falhavam na linha de base e passam. Defeito de layout: o teste que acusou é o detector (a regra da tarefa do DeepSeek, item 4.3).
+- **Verificação:** os testes de tela desta leva no navegador: `status-bar.spec.ts`, `responsive-and-states.spec.ts` (o diálogo de Breakpoints) e os cenários `layout-composer` e `status-bar`: 62 de 62 (`E2E_WORKERS=2`); detectores, `npm run typecheck`, `npm run lint` e `npm run manifest:check` sem falha.
+
+## DEF-0537 — as linhas do diálogo de Breakpoints têm alturas diferentes com a fonte da interface
+- **Status:** corrigido
+- **Citação:** `src/editor/shell/breakpoints-dialog.tsx:117` `    <span className="breakpoints-dialog__remove">`
+- **Causa:** o botão de lixeira de uma linha (inline-block, 24 px) fica num `span` inline; a caixa de linha do `span` guarda, abaixo da linha de base, o espaço dos descendentes da fonte, e com as métricas da Source Sans 3 (DCS-012) o `span` passou a ter 25 px. Medido no Chrome (`breakpoints-linhas.mjs` no scratchpad da sessão), nas duas condições: a linha da base (sem lixeira) tem 24 px, as outras 25 px, e o filho de 25 px é `span.breakpoints-dialog__remove`.
+- **Efeito:** as linhas ficam com alturas diferentes (24, 25, 25, 25), contra o LR2 da revisão do dono de 2026-10-05; `tests/e2e/responsive-and-states.spec.ts:148` falha na suíte de navegador da linha de base de 2026-10-09.
+- **Alcance:** o diálogo de Breakpoints.
+- **Arquivos da correção:** `src/editor/shell/window-overlays.css`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o envoltório da lixeira é uma caixa flexível (`src/editor/shell/window-overlays.css`, `.breakpoints-dialog__remove { display: flex; }`), sem caixa de linha: a altura dele é a do botão, 24 px, em qualquer fonte.
+- **Detector:** `tests/e2e/responsive-and-states.spec.ts:148` (as alturas das linhas), que falhava na linha de base (24, 25, 25, 25) e passa.
+- **Verificação:** os testes de tela desta leva no navegador: `status-bar.spec.ts`, `responsive-and-states.spec.ts` (o diálogo de Breakpoints) e os cenários `layout-composer` e `status-bar`: 62 de 62 (`E2E_WORKERS=2`); detectores, `npm run typecheck`, `npm run lint` e `npm run manifest:check` sem falha.
+
+## DEF-0538 — o arrasto por uma alça do compositor, nos cenários, depende da largura do rótulo
+- **Status:** corrigido
+- **Citação:** `tools/runner/layout-composer.ts:71` `    from = { x: box.x + box.width / 2, y: box.y + box.height / 2 };` (no código de antes)
+- **Causa:** o executor dos cenários pressiona uma alça do compositor de layout (`layout-handle`) no centro da caixa dela, e não no primeiro ponto do traço que o cenário dá, e depois move até os pontos seguintes, absolutos; para a alça de mover (o rótulo da região), o centro depende da largura do texto do rótulo, então o traço ganha um deslocamento horizontal que o cenário não descreve.
+- **Efeito:** o cenário `layout-composer › a-region-dragged-by-its-label-moves` dá o traço (905,45)→(905,445), só vertical, mas o executor arrasta do centro do rótulo; com a fonte da interface (DCS-012, commit cb59b928) o rótulo mudou de largura e a região cai 5 px ao lado do valor gravado no cenário (medido: o cenário passa em 454de31b e falha em cb59b928 e na linha de base de 2026-10-09). O app lê o traço que recebe; quem muda com a fonte é o traço que o executor faz.
+- **Alcance:** todo cenário de uma alça do compositor cujo primeiro ponto não é o centro da alça.
+- **Arquivos da correção:** `tools/runner/layout-composer.ts`, e o valor esperado do cenário em `manifest/features/23-layout-composer.json` refeito para o traço que ele descreve.
+- **Itens de estado tocados:** nenhum (o executor dos cenários).
+- **Correção:** o executor pressiona a alça no primeiro ponto do traço quando ele está sobre ela, e no meio dela só quando o traço começa noutro lugar (`tools/runner/layout-composer.ts`); o cenário passa a esperar o resultado do traço que descreve: a região descida 400 px no lugar (`x` 900, `y` 440, e o CSS que o compositor escreve para isso) em `manifest/features/23-layout-composer.json`.
+- **Detector:** o próprio cenário, que passa a ser o mesmo traço em qualquer fonte; os 45 cenários do compositor passam.
+- **Verificação:** os testes de tela desta leva no navegador: `status-bar.spec.ts`, `responsive-and-states.spec.ts` (o diálogo de Breakpoints) e os cenários `layout-composer` e `status-bar`: 62 de 62 (`E2E_WORKERS=2`); detectores, `npm run typecheck`, `npm run lint` e `npm run manifest:check` sem falha.
