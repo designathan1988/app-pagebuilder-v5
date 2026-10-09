@@ -8,6 +8,8 @@ import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { placeholders } from '../../../src/manifest/check/base.ts';
 import { mutatedSource } from '../mutants.ts';
+import { translate } from '../../../src/i18n/index.ts';
+import type { MessageId } from '../../../src/generated/ids.ts';
 
 const LOCALES = ['en', 'pt-BR'] as const;
 type Locale = (typeof LOCALES)[number];
@@ -36,6 +38,18 @@ function pluralBases(): readonly string[] {
     for (const found of text.matchAll(/`([A-Za-z][A-Za-z0-9.]*)\.\$\{pluralForm\(/g)) bases.add(found[1] ?? '');
   }
   return [...bases].sort();
+}
+
+// The keys the code passes a count to (translate and message take its plural form .one by it, the key itself serving
+// the other numbers): what is written as t('key', { count, … }), message('key', { count, … }) or
+// translate(locale, 'key', { count, … }) (DEF-0547: the check above saw only the bases of `plural:` and pluralForm).
+function countedKeys(): readonly string[] {
+  const keys = new Set<string>();
+  for (const file of sourceFiles()) {
+    const text = mutatedSource(file, fs.readFileSync(file, 'utf8'));
+    for (const found of text.matchAll(/['"]([A-Za-z][A-Za-z0-9.]*)['"]\s*(?:as [A-Za-z]+\s*)?,\s*\{[^}]*\bcount\b/g)) keys.add(found[1] ?? '');
+  }
+  return [...keys].sort();
 }
 
 describe('os dois catálogos de mensagens', () => {
@@ -92,5 +106,23 @@ describe('os dois catálogos de mensagens', () => {
       }
     }
     expect(found, 'formas plurais de uma base contada').toEqual([]);
+  });
+
+  it('toda chave contada pelo count que tem a forma de um num idioma a tem no outro, e uma contagem de um diz o singular', () => {
+    const counted = countedKeys();
+    expect(counted.length, 'o código passa count a alguma chave').toBeGreaterThan(50);
+    const catalogues = LOCALES.map((locale) => [locale, read(locale)] as const);
+    const found: string[] = [];
+    for (const key of counted) {
+      const holders = catalogues.filter(([, catalogue]) => `${key}.one` in catalogue).map(([locale]) => locale);
+      if (holders.length > 0 && holders.length < catalogues.length) for (const [locale] of catalogues) if (!holders.includes(locale)) found.push(`${locale}: "${key}.one" falta (a chave é contada pelo count, e ${holders.join(', ')} a tem)`);
+    }
+    expect(found, 'formas de um que faltam num idioma').toEqual([]);
+    // the counts of one that read a plural noun without it (DEF-0547)
+    const plural: string[] = [];
+    for (const [locale] of catalogues)
+      for (const [key, noun] of [['capture.editor.missingResources', locale === 'en' ? 'resources' : 'recursos'], ['canvas.selectedCount', locale === 'en' ? 'elements' : 'elementos'], ['inspector.elementCount', locale === 'en' ? 'elements' : 'elementos']] as const)
+        if (translate(locale, key as MessageId, { count: 1 }).includes(noun)) plural.push(`${locale}: ${key} com 1 diz "${noun}"`);
+    expect(plural, 'contagens de um no plural').toEqual([]);
   });
 });
