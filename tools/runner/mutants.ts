@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit' | 'command-group';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest' | 'ui-fit' | 'command-group' | 'canvas';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit', 'command-group'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest', 'ui-fit', 'command-group', 'canvas'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -135,6 +135,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M84', file: 'src/editor/persistence/drafts.ts', from: 'keyframe: state === undefined || keyframe === null ? null : { animation: keyframe.animation, time: timelineOf(state.ui).time },', to: 'keyframe: null,', breaks: 'o rascunho da sessão não guarda o quadro-chave em que a digitação começou (o código de antes do DEF-0531, na gravação)', source: 'DEF-0531', detectors: ['drafts'] },
   { id: 'M85', file: 'src/core/store/store.ts', from: "context.keyframe === null || context.keyframe === undefined || patches.some((patch) => patch.path.includes('keyframes')) ? context : { ...context, keyframe: null };", to: 'context;', breaks: 'toda mudança feita com o playhead sobre um quadro-chave grava o quadro, e o desfazer de uma que não o tocou reabre a Timeline (o código de antes do DEF-0532)', source: 'DEF-0532', detectors: ['command-group'] },
   { id: 'M86', file: 'src/editor/store.ts', from: 'const edited = heldTyping() === null || own ? null : editedKey(store.getState());', to: 'const edited = heldTyping() === null ? null : editedKey(store.getState());', breaks: 'o comando do próprio campo que muda o contexto da edição faz a store gravar a digitação de novo, e o comando roda duas vezes (o código de antes do DEF-0535)', source: 'DEF-0535', detectors: ['drafts'] },
+  { id: 'M87', file: 'src/editor/canvas/render/render.ts', from: '    if (before.language !== after.language || children.size > 0 || elements.size > 0) for (const id of this.dependents(before, after, tree)) if (!rebuilt.has(id)) elements.add(id);', to: '', breaks: 'o render incremental só escreve de novo o nó que o patch toca: o idioma, o formulário e a referência que um elemento lê de fora ficam velhos no canvas (o código de antes do DEF-0539)', source: 'DEF-0539', detectors: ['canvas'] },
 ];
 
 export const ALL_DETECTORS = ALL;

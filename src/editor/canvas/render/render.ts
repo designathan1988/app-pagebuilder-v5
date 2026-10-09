@@ -53,6 +53,7 @@ import { ELEMENT_NODE, TEXT_NODE, browserBreak, leavesOf, lastContent, precedes,
 import { svgMarkupOf } from '../../../core/elements/svg.ts';
 import { rootCss } from '../../../core/design/tokens.ts';
 import { objectUrl, resolvedSource } from '../../../core/files/files.ts';
+import { isReference } from '../../../core/files/values.ts';
 import { filesOf } from '../../../core/document/model.ts';
 import { fontFaceCss } from '../../../core/files/fonts.ts';
 import { animationsOf, keyframesCss, previewDeclarations } from '../../../core/animation/animation.ts';
@@ -251,6 +252,8 @@ export class PageRenderer {
   // as the file's object URL, as the source attributes are (files.ts), since the canvas holds the bytes and has no
   // folder to fetch a path from — a background image the person uploaded draws on the canvas as it does in the export.
   private doc: DocumentJson | null = null;
+  // the nodes standing in a form, for the document they were read from: read once per document, not once per element
+  private forms: { readonly doc: DocumentJson; readonly inside: ReadonlySet<NodeId> } | null = null;
   private model: RenderModel;
 
   constructor(
@@ -650,6 +653,8 @@ export class PageRenderer {
     }
     const tree = after.pages[this.page]?.tree ?? null;
     if (!tree) return this.mount(after);
+    // what an element shows that it reads from beyond its own node, written again when that changed (G7, DEF-0539)
+    if (before.language !== after.language || children.size > 0 || elements.size > 0) for (const id of this.dependents(before, after, tree)) if (!rebuilt.has(id)) elements.add(id);
     // an animation added, changed or taken away writes the page's @keyframes again
     if (patches.some((patch) => patch.path.includes('animations'))) this.writeKeyframes(after);
     for (const id of rebuilt) this.forget(id);
@@ -668,6 +673,31 @@ export class PageRenderer {
       // an SVG's viewBox is its size (core/elements/svg.ts): a new size writes it again
       if (node && node.tag === SVG_TAG && !elements.has(id)) this.redress(node);
     }
+  }
+
+  // Whether a node stands in a form (a button's type is its form's submit there: core/export/authoring.ts formNodes),
+  // read once per document.
+  private inForm(id: NodeId): boolean {
+    const doc = this.doc;
+    if (doc === null) return false;
+    if (this.forms?.doc !== doc) this.forms = { doc, inside: formNodes(doc) };
+    return this.forms.inside.has(id);
+  }
+
+  // The nodes of the page whose elements read something beyond their own node that a change may have moved (G7,
+  // DEF-0539): the page root, whose <html> takes the project's language; a node that went into a form or out of one
+  // (a button's type); and a node holding a reference to another element (a link's #anchor, a label's for: the
+  // target's id attribute, which a change of the target or of the tree moves), as a render from scratch writes them.
+  private dependents(before: DocumentJson, after: DocumentJson, tree: DocNode): Set<NodeId> {
+    const out = new Set<NodeId>();
+    if (before.language !== after.language) out.add(tree.id);
+    const was = formNodes(before);
+    const is = formNodes(after);
+    for (const node of walk(tree)) {
+      if (was.has(node.id) !== is.has(node.id)) out.add(node.id);
+      if (Object.entries(node.attributes).some(([name, value]) => typeof value === 'string' && isReference(name, value))) out.add(node.id);
+    }
+    return out;
   }
 
   private create(node: DocNode): Element {
@@ -712,7 +742,7 @@ export class PageRenderer {
       wanted.set(KEY_CONTEXT_ATTRIBUTE, edited.context);
     }
     const tag = element.localName;
-    const output = elementAttributes(node, tag, root, this.model, (_name, value) => value, { language: this.doc?.language ?? 'en', inForm: this.doc !== null && formNodes(this.doc).has(node.id) });
+    const output = elementAttributes(node, tag, root, this.model, (_name, value) => value, { language: this.doc?.language ?? 'en', inForm: this.inForm(node.id) });
     for (const [name, value] of output.element) {
       if (wanted.has(name)) continue;
       const written = value === true ? '' : this.address(name, value);

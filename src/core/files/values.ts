@@ -13,7 +13,7 @@ import { fileAt, pageAtPath, relativePath, resolvedSource } from './files.ts';
 import { rewriteSrcsetUrls } from './srcset.ts';
 
 // whether a stored value is a reference to another element (elements.json: the label's `for`, an anchored link)
-const isReference = (name: string, value: string): boolean => name === 'for' || (name === 'href' && value.startsWith('#'));
+export const isReference = (name: string, value: string): boolean => name === 'for' || (name === 'href' && value.startsWith('#'));
 
 // What the export writes: the path a project file is stored at, a reference as the target's id attribute, everything
 // else as it is. A reference whose target holds no id is written as nothing at all. `from` is the file the value is

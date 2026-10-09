@@ -252,3 +252,11 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Falhas de aceitação que precisa acusar:** DEF-0527 e DEF-0528.
 - **Mutantes:** M75 a M79, acusados; o M19 continua equivalente com o motivo reescrito, conferido por este grupo.
 - **Tempo medido:** grupo `command-group` 3,3 s (4 casos).
+
+## MEC-24 — o canvas contra o render do zero (G7)
+- **Capacidade:** a regra G7 ("o render incremental é igual a um render do zero"), a partir da verificação integral de 2026-10-09 (grupo J).
+- **Arquivos:**
+  - `tools/runner/model/canvas.test.ts` (novo) — o grupo `canvas` dos detectores: em happy-dom, uma página montada pelo `PageRenderer`, os patches de uma mudança aplicados pelo caminho incremental (`apply`) e a página comparada, elemento a elemento e atributo a atributo, o `<html>` incluído, com a de um renderizador novo que monta o documento depois da mudança; nove casos: os quatro de dependência de fora do nó (DEF-0539) e cinco controles;
+  - `tools/runner/mutants.ts` — o grupo `canvas` e o mutante M87.
+- **Falhas de aceitação que precisa acusar:** DEF-0539.
+- **Mutantes:** M87, acusado.
