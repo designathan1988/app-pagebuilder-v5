@@ -4097,8 +4097,8 @@
       "door": 91,
       "inside-door": 41,
       "local": 10,
-      "none": 81,
-      "spread": 11,
+      "none": 86,
+      "spread": 6,
       "wraps-door": 23
     },
     "elements": [
@@ -4231,7 +4231,7 @@
         "tag": "button",
         "role": null,
         "handlers": [],
-        "owner": "spread"
+        "owner": "none"
       },
       {
         "key": "src/editor/canvas/quick-panel.tsx|button|aria-expanded,className,data-args,data-door,data-region,style|1",
@@ -4289,7 +4289,7 @@
         "handlers": [
           "onChange"
         ],
-        "owner": "spread"
+        "owner": "none"
       },
       {
         "key": "src/editor/data/controls.tsx|option|key,value|1",
@@ -4305,7 +4305,7 @@
         "handlers": [
           "onBlur"
         ],
-        "owner": "spread"
+        "owner": "none"
       },
       {
         "key": "src/editor/data/controls.tsx|input|autoComplete,onBlur,ref,spellCheck,type|1",
@@ -4314,7 +4314,7 @@
         "handlers": [
           "onBlur"
         ],
-        "owner": "spread"
+        "owner": "none"
       },
       {
         "key": "src/editor/data/controls.tsx|form|className,data-args,data-door,onSubmit|1",
@@ -5765,7 +5765,7 @@
         "handlers": [
           "onSubmit"
         ],
-        "owner": "spread"
+        "owner": "none"
       },
       {
         "key": "src/editor/shell/shadow.tsx|button|aria-disabled,aria-pressed,className,onClick,type|1",

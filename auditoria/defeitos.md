@@ -725,3 +725,54 @@
 - **Correção:** a porta manda o texto do campo, mesmo vazio (`src/editor/shell/field.tsx`, `choose` do `UnitMenu`), e `field.setUnit` parte de `startOf` (`src/editor/inspector/number-field.ts`), a mesma regra do passo e do arraste; o cabeçalho do arquivo passou a nomear o menu de unidade entre as portas da regra.
 - **Detector:** o grupo `fields` (MEC-05), caso "um campo vazio parte do valor do elemento no passo e na troca de unidade" (`width: 96px` guardado, o campo vazio: o passo dá `97px` e a unidade `pt` dá `72pt`). Mutante M110 (o tratador lê o texto sem `startOf`, o código de antes), acusado: "field.setUnit com o campo vazio: refused, width 96px".
 - **Verificação:** detectores 25 arquivos e 97 testes sem falha; os 110 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0. No Chrome, no app (`unidade-vazia.mjs` no scratchpad da sessão), o campo Largura com o foco e o menu de unidade em `rem`: sem largura guardada (o campo mostra `auto`) a troca é recusada com "Não foi possível converter o valor para rem." e a largura não muda, como antes; com `96px` guardado vira `6rem` com a mesma largura medida (95,99 px); com dois elementos de larguras diferentes (o campo "Misto") a troca é recusada e as duas larguras ficam; nenhum erro de página.
+## DEF-0553 — a regra `builder/interactive-owner` isenta sem conferir quem recebe atributos espalhados e quem tem o texto de uma porta, mesmo num comentário
+- **Status:** corrigido
+- **Citação:** `tools/lint/plugin.ts:633` `        if (names.includes('data-door') || names.includes('data-local') || node.attributes.some((a) => a.type === 'JSXSpreadAttribute')) return;` e `tools/lint/plugin.ts:639` `        if (element.type === 'JSXElement' && element.closingElement !== null && DOOR_INSIDE.test(text.slice(node.range[1], element.range[1]))) return;`
+- **Causa:** a regra isenta todo elemento com um atributo espalhado, qualquer que seja o objeto espalhado, e todo elemento cujo texto interno casa com `data-door` ou `<…Door…>` por expressão regular sobre o texto-fonte, que inclui comentários (verificação integral, grupo F, MEC-08).
+- **Efeito:** sem a isenção do espalhamento, a regra acusa 11 elementos (medido com o lint de 2026-10-09). Os 6 botões de `src/editor/doors/door.tsx` espalham o `common` que traz `data-door`. Os outros 5 passavam sem dono nem motivo:
+  - o botão de fechar do painel rápido (`src/editor/canvas/quick-panel.tsx:284` `      <button {...shared} className="quick-panel__close" aria-expanded={true}>`), que roda `door.run()` sem `data-door`;
+  - os três campos de `src/editor/data/controls.tsx` (o `select`, o `textarea` e o `input`);
+  - o formulário de `src/editor/shell/popover.tsx`.
+
+  O inventário gerado os conta como `spread`, fora da lista de exceções.
+- **Alcance:** a conferência C1 de todo elemento interativo de `src/` (MEC-08).
+- **Arquivos da correção:** `tools/lint/plugin.ts`, `tools/inventory/ui-scan.ts`, `tools/lint/interactive-allowed.ts`, `tools/runner/mutants.ts`, `manifest/generated/inventory.json`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:**
+  - um atributo espalhado isenta só quando o objeto espalhado traz `data-door` ou `data-local` (`spreadsMark` em `tools/lint/plugin.ts`). O objeto pode estar escrito no lugar ou ser o literal com que o nome é declarado no bloco em volta: o `common` de `src/editor/doors/door.tsx` traz `data-door`.
+  - O envolvimento de uma porta é lido pela árvore sintática dos filhos (`holdsDoor`: um `data-door` ou um componente `…Door…`), nunca pelo texto, então um comentário não conta.
+  - O inventário (`tools/inventory/ui-scan.ts`) segue a mesma regra do espalhamento, para os dois concordarem.
+  - Os 5 elementos que só o espalhamento escondia entraram em `tools/lint/interactive-allowed.ts` na categoria `door-part` (DCS-020), com o rastreamento:
+    - o fechar do painel rápido roda o mesmo `door.run` do chip;
+    - os três campos de `DoorField` rodam o comando da porta do formulário pelo `keep`;
+    - o formulário do popover é usado só pela caixa do vínculo, cujo envio despacha o comando da porta de vínculo da barra de texto.
+  - Nenhum outro elemento dependia de um comentário.
+- **Detector:** o grupo `lint` (MEC-09) com os mutantes M112 (o botão que espalha `shared` sem marca e que a lista não nomeia) e M113 (um formulário sem dono com o texto `data-door` num comentário), acusados pela `builder/interactive-owner`; com a regra de antes (`git show HEAD:tools/lint/plugin.ts`), nenhum dos dois é acusado. O grupo `inventory` confere que toda exceção nomeia um elemento sem dono do inventário.
+- **Verificação:** detectores 25 arquivos e 98 testes sem falha; os 116 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0554 — a regra `builder/listener-scope` aceita um apelido de `window`, `{ once: false }` e um fecho de outro temporizador com o mesmo último nome
+- **Status:** corrigido
+- **Citação:** `tools/lint/plugin.ts:694` `      if (/\b(signal|once)\b/.test(text(add.arguments[2]))) return true;`, `tools/lint/plugin.ts:699` `      return target !== null && declared.some((d) => within(d, scope) && d.id.type === 'Identifier' && d.id.name === target && d.init !== null);` e `tools/lint/plugin.ts:716` `        return lastName(closed) === name;`
+- **Causa:**
+  - um ouvinte termina, para a regra, quando o texto das opções contém a palavra `once` ou `signal`, o que inclui `{ once: false }`;
+  - um ouvinte também termina quando o alvo é uma variável declarada na mesma função com qualquer valor inicial, e isso inclui `const w = window`, que não cria objeto nenhum;
+  - um intervalo fecha quando qualquer `clearInterval` do arquivo recebe algo com o mesmo último nome (`a.timer` fechado por `clearInterval(b.timer)`).
+
+  Fonte: verificação integral, grupo F, MEC-09.
+- **Efeito:** um ouvinte de `window` que nunca sai e um intervalo que nunca para passam no lint sem motivo listado.
+- **Alcance:** a conferência de escopo de vida de todo arquivo de `src/` (MEC-09).
+- **Arquivos da correção:** `tools/lint/plugin.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** em `tools/lint/plugin.ts`, `builder/listener-scope`:
+  - **Opções:** as opções terminam um ouvinte quando o objeto, escrito no lugar ou declarado com o nome, tem `once: true` ou um `signal` (`optionsEnd`).
+  - **Objeto criado:** o "objeto que a função cria" exige um valor inicial `new …` ou uma chamada; um nome para um objeto que já existe, como `const w = window`, não vale.
+  - **Fecho de um lugar guardado:** um temporizador ou observador guardado num lugar fecha só com o texto inteiro desse lugar (`hold.timer`).
+  - **Fecho de um nome local:** um guardado num nome próprio fecha só com um nome que se resolva para a mesma declaração, subindo pelos blocos e funções como a linguagem resolve (`resolved`). Achado no caminho: o fecho era procurado no arquivo inteiro, e o `clearTimeout(id)` de outra função contava para o `id` de um intervalo.
+  - **Laço até o programa:** os laços de subida param no pai `null` do programa. Um nome sem declaração lançava erro na regra: medido com o lint do texto do M116.
+  - **Código de hoje:** nenhum arquivo de `src/` dependia das brechas, e o lint segue com saída 0.
+- **Detector:** o grupo `lint` (MEC-09), mutantes acusados pela `builder/listener-scope`:
+  - M114: `{ once: false }` num alvo que é parâmetro;
+  - M115: `const w = window` sem remoção;
+  - M116: o `disconnect` de `view.observer` no lugar do `observer` do efeito.
+
+  Com a regra de antes, nenhum dos três é acusado.
+- **Verificação:** a do DEF-0553.

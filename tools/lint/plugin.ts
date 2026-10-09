@@ -602,12 +602,30 @@ const noManifestId: TsRuleDefinition<'id'> = {
 
 // builder/interactive-owner: every element a person acts on has an owner (the investigation's C1, option B): a door of
 // the manifest (data-door, drawn by src/editor/doors/door.tsx), a declared local control (data-local, conferred with
-// manifest/layout.json), the attributes a door spreads on it, an element inside a door, a wrapper of a door — or, for
-// what is none of these on purpose (a focus sentinel, a dialog's container), an entry of
-// tools/lint/interactive-allowed.ts with its reason. What "interactive" is and the key that names an element are
+// manifest/layout.json), an object spread on it that holds one of those two marks (a door's attributes), an element
+// inside a door, a wrapper of a door — or, for what is none of these on purpose (a focus sentinel, a dialog's
+// container), an entry of tools/lint/interactive-allowed.ts with its reason. A spread is read for what it spreads (an
+// object written in place, or the object literal its name is declared with), and a wrapper by its elements, never by
+// its text, which a comment would fool (DEF-0553). What "interactive" is and the key that names an element are
 // tools/inventory/ui-scan.ts's, so the lint and the generated inventory (manifest/generated/inventory.json) agree.
 const ALLOWED_INTERACTIVE: ReadonlySet<string> = new Set(INTERACTIVE_ALLOWED.map((entry) => entry.key));
-const DOOR_INSIDE = /data-door|<[A-Za-z.]*Door[A-Za-z.]*[\s/>]/;
+const OWNER_MARKS: ReadonlySet<string> = new Set(['data-door', 'data-local']);
+const DOOR_COMPONENT = /Door/;
+// the name of an object's property written as a name or a text ('data-door': …)
+const propertyKey = (property: TSESTree.Property): string | null =>
+  property.key.type === 'Identifier' ? property.key.name : property.key.type === 'Literal' && typeof property.key.value === 'string' ? property.key.value : null;
+// whether an element below this node is drawn as a door: an element with data-door, or a component of a door
+// (DoorControl, PanelDoor…); the syntax tree, never the text, so a comment counts for nothing
+function holdsDoor(node: TSESTree.Node): boolean {
+  if (node.type === 'JSXAttribute' && jsxName(node.name) === 'data-door') return true;
+  if (node.type === 'JSXOpeningElement' && DOOR_COMPONENT.test(jsxName(node.name))) return true;
+  for (const [key, value] of Object.entries(node)) {
+    if (key === 'parent') continue;
+    const children: unknown[] = Array.isArray(value) ? value : [value];
+    for (const child of children) if (child !== null && typeof child === 'object' && 'type' in child && holdsDoor(child as TSESTree.Node)) return true;
+  }
+  return false;
+}
 const jsxName = (name: TSESTree.JSXTagNameExpression | TSESTree.JSXAttribute['name']): string =>
   name.type === 'JSXIdentifier' ? name.name : name.type === 'JSXNamespacedName' ? `${name.namespace.name}:${name.name.name}` : `${jsxName(name.object)}.${name.property.name}`;
 const interactiveOwner: TsRuleDefinition<'owner'> = {
@@ -620,7 +638,24 @@ const interactiveOwner: TsRuleDefinition<'owner'> = {
   create(context) {
     const file = relative(process.cwd(), context.filename).replaceAll('\\', '/');
     const seen = new Map<string, number>();
-    const text = context.sourceCode.text;
+    // the object literal a spread name is declared with: the nearest block or program around the element that declares
+    // the name (const shared = { … }), read upward as the element sees it
+    const declaredObject = (name: string, at: TSESTree.Node): TSESTree.ObjectExpression | null => {
+      // the program's parent is null at run time, whatever its type says
+      for (let up: TSESTree.Node | null | undefined = at.parent; up !== null && up !== undefined; up = up.parent) {
+        if (up.type !== 'BlockStatement' && up.type !== 'Program') continue;
+        for (const statement of up.body) {
+          if (statement.type !== 'VariableDeclaration') continue;
+          const declared = statement.declarations.find((d) => d.id.type === 'Identifier' && d.id.name === name);
+          if (declared !== undefined) return declared.init?.type === 'ObjectExpression' ? declared.init : null;
+        }
+      }
+      return null;
+    };
+    const spreadsMark = (spread: TSESTree.JSXSpreadAttribute, at: TSESTree.Node): boolean => {
+      const object = spread.argument.type === 'ObjectExpression' ? spread.argument : spread.argument.type === 'Identifier' ? declaredObject(spread.argument.name, at) : null;
+      return object !== null && object.properties.some((one) => one.type === 'Property' && OWNER_MARKS.has(propertyKey(one) ?? ''));
+    };
     return {
       JSXOpeningElement(node) {
         const tag = jsxName(node.name);
@@ -630,13 +665,13 @@ const interactiveOwner: TsRuleDefinition<'owner'> = {
         const sig = `${tag}|${[...names].sort().join(',')}`;
         const nth = (seen.get(sig) ?? 0) + 1;
         seen.set(sig, nth);
-        if (names.includes('data-door') || names.includes('data-local') || node.attributes.some((a) => a.type === 'JSXSpreadAttribute')) return;
+        if (names.includes('data-door') || names.includes('data-local') || node.attributes.some((a) => a.type === 'JSXSpreadAttribute' && spreadsMark(a, node))) return;
         const element = node.parent;
         // the program's parent is null at run time, whatever its type says
         for (let up: TSESTree.Node | null | undefined = element.parent; up !== null && up !== undefined; up = up.parent) {
           if (up.type === 'JSXElement' && up.openingElement.attributes.some((a) => a.type === 'JSXAttribute' && jsxName(a.name) === 'data-door')) return;
         }
-        if (element.type === 'JSXElement' && element.closingElement !== null && DOOR_INSIDE.test(text.slice(node.range[1], element.range[1]))) return;
+        if (element.type === 'JSXElement' && element.children.some((child) => holdsDoor(child))) return;
         const key = keyOf(file, tag, names, nth);
         if (!ALLOWED_INTERACTIVE.has(key)) context.report({ node, messageId: 'owner', data: { tag, key } });
       },
@@ -663,8 +698,6 @@ function enclosing(node: TSESTree.Node): TSESTree.Node {
   return up ?? node;
 }
 const within = (node: TSESTree.Node, outer: TSESTree.Node): boolean => node.range[0] >= outer.range[0] && node.range[1] <= outer.range[1];
-// the last name of where a handle is kept: frame for frame, timer for hold.timer
-const lastName = (text: string): string => text.split('.').at(-1) ?? text;
 const listenerScope: TsRuleDefinition<'listener' | 'handle'> = {
   meta: {
     type: 'problem',
@@ -690,13 +723,23 @@ const listenerScope: TsRuleDefinition<'listener' | 'handle'> = {
       const key = keyFor(what);
       if (!ALLOWED_LISTENERS.has(key)) context.report({ node, messageId, data: { what, key } });
     };
+    // the options of an addEventListener end it when they hold a signal or once: true, written in place or in the
+    // object literal their name is declared with (DEF-0554: the word once in { once: false } ended it before)
+    const optionsEnd = (options: TSESTree.Node | undefined, scope: TSESTree.Node): boolean => {
+      const named = options?.type === 'Identifier' ? declared.find((d) => within(d, scope) && d.id.type === 'Identifier' && d.id.name === options.name)?.init : undefined;
+      const object = options?.type === 'ObjectExpression' ? options : named?.type === 'ObjectExpression' ? named : null;
+      if (object === null) return false;
+      return object.properties.some((one) => one.type === 'Property' && one.key.type === 'Identifier' && ((one.key.name === 'once' && one.value.type === 'Literal' && one.value.value === true) || one.key.name === 'signal'));
+    };
     const listenerEnds = (add: TSESTree.CallExpression): boolean => {
-      if (/\b(signal|once)\b/.test(text(add.arguments[2]))) return true;
       const scope = enclosing(add);
+      if (optionsEnd(add.arguments[2], scope)) return true;
       const [type, handler] = [text(add.arguments[0]), text(add.arguments[1])];
       if (calls.some((c) => within(c, scope) && calleeName(c) === 'removeEventListener' && text(c.arguments[0]) === type && text(c.arguments[1]) === handler)) return true;
+      // an object the function creates (new …, or what a call returns: a new element, a channel), never a name for an
+      // object that outlives it (const w = window; DEF-0554)
       const target = add.callee.type === 'MemberExpression' && add.callee.object.type === 'Identifier' ? add.callee.object.name : null;
-      return target !== null && declared.some((d) => within(d, scope) && d.id.type === 'Identifier' && d.id.name === target && d.init !== null);
+      return target !== null && declared.some((d) => within(d, scope) && d.id.type === 'Identifier' && d.id.name === target && (d.init?.type === 'NewExpression' || d.init?.type === 'CallExpression'));
     };
     // where the handle of an interval or an observer is kept: the variable or the member it is assigned to
     const keptIn = (node: Scoped): string | null => {
@@ -705,15 +748,35 @@ const listenerScope: TsRuleDefinition<'listener' | 'handle'> = {
       if (parent?.type === 'AssignmentExpression') return text(parent.left);
       return null;
     };
+    // the declaration a name written at a node stands for, read upward through the blocks and the functions around it
+    // as the language resolves it: a declarator, a function whose parameter it is, or null for a name declared outside
+    const resolved = (at: TSESTree.Node, name: string): TSESTree.Node | null => {
+      // the program's parent is null at run time, whatever its type says
+      for (let up: TSESTree.Node | null | undefined = at.parent; up !== null && up !== undefined; up = up.parent) {
+        const statements = up.type === 'BlockStatement' || up.type === 'Program' ? up.body : up.type === 'SwitchCase' ? up.consequent : [];
+        for (const statement of statements) {
+          if (statement.type !== 'VariableDeclaration') continue;
+          const declared = statement.declarations.find((d) => d.id.type === 'Identifier' && d.id.name === name);
+          if (declared !== undefined) return declared;
+        }
+        if (isFunction(up) && 'params' in up && up.params.some((p) => p.type === 'Identifier' && p.name === name)) return up;
+      }
+      return null;
+    };
+    // a handle is closed where the place it is kept in is closed (hold.timer by clearInterval(hold.timer), never by
+    // clearInterval(other.timer)); a handle kept in a name of its own is closed by that name, never by another
+    // function's name that reads the same (DEF-0554)
     const handleEnds = (node: Scoped, closers: readonly string[]): boolean => {
       const kept = keptIn(node);
       if (kept === null) return false;
-      const name = lastName(kept);
+      const own = node.parent?.type === 'VariableDeclarator' ? node.parent : null;
       return calls.some((c) => {
+        const closing = c.callee.type === 'MemberExpression' && (calleeName(c) === 'disconnect' || calleeName(c) === 'unobserve') ? c.callee.object : c.arguments[0];
+        if (own !== null && (closing?.type !== 'Identifier' || resolved(closing, closing.name) !== own)) return false;
         const callee = calleeName(c);
         if (callee === null || !closers.includes(callee)) return false;
         const closed = callee === 'disconnect' || callee === 'unobserve' ? (c.callee.type === 'MemberExpression' ? text(c.callee.object) : '') : text(c.arguments[0]);
-        return lastName(closed) === name;
+        return closed === kept;
       });
     };
     return {

@@ -2,7 +2,7 @@
 // investigation's C1, option A; grown from auditoria/investigacao/poc/c1-inventario/varrer.mjs): every intrinsic JSX
 // element a person acts on (a button, a field, a link, an element with a handler, an interactive ARIA role, a
 // tabIndex) and who owns it — a door of the manifest (data-door), a declared local control (data-local), part of a
-// door (inside an element that carries data-door), its attributes spread from elsewhere (only the run tells), or a
+// door (inside an element that carries data-door), an object spread on it that holds data-door or data-local, or a
 // wrapper of a door — or nobody. Each element is named by a key that does not move with the lines around it: its file,
 // its tag, its attribute names and its place among the elements of that file with the same tag and attribute names.
 import fs from 'node:fs';
@@ -21,6 +21,7 @@ export interface Interactive {
 }
 
 const TAGS = new Set(['button', 'input', 'select', 'textarea', 'a', 'summary', 'option']);
+const OWNER_MARKS: ReadonlySet<string> = new Set(['data-door', 'data-local']);
 const ROLES = new Set(['button', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'tab', 'option', 'slider', 'spinbutton', 'checkbox', 'switch', 'treeitem', 'combobox', 'radio', 'link', 'gridcell', 'separator']);
 // the same two sets for a check that reads the drawn page instead of the source (tests/e2e/lote-visual.spec.ts)
 export const INTERACTIVE_TAGS = TAGS;
@@ -54,6 +55,25 @@ export function scanFile(file: string, text: string): Interactive[] {
     ts.forEachChild(node, look);
     return found;
   };
+  // the object literal a spread name is declared with: the nearest block or file around the element that declares the
+  // name (const shared = { … }), read upward as the lint reads it (tools/lint/plugin.ts, builder/interactive-owner)
+  const declaredObject = (name: string, at: ts.Node): ts.ObjectLiteralExpression | null => {
+    for (let up: ts.Node | undefined = at.parent; up !== undefined; up = up.parent) {
+      if (!ts.isBlock(up) && !ts.isSourceFile(up)) continue;
+      for (const statement of up.statements) {
+        if (!ts.isVariableStatement(statement)) continue;
+        const declared = statement.declarationList.declarations.find((d) => ts.isIdentifier(d.name) && d.name.text === name);
+        if (declared !== undefined) return declared.initializer !== undefined && ts.isObjectLiteralExpression(declared.initializer) ? declared.initializer : null;
+      }
+    }
+    return null;
+  };
+  // a spread owns the element when what it spreads holds a door's or a local control's mark (DEF-0553: any spread
+  // owned it before, whatever it spread)
+  const spreadsMark = (spread: ts.JsxSpreadAttribute): boolean => {
+    const object = ts.isObjectLiteralExpression(spread.expression) ? spread.expression : ts.isIdentifier(spread.expression) ? declaredObject(spread.expression.text, spread) : null;
+    return object !== null && object.properties.some((one) => ts.isPropertyAssignment(one) && (ts.isIdentifier(one.name) || ts.isStringLiteral(one.name)) && OWNER_MARKS.has(one.name.text));
+  };
   const visit = (node: ts.Node, insideDoor: boolean) => {
     let inside = insideDoor;
     if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -64,7 +84,7 @@ export function scanFile(file: string, text: string): Interactive[] {
       const roleAttribute = attributes.filter(ts.isJsxAttribute).find((a) => a.name.getText(source) === 'role');
       const role = roleAttribute?.initializer && ts.isStringLiteral(roleAttribute.initializer) ? roleAttribute.initializer.text : null;
       if (isInteractive(tag, names, role)) {
-        const owner: Owner = names.includes('data-door') ? 'door' : names.includes('data-local') ? 'local' : insideDoor ? 'inside-door' : attributes.some(ts.isJsxSpreadAttribute) ? 'spread' : ts.isJsxElement(node) && wrapsDoor(node) ? 'wraps-door' : 'none';
+        const owner: Owner = names.includes('data-door') ? 'door' : names.includes('data-local') ? 'local' : insideDoor ? 'inside-door' : attributes.some((a) => ts.isJsxSpreadAttribute(a) && spreadsMark(a)) ? 'spread' : ts.isJsxElement(node) && wrapsDoor(node) ? 'wraps-door' : 'none';
         const sig = `${tag}|${[...names].sort().join(',')}`;
         const nth = (seen.get(sig) ?? 0) + 1;
         seen.set(sig, nth);
