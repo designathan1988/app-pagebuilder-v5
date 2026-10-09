@@ -1,16 +1,32 @@
-// The interface's text against the column it is drawn in (the investigation's C4, MEC-20): for every door of the
-// manifest whose control draws its label, the widest of the label in pt-BR, in English and in the pseudo-expansion has
-// to fit the width of its region with 1 px of slack. The width of a label is computed from the face itself
-// (tools/ui-fit/font.ts, no browser); the column is a token of src/ui/tokens.css when the region's width is fixed (the
-// mutant of `--size-inspector` shows this, since the token is read here with the mutant's passage swapped) and the
-// measured widths of manifest/generated/ui-widths.json when it is fluid (tools/ui-fit/measure.spec.ts).
+// The interface's text against the space its own label has (the investigation's C4, MEC-20; DEF-0573): for every door
+// whose control draws a text of the interface, that text in pt-BR and in English has to fit the space measured for
+// that door's label (tools/ui-fit/measure.spec.ts, three screen conditions), with 1 px of slack. The width of a text is
+// computed from the face itself (tools/ui-fit/font.ts, no browser), and the text is the catalogue's as it reads now
+// (the catalogues are read with the mutant's passage swapped). The measurement was taken with the stylesheets of now (a
+// stylesheet that changed, the mutant of `--size-inspector` among them, makes it stale), and every door whose label no
+// measurement reaches lies in a region whose reason is written (tools/ui-fit/check.ts, UNMEASURED_REASONS). The
+// pseudo-expansion is reported in .cache/model/ui-fit-pseudo.json, not failed (decisoes.md, DCS-024).
+import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { uiFitFindingsFromDisk } from '../../ui-fit/check.ts';
+import { uiFitFromDisk } from '../../ui-fit/check.ts';
 
-describe('o texto da interface na coluna da sua região', () => {
-  it('o rótulo mais longo de cada porta cabe na largura da sua região, com 1 px de folga', () => {
-    const findings = uiFitFindingsFromDisk();
-    const described = findings.map((f) => `${f.region} ${f.ref} (${f.labelKey}): ${f.need.toFixed(1)} px em ${f.column} px`);
-    expect(described, 'rótulos que não cabem na coluna da sua região').toEqual([]);
+const report = uiFitFromDisk();
+fs.mkdirSync('.cache/model', { recursive: true });
+fs.writeFileSync('.cache/model/ui-fit-pseudo.json', JSON.stringify(report.stretched.map((f) => `${f.region} ${f.ref}: ${f.need.toFixed(1)} px em ${f.column.toFixed(1)} px`), null, 1));
+fs.writeFileSync('.cache/model/ui-fit-nao-medidas.json', JSON.stringify(report.unmeasured, null, 1));
+
+describe('o texto da interface no espaço do seu rótulo', () => {
+  it('a medida foi tomada com as folhas de estilo de agora', () => {
+    expect(report.stale, 'manifest/generated/ui-widths.json é de outras folhas de estilo: rode npm run ui-fit:measure nas três condições').toBe(false);
+  });
+
+  it('o texto de cada porta, em pt-BR e em inglês, cabe no espaço do seu rótulo, com 1 px de folga', () => {
+    const described = report.findings.map((f) => `${f.region} ${f.ref} "${f.text}": ${f.need.toFixed(1)} px em ${f.column.toFixed(1)} px`);
+    expect(described, 'textos que não cabem no espaço do seu rótulo').toEqual([]);
+  });
+
+  it('toda porta com rótulo foi medida, ou está numa região cujo motivo de não ser medida está escrito', () => {
+    expect(report.unmeasured.length + report.textless.length, 'a conta das portas não medidas e das sem texto foi feita').toBeGreaterThan(0);
+    expect(report.unexplained.map((one) => `${one.region} › ${one.ref}`), 'portas com rótulo não medidas, numa região sem motivo').toEqual([]);
   });
 });

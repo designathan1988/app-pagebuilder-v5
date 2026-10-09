@@ -1387,9 +1387,9 @@ export const generatedInventorySchema = z.strictObject({
   }),
 });
 
-// The fluid widths of the interface (tools/ui-fit/measure.spec.ts): one measurement of a region's column per screen
-// condition, with the hash of the CSS it was taken with. tools/ui-fit/check.ts reads it; the regions whose column is a
-// token are absent from it.
+// The space the interface's labels have (tools/ui-fit/measure.spec.ts): one measurement of each region and of each
+// drawn door's label per screen condition, with the hash of the stylesheets it was taken with. tools/ui-fit/check.ts
+// reads it.
 export const generatedUiWidthsSchema = z.strictObject({
   $generated: z.strictObject({ by: z.string().min(1), css: z.string().min(1) }),
   regions: z.record(
@@ -1399,6 +1399,16 @@ export const generatedUiWidthsSchema = z.strictObject({
       z.strictObject({ width: z.number(), fontSize: z.number(), fontWeight: z.number() }),
     ),
   ),
+  // the space each door's label has, per screen condition (tools/ui-fit/measure.spec.ts; DEF-0573), and the doors drawn
+  // without a text of their own
+  doors: z.record(
+    z.string(),
+    z.record(
+      z.string(),
+      z.strictObject({ width: z.number(), fontSize: z.number(), fontWeight: z.number(), letterSpacing: z.number(), textTransform: z.string(), text: z.string() }),
+    ),
+  ),
+  textless: z.record(z.string(), z.array(z.string())),
 });
 
 // Each manifest file and its schema, keyed as consumers.json names them.

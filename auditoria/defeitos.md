@@ -1141,3 +1141,20 @@
 
   Nenhuma das duas é defeito do app.
 - **Verificação:** `lote-visual.spec.ts` sozinho, `E2E_WORKERS=1`, prioridade baixa: 4 de 4 na condição padrão (o G7 em 297 s) e 4 de 4 na condição Windows (309 s). Detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0573 — a medição de texto (ui-fit) mede contra a região inteira, pula rótulos em silêncio e não confere o que mediu
+- **Status:** corrigido (commit do lote do DEF-0573). Correção: o espaço medido por porta (texto longo no rótulo, três condições: padrão, Windows e 1280×720 pt-BR, 432 portas), o hash das folhas de estilo conferido, cada região não medida com motivo escrito (`UNMEASURED_REASONS`), glifo ausente como 1em, `letter-spacing` e `text-transform` medidos. Textos: pt-BR `property.caretColor` "Cor do cursor", `property.verticalAlign` "Posição vertical" (sem abreviação), en `command.selectionToggle` de volta ao texto anterior ao DEF-0520. Prova: grupo `ui-fit` (3 casos), mutantes M68, M140, M141 acusados; detectores 25 arquivos e 115 testes sem falha, typecheck e lint sem erro.
+- **Citação (antes):** `tools/ui-fit/check.ts:117` `    } else {` `:118` `      continue;` (o rótulo sem coluna, pulado), `:105` `      if (width === undefined) continue;` (o token renomeado, pulado), `:96` `    const cells = input.measured?.[door.region];` (a coluna é a região inteira) e `tools/ui-fit/font.ts:240` `    sum += font.advances[Math.min(g, font.advances.length - 1)] ?? 0;` (o glifo que a face não tem medido como `.notdef`)
+- **Causa:** verificação integral, grupo H, MEC-20.
+  - **A coluna:** é a largura da região inteira. Os rótulos dos campos do inspector são medidos contra 336 px, quando o rótulo ocupa uma coluna de cerca de 116 px, o que contraria a técnica obrigatória da G5: "medir contra o espaço do próprio elemento, nunca contra uma trilha".
+  - **Rótulos pulados em silêncio:** 150 de 944, os de regiões não medidas (o painel rápido, o menu de contexto, o seletor de cor, os diálogos), e também quando um token da lista de colunas fixas é renomeado.
+  - **O que foi medido não é conferido:**
+    - o hash do CSS gravado em `manifest/generated/ui-widths.json` não é comparado com o CSS de agora;
+    - a condição 1280×720 em pt-BR nunca é medida;
+    - `text-transform` e `letter-spacing` são ignorados (Camadas: 32,5 px medidos contra 39,2 px desenhados);
+    - os marcadores `【】` da pseudo-expansão, que a face não tem, são medidos com a largura do `.notdef` (até cerca de 8 px a menos).
+  - **O DEF-0520 é falso positivo:** a porta `selection.toggle#layers-row-ctrl` é o Ctrl+clique na linha, não desenha texto, e a mensagem inglesa foi encurtada para calar o detector.
+  - **As ligaduras (GSUB `liga`):** não são aplicadas, mas isso só superestima a largura (até 0,43 px a mais em 15 textos), um erro do lado seguro.
+- **Efeito:** um rótulo cortado na coluna do seu próprio controle passa quando a região é larga. Um rótulo de região não medida, ou de um token renomeado, passa sem aviso. Uma medida velha passa como se fosse de agora.
+- **Alcance:** `tools/ui-fit/` e o grupo `ui-fit` (MEC-20).
+- **Arquivos da correção:** `tools/ui-fit/check.ts`, `tools/ui-fit/font.ts`, `tools/ui-fit/measure.spec.ts`, `tools/ui-fit/measure.config.ts`, `manifest/generated/ui-widths.json`, `tools/runner/model/ui-fit.test.ts`, `src/i18n/locales/en.json`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.

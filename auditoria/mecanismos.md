@@ -233,6 +233,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Falhas de aceitação que precisa acusar:** uma etiqueta que não cabe na coluna da sua região (as duas primeiras: os DEF-0519 e DEF-0520); uma coluna fixa que encolhe até o rótulo mais longo não caber.
 - **Mutante:** M68 (`--size-inspector` de 336 px para 280 px), acusado: dois rótulos da barra de seletores do inspector passam a não caber.
 - **Tempo medido:** grupo `ui-fit` 2,8 s (1 caso).
+- **Revisão (DEF-0573, 2026-10-09):** o espaço é medido por porta, não por região; três condições (`UI_FIT_CONDITION=ptbr` para 1280×720 pt-BR); medida velha (hash das folhas de estilo) é falha; porta não medida só passa numa região com motivo em `UNMEASURED_REASONS`; a pseudo-expansão vira aviso em `.cache/model/ui-fit-pseudo.json` (DCS-024). Mutantes M68, M140, M141.
 
 ## MEC-21 — o lote visual do navegador: os controles montados e o canvas contra o documento
 - **Capacidade:** C1 (controles montados contra o inventário) e G7 com DCS-002 (o canvas é o documento).

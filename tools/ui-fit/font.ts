@@ -238,6 +238,13 @@ export function textWidth(font: Font, text: string, size: number, kerning: 'gpos
   let previous: number | null = null;
   for (const ch of text) {
     const g = font.glyphOf(ch.codePointAt(0) ?? 0);
+    // a character the face lacks is drawn by the browser from a fallback face, never as the face's .notdef: it is
+    // counted 1 em, the width of the full-width marks the pseudo-expansion writes (【】), on the safe side (DEF-0573)
+    if (g === 0) {
+      sum += font.unitsPerEm;
+      previous = null;
+      continue;
+    }
     sum += font.advances[Math.min(g, font.advances.length - 1)] ?? 0;
     if (previous !== null) {
       if (kerning === 'gpos') sum += font.pairAdjust(previous, g);
