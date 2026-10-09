@@ -184,10 +184,10 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 ## MEC-16 — o que uma página importada pode carregar
 - **Capacidade:** C8 (a classe "HTML importado e XSS", sem navegador).
 - **Arquivos:**
-  - `tools/runner/model/import.test.ts` — o grupo `import`: um corpus de vetores contra o filtro de atributos da captura (`unsafeCapturedAttribute` de `src/core/document/captured.ts`: 25 atributos que executam, entre eles o evento em qualquer caixa, o `javascript:` com espaço, tabulação, quebra de linha ou maiúsculas, o `srcdoc`, o `data:text/html`, o `srcset` com um endereço que executa) e contra o sanitizador do markup de SVG (`sanitizedSvgMarkup`: script, foreignObject, atributo de evento, endereço que executa, animação que escreve um vínculo); a lista dos atributos seguros não é recusada; o `data:` de uma imagem só passa numa imagem; um pacote de captura com atributo que executa é acusado com o seu caminho; um pacote com as chaves `__proto__` é lido sem poluir o protótipo.
+  - `tools/runner/model/import.test.ts` — o grupo `import`: um corpus de vetores contra o filtro de atributos da captura (`unsafeCapturedAttribute` de `src/core/document/captured.ts`: 23 atributos que executam, entre eles o evento em qualquer caixa, o `javascript:` com espaço, tabulação, quebra de linha ou maiúsculas, o `srcdoc`, o `data:text/html`, o `srcset` com um endereço que executa) e contra o sanitizador do markup de SVG (`sanitizedSvgMarkup`: script, foreignObject, atributo de evento, endereço que executa, animação que escreve um vínculo); a lista dos atributos seguros não é recusada; o `data:` de uma imagem só passa numa imagem; um pacote de captura com atributo que executa é acusado com o seu caminho; um pacote com as chaves `__proto__` é lido sem poluir o protótipo.
 - **Falhas de aceitação que precisa acusar:** um atributo `on…` que atravessa a captura; um vetor que atravessa o sanitizador do SVG.
 - **Mutantes:** M60 (o filtro de eventos tirado da captura) e M61 (o filtro de eventos tirado do sanitizador do SVG), acusados.
-- **Tempo medido:** grupo `import` 2,5 s (7 casos, 25 vetores perigosos e 11 seguros).
+- **Tempo medido:** grupo `import` 2,5 s (7 casos, 23 vetores perigosos e 11 seguros).
 
 ## MEC-17 — o que o app exige dos navegadores
 - **Capacidade:** C8 (as classes "isolamento do iframe", "postMessage" e "compatibilidade", sem navegador).
@@ -195,7 +195,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
   - `tools/runner/model/compat.test.ts` — o grupo `compat`: a varredura estática de todo `sandbox="…"` de `src/` recusa a combinação de `allow-scripts` com `allow-same-origin` (o MDN diz que ela anula o isolamento); todo ouvinte de `message` da janela confere `event.source` antes de ler a mensagem; e cada API do navegador que o app chama, numa lista declarada com o caminho dela no `@mdn/browser-compat-data` 8.1.2, é sustentada pelas versões estáveis de Chrome, Firefox e Safari, ou tem a razão de ser segura declarada com ela (o `requestIdleCallback`, guardado por um teste de presença com reserva de `setTimeout`; o `URL.canParse`, sem entrada no BCD). A mesma prova confere que a lista não está velha: uma API declarada que o código não chama mais é acusada.
 - **Falhas de aceitação que precisa acusar:** `allow-same-origin` acrescentado ao `sandbox` de um quadro com scripts; um ouvinte de `message` sem a conferência de `event.source`; uma API que nem os três navegadores sustentam, sem razão declarada.
 - **Mutantes:** M62 (o `sandbox` da prévia ganha `allow-same-origin`) e M63 (a conferência de `event.source` tirada), acusados.
-- **Tempo medido:** grupo `compat` 2,9 s (4 casos, 485 arquivos de `src/` varridos).
+- **Tempo medido:** grupo `compat` 2,9 s (4 casos, 498 arquivos de `src/` varridos).
 
 ## MEC-18 — quantas vezes uma vista redesenha
 - **Capacidade:** C8 (a classe "re-render desnecessário", a parte sem navegador).

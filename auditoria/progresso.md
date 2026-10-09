@@ -17,7 +17,7 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 | 4 | fonte empacotada (DCS-012), medição de texto (C4), lote único do navegador | não iniciada, e fora da Tarefa do DeepSeek (seção "Para o Claude"; licença OFL da Source Sans 3 já obtida em `scratchpad/licenca/LICENSE.md`, fora do repositório; os TTF em `scratchpad/fontes/`) |
 | 5 | Fase 9: contadores de render, LoAF, memória, catálogo C8 | não iniciada; a parte sem navegador do catálogo C8 virou o item 2 da Tarefa do DeepSeek (MEC-13 a MEC-18); Long Animation Frames e a memória pelo CDP ficam na seção "Para o Claude" |
 
-**Defeitos** (`auditoria/defeitos.md`): 26 registrados, 1 com status aberto (DEF-0518, o verificador do manifesto, fora do item 2).
+**Defeitos** (`auditoria/defeitos.md`): 28 registrados, 1 com status aberto (DEF-0518, o verificador do manifesto, fora do item 2).
 - Com detector que acusa antes da correção e não acusa depois: DEF-0512 (grupo `composer`, M51, o código anterior à alteração), DEF-0001 (grupo `lifetime`, M41, M42), DEF-0508 (invariantes e grupo `history`, M28, M29), DEF-0509 (grupo `fields`, M34), DEF-0510 (grupo `machine`, M36, M37), DEF-0511 (grupos `history` e `style`, M38 a M40), DEF-0513 (grupo `races`, M49, M50), DEF-0514 e DEF-0515 (grupo `drafts`, M52 a M56), DEF-0516 (grupo `robustness`, M57, M58), DEF-0517 (grupo `storage`, M65).
 - Defeitos de registro da auditoria, sem código da aplicação, conferidos pelo verificador (C2, C6): DEF-0002 a DEF-0008, DEF-0286, DEF-0289, DEF-0501 a DEF-0507.
 
