@@ -15,7 +15,9 @@ import { sequentialIds } from '../../../src/core/ports/ids.ts';
 import type { EditContext } from '../../../src/core/store/store.ts';
 import { heldTyping, holdTyping, keepTypingBefore } from '../../../src/editor/input/pending.ts';
 import { createEditorStore, editContextOf, MODEL_RULES, type EditorStore } from '../../../src/editor/store.ts';
+import { keyframeTarget } from '../../../src/editor/timeline/playhead.ts';
 import { activeLayer } from '../../../src/editor/view/style-state.ts';
+import { isPanelOpen } from '../../../src/editor/workspace/panels.ts';
 import type { CommandId } from '../../../src/generated/ids.ts';
 import { fixture } from './harness.ts';
 
@@ -101,5 +103,35 @@ describe('o grupo de comandos contra as regras de todo comando', () => {
     expect(first.kept(), 'a digitação do primeiro campo foi gravada no fim do grupo').toBe(1);
     expect(styleAt(store, node, shown, 'opacity'), 'o valor do primeiro campo está no documento').toBe('0.3');
     expect(heldTyping(), 'o segundo campo continua segurando a sua digitação').not.toBeNull();
+  });
+});
+
+// What an undo gives back of the keyframe (DCS-016, option b): the keyframe only when the change was made on it; a
+// change made off it — with the playhead on one, any command that writes no keyframe — leaves the Timeline as the
+// person has it (DEF-0532).
+describe('o quadro-chave que o desfazer devolve', () => {
+  // the leaf with an animation, the Timeline open and the playhead on the animation's last keyframe
+  const onKeyframe = (): EditorStore => {
+    const { store } = ready();
+    expect(run(store, 'animation.create', { name: 'Entrada' }).status).toBe('done');
+    run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
+    run(store, 'timeline.setPlayhead', { time: 100_000 });
+    expect(keyframeTarget(store.getState()), 'o playhead está sobre um quadro-chave').not.toBeNull();
+    return store;
+  };
+  it('uma mudança feita fora do quadro-chave: o desfazer deixa a Timeline fechada como a pessoa a deixou', () => {
+    const store = onKeyframe();
+    expect(run(store, 'element.duplicate', {}).status).toBe('done');
+    run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'close' });
+    expect(run(store, 'history.undo', {}).status).toBe('done');
+    expect(isPanelOpen(store.getState().ui, 'timeline'), 'o desfazer da duplicação reabriu a Timeline').toBe(false);
+  });
+  it('uma mudança feita no quadro-chave: o desfazer reabre a Timeline nele (controle)', () => {
+    const store = onKeyframe();
+    const on = keyframeTarget(store.getState());
+    expect(run(store, 'style.set', { property: 'opacity', value: '0.5' }).status).toBe('done');
+    run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'close' });
+    expect(run(store, 'history.undo', {}).status).toBe('done');
+    expect(keyframeTarget(store.getState()), 'o desfazer mostra o quadro-chave em que a mudança foi feita').toEqual(on);
   });
 });

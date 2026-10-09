@@ -485,3 +485,14 @@
 - **Correção:** a gravação guarda o quadro-chave quando o playhead está sobre um (`src/editor/persistence/drafts.ts:85`), e a restauração abre a Timeline, mostra a animação e põe o playhead no tempo guardado, pelos comandos de cada passo, antes de devolver o campo (`src/editor/persistence/drafts.ts:180` `    if (keyframe !== null) {`), como já fazia com o breakpoint, o estado e a classe.
 - **Detector:** o grupo `drafts` (MEC-12), caso "o rascunho restaurado volta ao quadro-chave em que foi digitado (G1)": a animação criada, a Timeline aberta, o playhead no último quadro-chave, o rascunho de um campo gravado e a aba recarregada (outra store com o mesmo espaço de trabalho). Mutantes M83 (sem a restauração) e M84 (sem a gravação), os dois o código de antes, acusados.
 - **Verificação:** detectores 23 arquivos e 76 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0532 — o desfazer de uma mudança feita fora do quadro-chave reabre a Timeline no quadro
+- **Status:** corrigido
+- **Citação:** `src/core/store/store.ts:367` `      keyframe: at !== undefined && 'keyframe' in at ? (at.keyframe ?? null) : (options.keyframe?.(s) ?? null),`
+- **Causa:** a transação grava o quadro-chave do playhead em todo comando feito com o playhead sobre um, seja qual for a mudança; o desfazer devolve esse quadro-chave (`src/editor/view/edit-context.ts`, `atKeyframe`), abrindo a Timeline.
+- **Efeito:** com o playhead num quadro-chave, a pessoa duplica um elemento, fecha a Timeline e desfaz: a Timeline reabre no quadro (verificação integral, grupo A, reproduzido com a store real). Fere a DCS-016 (opção b: o desfazer devolve o quadro-chave só quando a mudança foi feita num; a feita fora deixa a Timeline como a pessoa a tem).
+- **Alcance:** toda transação gravada com o playhead sobre um quadro-chave: a de um comando, a de um gesto e a de um grupo.
+- **Arquivos da correção:** `src/core/store/store.ts`, um detector, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** `state.history` (o contexto das transações).
+- **Correção:** no núcleo, o contexto gravado leva o quadro-chave só quando algum patch da mudança escreve nos `keyframes` de uma animação (`src/core/store/store.ts:374` `  const recorded = (context: EditContext, patches: readonly Patch[]): EditContext =>`), nos três pontos que gravam uma transação: o comando, o gesto e o grupo.
+- **Detector:** o grupo `command-group` (MEC-23), "o quadro-chave que o desfazer devolve": a duplicação com o playhead num quadro-chave, a Timeline fechada e o desfazer (a Timeline fica fechada), e o controle, a opacidade gravada no quadro (o desfazer volta ao quadro). Mutante M85 (o contexto sem a conferência, o código de antes), acusado.
+- **Verificação:** detectores 23 arquivos e 78 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.

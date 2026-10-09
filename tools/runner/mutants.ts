@@ -133,6 +133,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M82', file: 'src/editor/canvas/edit-handles.tsx', from: ', ...(typedFor.current === null ? {} : { targets: [...typedFor.current] })', to: '', breaks: 'a banda digitada grava na seleção do momento e não no elemento da primeira tecla (o código de antes do DEF-0530)', source: 'DEF-0530', detectors: ['drafts'] },
   { id: 'M83', file: 'src/editor/persistence/drafts.ts', from: '    if (keyframe !== null) {', to: '    if (keyframe === undefined) {', breaks: 'o rascunho restaurado não volta ao quadro-chave em que foi digitado (o código de antes do DEF-0531, na restauração)', source: 'DEF-0531', detectors: ['drafts'] },
   { id: 'M84', file: 'src/editor/persistence/drafts.ts', from: 'keyframe: state === undefined || keyframe === null ? null : { animation: keyframe.animation, time: timelineOf(state.ui).time },', to: 'keyframe: null,', breaks: 'o rascunho da sessão não guarda o quadro-chave em que a digitação começou (o código de antes do DEF-0531, na gravação)', source: 'DEF-0531', detectors: ['drafts'] },
+  { id: 'M85', file: 'src/core/store/store.ts', from: "context.keyframe === null || context.keyframe === undefined || patches.some((patch) => patch.path.includes('keyframes')) ? context : { ...context, keyframe: null };", to: 'context;', breaks: 'toda mudança feita com o playhead sobre um quadro-chave grava o quadro, e o desfazer de uma que não o tocou reabre a Timeline (o código de antes do DEF-0532)', source: 'DEF-0532', detectors: ['command-group'] },
 ];
 
 export const ALL_DETECTORS = ALL;

@@ -369,6 +369,10 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       keyframe: at !== undefined && 'keyframe' in at ? (at.keyframe ?? null) : (options.keyframe?.(s) ?? null),
     };
   };
+  // The context a change is recorded with: the keyframe only when the change was made on it — a patch into an
+  // animation's keyframes — so the undo of anything else leaves the Timeline as the person has it (DCS-016, DEF-0532).
+  const recorded = (context: EditContext, patches: readonly Patch[]): EditContext =>
+    context.keyframe === null || context.keyframe === undefined || patches.some((patch) => patch.path.includes('keyframes')) ? context : { ...context, keyframe: null };
   const handlerContext = (confirmed = false, at?: EditContext): HandlerContext<Ui> => {
     const ui = state.ui;
     const layered = layeredNow(at);
@@ -528,7 +532,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
     // before, and a refused commit inside a gesture left them in its history entry)
     if (documentChanged && gesture === null && ownedGroup === null) {
       const { key, within } = coalescing(command, args, before.selection);
-      const context = contextAt(before, at);
+      const context = recorded(contextAt(before, at), applied.applied);
       const tx: Transaction = { command: id, patches: applied.applied, inverses: applied.inverses, selectionBefore: before.selection, selectionAfter: selection, context, at: clock.now(), coalesceKey: key, message: outcome.message ?? null };
       history = record(before.history, tx, key !== null && key === previousMergeable ? within : null, applied.document);
       // a burst whose entry went (it came back to where it began: history.ts) begins anew with its next step
@@ -647,7 +651,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
               selectionAfter: state.selection,
               // a group is recorded where its first change was made: a turn that moves to another breakpoint and edits
               // there gives that breakpoint back on undo (DCS-009, DEF-0527)
-              context: current.context ?? contextAt(before),
+              context: recorded(current.context ?? contextAt(before), current.patches),
               at: clock.now(),
               coalesceKey: null,
               message: state.message !== before.message ? state.message : null
@@ -741,7 +745,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
             selectionBefore: before.selection,
             selectionAfter: state.selection,
             // a gesture is made where it was pressed
-            context: contextAt(before),
+            context: recorded(contextAt(before), current.patches),
             at: clock.now(),
             coalesceKey: null,
             message: state.message !== before.message ? state.message : null
