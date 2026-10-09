@@ -12,6 +12,11 @@ const FIXTURE = 'manifest/features/fixtures/aurora.json';
 const OPEN = 'project.open#menu-file';
 const ROW = 'selection.select#layers-row';
 const STILL = { animations: 'disabled', caret: 'hide', maxDiffPixels: 50 } as const;
+// The screen condition of the run, in the picture's name: a baseline is of one condition. The batch is read in the two
+// of playwright.config.ts (E2E_SCROLLBARS=shown, E2E_SCALE=1.25), where the scrollbars the editor draws take ~15 px
+// from every region that scrolls and the display scale changes the raster, so the same state is two different pictures.
+const CONDITION = process.env.E2E_SCROLLBARS === 'shown' ? 'windows' : 'default';
+const shot = (name: string) => `${name.replace(/\.png$/, '')}-${CONDITION}.png`;
 
 async function aurora(page: Page, scheme: 'light' | 'dark'): Promise<void> {
   await page.emulateMedia({ colorScheme: scheme });
@@ -32,19 +37,19 @@ async function aurora(page: Page, scheme: 'light' | 'dark'): Promise<void> {
 for (const scheme of ['light', 'dark'] as const) {
   test(`the editor with a section selected, ${scheme}`, runs(OPEN, ROW), async ({ page }) => {
     await aurora(page, scheme);
-    await expect(page).toHaveScreenshot(`editor-${scheme}.png`, STILL);
+    await expect(page).toHaveScreenshot(shot(`editor-${scheme}.png`), STILL);
   });
 
   test(`the Style panel, ${scheme}`, runs(OPEN, ROW), async ({ page }) => {
     await aurora(page, scheme);
-    await expect(page.locator('aside.inspector')).toHaveScreenshot(`inspector-style-${scheme}.png`, STILL);
+    await expect(page.locator('aside.inspector')).toHaveScreenshot(shot(`inspector-style-${scheme}.png`), STILL);
   });
 
   test(`the Settings tab, ${scheme}`, runs(OPEN, ROW, 'workspace.setActiveTab#inspector-tab-settings'), async ({ page }) => {
     await aurora(page, scheme);
     await runDoor(page, 'workspace.setActiveTab#inspector-tab-settings');
     await page.mouse.move(1, 899);
-    await expect(page.locator('aside.inspector')).toHaveScreenshot(`inspector-settings-${scheme}.png`, STILL);
+    await expect(page.locator('aside.inspector')).toHaveScreenshot(shot(`inspector-settings-${scheme}.png`), STILL);
   });
 
   test(`the quick panel, ${scheme}`, runs(OPEN, ROW), async ({ page }) => {
@@ -52,27 +57,27 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.locator('[data-quick-panel-chip]').click();
     await page.mouse.move(1, 899);
     await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-    await expect(page.locator('.quick-panel')).toHaveScreenshot(`quick-panel-${scheme}.png`, STILL);
+    await expect(page.locator('.quick-panel')).toHaveScreenshot(shot(`quick-panel-${scheme}.png`), STILL);
   });
 
   test(`the command palette, ${scheme}`, runs(OPEN, ROW, 'commandBar.open#key-ctrl-k-in-global'), async ({ page }) => {
     await aurora(page, scheme);
     await runDoor(page, 'commandBar.open#key-ctrl-k-in-global');
     await page.keyboard.type('wrap');
-    await expect(page.locator('[data-region="command-palette"]')).toHaveScreenshot(`palette-${scheme}.png`, STILL);
+    await expect(page.locator('[data-region="command-palette"]')).toHaveScreenshot(shot(`palette-${scheme}.png`), STILL);
   });
 
   test(`the Arrange menu, ${scheme}`, runs(OPEN, ROW), async ({ page }) => {
     await aurora(page, scheme);
     await page.locator('[data-menu="arrange"]').click();
     await page.mouse.move(1, 899);
-    await expect(page.locator('[data-region="menu:arrange"]')).toHaveScreenshot(`menu-arrange-${scheme}.png`, STILL);
+    await expect(page.locator('[data-region="menu:arrange"]')).toHaveScreenshot(shot(`menu-arrange-${scheme}.png`), STILL);
   });
 
   test(`the Explorer and the Layers, ${scheme}`, runs(OPEN, ROW), async ({ page }) => {
     await aurora(page, scheme);
     // its subject: a fresh profile opens on Insert (the audit's AUD-21)
     await openExplorer(page);
-    await expect(page.locator('aside.sidebar')).toHaveScreenshot(`sidebar-${scheme}.png`, STILL);
+    await expect(page.locator('aside.sidebar')).toHaveScreenshot(shot(`sidebar-${scheme}.png`), STILL);
   });
 }
