@@ -315,3 +315,33 @@ export function retagRefusal(document: DocumentJson, rules: ModelRules, id: Node
   if (model.excludesInteractive(tag) && holdsInteractive(rules, node.children)) return message('status.refused.interactiveInside', { parent: node.name });
   return null;
 }
+
+// Where every element of a tree stands against the HTML content model (feature nesting-grammar; the integrity of the
+// document, CLAUDE.md: "consistência pai/filho e regras de aninhamento"): the problems of the whole tree in one walk,
+// by the rules placementRefusal asks of one placement — a parent's closed list, an element that only exists inside
+// certain parents, one a parent holds at most once, an ancestor that excludes it, interactive content inside an
+// element that refuses it. Validation runs it on every commit (validate.ts), so no write and no file opened reaches
+// a nesting the commands that place elements refuse (DEF-0540). `at` is the tree's path in the document.
+export function nestingProblems(root: DocNode, rules: ModelRules, at: string): { readonly path: string; readonly message: string }[] {
+  const model = rules.contentModel;
+  const problems: { path: string; message: string }[] = [];
+  const visit = (node: DocNode, path: string, ancestors: readonly DocNode[], refusesInteractive: DocNode | null): void => {
+    const parent = ancestors.at(-1);
+    if (node.tag !== null) {
+      if (parent !== undefined && parent.tag !== null) {
+        const only = model.refusal(parent.tag, node.tag);
+        if (only !== null) problems.push({ path, message: `${shown(parent.tag)} only accepts ${only.map(shown).join(', ')}, not ${shown(node.tag)}` });
+        const parents = model.parentsOf(node.tag);
+        if (parents !== null && !parents.includes(parent.tag)) problems.push({ path, message: `${shown(node.tag)} only stands inside ${parents.map(shown).join(', ')}, not ${shown(parent.tag)}` });
+        if (model.unique(parent.tag, node.tag) && parent.children.filter((child) => child.tag === node.tag).indexOf(node) > 0) problems.push({ path, message: `${shown(parent.tag)} holds one ${shown(node.tag)} at most` });
+      }
+      const excluding = [...ancestors].reverse().find((ancestor) => ancestor.tag !== null && model.excludes(ancestor.tag, node.tag as string));
+      if (excluding !== undefined) problems.push({ path, message: `${shown(node.tag)} may not stand inside ${shown(excluding.tag)}` });
+      if (refusesInteractive !== null && model.isInteractive(node.tag, htmlAttributes(node, rules))) problems.push({ path, message: `interactive ${shown(node.tag)} may not stand inside ${shown(refusesInteractive.tag)}` });
+    }
+    const refusing = refusesInteractive ?? (node.tag !== null && model.excludesInteractive(node.tag) ? node : null);
+    node.children.forEach((child, index) => visit(child, `${path}/children/${index}`, [...ancestors, node], refusing));
+  };
+  visit(root, at, [], null);
+  return problems;
+}

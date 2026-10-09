@@ -12,7 +12,8 @@ import type { StoredValue, Styles } from '../document/model.ts';
 import { writeDeclarations } from '../style/set.ts';
 import { storedValue } from '../style/stored.ts';
 import { valuePredicateHolds } from '../style/couplings.ts';
-import { allNodes, walk, type DocNode, type Location } from '../document/model.ts';
+import { allNodes, walk, type DocNode, type Location, type NodeId } from '../document/model.ts';
+import { placementRefusal } from '../elements/content-model.ts';
 import { refreshCopiedIdentities } from '../document/clone.ts';
 import type { Patch } from '../history/transaction.ts';
 import { firstLockRefusal } from '../nodes/flags.ts';
@@ -89,6 +90,14 @@ export const duplicateCommand = registerHandler('element.duplicate', ({ state, i
     if (copy === undefined) throw new Error('element.duplicate: a copied root is missing');
     return { root, copy };
   });
+  // a copy goes beside its original, where the content model may refuse a second one (a figure's one caption): the
+  // one rule of where elements go, as every command that places elements asks it (DEF-0541)
+  const arrivingAt = new Map<NodeId, DocNode[]>();
+  for (const { root, copy } of copies) if (root.parent !== null) arrivingAt.set(root.parent.id as NodeId, [...(arrivingAt.get(root.parent.id as NodeId) ?? []), copy]);
+  for (const [parent, arriving] of arrivingAt) {
+    const refusal = placementRefusal(state.document, rules, parent, arriving);
+    if (refusal !== null) return { kind: 'refused', message: refusal };
+  }
   // the last root first, so every path taken from the document before the duplicate still points at its node: a copy
   // shifts only the nodes after its original in document order
   const patches: Patch[] = copies

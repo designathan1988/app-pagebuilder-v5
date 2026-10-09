@@ -9,7 +9,10 @@ import { expect, it } from 'vitest';
 import { walk, type DocumentJson } from '../../../src/core/document/model.ts';
 import { validateDocument } from '../../../src/core/document/validate.ts';
 import { applyPatches, PatchError, type Path } from '../../../src/core/history/transaction.ts';
-import { MODEL_RULES } from '../../../src/editor/store.ts';
+import { manualClock } from '../../../src/core/ports/clock.ts';
+import { sequentialIds } from '../../../src/core/ports/ids.ts';
+import { createEditorStore, MODEL_RULES } from '../../../src/editor/store.ts';
+import type { CommandId } from '../../../src/generated/ids.ts';
 import { command, FIXTURES, fixture, nodesOf, PALETTE, pick, runModel } from './harness.ts';
 
 const STEPS = [
@@ -67,4 +70,29 @@ it('a integridade do documento: um id usado duas vezes é recusado, e nenhum pat
     }),
     { seed: 20261008, numRuns: 200 },
   );
+});
+
+// Which element stands in which, by the HTML content model, after every write and on a file opened (CLAUDE.md,
+// "consistência pai/filho e regras de aninhamento"; DEF-0540): the validator refuses the nestings the commands that
+// place elements refuse, and a change of an attribute that makes an element interactive inside a link is refused.
+const element = (id: string, type: string, tag: string, children: unknown[] = [], attributes: Record<string, unknown> = {}) => ({ id, type, name: id, tag, attributes, classes: [], styles: {}, text: null, children });
+const onePage = (children: unknown[]): DocumentJson => ({ version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: element('root', 'page', 'body', children) }] }) as unknown as DocumentJson;
+it('o aninhamento das tags: o validador recusa o que os comandos de colocação recusam', () => {
+  const nested: readonly (readonly [string, DocumentJson])[] = [
+    ['<li> dentro de <div>', onePage([element('d', 'div', 'div', [element('l', 'listItem', 'li')])])],
+    ['<a> dentro de <a>', onePage([element('a1', 'linkBlock', 'a', [element('a2', 'linkBlock', 'a', [], { href: 'https://example.invalid/x' })], { href: 'https://example.invalid/y' })])],
+    ['<form> dentro de <form>', onePage([element('f1', 'form', 'form', [element('f2', 'form', 'form')])])],
+    ['<tr> dentro de <section>', onePage([element('s', 'section', 'section', [element('t', 'tableRow', 'tr')])])],
+    ['<video controls> dentro de <a>', onePage([element('a1', 'linkBlock', 'a', [element('v', 'video', 'video', [], { controls: true })], { href: 'https://example.invalid/y' })])],
+  ];
+  const accepted = nested.filter(([, doc]) => !validateDocument(doc, [], MODEL_RULES).some((problem) => problem.path.endsWith('/children/0') && /inside|only accepts|holds one/.test(problem.message))).map(([name]) => name);
+  expect(accepted, 'aninhamentos que o validador aceita').toEqual([]);
+  expect(validateDocument(onePage([element('u', 'list', 'ul', [element('l', 'listItem', 'li')])]), [], MODEL_RULES), 'um <li> dentro de <ul> é aceito (controle)').toEqual([]);
+  // the store: an attribute that makes the video interactive inside the link is refused, the document as it was
+  const memory = () => ({ read: () => null, write: () => undefined });
+  const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: onePage([element('a1', 'linkBlock', 'a', [element('v', 'video', 'video')], { href: 'https://example.invalid/y' })]), selection: [] }, ports: { readOnly: () => false }, freeze: true });
+  const before = store.getState().document;
+  const outcome = (store.dispatch as (id: CommandId, args: unknown) => { status: string })('element.setAttribute' as CommandId, { target: 'v', attribute: 'controls', value: true });
+  expect(outcome.status, 'controls num vídeo dentro de um link é recusado').toBe('refused');
+  expect(store.getState().document, 'o documento ficou como estava').toBe(before);
 });

@@ -21,6 +21,7 @@ import { hasIncompatibleMask, inputTypeOf } from './inputs.ts';
 import type { Patch } from '../history/transaction.ts';
 import { lockRefusal } from '../nodes/flags.ts';
 import { readAddress } from './address.ts';
+import { placementRefusal } from './content-model.ts';
 import { referencesOf } from './references.ts';
 
 const ID = /^[A-Za-z][A-Za-z0-9_-]*$/;
@@ -238,6 +239,15 @@ export const setAttributeCommand = registerHandler('element.setAttribute', ({ st
   if (stored !== undefined && formAttributeIssue(attribute, stored) !== null) return { kind: 'refused', message: message('status.forms.invalid') };
   if (attribute === 'formField' && stored !== undefined && hasIncompatibleMask({ ...at.node, attributes: { ...at.node.attributes, formField: String(stored) } })) return { kind: 'refused', message: message('status.forms.requiresText') };
   if (invalidForNode(at, attribute, stored, rules)) return invalid(String(value));
+  // an attribute may make the element interactive content (a video's controls, a link's address) where an ancestor
+  // refuses interactive content inside it: the element with its new attribute is asked where it stands, by the one rule
+  // of where elements go (content-model.ts), as a retag is (DEF-0540)
+  if (at.parent !== null) {
+    const others = Object.entries(at.node.attributes).filter(([name]) => name !== attribute);
+    const attributes = Object.fromEntries(stored === undefined ? others : [...others, [attribute, stored]]) as DocNode['attributes'];
+    const refusal = placementRefusal(state.document, rules, at.parent.id as NodeId, [{ ...at.node, attributes }]);
+    if (refusal !== null) return { kind: 'refused', message: refusal };
+  }
   const patch = attributePatch(at, attribute, stored);
   const exclusive: Patch[] = [];
   // a media element that plays by itself is muted: a browser blocks an audible autoplay, so the page would be silent

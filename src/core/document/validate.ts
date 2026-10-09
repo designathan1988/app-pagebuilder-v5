@@ -3,7 +3,8 @@
 // (elements.json), attributes and where they apply, edited properties, breakpoints and states (properties.json).
 // It never repairs or changes anything. The HTML content model (which element may sit in which) is owned by
 // src/core/elements/content-model.ts; the rules carry it for the commands that place an element, and validation
-// checks it once nesting-grammar completes it.
+// checks every tree against it (nestingProblems, DEF-0540), so no write and no file opened reaches a nesting the
+// commands refuse.
 import { formAttributeIssue } from '../forms/config.ts';
 import { dataProblems } from '../data/validate.ts';
 import { hasIncompatibleMask } from '../elements/inputs.ts';
@@ -13,7 +14,7 @@ import { stateStandsOn } from '../style/state-elements.ts';
 import type { ElementType, MessageId } from '../../generated/ids.ts';
 import { boxSizeOf, outputModelFromManifest, type OutputModel } from '../render/output.ts';
 import type { Attribute, Coupling, ElementsFile, GeneratedHtml, PropertiesFile, TemplateNode } from '../../manifest/schema.ts';
-import { contentModelFrom, type ContentModel } from '../elements/content-model.ts';
+import { contentModelFrom, nestingProblems, type ContentModel } from '../elements/content-model.ts';
 import { orphanReferences, setReferenceAttributes } from '../elements/references.ts';
 import { addressAllowed } from '../elements/address.ts';
 import { projectPathProblem } from '../files/path-rule.ts';
@@ -443,6 +444,8 @@ export function validateDocument(doc: DocumentJson, selection: Selection, manife
     if (page.tree.type !== rules.root.type) bad(`${at}/tree/type`, `a page's root is a ${rules.root.type} element`);
     validateNode(page.tree, `${at}/tree`, rules, claim, bad, true);
     validateInstances(page.tree, `${at}/tree`, componentNames, false, bad);
+    // which element stands in which, by the HTML content model (the commands that place elements ask the same rules)
+    for (const problem of nestingProblems(page.tree, rules, `${at}/tree`)) bad(problem.path, problem.message);
     if (page.capture !== undefined) {
       if (page.tree.children.length > 0) bad(`${at}/tree/children`, 'captured content is stored only in capture snapshots');
       for (const problem of capturedProblems(page.capture)) bad(`${at}/capture${problem.path}`, problem.message);

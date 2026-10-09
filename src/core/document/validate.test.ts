@@ -33,7 +33,8 @@ describe('validateDocument', () => {
     expect(paths(project([div('a'), div('a')]))).toEqual(['/pages/0/tree/children/1/id']);
     expect(paths(project([div('a', { type: 'blink' as DocNode['type'] })]))).toEqual(['/pages/0/tree/children/0/type']);
     expect(paths(project([div('a', { tag: 'span' })]))).toEqual(['/pages/0/tree/children/0/tag']);
-    expect(paths(project([div('a', { type: 'page', tag: 'body' })]))).toEqual(['/pages/0/tree/children/0/type']);
+    // a page root inside a page: its type, and a <body> inside a <body> by the content model (DEF-0540)
+    expect(paths(project([div('a', { type: 'page', tag: 'body' })]))).toEqual(['/pages/0/tree/children/0/type', '/pages/0/tree/children/0']);
   });
 
   it('refuses attributes that are unknown or do not apply, bad class names, and unknown breakpoints, states and properties', () => {
