@@ -78,6 +78,12 @@ export interface CapturedProblem {
 const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
 const NAMESPACES = new Set([HTML_NAMESPACE, 'http://www.w3.org/2000/svg', 'http://www.w3.org/1998/Math/MathML']);
 const URL_ATTRIBUTES = new Set(['href', 'src', 'action', 'formaction', 'poster', 'xlink:href', 'data', 'data-capture-paint']);
+// The attributes with which an SVG animation element (<animate>, <set>) writes a value at run time: `to`, `from`, `by`
+// and `values`, a list separated by ";" (SVG Animations, the animation value attributes). One item that is an address
+// running code turns the link it animates into one that runs it once played.
+const ANIMATED_VALUES = new Set(['to', 'from', 'by', 'values']);
+// an address that runs code, whatever its case and the spaces or control characters a browser skips in it
+const runsCode = (address: string): boolean => /^(?:javascript|vbscript):/.test([...address].filter((c) => c.charCodeAt(0) > 32).join('').toLowerCase());
 const NAME = /^[A-Za-z][A-Za-z0-9._:-]*$/;
 const isRecord = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -102,6 +108,7 @@ export function unsafeCapturedElement(tag: string, attributes: readonly Pick<Cap
 export function unsafeCapturedAttribute(tag: string, attribute: Pick<CapturedAttribute, 'name' | 'value'>): boolean {
   const name = attribute.name.toLowerCase();
   if (name.startsWith('on') || name === 'srcdoc') return true;
+  if (ANIMATED_VALUES.has(name) && attribute.value.split(';').some(runsCode)) return true;
   if (name === 'srcset') {
     let unsafe = false;
     rewriteSrcsetUrls(attribute.value, (url) => {

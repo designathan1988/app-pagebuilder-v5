@@ -110,6 +110,14 @@ export function parserRebuilt(root: CapturedElement): ReadonlySet<string> {
 
 const escapeText = (value: string): string => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const escapeAttribute = (value: string): string => escapeText(value).replaceAll('"', '&quot;');
+// The text of an HTML raw text element (<style>) is written as it is, but it must not hold "</" and the element's name
+// (HTML Standard, 13.1.2.6): the parser would close the element there and read the rest as markup. In CSS a backslash
+// before "/" stands for "/" itself (CSS Syntax, escaping), so "<\/style" keeps the style sheet the same text.
+const rawText = (value: string, tag: string): string => value.replace(new RegExp(`</(?=${tag})`, 'gi'), '<\\/');
+// A comment's text must not hold "<!--", "-->" or "--!>", start with ">" or "->", nor end with "<!-" (HTML Standard,
+// 13.1.6): any of them ends the comment early or opens another, and what follows would be read as markup.
+const commentText = (value: string): string =>
+  value.replaceAll('<!--', '&lt;!--').replaceAll('-->', '--&gt;').replaceAll('--!>', '--!&gt;').replace(/^-?>/, (start) => start.replace('>', '&gt;')).replace(/<!-$/, '&lt;!-');
 const isElement = (node: CapturedNode, tag: string): node is CapturedElement => node.kind === 'element' && node.tag === tag && node.namespace === HTML;
 
 // The observed width a window of `width` px shows: the nearest one (an approximation between observed widths).
@@ -173,11 +181,12 @@ export interface WriteOptions {
 // is a declarative shadow root (<template shadowrootmode>, MDN), first in its host; state is written as attributes.
 export function capturedHtml(root: CapturedElement, options: WriteOptions = {}): string {
   const write = (node: CapturedNode, parent: CapturedElement | null): string => {
-    if (node.kind === 'comment') return `<!--${node.value.replaceAll('-->', '--&gt;')}-->`;
+    if (node.kind === 'comment') return `<!--${commentText(node.value)}-->`;
     if (node.kind === 'text') {
       if (parent !== null && isElement(parent, 'head') && node.value.trim() !== '') return '';
       if (parent !== null && parent.tag === 'textarea' && parent.state?.value !== undefined) return '';
-      return parent !== null && RAW_TEXT.has(parent.tag) ? node.value : escapeText(node.value);
+      // only an HTML <style> is raw text: an SVG one is foreign content, whose text is escaped as any other
+      return parent !== null && parent.namespace === HTML && RAW_TEXT.has(parent.tag) ? rawText(node.value, parent.tag) : escapeText(node.value);
     }
     // an element that acts on the page instead of drawing (a refresh, a <base>) is never written
     if (unsafeCapturedElement(node.tag, node.attributes)) return '';

@@ -65,12 +65,16 @@ const decoded = (value: string): string =>
 // an address that runs code, whatever its case, its character references and the spaces or control characters in it
 // (a browser skips them)
 const SCRIPT_SCHEME = 'javascript:';
-const scripted = (value: string) =>
-  [...decoded(value)]
+const scriptedPlain = (plain: string) =>
+  [...plain]
     .filter((c) => c.charCodeAt(0) > 32)
     .join('')
     .toLowerCase()
     .startsWith(SCRIPT_SCHEME);
+const scripted = (value: string) => scriptedPlain(decoded(value));
+// `values` is a list separated by ";" (SVG Animations), and one item may be the address: decoded first, since a
+// character reference may spell the ";" too, then each item checked
+const scriptedItem = (value: string) => decoded(value).split(';').some(scriptedPlain);
 const NAME = /^[A-Za-z_][\w:.-]*/;
 
 type Parsed = { readonly markup: string } | { readonly refusal: Message };
@@ -165,8 +169,7 @@ export function sanitizedSvgMarkup(text: string): Parsed {
         }
       }
       const lower = attribute.toLowerCase();
-      if (lower.startsWith('on') || ((LINK_ATTRIBUTES.has(lower) || ANIMATED_VALUES.has(lower)) && scripted(value))) continue;
-      if (lower === 'values' && value.split(';').some(scripted)) continue;
+      if (lower.startsWith('on') || (LINK_ATTRIBUTES.has(lower) && scripted(value)) || (ANIMATED_VALUES.has(lower) && scriptedItem(value))) continue;
       attributes.push(` ${attribute}="${value.replaceAll('"', '&quot;').replaceAll('<', '&lt;')}"`);
     }
     at = i + 1;
