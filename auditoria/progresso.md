@@ -71,9 +71,10 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 - [feito] o DEF-0001 "sem efeito no app": o registro passou a dizer que o defeito é de forma (o chamador do app descarta a parada; nenhum caminho desmonta o boot).
 - [feito] o `npm run gen:check` que lia behavior.md como JSON: DEF-0570.
 - [feito] o lote do navegador que passava sem passar pelo que confere: DEF-0571 (7 de 7 nas duas condições).
+- [feito] o lote visual sem o desenho incremental, contando seleções e sem conferir controles: DEF-0572 (4 de 4 nas duas condições).
 - [pendente, conhecido] a intermitência de `draft-recovery.spec.ts` "quick panel draft…": o chip não reabre o painel depois da última recarga; 8 falhas em 120 na base 4fcd3d43, 2 em 120 agora (DEF-0565, registro).
 - [próximo] o que resta, em ordem:
-  2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), D-1/DEC-70.
+  2. detectores da seção 3 do RELATORIO: ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), D-1/DEC-70.
   4. registros da seção 4 (progresso, otimizacoes.md, campos de defeitos.md, causas erradas, citações das decisões, DEF-0002, tokens.css).
   5. a suíte de navegador inteira nas duas condições, e o catálogo de mutantes.
 

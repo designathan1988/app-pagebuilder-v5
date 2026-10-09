@@ -242,6 +242,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
   2. para cada comando desfazível do manifesto, o comando roda pelo boot de teste sobre `aurora`, o DOM do quadro do canvas é serializado normalizado (atributos em ordem, sem as marcas do editor de `src/core/document/validate.ts:519`), a página é recarregada (o documento do zero, pelo leitor) e o mesmo DOM é serializado de novo; os dois têm de ser iguais. Ao fim, o canvas e a exportação são comparados pelas propriedades calculadas, elemento a elemento.
 - **Falhas de aceitação que precisa acusar:** uma porta desenhada fora da região que o manifesto lhe dá; um controle interativo sem dono e sem exceção; um desenho incremental diferente do desenho do zero.
 - **Medido:** 4 casos; o laço dos comandos desfazíveis rodou 164 comandos (39 dos 203 não rodam pelo boot: pedem um gesto, um seletor ou um estado que a fixture não tem) e nenhuma serialização divergiu; 3,7 min; os outros três casos, 2,1 s.
+- **Acréscimo (2026-10-09, DEF-0572):** o G7 compara o desenho incremental (a edição pelo `drawn` do boot) com o do zero, só para as edições que rodaram (48, piso 45); os controles cobrem o painel rápido, todas as etiquetas interativas, os `data-local`, as portas de tecla desenhadas e a completude dos menus; a exportação é comparada depois de edições.
 
 ## MEC-22 — as classes de navegador da etapa 5
 - **Capacidade:** C8 (as classes que só o navegador responde) e C6 (escopo de vida).

@@ -1098,3 +1098,46 @@
   - **Código sem uso:** o ramo `retido` saiu.
 - **Detector:** o próprio lote (MEC-22). Prova de que o caso do IME depende da guarda: com a linha `if (event.isComposing || event.keyCode === 229) return;` tirada de `src/editor/input/keymap.ts` só para a rodada (e devolvida depois), o caso falha em "a tecla apertada durante a composição rodou um comando".
 - **Verificação:** `lote-navegador.spec.ts` sozinho, `E2E_WORKERS=1`, prioridade baixa: 7 de 7 na condição padrão e 7 de 7 na condição Windows (`E2E_SCROLLBARS=shown E2E_SCALE=1.25`), nenhum quadro acima de 50 ms com a troca de página. Detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0572 — o lote visual não passa pelo desenho incremental, conta seleções como edições e deixa controles sem conferir
+- **Status:** corrigido
+- **Citação:** `tests/e2e/lote-visual.spec.ts:212` `    const commands: TestBootCommand[] = ref === null ? [SELECT] : [SELECT, run(ref)];`, `:82` `    for (const element of document.querySelectorAll('[data-door],[data-local],[role],[tabindex]')) {`, `:220` `    } catch {` e `:273` `  const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentDocument?.documentElement.clientWidth ?? 0);`
+- **Causa:** verificação integral, grupo H, MEC-21, achados 1 a 8.
+  - **G7:**
+    - os comandos do boot rodam antes do primeiro desenho, então as duas serializações são desenhos do zero e o caminho incremental nunca é exercitado;
+    - 149 dos 203 comandos desfazíveis rodam só a seleção e contam como rodados, e o piso de 150 é atingido pelas seleções;
+    - um `catch` vazio engole a falha de abrir o editor;
+    - as páginas do caso, em contextos próprios, ficam fora da vigilância da fixture (feed de incidentes e erros da página).
+  - **Controles:**
+    - `<button>`, `<input>`, `<select>`, `<textarea>`, `<a>`, `<summary>` e `[contenteditable]` sem `role` nem `tabindex` nunca são visitados;
+    - os `data-local` são colhidos e não conferidos;
+    - o painel rápido nunca é aberto (o editor abre sem seleção, e o chip não existe);
+    - uma porta de tecla (`placement: 'none'`) desenhada passaria;
+    - nada confere que a região desenha as portas que o manifesto põe nela;
+    - o caso declara uma porta que não roda.
+  - **Exportação:** a comparação usa a largura do `documentElement`, a medida que o DEF-0521 trocou nos outros testes.
+- **Efeito:** uma divergência do desenho incremental (G7), um controle sem dono que não seja um papel ARIA, um controle local não declarado, uma região do painel rápido com o que não deve, ou um menu que deixe de desenhar uma porta passariam pelo lote.
+- **Alcance:** `tests/e2e/lote-visual.spec.ts` (MEC-21).
+- **Arquivos da correção:** `tests/e2e/lote-visual.spec.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** `tests/e2e/lote-visual.spec.ts`.
+  - **G7:**
+    - A edição roda pelos comandos `drawn` do boot, depois do primeiro desenho, então o canvas a mostra pelo caminho incremental. A recarga reabre o documento salvo e o desenha do zero, e as duas serializações são comparadas.
+    - Cada comando desfazível roda pela sua porta com argumentos ou, sem ela, por qualquer porta sobre a seleção: primeiro a seção `n-hero`, depois o título `n-title`. Só conta o comando cujo boot terminou `done`, e o piso é 45.
+    - O `catch` vazio saiu: o editor é aberto por `openWithBoot`, a mesma espera do `openEditor`, que devolve os resultados do boot em vez de afirmá-los.
+    - Cada página do caso tem as exceções, os erros de console e o feed de incidentes conferidos.
+    - Medido: 203 desfazíveis, 48 edições comparadas, 155 recusadas, anotadas com o caso. Com cinco elementos de alvo foram 50 em 11 minutos, contra 3 minutos com a seção só; ficaram os dois.
+  - **Controles:**
+    - o editor abre com o título selecionado, e o painel rápido é aberto e conferido (mais de cinco portas da região `quick-panel`);
+    - a busca visita todo elemento das marcas, dos papéis, do `tabindex`, do `contenteditable` e das etiquetas da regra (`button`, `input`, `select`, `textarea`, `a`, `summary`, `option`);
+    - todo `data-local` montado tem de estar em `localControls` de `manifest/layout.json`;
+    - uma porta de tecla (`placement: 'none'`, tipo `shortcut`) desenhada é acusada;
+    - todo menu aberto tem de desenhar toda porta que o manifesto põe nele, e o menu de estados só os estados que o elemento selecionado aceita (`elements` de `manifest/properties.json`, a regra de `src/editor/doors/menu.tsx`);
+    - as regiões da área `component` (as partes de um controle repetidas onde ele é desenhado: o campo, a linha de Camadas, a faixa de abas; `src/manifest/schema.ts`) ficam fora da conferência de região, porque não são regiões da página com `data-region`;
+    - a anotação `selection.select#layers-row` saiu.
+  - **Exportação:** a comparação roda depois de cinco edições de estilo (`padding-top`, `font-size`, `color`, `margin-top`, `gap`), e a largura do site é o `clientWidth` do `body`.
+- **Detector:** o próprio lote (MEC-21). As conferências novas foram rodadas sobre o código de hoje e acharam:
+  - as partes de campo na região `field`, que é da área `component` (isentas com o motivo);
+  - os estados filtrados do menu de estados, que a regra do manifesto filtra.
+
+  Nenhuma das duas é defeito do app.
+- **Verificação:** `lote-visual.spec.ts` sozinho, `E2E_WORKERS=1`, prioridade baixa: 4 de 4 na condição padrão (o G7 em 297 s) e 4 de 4 na condição Windows (309 s). Detectores 26 arquivos e 113 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0.
