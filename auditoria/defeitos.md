@@ -841,3 +841,14 @@
 
   Sem limite, `--only M110,M36` dá 2 acusados e saída 0.
 - **Verificação:** detectores 25 arquivos e 99 testes sem falha; os 119 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0558 — a conferência da vírgula decimal passa quando as duas leituras são recusadas
+- **Status:** corrigido
+- **Citação:** `tools/runner/model/fields.test.ts:85` `      expect(comma?.css, `${contract.property}: "1,5px"`).toBe(point?.css);`
+- **Causa:** o caso "a vírgula decimal do pt-BR é lida como ponto" compara o CSS de `1,5px` com o de `1.5px`. Quando o leitor recusa os dois, compara `undefined` com `undefined` e passa (verificação integral, seção 3, "Outros").
+- **Efeito:** medido com o mutante M120 (o leitor de número com unidade sem decimais): `1.5px` e `1,5px` são recusados nas 52 propriedades de comprimento, e o caso passa (`-t "vírgula"`: 1 passou). Hoje as 52 leem `1.5px` (sonda gravada em `.cache/sonda-virgula.txt`).
+- **Alcance:** a prova do L10N1 (a vírgula do pt-BR) no grupo `fields` (MEC-05).
+- **Arquivos da correção:** `tools/runner/model/fields.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o caso exige que `1.5px` seja lido em cada propriedade de comprimento antes de comparar com `1,5px` (`tools/runner/model/fields.test.ts`).
+- **Detector:** o grupo `fields` (MEC-05). Mutante M120: o leitor de número com unidade sem decimais. O caso o acusa ("border-spacing: \"1.5px\" é lido: expected undefined to be defined"); antes da correção, o caso sozinho passava com ele.
+- **Verificação:** detectores 25 arquivos e 99 testes sem falha; os 120 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.

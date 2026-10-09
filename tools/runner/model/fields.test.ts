@@ -82,6 +82,8 @@ describe('os contratos dos campos de valor', () => {
     for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured && c.units.includes('px'))) {
       const comma = readValue(context, contract.property, '1,5px');
       const point = readValue(context, contract.property, '1.5px');
+      // the point is read (a length the property offers): two refusals are no equal reading (DEF-0558)
+      expect(point?.css, `${contract.property}: "1.5px" é lido`).toBeDefined();
       expect(comma?.css, `${contract.property}: "1,5px"`).toBe(point?.css);
     }
   });
