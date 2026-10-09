@@ -72,6 +72,7 @@ const READ_FROM_DISK: Partial<Record<Detector, RegExp>> = {
   inventory: /^(src\/.*(?<!\.test)\.tsx?|manifest\/.*\.json)$/,
   lint: /^(src\/.*(?<!\.test)\.tsx?|eslint\.config\.js|tools\/lint\/.*\.ts)$/,
   manifest: /^manifest\/.*\.json$/,
+  'ui-fit': /^(src\/.*\.css|src\/i18n\/locales\/.*\.json|manifest\/(commands\/.*|generated\/ui-widths)\.json)$/,
 };
 export const graphReaches = (group: Detector, file: string): boolean => {
   const posixFile = file.replaceAll('\\', '/');

@@ -337,3 +337,25 @@
 - **Detector:** o grupo `manifest` (MEC-19, `tools/runner/model/manifest.test.ts`): `loadManifest` lê o `manifest/` inteiro do disco e `checkManifest` roda as regras; o caso exige zero problemas, e um arquivo `.json` no diretório sem entrada em `SINGLE_FILES` é acusado. Mutante no catálogo: M67 (as duas entradas tiradas), acusado antes da correção e não depois.
 - **Verificação:** `npm run manifest:check` termina em `manifest:check passed.`; grupo `manifest` 1 de 1; M67 acusado; `npm run typecheck` e `npm run lint` com saída 0.
 
+## DEF-0519 — o texto do campo do assistente não cabe na coluna do painel
+- **Status:** corrigido
+- **Citação:** `src/i18n/locales/en.json:2422` `  "assistant.input": "Describe the change you want",` e `manifest/commands/assistant.json:795` `      "labelKey": "assistant.input",` (a porta `assistant.update#assistant-input`, região `assistant-panel`).
+- **Causa:** a porta `assistant.update#assistant-input` (o campo do painel do assistente, `src/editor/assistant/panel.tsx:58`) desenha o texto do rótulo na coluna de 224 px da barra lateral (`--size-sidebar`). O texto inglês "Describe what you want to change", estendido à pseudo-expansão de 140 % que a DCS-022 fixa, mede 225,7 px: não cabe.
+- **Efeito:** o detetor `ui-fit` (MEC-20) acusa 225,7 px numa coluna de 224 px, com 1 px de folga: o texto mais longo que a chave pode tomar não cabe onde é desenhado.
+- **Alcance:** a coluna do painel do assistente (`assistant-panel`), em pt-BR e inglês; nenhum efeito medido no navegador além do que o detetor acusa.
+- **Arquivos da correção:** `src/i18n/locales/en.json` (a mensagem), `tools/runner/model/ui-fit.test.ts` (o detector, MEC-20).
+- **Correção:** o texto inglês passa a `Describe the change you want` (`src/i18n/locales/en.json:2422` `  "assistant.input": "Describe the change you want",`); a mensagem pt-BR (`Descreva o que deseja mudar`) já cabia. É a correção que a DCS-022 e a tarefa pedem: o texto da mensagem, nunca a fonte nem a coluna.
+- **Detector:** o grupo `ui-fit` (MEC-20) acusava "assistant-panel assistant.update#assistant-input (assistant.input): 225.7 px em 224 px" antes da correção e não acusa depois; o caso do grupo é a lista inteira de rótulos fora da coluna. Não há mutante para esta correção: o mutante do grupo é o do MEC-20 (M68, a coluna fixa do inspector), que prova o detetor.
+- **Verificação:** grupo `ui-fit` 1 de 1; `npm run typecheck` e `npm run lint` com saída 0.
+
+## DEF-0520 — o texto do controle da linha de Camadas não cabe na coluna da linha
+- **Status:** corrigido
+- **Citação:** `src/i18n/locales/en.json:443` `  "command.selectionToggle": "Add or remove from selection",` e `manifest/commands/selection.json:450` `      "labelKey": "command.selectionToggle",` (a porta `selection.toggle#layers-row-ctrl`, região `layers-row`).
+- **Causa:** a porta `selection.toggle#layers-row-ctrl` (o controle de seleção da linha de Camadas) desenha o texto do rótulo na coluna de 223 px de uma linha (a região `layers-row`, medida em 223 px na condição padrão). O texto inglês "Add to or remove from the selection", com a pseudo-expansão de 140 %, mede 236,7 px: não cabe.
+- **Efeito:** o detetor `ui-fit` acusa 236,7 px numa coluna de 223 px.
+- **Alcance:** a linha de Camadas (`layers-row`), em pt-BR e inglês; a mesma chave nomeia as outras duas portas dela (`manifest/commands/selection.json:398` e `:427`).
+- **Arquivos da correção:** `src/i18n/locales/en.json` (a mensagem), `tools/runner/model/ui-fit.test.ts` (o detector, MEC-20).
+- **Correção:** o texto inglês passa a `Add or remove from selection` (`src/i18n/locales/en.json:443` `  "command.selectionToggle": "Add or remove from selection",`); a mensagem pt-BR (`Adicionar ou remover da seleção`) já cabia.
+- **Detector:** o grupo `ui-fit` (MEC-20) acusava "layers-row selection.toggle#layers-row-ctrl (command.selectionToggle): 236.7 px em 223 px" antes da correção e não acusa depois.
+- **Verificação:** grupo `ui-fit` 1 de 1; `npm run typecheck` e `npm run lint` com saída 0.
+

@@ -18,6 +18,7 @@ import {
   generatedHtmlSchema,
   generatedIconsSchema,
   generatedInventorySchema,
+  generatedUiWidthsSchema,
   exclusionsFileSchema,
   type ExclusionsFile,
   interactionsFileSchema,
@@ -40,6 +41,7 @@ import {
   type GeneratedHtml,
   type GeneratedIcons,
   type GeneratedInventory,
+  type GeneratedUiWidths,
   type InteractionsFile,
   type PropertiesFile,
   type Recipe,
@@ -199,6 +201,7 @@ export interface Parsed {
   icons: GeneratedIcons;
   behavior: GeneratedBehavior;
   inventory: GeneratedInventory;
+  uiWidths: GeneratedUiWidths;
   exclusions: ExclusionsFile;
   commandFiles: { file: string; data: CommandsFile }[];
   featureFiles: { file: string; data: FeaturesFile }[];
@@ -221,6 +224,7 @@ const SINGLE_FILES: Record<string, { key: keyof Parsed; schema: z.ZodType }> = {
   'generated/icons.json': { key: 'icons', schema: generatedIconsSchema },
   'generated/behavior.json': { key: 'behavior', schema: generatedBehaviorSchema },
   'generated/inventory.json': { key: 'inventory', schema: generatedInventorySchema },
+  'generated/ui-widths.json': { key: 'uiWidths', schema: generatedUiWidthsSchema },
   'css-exclusions.json': { key: 'exclusions', schema: exclusionsFileSchema },
 };
 

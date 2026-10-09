@@ -1,0 +1,536 @@
+{
+  "$generated": {
+    "by": "tools/ui-fit/measure.spec.ts",
+    "css": "d85919c0d6f8c49bdb59ff69675f7d1c8a0ef7766de7c4e219b7be8ef711f60e"
+  },
+  "regions": {
+    "top-bar": {
+      "default": {
+        "width": 1440,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 1440,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "activity-bar": {
+      "default": {
+        "width": 39,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 39,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "insert": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 213,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "panel-header": {
+      "default": {
+        "width": 223,
+        "fontSize": 11,
+        "fontWeight": 600
+      },
+      "windows": {
+        "width": 213,
+        "fontSize": 11,
+        "fontWeight": 600
+      }
+    },
+    "palette-tiles": {
+      "default": {
+        "width": 203,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 193,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "explorer-layers": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "layers-row": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "layers-tree": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 213,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "layers-row-details": {
+      "default": {
+        "width": 12,
+        "fontSize": 11,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 12,
+        "fontSize": 11,
+        "fontWeight": 400
+      }
+    },
+    "file-tabs": {
+      "default": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "canvas-toolbar": {
+      "default": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "rulers": {
+      "default": {
+        "width": 820,
+        "fontSize": 10,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 820,
+        "fontSize": 10,
+        "fontWeight": 400
+      }
+    },
+    "canvas-stage": {
+      "default": {
+        "width": 820,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 820,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "canvas-frame": {
+      "default": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "canvas-breakpoints": {
+      "default": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "dock-strip": {
+      "default": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "inspector-header": {
+      "default": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "inspector-selector-bar": {
+      "default": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "inspector-style": {
+      "default": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 335,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "status-bar": {
+      "default": {
+        "width": 1440,
+        "fontSize": 11,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 1440,
+        "fontSize": 11,
+        "fontWeight": 400
+      }
+    },
+    "menu:file": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:edit": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:arrange": {
+      "default": {
+        "width": 252,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 252,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:view": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:help": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:language": {
+      "default": {
+        "width": 238,
+        "fontSize": 11,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 11,
+        "fontWeight": 400
+      }
+    },
+    "menu:element-actions": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:zoom": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "menu:snap": {
+      "default": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 238,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "command-palette": {
+      "default": {
+        "width": 638,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 638,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "explorer-pages": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "explorer-files": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "explorer-file-rows": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "styles": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "data-panel": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "data-pages": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "data-shared": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "assistant-panel": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 213,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "layout-composer-panel": {
+      "default": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 223,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "layout-composer-canvas": {
+      "default": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 804,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "tab-strip": {
+      "default": {
+        "width": 175,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 175,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "dock-timeline": {
+      "default": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 840,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "dock-checks": {
+      "default": {
+        "width": 816,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 816,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    },
+    "dock-motion": {
+      "default": {
+        "width": 816,
+        "fontSize": 12,
+        "fontWeight": 400
+      },
+      "windows": {
+        "width": 816,
+        "fontSize": 12,
+        "fontWeight": 400
+      }
+    }
+  }
+}

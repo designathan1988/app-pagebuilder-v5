@@ -214,3 +214,16 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Falhas de aceitação que precisa acusar:** um arquivo do `manifest/` fora da lista aceita; um artefato gerado com a forma mudada.
 - **Mutantes:** M67 (as duas entradas tiradas de `SINGLE_FILES`, o código de antes do DEF-0518), acusado.
 - **Tempo medido:** grupo `manifest` 3,2 s (1 caso); linha de base do catálogo, 21 arquivos, 60 testes, 15,2 s.
+
+## MEC-20 — a largura dos rótulos da interface sem navegador
+- **Capacidade:** C4 (quebra de interface detectada sem navegador: o texto mais longo de um rótulo contra a coluna da sua região).
+- **Arquivos:**
+  - `tools/ui-fit/font.ts` — o leitor de TrueType (cmap, hmtx, a tabela kern e os ajustes de par do GPOS) e a largura de um texto num tamanho e peso, a partir de `auditoria/investigacao/poc/c4-texto/medir.mjs`; lê os TTF de `src/ui/fonts/`. O erro do cálculo contra o que o Chrome desenha é o do PoC: no máximo 0,015 px com o kerning do GPOS.
+  - `tools/ui-fit/check.ts` — a regra da DCS-022: para cada porta cujo controle desenha o rótulo, o mais largo entre pt-BR, inglês e a pseudo-expansão (140 %) cabe na coluna da sua região com 1 px de folga; a coluna vem do token quando a região tem largura fixa e de `manifest/generated/ui-widths.json` quando é fluida.
+  - `tools/ui-fit/measure.spec.ts` e `tools/ui-fit/measure.config.ts` — a medição das larguras fluidas: abre o editor, os menus, a paleta, o painel rápido, cada vista da barra de atividades e cada aba do dock, e grava a largura mais estreita de cada região, com o tamanho e o peso calculados, em `manifest/generated/ui-widths.json` (44 regiões medidas), com o hash de todos os `.css` de `src/`. Roda de novo quando o CSS muda (`npm run ui-fit:measure`, e com `E2E_SCROLLBARS=shown E2E_SCALE=1.25`).
+  - `manifest/generated/ui-widths.json` — o artefato, com um esquema em `src/manifest/schema.ts` (`generatedUiWidthsSchema`) e a entrada em `SINGLE_FILES` (sem `FILE_SCHEMAS`: é dado derivado, não contrato da aplicação).
+  - `tools/runner/model/ui-fit.test.ts` — o grupo `ui-fit`, o detector: exige zero rótulos fora da coluna.
+  - `tools/impact/detectors.ts` — a linha `'ui-fit'` em `READ_FROM_DISK` (lê os `.css` de `src/`, os catálogos e `manifest/commands/` e o artefato medido).
+- **Falhas de aceitação que precisa acusar:** uma etiqueta que não cabe na coluna da sua região (as duas primeiras: os DEF-0519 e DEF-0520); uma coluna fixa que encolhe até o rótulo mais longo não caber.
+- **Mutante:** M68 (`--size-inspector` de 336 px para 280 px), acusado: dois rótulos da barra de seletores do inspector passam a não caber.
+- **Tempo medido:** grupo `ui-fit` 2,8 s (1 caso).

@@ -1387,6 +1387,20 @@ export const generatedInventorySchema = z.strictObject({
   }),
 });
 
+// The fluid widths of the interface (tools/ui-fit/measure.spec.ts): one measurement of a region's column per screen
+// condition, with the hash of the CSS it was taken with. tools/ui-fit/check.ts reads it; the regions whose column is a
+// token are absent from it.
+export const generatedUiWidthsSchema = z.strictObject({
+  $generated: z.strictObject({ by: z.string().min(1), css: z.string().min(1) }),
+  regions: z.record(
+    z.string(),
+    z.record(
+      z.string(),
+      z.strictObject({ width: z.number(), fontSize: z.number(), fontWeight: z.number() }),
+    ),
+  ),
+});
+
 // Each manifest file and its schema, keyed as consumers.json names them.
 export const FILE_SCHEMAS = {
   environment: environmentSchema,
@@ -1435,4 +1449,5 @@ export type GeneratedHtml = z.infer<typeof generatedHtmlSchema>;
 export type GeneratedIcons = z.infer<typeof generatedIconsSchema>;
 export type GeneratedBehavior = z.infer<typeof generatedBehaviorSchema>;
 export type GeneratedInventory = z.infer<typeof generatedInventorySchema>;
+export type GeneratedUiWidths = z.infer<typeof generatedUiWidthsSchema>;
 export type ExclusionsFile = z.infer<typeof exclusionsFileSchema>;

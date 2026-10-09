@@ -27,6 +27,7 @@
     "gen:check": "node tools/gen/check.ts",
     "manifest:check": "node tools/manifest/check.ts",
     "ui": "node tools/ui/drive.ts",
+    "ui-fit:measure": "playwright test -c tools/ui-fit/measure.config.ts",
     "perf": "node tools/perf/run.ts",
     "perf:layout": "node tools/perf/layout-pointer.ts",
     "modules:removal": "node tools/modules/removal.ts",
