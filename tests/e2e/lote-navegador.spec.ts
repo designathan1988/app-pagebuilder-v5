@@ -2,7 +2,10 @@
 // navegador responde, com a fixture do projeto (a guarda de tela, o feed de incidentes e os erros do console vêm dela).
 //  - Quadros de animação longos (Long Animation Frames): inserir, arrastar, digitar num campo, desfazer e trocar de
 //    página, cada um com um observador de `long-animation-frame`; um quadro acima de 50 ms vira defeito, com os
-//    `scripts[]` do quadro. A rodada aquece antes de medir: o primeiro quadro de uma sessão paga a compilação.
+//    `scripts[]` do quadro. A rodada aquece antes de medir: o primeiro quadro de uma sessão paga a compilação. Este
+//    arquivo mede tempo de parede do navegador: rode-o sozinho, porque com outros navegadores na mesma máquina o quadro
+//    passa de 50 ms por contenção (medido: 70,2 ms num quadro `onUp` com quinze arquivos em voo, e nenhum quadro acima
+//    de 50 ms com este arquivo sozinho, nas duas condições).
 //  - Memória: um `WeakRef` do elemento antes de cada ação, vinte repetições, `HeapProfiler.collectGarbage` e o
 //    `WeakRef` vazio no fim.
 //  - Composição de texto (IME) pelo CDP: durante a composição nenhum atalho dispara, e o texto entra inteiro.
@@ -173,18 +176,14 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
     await page.keyboard.press('Escape');
     await expect(page.locator('[data-region="menu:file"]'), 'o menu fecha').toHaveCount(0);
   });
-  // O painel rápido fechado pelo Esc (o caminho que o DEF-0522 mede: fechado pelo próprio chip, o mesmo elemento é
-  // recolhido) ainda deixa o elemento referenciado; o defeito está aberto e o caso o registra.
-  await cycle(
-    'o painel rápido',
-    async () => {
-      await openQuickPanel(page);
-      await holdInPage('.quick-panel');
-      await page.keyboard.press('Escape');
-      await expect(page.locator('.quick-panel'), 'o painel rápido fecha').toHaveCount(0);
-    },
-    'DEF-0522',
-  );
+  // O painel rápido fechado pelo Esc: o caminho do DEF-0522, corrigido (o foco volta ao chip com o painel ainda
+  // desenhado, e só então ele sai da página).
+  await cycle('o painel rápido', async () => {
+    await openQuickPanel(page);
+    await holdInPage('.quick-panel');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.quick-panel'), 'o painel rápido fecha').toHaveCount(0);
+  });
   await cycle('o nó inserido e apagado', async () => {
     await page.locator(`[data-door="${INSERT}"][data-args*='"entry":"section"']`).first().click();
     const id = await page.evaluate(() => (window as unknown as { __builderTestPort: { selection: () => readonly string[] } }).__builderTestPort.selection()[0] ?? null);
@@ -252,8 +251,10 @@ test('copiar e colar um nó com estilo devolve o mesmo, e HTML externo com oncli
   await runDoor(page, SELECT_ROW, { args: { target: 'n-title' } });
   const before = await idsOf(page);
   await runDoor(page, COPY);
+  // a cópia assenta na área de transferência antes de a colagem a ler: sem esta espera, com a máquina carregada a
+  // colagem lia antes da escrita e o comando era recusado (a bateria roda com três processos)
+  await expect.poll(() => page.evaluate(async () => (await navigator.clipboard.readText()).includes('builder/elements')), { message: 'a cópia assenta na área de transferência' }).toBe(true);
   await runDoor(page, PASTE);
-  // a leitura da área de transferência chega um instante depois da tecla (tests/e2e/clipboard-cut-styles.spec.ts)
   await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'a colagem deixa um nó novo' }).toEqual(before.length + 1);
   const after = await idsOf(page);
   const added = after.filter((id) => !before.includes(id));

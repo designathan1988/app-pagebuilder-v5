@@ -472,20 +472,41 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
       wasOpen.current = open;
       focusDue.current = true;
     }
-    if (!focusDue.current || measuring !== '') return;
-    focusDue.current = false;
+    if (!focusDue.current) return;
+    // The close comes before the measuring guard: the chip of a closed panel is drawn measuring (its placing belongs to
+    // the open one), so the guard used to return here and the focus stayed on the body — while the field that had it
+    // left the page, which is what the browser keeps (DEF-0522). The chip is the place the focus goes back to; it is
+    // drawn and placed by its own state, so it needs no measuring.
     if (!open) {
+      focusDue.current = false;
       chip.current?.focus();
       return;
     }
+    if (measuring !== '') return;
+    focusDue.current = false;
     const fields = panel.current?.querySelectorAll<HTMLElement>('.quick-panel__fields input:not(:disabled), .quick-panel__fields textarea:not(:disabled)');
     const first = fields?.item(0) ?? panel.current?.querySelector<HTMLElement>('input:not(:disabled), button:not([aria-disabled="true"])');
     first?.focus();
   }, [open, measuring]);
+  // The panel of a close is kept mounted for one frame, hidden by its measuring class, with the chip drawn beside it:
+  // the focus lands on the chip while the panel is still drawn, and only then does the panel go. The browser keeps the
+  // element that had the focus when it leaves the page (its focus-navigation starting point) with the whole subtree
+  // alive, so doing both in the same confirmation — or leaving the focus on the body — keeps the panel for good
+  // (DEF-0522, measured: a focus on another element after the close releases the panel).
+  const [drawn, setDrawn] = useState(open);
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setDrawn(open));
+    return () => window.cancelAnimationFrame(frame);
+  }, [open]);
   if (!shown || node === null) return null;
-  if (!open) {
+  if (!open && !drawn) {
     return CHIP_DOOR === null ? null : <Chip entry={CHIP_DOOR} open={false} at={at} measuring={measuring} buttonRef={chip} />;
   }
+  // the frame of the close: the chip is drawn beside the panel, which the measuring class already hides, so the focus
+  // has somewhere connected to go before the panel leaves the page. The chip takes the box the panel had: it is the
+  // position it takes anyway, and it keeps the frame from showing it anywhere else
+  const leaving = !open;
+  const atLeaving = placed === null || placed.id !== node.id ? undefined : { left: placed.box.x, top: placed.box.y };
   // the context of the writes (A3.8): the class the style target names, the state and the breakpoint in view
   const contextLabel = [contextTarget === null ? null : `.${contextTarget}`, contextState === null ? null : t(contextState as MessageId), contextBreakpoint === null ? null : wordsOf(JSON.parse(contextBreakpoint) as ReturnType<typeof breakpointWords>, t)].filter((part) => part !== null).join(' · ');
   const actions = FIELDS.filter((entry) => isAction(entry) && applicable.split(' ').includes(entry.ref));
@@ -508,6 +529,7 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
   })).filter((group) => group.fields.length > 0);
   const other = fields.filter((entry) => !isTag(entry) && !QUICK_GROUPS.some((group) => inQuickGroup(entry, group)));
   return (
+    <>
     <div
       ref={panel}
       className={`quick-panel${measuring}`}
@@ -548,5 +570,7 @@ export function QuickPanel({ stage }: { readonly stage: RefObject<HTMLDivElement
         </section> : null}
       </div>
     </div>
+      {leaving && CHIP_DOOR !== null ? <Chip entry={CHIP_DOOR} open={false} at={atLeaving} measuring="" buttonRef={chip} /> : null}
+    </>
   );
 }
