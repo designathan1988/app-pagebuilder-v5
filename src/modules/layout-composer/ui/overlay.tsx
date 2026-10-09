@@ -69,16 +69,16 @@ export function LayoutOverlay() {
   // at a screen size narrower than the drawing, the regions as the page lays them out there, by region id (layer px)
   const base = useEditorState((s) => activeBreakpoint(s).base);
   const [measured, setMeasured] = useState<Readonly<Record<string, Measured>> | null>(null);
-  // the layer stays mounted while the composer is closed: closing it drops the box and the regions it measured, so a
-  // composer opened again draws nothing of the last one before it has measured (DEF-0512; React's "adjusting some
-  // state when a prop changes", during the render)
-  const [open, setOpen] = useState(composer !== null);
-  if ((composer !== null) !== open) {
-    setOpen(composer !== null);
-    if (composer === null) {
-      setBox(null);
-      setMeasured(null);
-    }
+  // the box and the regions measured belong to the container they were measured on: the layer stays mounted while the
+  // composer is closed, and the composer may move to another container while open (layout.enter on it), so a change of
+  // the container composed — none included — drops them, and the next drawing waits for a measure of its own
+  // (DEF-0512, DEF-0546; React's "adjusting some state when a prop changes", during the render)
+  const composing = composer?.target ?? null;
+  const [measuredFor, setMeasuredFor] = useState(composing);
+  if (composing !== measuredFor) {
+    setMeasuredFor(composing);
+    setBox(null);
+    setMeasured(null);
   }
   const elements = useMemo(() => (container === null ? [] : markedElements(container)), [container]);
   const held = useSyncExternalStore(preview.subscribe, preview.get);
@@ -115,7 +115,6 @@ export function LayoutOverlay() {
   // work at once, whatever control opened it
   const stage = useRef<HTMLDivElement>(null);
   const placed = box !== null;
-  const composing = composer?.target ?? null;
   useEffect(() => {
     if (composing !== null && placed) stage.current?.focus({ preventScroll: true });
   }, [composing, placed]);
