@@ -42,10 +42,10 @@ export function pointerEffects(p: PointerOwner): Pick<PointerOwner, 'factsOf' | 
       const clickModifier = ps.buttons.modifier !== null && DRAG_ONLY_MODIFIERS.has(ps.buttons.modifier as never) ? null : ps.buttons.modifier;
       const picking = pickingOf(store.getState().ui);
       const entry = clickDoor(press, ps.buttons.button, ps.buttons.count, clickModifier, p.factsOf(press), picking);
-      // The secondary button's door (the context menu, on the canvas or a Layers row) is what the press asks for: it runs
-      // before the gesture holds the pointer, so the menu it opens is no layer opened under a gesture (the mode table,
-      // input/modes.ts, refuses what opens from outside one); it changes no document, and the gesture records nothing
-      // for it (DEF-0534)
+      // The secondary button's door (the context menu, on the canvas or a Layers row) is what the press asks for: it
+      // runs before the gesture holds the pointer, so the menu it opens is no layer opened under a gesture (the mode
+      // table, input/modes.ts, refuses what opens from outside one); it changes no document, and the gesture records
+      // nothing for it (DEF-0534)
       const secondary = ps.buttons.button === 'secondary' && entry !== null && !(entry.door.kind === 'canvas-click' && (entry.door.target === 'pick-target' || entry.door.target === 'pick-motion-target')) ? entry : null;
       if (secondary !== null) (store.dispatch as (id: CommandId, args: unknown) => unknown)(secondary.command.id as CommandId, argsFor(secondary, press, picking));
       shared.open = store.gesture();
