@@ -38,6 +38,7 @@ const USES: readonly Use[] = [
   { api: 'navigator.locks', path: 'api.LockManager', call: 'navigator\\.locks' },
   { api: 'URL.canParse', path: 'api.URL.canParse', call: 'URL\\.canParse', reason: 'o BCD 8.1.2 não traz entrada para este método estático; as três engines o sustentam desde 2023 e o app o chama num só ponto, src/core/document/captured.ts' },
   { api: 'requestIdleCallback', path: 'api.Window.requestIdleCallback', call: 'requestIdleCallback', reason: 'o Safari ainda não o traz numa versão estável; o app o chama por trás de typeof window.requestIdleCallback === "function", com um setTimeout de reserva (src/editor/persistence/autosave.ts)' },
+  { api: 'Element.computedStyleMap', path: 'api.Element.computedStyleMap', call: 'computedStyleMap\\(', reason: 'o Firefox estável não o traz (BCD 8.1.2: só a prévia); o app o chama por trás de typeof element.computedStyleMap === "function" e lê getComputedStyle sem ele (src/editor/canvas/coordinates.ts, computedValues; DEF-0548)' },
 ];
 
 interface Support {
@@ -115,5 +116,9 @@ describe('o que o app exige dos navegadores', () => {
     expect(stale, 'APIs declaradas que o código não chama mais').toEqual([]);
     // the one use BCD reports as unsupported is guarded by a test of its presence
     expect(sources.includes('typeof window.requestIdleCallback'), 'a chamada de requestIdleCallback é guardada').toBe(true);
+    // every line of code (its comment left out) that calls computedStyleMap guards it in the same expression (DEF-0548)
+    const calls = sources.split('\n').map((line) => line.replace(/\/\/.*$/, '')).filter((line) => line.includes('computedStyleMap('));
+    expect(calls.length, 'o código chama computedStyleMap').toBeGreaterThan(0);
+    expect(calls.filter((line) => !/typeof \w+\.computedStyleMap === 'function' \? \w+\.computedStyleMap\(\)/.test(line)), 'chamadas de computedStyleMap sem a guarda').toEqual([]);
   });
 });

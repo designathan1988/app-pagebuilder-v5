@@ -527,8 +527,12 @@ const NO_LINES: ReadonlyMap<string, string> = new Map();
 export function computedValues(id: string, properties: readonly string[], lines: ReadonlyMap<string, string>): Readonly<Record<string, string>> | null {
   const element = current?.contentDocument?.querySelector(nodeSelector(id as NodeId));
   if (!element) return null;
-  const map = element.computedStyleMap();
-  const typed = (property: string): string => (CSS.supports(property, 'initial') ? (map.get(property)?.toString() ?? '') : '');
+  // the typed object model where the browser has it (Chrome, Edge, Safari); Firefox's stable release does not (MDN
+  // browser-compat-data 8.1.2, api.Element.computedStyleMap: preview only), and there the values are the resolved ones
+  // getComputedStyle gives, in which an `auto` reads as the px it resolves to (DEF-0548)
+  const map = typeof element.computedStyleMap === 'function' ? element.computedStyleMap() : null;
+  const resolved = map === null ? (element.ownerDocument.defaultView?.getComputedStyle(element) ?? null) : null;
+  const typed = (property: string): string => (CSS.supports(property, 'initial') ? (map !== null ? (map.get(property)?.toString() ?? '') : (resolved?.getPropertyValue(property) ?? '')) : '');
   return Object.fromEntries(
     properties.map((property) => {
       const style = lines.get(property);
