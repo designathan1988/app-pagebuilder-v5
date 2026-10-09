@@ -10,8 +10,8 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 
 **Instrução em vigor (nova, 2026-10-08): a "Tarefa do DeepSeek: a parte visual e de navegador"** (`deepseek-tarefa.md`, 5 itens, a lista da seção "Para o Claude"). Andamento:
 - **Item 1 (DEF-0518) feito:** os dois artefatos gerados (`generated/behavior.json`, `generated/inventory.json`) entraram em `SINGLE_FILES` com um esquema zod cada, o grupo `manifest` (MEC-19) e o mutante M67. `npm run manifest:check` passa.
-- **Item 2 (fonte da interface, DCS-012):** próximo a começar.
-- **Itens 3 a 5:** medição de texto (C4), lote do navegador e as partes de navegador da etapa 5 — pendentes.
+- **Item 2 (fonte da interface, DCS-012) feito:** os TTF (pesos 400 e 600) e o `OFL.txt` em `src/ui/fonts/`, baixados de `github.com/adobe-fonts/source-sans`, ramo `release`, pasta `TTF/` (o scratchpad com os arquivos citados em `progresso.md` não existia mais); dois `@font-face` em `src/ui/tokens.css`, com `font-display: swap`, e `--font-ui: "Source Sans 3", system-ui, sans-serif`. Os cinco testes de tela passam na condição padrão e os quatro outros (fora o `visual`) na condição Windows; as 14 fotos de referência do `visual.spec.ts` foram olhadas uma a uma (a diferença é só de glifo — nada cortado, coberto ou desalinhado) e atualizadas. Nenhum DEF- pela fonte nova.
+- **Itens 3 a 5:** medição de texto (C4), lote do navegador e as partes de navegador da etapa 5 — em andamento (item 3).
 
 | etapa | conteúdo | estado |
 |---|---|---|
@@ -34,7 +34,9 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 
 **Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos), bd52de1 (a manutenção da auditoria para; CLAUDE.md sem as travas), 81be75c (item 1: os 8 elementos "porta faltando").
 
-**Próximo passo:** seguir a "Tarefa do DeepSeek: a parte visual e de navegador" (`deepseek-tarefa.md`). Item 1 (DEF-0518) feito; o próximo é o **item 2**, a fonte da interface (Source Sans 3, pesos 400 e 600, em `src/ui/fonts/`, com o `@font-face` e a troca de `--font-ui` em `src/ui/tokens.css`), seguido dos testes de tela nas duas condições e das fotos de referência. Depois, os itens 3 (medição de texto sem navegador), 4 (lote do navegador) e 5 (partes de navegador da etapa 5).
+**Próximo passo:** seguir a "Tarefa do DeepSeek: a parte visual e de navegador" (`deepseek-tarefa.md`). Itens 1 e 2 feitos. O item 3 (medição de texto sem navegador, C4) está em andamento: `tools/ui-fit/font.ts` (o leitor de TrueType) pronto, e faltam `tools/ui-fit/check.ts` (a regra), o medidor das larguras fluidas, o detector e o mutante. Depois, os itens 4 (lote do navegador) e 5 (partes de navegador da etapa 5).
+
+**Limite medido no item 2:** as fotos de referência do `tests/e2e/visual.spec.ts` são de uma condição só (o arquivo fixa 1440×900 e o nome do arquivo não distingue condição). Na condição Windows (`E2E_SCROLLBARS=shown E2E_SCALE=1.25`) 6 dos 14 casos falham porque as barras de rolagem tiram ~15 px das regiões que rolam (a página, o `aside.sidebar`, o `aside.inspector`) — o mesmo motivo que a `playwright.config.ts` dá para a variável; os outros 8 e os quatro testes de tela restantes passam. Isto é do arranjo de uma base por condição, não da fonte nova.
 
 
 ### Procedimentos
