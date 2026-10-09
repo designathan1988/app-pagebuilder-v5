@@ -128,6 +128,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M77', file: 'src/editor/input/pending.ts', from: '    if (waitWhile()) inLine.push(held);\n    else keepTyping();', to: '    keepTyping();', breaks: 'um campo que começa a digitar durante o grupo descarta a digitação do anterior', source: 'DEF-0528', detectors: ['command-group'] },
   { id: 'M78', file: 'src/editor/store.ts', from: '            if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();\n', to: '', breaks: 'um comando do grupo que muda o que o campo edita não pede a gravação da digitação (o código de antes do DEF-0528)', source: 'DEF-0528', detectors: ['command-group'] },
   { id: 'M79', file: 'src/editor/store.ts', from: '        if (!group.active()) keepWhatWaited();\n', to: '', breaks: 'o fim do grupo não roda as gravações que esperaram por ele', source: 'DEF-0528', detectors: ['command-group'] },
+  { id: 'M80', file: 'src/editor/quick-panel/quick-panel.ts', from: "quickPanelDismissed: !next && open === 'close' ? true : undefined", to: 'quickPanelDismissed: !next ? true : undefined', breaks: 'todo fecho do painel rápido descarta a digitação dos seus campos, não só o Esc (o código de antes do DEF-0529)', source: 'DEF-0529', detectors: ['drafts'] },
 ];
 
 export const ALL_DETECTORS = ALL;

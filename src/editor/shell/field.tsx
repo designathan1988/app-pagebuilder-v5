@@ -41,7 +41,7 @@ import { manifest, type DoorEntry } from '../../manifest/runtime.ts';
 import { computedValues } from '../canvas/coordinates.ts';
 import { DoorControl, Icon, useDoor, type DoorState } from '../doors/door.tsx';
 import { GLYPHS, doorSlots } from '../doors/placement.ts';
-import { quickPanelOpen } from '../quick-panel/quick-panel.ts';
+import { quickPanelDismissed } from '../quick-panel/quick-panel.ts';
 import { unitMenu } from '../../core/style/units.ts';
 import { cssFamily, familyOf, isFontFile } from '../../core/files/fonts.ts';
 import { afterGesture, registerRepeat, registerSlider } from '../input/pointer.ts';
@@ -1049,14 +1049,14 @@ export function TextStyleField({
     const typing = draft.current;
     if (element === null) return;
     // what the field holds, kept now: for the elements and in the context the typing began in (rules G1 and G2); a
-    // quick panel field keeps what it holds only while the panel is open: the panel's dismissal cancels the draft as an
-    // Escape in an inspector field does (spec quick-panel)
+    // quick panel field drops it only when the panel was dismissed by its Escape, which cancels the draft as an Escape
+    // in an inspector field does (spec quick-panel; CLAUDE.md, G2: the one exception; DEF-0529)
     const keepNow = () => {
       if (!typing.typed) return;
       typing.typed = false;
       element.dataset.draft = DRAFT_KEPT;
       releaseTyping(element);
-      if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
+      if (!keepOnLeave && quickPanelDismissed(store.getState().ui)) return;
       keepText.current(element.value, typing.targets, typing.context);
     };
     hold.current = () => {
@@ -1107,9 +1107,8 @@ export function TextStyleField({
       element.removeEventListener('input', onInput);
       document.removeEventListener('focusout', leaveAnywhere, true);
       keepPending.current = () => {};
-      // the field goes: the inspector keeps a text not kept yet; a quick panel field drops it (its dismissal cancels)
-      if (keepOnLeave) keepNow();
-      else releaseTyping(element);
+      // the field goes with a text not kept yet: it is kept, unless the quick panel it lies in was dismissed
+      keepNow();
     };
   }, [store, command, property, keepOnLeave, own]);
   const refused = useFieldRefusal(entry.command.id, property);
@@ -1562,14 +1561,14 @@ export function TextField({ entry, node, label, keepOnLeave = true }: { readonly
     const element = field.current;
     const typing = draft.current;
     if (element === null) return;
-    // what the field holds, kept now, for the node it is drawn for (rule G2); a quick panel field keeps what it holds
-    // only while the panel is open (spec quick-panel)
+    // what the field holds, kept now, for the node it is drawn for (rule G2); a quick panel field drops it only when
+    // the panel was dismissed by its Escape (spec quick-panel; DEF-0529)
     const keepNow = () => {
       if (!typing.typed) return;
       typing.typed = false;
       element.dataset.draft = DRAFT_KEPT;
       releaseTyping(element);
-      if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
+      if (!keepOnLeave && quickPanelDismissed(store.getState().ui)) return;
       keepTextWith(store, command, target, element.value);
     };
     // its own commands: its door's and its keys' (Enter keeps, Escape cancels), for the node it is drawn for
@@ -1592,10 +1591,9 @@ export function TextField({ entry, node, label, keepOnLeave = true }: { readonly
     return () => {
       element.removeEventListener('input', onInput);
       element.removeEventListener('blur', keep);
-      // the field goes (another selection, another tab) with typing not kept yet: it is kept — unless it is a quick
-      // panel field, whose dismissal cancels what it held (spec quick-panel)
-      if (keepOnLeave) keepNow();
-      else releaseTyping(element);
+      // the field goes (another selection, another tab) with typing not kept yet: it is kept — unless the quick panel
+      // it lies in was dismissed, which cancels what it held (spec quick-panel)
+      keepNow();
     };
   }, [store, command, target, keepOnLeave]);
   return (
@@ -1755,12 +1753,12 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
     const typing = draft.current;
     if (row === null || element === null) return;
     // what the field holds, kept now for the node it is drawn for when it differs from what it last showed or kept
-    // (rule G2); a quick panel field keeps what it holds only while the panel is open (spec quick-panel)
+    // (rule G2); a quick panel field drops it only when the panel was dismissed by its Escape (DEF-0529)
     const keep = () => {
       const text = element.value;
       releaseTyping(element);
       if (text === typing.shown) return;
-      if (!keepOnLeave && !quickPanelOpen(store.getState().ui)) return;
+      if (!keepOnLeave && quickPanelDismissed(store.getState().ui)) return;
       typing.shown = text;
       keepAfterGesture(store, () => {
         // nothing is kept for a node the document no longer holds
@@ -1787,10 +1785,9 @@ export function KeptTextField({ entry, node, kept, label, attribute, keepOnLeave
       row.removeEventListener('submit', submit);
       element.removeEventListener('input', onInput);
       element.removeEventListener('blur', keep);
-      // the field goes (another selection, another tab) with a text not kept yet: it is kept — unless it is a quick
-      // panel field, whose dismissal cancels what it held (spec quick-panel)
-      if (keepOnLeave) keep();
-      else releaseTyping(element);
+      // the field goes (another selection, another tab) with a text not kept yet: it is kept — unless the quick panel
+      // it lies in was dismissed, which cancels what it held (spec quick-panel)
+      keep();
     };
   }, [store, command, args, filled, owner, keepOnLeave]);
   const choose = (value: string) => {

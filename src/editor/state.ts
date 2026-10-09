@@ -99,6 +99,9 @@ export interface EditorUi {
   readonly commandBar?: true | undefined;
   // the quick panel open (quickPanel.setOpen; quick-panel/quick-panel.ts); absent while it is a chip
   readonly quickPanelOpen?: true | undefined;
+  // the quick panel dismissed by its Escape (quickPanel.setOpen with "close"), the one way that drops what its fields
+  // hold (CLAUDE.md, rule G2); absent once it opens again or while it was closed any other way (DEF-0529)
+  readonly quickPanelDismissed?: true | undefined;
   // the Style tab's Find a property query (inspector.search; inspector/sections.ts); absent while empty
   readonly inspectorSearch?: string | undefined;
   // the centre column's view (view.setEditorView; view/editor-view.ts): the canvas, the canvas beside the code pane,

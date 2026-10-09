@@ -7,16 +7,20 @@
 // keeping it in every field being the control that the test sees a keep; Enter with an empty or non-numeric text
 // reaches the command, which refuses it with words (its argument check or its handler: G3). auditoria/defeitos.md,
 // DEF-0514 and DEF-0515.
-import { act, createElement, type ReactElement } from 'react';
+import { act, createElement, createRef, type ReactElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { describe, expect, it } from 'vitest';
 import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
+import { walk } from '../../../src/core/document/model.ts';
 import { TypedBand } from '../../../src/editor/canvas/edit-handles.tsx';
-import { keepTypingBefore } from '../../../src/editor/input/pending.ts';
+import { QuickPanel } from '../../../src/editor/canvas/quick-panel.tsx';
+import { installKeymap } from '../../../src/editor/input/keymap.ts';
+import { quickPanelOpen } from '../../../src/editor/quick-panel/quick-panel.ts';
+import { heldTyping, keepTypingBefore } from '../../../src/editor/input/pending.ts';
 import { GuidesGridsDialog } from '../../../src/editor/shell/guides-grids.tsx';
 import { PanelField } from '../../../src/editor/shell/panel-field.tsx';
-import { createEditorStore, StoreContext, type EditorStore } from '../../../src/editor/store.ts';
+import { createEditorStore, MODEL_RULES, StoreContext, type EditorStore } from '../../../src/editor/store.ts';
 import type { CommandId } from '../../../src/generated/ids.ts';
 import { manifest } from '../../../src/manifest/runtime.ts';
 import { fixture } from './harness.ts';
@@ -192,4 +196,57 @@ describe('os campos de valor contra o registro de pendências e o tratador', () 
     }
     expect(found, 'textos que não chegaram ao tratador').toEqual([]);
   });
+});
+
+// The quick panel's fields drop what they hold only when the panel is dismissed by its Escape, the one exception rule
+// G2 gives (CLAUDE.md; spec quick-panel); its shortcut and its close button close it with the typing kept (DEF-0529).
+// The real panel, with the real keymap, its opacity field typed in and the panel closed each way.
+const frames = async (count: number) => {
+  for (let index = 0; index < count; index += 1) await act(() => new Promise<void>((resolve) => setTimeout(resolve, 20)));
+};
+type Close = 'Esc' | 'Ctrl+Shift+Q' | 'o botão de fechar';
+async function typeAndClose(close: Close): Promise<{ readonly closed: boolean; readonly kept: boolean; readonly held: boolean }> {
+  const store = storeOf();
+  const tree = store.getState().document.pages[0]?.tree;
+  const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+  dispatch(store, 'selection.select', { target: leaf?.id });
+  dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+  const stop = installKeymap(store, window);
+  const stage = createRef<HTMLDivElement>();
+  const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+  await frames(2);
+  const field = [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('opacity'));
+  expect(field, 'o painel desenhou o campo da opacidade').toBeDefined();
+  if (field === undefined) throw new Error('no opacity field');
+  const before = JSON.stringify(store.getState().document);
+  type(field, '0.37');
+  expect(heldTyping()?.field, 'o campo segura a digitação').toBe(field);
+  if (close === 'Esc') await act(async () => void field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true, cancelable: true })));
+  if (close === 'Ctrl+Shift+Q') await act(async () => void field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Q', code: 'KeyQ', ctrlKey: true, shiftKey: true, bubbles: true, cancelable: true })));
+  if (close === 'o botão de fechar') {
+    const button = drawn.host.querySelector<HTMLButtonElement>('.quick-panel__close');
+    // the pointer owner's first word on every press (input/pointer/events.ts), then the click the button runs
+    await act(async () => {
+      keepTypingBefore(button);
+      button?.click();
+    });
+  }
+  const closed = !quickPanelOpen(store.getState().ui);
+  await frames(4);
+  const after = JSON.stringify(store.getState().document);
+  const outcome = { closed, kept: after !== before && after.includes('"0.37"'), held: heldTyping() !== null };
+  drawn.stop();
+  stop();
+  return outcome;
+}
+
+describe('o fecho do painel rápido com a digitação pendente', () => {
+  for (const [close, kept] of [['Esc', false], ['Ctrl+Shift+Q', true], ['o botão de fechar', true]] as const) {
+    it(`${close} fecha o painel e ${kept ? 'grava' : 'descarta (a exceção única da G2)'} o valor digitado`, async () => {
+      const outcome = await typeAndClose(close);
+      expect(outcome.closed, 'o painel fechou').toBe(true);
+      expect(outcome.kept, kept ? 'o valor digitado não foi gravado' : 'o Esc gravou o valor digitado').toBe(kept);
+      expect(outcome.held, 'nenhuma digitação ficou no registro').toBe(false);
+    });
+  }
 });

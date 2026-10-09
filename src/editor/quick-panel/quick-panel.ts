@@ -46,12 +46,15 @@ export const quickPanelOffsets = (ui: EditorUi): Readonly<Record<string, Offset>
 
 // whether the panel is open (its chip, the shortcut, Escape in the panel)
 export const quickPanelOpen = (ui: EditorUi): boolean => ui.quickPanelOpen === true;
+// whether the panel was dismissed: closed by its Escape ("close"), the one way the spec gives for dropping what its
+// fields hold; a toggle that closes it (its chip, its shortcut) keeps it, as any field keeps its typing (G2, DEF-0529)
+export const quickPanelDismissed = (ui: EditorUi): boolean => ui.quickPanelDismissed === true;
 
 export const setOpen = registerHandler<'quickPanel.setOpen', EditorUi>('quickPanel.setOpen', ({ state }, { open }) => {
   const now = quickPanelOpen(state.ui);
   const next = open === 'toggle' ? !now : open === 'open';
   if (next === now) return { kind: 'change' };
-  return { kind: 'change', ui: { ...state.ui, quickPanelOpen: next ? true : undefined } };
+  return { kind: 'change', ui: { ...state.ui, quickPanelOpen: next ? true : undefined, quickPanelDismissed: !next && open === 'close' ? true : undefined } };
 });
 
 export const setOffset = registerHandler<'quickPanel.setOffset', EditorUi>('quickPanel.setOffset', ({ state }, { target, offset }) => {
