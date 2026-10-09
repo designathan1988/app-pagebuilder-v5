@@ -399,10 +399,10 @@ describe('a digitação depois de uma recusa', () => {
   });
 });
 
-// The pointer owner (src/editor/input/pointer.ts), installed on happy-dom's window, its events dispatched as the browser
-// sends them: the typing a field holds is kept at the very start of a press outside the field (rule G2,
+// The pointer owner (src/editor/input/pointer.ts), installed on happy-dom's window, its events dispatched as the
+// browser sends them: the typing a field holds is kept at the very start of a press outside the field (rule G2,
 // input/pointer/events.ts onDown; the verification's finding: removed, no detector saw it), and a press of a pointer
-// whose release was lost ends the gesture it left open before its own begins (DCS-013, DEF-0510, DEF-0556).
+// whose release was lost ends the gesture it left open before its own begins (DCS-013, DEF-0510, DEF-0556, DEF-0563).
 describe('o dono do ponteiro', () => {
   const pointer = (type: string, target: EventTarget, pointerId: number) =>
     act(() => void target.dispatchEvent(new PointerEvent(type, { pointerId, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: 10, clientY: 10, bubbles: true, cancelable: true })));
@@ -446,7 +446,7 @@ describe('o dono do ponteiro', () => {
   it('o toque de um ponteiro cuja soltura se perdeu encerra o gesto aberto antes de abrir o seu', async () => {
     const { store, stop } = await openPanel();
     try {
-      // the canvas's stage, as the pointer owner reads it (data-canvas-stage): a press on it is a gesture of the machine
+      // the canvas's stage as the pointer owner reads it (data-canvas-stage): a press on it is a gesture of the machine
       const label = document.createElement('div');
       label.setAttribute('data-canvas-stage', '');
       document.body.append(label);

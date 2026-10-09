@@ -913,3 +913,18 @@
   - na Largura, `abc` recusado e depois `120px` grava `120px`; `xyz` recusado e depois `200px` grava `200px`;
   - em `pointer-events`, `xyz` recusado e depois `none` grava `none`; `abc` recusado e depois `visiblePainted` grava `visiblePainted`;
   - nenhum erro de página.
+## DEF-0563 — nenhum detector passa pelo começo do toque do dono do ponteiro: a gravação da digitação e o cancelamento do gesto perdido
+- **Status:** corrigido
+- **Citação:** `src/editor/input/pointer/events.ts:58` `    keepTypingBefore(event.target);` e `src/editor/input/pointer/events.ts:52` `    if (lost || pointerPressing() || ps.spacing !== null || ps.guiding !== null || ps.rotating !== null || ps.resizing !== null || shared.panning !== null || ps.pickingColor !== null || ps.sliding !== null || ps.tooling !== null) p.onCancel();`
+- **Causa:** os detectores sem navegador nunca instalam o dono do ponteiro (`installPointer`). A G2 no começo de um toque e o cancelamento do gesto cuja soltura se perdeu (DEF-0510, DCS-013) só são provados pela função pura da máquina (`step`). Verificação integral, seção 3 (G1/G2 e "Outros"): tirada a linha 58, 89 de 89 testes passam; o `lost ||` tirado não é acusado.
+- **Efeito:** uma regressão nesses dois pontos passa pelos detectores. O efeito `restart` da máquina não é tratado no `run` (`src/editor/input/pointer/effects.ts`), então sem o `lost ||` o gesto aberto fica aberto e o toque novo não abre o seu.
+- **Alcance:** a G2 no começo de todo toque e a DCS-013 no dono do ponteiro.
+- **Arquivos da correção:** `tools/runner/model/drafts.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o grupo `drafts` ganhou o describe "o dono do ponteiro", com o dono instalado na janela do happy-dom e os eventos de ponteiro despachados como o navegador os manda:
+  - "a digitação de um campo é gravada no começo de um toque fora dele": `77px` digitado na largura do painel rápido, e um `pointerdown` no corpo grava a largura antes da soltura;
+  - "o toque de um ponteiro cuja soltura se perdeu encerra o gesto aberto antes de abrir o seu": `down(1)` num elemento de palco (`data-canvas-stage`), `up(2)`, `down(1)`; o gesto aberto depois do segundo toque é outro.
+- **Detector:** mutantes acusados:
+  - M127: sem a gravação no começo do toque;
+  - M128: sem o `lost ||`.
+- **Verificação:** detectores 25 arquivos e 103 testes sem falha; os 128 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0. O commit 3ece4691 entrou sem este registro e com dois comentários longos no teste, que o lint acusava; o commit seguinte os corrige.
