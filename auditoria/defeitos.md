@@ -1010,3 +1010,16 @@
   - M135: o painel Camadas lê o estado do editor inteiro, e o caso do painel o acusa no zoom;
   - M136: `useEditorState` sem assinar a store, e os dois casos o acusam.
 - **Verificação:** detectores 25 arquivos e 110 testes sem falha; os 136 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.
+## DEF-0568 — nenhum detector guarda a DCS-001, a ida e volta do project.json byte a byte
+- **Status:** corrigido
+- **Citação:** `src/core/project/archive.ts:47` `  const document = new TextEncoder().encode(`${JSON.stringify(state.document, null, 2)}\n`);` (o salvar) e `src/core/project/archive.ts:35` `  return { document };` (o fim da leitura de um projeto aberto)
+- **Causa:** a DCS-001 escolheu a comparação byte a byte do JSON salvo depois de salvar, abrir e salvar. Os grupos `storage` e `import` leem projetos, mas nenhum caso salva, abre e salva de novo (verificação integral, seção 3, "Outros").
+- **Efeito:** uma leitura que normalizasse o documento ao abrir (reordenar chaves, acrescentar um campo com o valor padrão) mudaria o arquivo de quem só abriu e salvou, e passaria pelos detectores. Medido com o mutante M137 (a leitura reordena as chaves): os casos de antes passam.
+- **Alcance:** Arquivo › Salvar projeto e Arquivo › Abrir projeto.
+- **Arquivos da correção:** `tools/runner/model/storage.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o grupo `storage` ganhou o describe "a serialização ida e volta (DCS-001)". O projeto é salvo pelo `project.save` da store (o arquivo que a porta de downloads recebe, lido como Arquivo › Abrir o lê), aberto pelo `project.open` numa store nova e salvo de novo, e os dois `project.json` têm de ser iguais. Os documentos passados:
+  - todo documento das 48 fixtures de `manifest/features/fixtures/`, com piso de 20: o arquivo como está, quando já está na versão atual; o documento migrado, quando é de versão anterior;
+  - a fixture aurora depois de seis edições reais, exigindo que cada uma rode: largura, opacidade, classe criada, animação criada, `aria-hidden` ligado e duplicação.
+- **Detector:** o grupo `storage` (MEC-14). Mutante M137 (a leitura do projeto reordena as chaves do documento), acusado pelos dois casos.
+- **Verificação:** detectores 25 arquivos e 112 testes sem falha; os 137 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.

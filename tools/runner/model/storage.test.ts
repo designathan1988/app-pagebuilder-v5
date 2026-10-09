@@ -6,14 +6,19 @@
 // never a half-read document; the chain carries every older version forward to this app's, and refuses a newer one and
 // a step it does not have instead of guessing.
 import fc from 'fast-check';
+import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { DOCUMENT_VERSION, type DocumentJson } from '../../../src/core/document/model.ts';
 import { migrateDocument } from '../../../src/core/document/migrations.ts';
 import { validateDocument } from '../../../src/core/document/validate.ts';
-import { readProject } from '../../../src/core/project/archive.ts';
+import { projectFileText, readProject } from '../../../src/core/project/archive.ts';
+import { manualClock } from '../../../src/core/ports/clock.ts';
+import { sequentialIds } from '../../../src/core/ports/ids.ts';
+import type { CommandId } from '../../../src/generated/ids.ts';
 import { restoredWork, type SavedWork } from '../../../src/editor/persistence/autosave.ts';
-import { MODEL_RULES } from '../../../src/editor/store.ts';
+import { createEditorStore, MODEL_RULES, type EditorStore } from '../../../src/editor/store.ts';
 import { fixture } from './harness.ts';
+import { lexerCss } from '../css-lexer-port.ts';
 
 const at = (version: number): Record<string, unknown> => ({ ...(fixture('aurora') as unknown as Record<string, unknown>), version });
 const problemsOf = (document: DocumentJson): readonly string[] => validateDocument(document, [], MODEL_RULES).map((one) => `${one.path}: ${one.message}`);
@@ -123,5 +128,65 @@ describe('o que é salvo, contra corrupção e migração', () => {
     expect(restoredWork(undefined, MODEL_RULES)).toBeNull();
     expect(restoredWork({ revision: 1, format: DOCUMENT_VERSION, document, selection: ['nó que não existe'] }, MODEL_RULES)?.selection).toEqual([]);
     expect(broken, 'trabalho salvo que derrubou ou restaurou o que o modelo recusa').toEqual([]);
+  });
+});
+
+// DCS-001: the saved JSON is the same byte for byte after save, open and save. Every document fixture of the manifest
+// and the aurora fixture after a run of real edits, saved by File › Save project through the store (the archive the
+// downloads port receives), opened by File › Open project and saved again (DEF-0568: no detector held the rule).
+describe('a serialização ida e volta (DCS-001)', () => {
+  const memory = (): { read(): string | null; write(text: string): void } => ({ read: () => null, write: () => undefined });
+  const storeWith = (document: DocumentJson, delivered: Uint8Array[]): EditorStore =>
+    createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('rt'), restored: { document, selection: [] }, ports: { css: lexerCss, readOnly: () => false, downloads: { deliver: (file: { bytes: Uint8Array }) => void delivered.push(file.bytes) } as never }, freeze: true });
+  const run = (store: EditorStore, id: string, args: unknown) => (store.dispatch as (i: CommandId, a: unknown) => { status: string })(id as CommandId, args);
+  async function savedText(store: EditorStore, delivered: Uint8Array[]): Promise<string> {
+    const before = delivered.length;
+    run(store, 'project.save', {});
+    const bytes = delivered[before];
+    if (bytes === undefined) throw new Error('project.save delivered no archive');
+    return projectFileText(bytes);
+  }
+  async function roundTrip(document: DocumentJson, edit: (store: EditorStore) => void = () => undefined): Promise<string | null> {
+    const delivered: Uint8Array[] = [];
+    const store = storeWith(document, delivered);
+    edit(store);
+    const first = await savedText(store, delivered);
+    const opened = storeWith(fixture('aurora'), delivered);
+    const result = run(opened, 'project.open', { file: first });
+    if (result.status === 'confirm') opened.answer(true);
+    if (opened.getState().refused === true) return `abrir recusou: ${opened.getState().message?.key ?? ''}`;
+    const second = await savedText(opened, delivered);
+    return first === second ? null : `os bytes mudaram (${String(first.length)} e ${String(second.length)} caracteres, primeira diferença no ${String([...first].findIndex((char, i) => char !== second[i]))})`;
+  }
+
+  it('todo documento das fixtures salvo, aberto e salvo de novo dá o mesmo project.json', async () => {
+    const files = fs.readdirSync('manifest/features/fixtures').filter((name) => name.endsWith('.json'));
+    expect(files.length, 'as fixtures do manifesto').toBeGreaterThan(30);
+    const found: string[] = [];
+    let documents = 0;
+    for (const name of files) {
+      const parsed = JSON.parse(fs.readFileSync(`manifest/features/fixtures/${name}`, 'utf8')) as unknown;
+      const read = readProject(parsed, MODEL_RULES);
+      if (!('document' in read)) continue;
+      documents += 1;
+      // a file of this version is the document as it was saved (the reader leaves it as it is); an older one, migrated
+      const current = (parsed as { version?: unknown }).version === DOCUMENT_VERSION;
+      const broken = await roundTrip(current ? (parsed as DocumentJson) : read.document);
+      if (broken !== null) found.push(`${name}: ${broken}`);
+    }
+    expect(documents, 'fixtures que são documentos').toBeGreaterThan(20);
+    expect(found, 'documentos cujo project.json muda na ida e volta').toEqual([]);
+  });
+
+  it('o documento depois de edições reais salvo, aberto e salvo de novo dá o mesmo project.json', async () => {
+    const statuses: string[] = [];
+    const broken = await roundTrip(fixture('aurora'), (store) => {
+      const tree = store.getState().document.pages[0]?.tree;
+      const target = tree?.children[0]?.id;
+      run(store, 'selection.select', { target });
+      for (const [id, args] of [['style.set', { property: 'width', value: '320px' }], ['style.set', { property: 'opacity', value: '0.5' }], ['classes.create', { name: 'ida-volta' }], ['animation.create', { name: 'Entrada' }], ['element.setAttribute', { attribute: 'ariaHidden', value: true }], ['element.duplicate', {}]] as const) statuses.push(`${id}: ${run(store, id, args).status}`);
+    });
+    expect(statuses.filter((one) => !one.endsWith(': done')), 'as edições rodaram').toEqual([]);
+    expect(broken, 'o project.json depois das edições').toBeNull();
   });
 });
