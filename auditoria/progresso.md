@@ -58,8 +58,9 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 - [feito] a porta sem marca do painel rápido e as brechas das regras de lint: DEF-0553 (`builder/interactive-owner` e o inventário: o espalhamento e o comentário) e DEF-0554 (`builder/listener-scope`: `once: false`, o apelido, o fecho de outro nome), M112 a M116.
 - [feito] a tabela de modos que só acusava: DEF-0555 (o comando que abriria um modo recusado espera o fim do gesto), M117, M118.
 - [feito] a máquina e a tabela que ignoravam o toque de outro ponteiro: DEF-0556 (DCS-013 vale para todo segundo `down`), M119, M36 atualizado. O item 1 (defeitos de app restantes) está feito.
+- [feito] o executor do catálogo que contava tempo esgotado como acusado: DEF-0557.
 - [próximo] o que resta, em ordem:
-  2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), lote-navegador (onclick, cores forçadas, IME, cota, LoAF), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), G1/G2 do arnês (events.ts:58, classe/quadro-chave, seleção com o foco no campo), mutants-run contando tempo esgotado, seletor de impacto cego ao manifesto, colagem por clique, fields.test.ts:85, contador de render, __proto__, events.ts:51-52, DEF-0509 2 de 8, DCS-001 sem detector, D-1/DEC-70.
+  2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), lote-navegador (onclick, cores forçadas, IME, cota, LoAF), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), G1/G2 do arnês (events.ts:58, classe/quadro-chave, seleção com o foco no campo), seletor de impacto cego ao manifesto, colagem por clique, fields.test.ts:85, contador de render, __proto__, events.ts:51-52, DEF-0509 2 de 8, DCS-001 sem detector, D-1/DEC-70.
   3. `npm run gen:check` (lê behavior.md como JSON).
   4. registros da seção 4 (progresso, otimizacoes.md, campos de defeitos.md, causas erradas, citações das decisões, DEF-0002, tokens.css).
   5. a suíte de navegador inteira nas duas condições, e o catálogo de mutantes.

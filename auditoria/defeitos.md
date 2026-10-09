@@ -821,3 +821,23 @@
   - os 119 trechos do catálogo no código;
   - `npm run typecheck` e `npm run lint` com saída 0;
   - os testes de navegador de ponteiro (`pointer`, `marquee-select`, `edicao-pendente`, `drag-selection`, `drag-level-keys-escape`, `E2E_WORKERS=2`, prioridade baixa): 39 de 39.
+## DEF-0557 — o executor do catálogo de mutantes conta como acusado um processo que esgotou o tempo ou terminou sem relatório
+- **Status:** corrigido
+- **Citação:** `tools/runner/mutants-run.ts:80` `      resolve({ mutant: id, exit, ms: Date.now() - start, applied, detected: exit !== 0, rule: exit === 0 ? '' : firstRule(report, id, mutant?.detectors ?? ALL_DETECTORS) });`
+- **Causa:** `detected` é qualquer saída diferente de zero do processo do Vitest. O processo morto pelo tempo de 300 s (`child.kill()`, saída `null`) e o que termina com erro antes de rodar teste algum contam como "acusado" (verificação integral, seção 3, "Outros").
+- **Efeito:** um mutante que trava um detector, ou cujo processo falha antes do teste, entra na taxa de acusação sem que nenhum detector o tenha acusado. Medido nos relatórios gravados em `.cache/mutants/`: hoje nenhum mutante está nesse caso, e nenhum chegou aos 300 s no último resumo.
+- **Alcance:** a taxa de acusação do catálogo (MEC-02).
+- **Arquivos da correção:** `tools/runner/mutants-run.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** `tools/runner/mutants-run.ts`:
+  - um mutante é acusado só quando o relatório JSON do Vitest nomeia pelo menos um teste ou arquivo de teste que falhou (`failuresOf`: `numFailedTests` mais `numFailedTestSuites`);
+  - o processo morto pelo limite sai com o veredito "TEMPO ESGOTADO" (vem antes de "TROCA NÃO CARREGADA": um processo morto cedo não chegou a carregar o trecho);
+  - o que termina com erro sem teste que falhou sai "FALHOU SEM TESTE";
+  - os dois vereditos reprovam a rodada, como o sobrevivente;
+  - a opção `--limit` dá o tempo de cada mutante (300 s por omissão; a linha de base fica sempre com 300 s).
+- **Detector:** o executor não é carregado por nenhum grupo de detectores, então não cabe mutante no catálogo. A prova é a rodada do mesmo mutante (M110, grupo `fields`, 5,5 s) com um limite de 3.500 ms, que mata o processo depois de o trecho carregar:
+  - o executor de antes (`git show HEAD:tools/runner/mutants-run.ts` com o limite trocado) dá `exit null`, `aplicado true`, veredito "acusado";
+  - o de agora dá `exit null`, "TEMPO ESGOTADO" e saída 1.
+
+  Sem limite, `--only M110,M36` dá 2 acusados e saída 0.
+- **Verificação:** detectores 25 arquivos e 99 testes sem falha; os 119 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0.

@@ -2,8 +2,9 @@
 // mutant runs in a Vitest process of its own (the swap happens when a module loads, so one process holds one mutant),
 // four at a time and at a low priority, over the detectors that reach it. It measures the rate of mutants detected and
 // fails when the baseline fails, when a mutant's passage did not load (no detector loaded its file, or the passage is
-// gone from the file), or when a mutant survives with no reason written in the catalogue.
-// Usage: node tools/runner/mutants-run.ts [--only M01,M02] [--detector history]
+// gone from the file), when a mutant survives with no reason written in the catalogue, or when its run reached the time
+// limit or ended with no failed test in its report (no detector accused it: DEF-0557).
+// Usage: node tools/runner/mutants-run.ts [--only M01,M02] [--detector history] [--limit 300000]
 // The summary (at most 30 lines) goes to the terminal; the whole of it to .cache/mutants/summary.json.
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -18,6 +19,10 @@ const option = (name: string): string | null => {
 };
 const only = option('--only')?.split(',') ?? null;
 const detector = option('--detector') as Detector | null;
+// the time a mutant's run may take, in ms (300 s unless --limit says otherwise); the baseline, which runs every group,
+// always has 300 s
+const BASELINE_LIMIT = 300_000;
+const LIMIT = Number(option('--limit') ?? String(BASELINE_LIMIT));
 const chosen = MUTANTS.filter((m) => (only === null || only.includes(m.id)) && (detector === null || m.detectors.includes(detector)));
 
 interface Run {
@@ -26,7 +31,17 @@ interface Run {
   readonly ms: number;
   readonly applied: boolean;
   readonly detected: boolean;
+  // the process was killed at the time limit, or ended with no report of a test that failed: no detector accused it
+  readonly timedOut: boolean;
+  readonly unreported: boolean;
   readonly rule: string;
+}
+
+// how many tests and test files failed, from the run's JSON report; null when there is no report to read
+function failuresOf(report: string): number | null {
+  if (!fs.existsSync(report)) return null;
+  const json = JSON.parse(fs.readFileSync(report, 'utf8')) as { numFailedTests?: number; numFailedTestSuites?: number };
+  return (json.numFailedTests ?? 0) + (json.numFailedTestSuites ?? 0);
 }
 
 const testFiles = (detectors: readonly Detector[]): string[] => detectors.map((d) => `tools/runner/model/${d}.test.ts`);
@@ -73,11 +88,20 @@ function run(mutant: Mutant | null): Promise<Run> {
       stdio: 'ignore',
     });
     if (child.pid !== undefined) os.setPriority(child.pid, os.constants.priority.PRIORITY_BELOW_NORMAL);
-    const timer = setTimeout(() => child.kill(), 300_000);
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.kill();
+    }, mutant === null ? BASELINE_LIMIT : LIMIT);
     child.on('exit', (exit) => {
       clearTimeout(timer);
       const applied = mutant === null || fs.existsSync(`${OUT}/${mutant.id}.applied`);
-      resolve({ mutant: id, exit, ms: Date.now() - start, applied, detected: exit !== 0, rule: exit === 0 ? '' : firstRule(report, id, mutant?.detectors ?? ALL_DETECTORS) });
+      // accused only by a detector that failed: a test or a test file the report names as failed (DEF-0557: any exit
+      // but zero counted, the time limit's kill included)
+      const failures = failuresOf(report);
+      const unreported = !timedOut && exit !== 0 && (failures === null || failures === 0);
+      const detected = !timedOut && exit !== 0 && failures !== null && failures > 0;
+      resolve({ mutant: id, exit, ms: Date.now() - start, applied, detected, timedOut, unreported, rule: exit === 0 ? '' : timedOut ? `tempo esgotado (${mutant === null ? BASELINE_LIMIT : LIMIT} ms)` : firstRule(report, id, mutant?.detectors ?? ALL_DETECTORS) });
     });
   });
 }
@@ -99,19 +123,19 @@ const started = Date.now();
 const baseline = await run(null);
 const lines: string[] = [];
 let failed = false;
-if (baseline.exit !== 0) {
+if (baseline.exit !== 0 || baseline.timedOut) {
   lines.push(`linha de base FALHOU (${baseline.ms} ms): ${baseline.rule}`);
   failed = true;
 }
 const runs = failed ? [] : await pool(chosen, 4, run);
 const results = runs.map((r) => {
   const mutant = MUTANTS.find((m) => m.id === r.mutant) as Mutant;
-  const verdict = !r.applied ? 'TROCA NÃO CARREGADA' : r.detected ? 'acusado' : mutant.equivalent !== undefined ? 'sobrevive (equivalente)' : 'SOBREVIVEU';
+  const verdict = r.timedOut ? 'TEMPO ESGOTADO' : !r.applied ? 'TROCA NÃO CARREGADA' : r.unreported ? 'FALHOU SEM TESTE' : r.detected ? 'acusado' : mutant.equivalent !== undefined ? 'sobrevive (equivalente)' : 'SOBREVIVEU';
   return { ...r, verdict, breaks: mutant.breaks, source: mutant.source, detectors: mutant.detectors, equivalent: mutant.equivalent ?? null };
 });
 const detected = results.filter((r) => r.verdict === 'acusado').length;
 const equivalent = results.filter((r) => r.verdict === 'sobrevive (equivalente)').length;
-const bad = results.filter((r) => r.verdict === 'SOBREVIVEU' || r.verdict === 'TROCA NÃO CARREGADA');
+const bad = results.filter((r) => r.verdict === 'SOBREVIVEU' || r.verdict === 'TROCA NÃO CARREGADA' || r.verdict === 'TEMPO ESGOTADO' || r.verdict === 'FALHOU SEM TESTE');
 if (bad.length > 0) failed = true;
 const total = Date.now() - started;
 fs.writeFileSync(`${OUT}/summary.json`, `${JSON.stringify({ baseline, results, detected, equivalent, total }, null, 2)}\n`);
