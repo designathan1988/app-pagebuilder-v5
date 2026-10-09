@@ -61,6 +61,7 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Falhas de aceitação que precisa acusar (mutantes do catálogo):** `writeNumber` deixando passar `-0`; a vírgula decimal deixando de ser lida como ponto; uma unidade oferecida que o codec não lê; um passo de campo com Shift multiplicando por 100; DEF-0509 (um codec declarado e não registrado).
 - **Fora deste mecanismo, pendentes:** a roda de rolagem somando o passo antes de enviar a intenção, o Esc do campo gravando o rascunho e a volta da store sobrescrevendo um rascunho pendente só aparecem no componente `NumberField` (`src/editor/shell/field.tsx`); ficam para um contrato de componente em happy-dom.
 - **Tempo medido:** a medir.
+- **Acréscimo (2026-10-09, DEF-0552):** o caso "um campo vazio parte do valor do elemento no passo e na troca de unidade" (G3: o menu de unidade manda o texto do campo e o `field.setUnit` parte de `startOf`); mutante M110, acusado.
 
 ## MEC-06 — mapa executável: tabela da máquina de gestos
 - **Capacidade:** C3 (mapa executável de comportamento), opção A; a parte das máquinas de modos (C6) entra no MEC-08.

@@ -412,7 +412,8 @@ function UnitMenu({ entry, property, shown, input, ready, suggestions }: {
   }, [open]);
   const choose = (unit: string) => {
     layer.close();
-    (store.dispatch as Dispatch)(entry.command.id, { ...entry.door.args, property, value: input.current?.value || shown, unit });
+    // the text the field holds, empty included: the command decides what an empty field starts from (rule G3)
+    (store.dispatch as Dispatch)(entry.command.id, { ...entry.door.args, property, value: input.current?.value ?? '', unit });
     input.current?.focus();
   };
   return (

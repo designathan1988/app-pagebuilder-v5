@@ -108,6 +108,24 @@ describe('os contratos dos campos de valor', () => {
     }
   });
 
+  // Every door of a field hands the text the field holds, empty included, and the command decides what an empty field
+  // starts from (startOf: rule G3, DEF-0552): the step and the unit from the same value of the element.
+  it('um campo vazio parte do valor do elemento no passo e na troca de unidade', () => {
+    const found: string[] = [];
+    for (const [command, args, expected] of [['field.step', { direction: 'up', size: 'step' }, `${writeNumber(96 + STEP_FACTS.step)}px`], ['field.setUnit', { unit: 'pt' }, '72pt']] as const) {
+      const store = storeOn();
+      const target = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type);
+      const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
+      dispatch('selection.select' as CommandId, { target: target?.id });
+      dispatch('style.set' as CommandId, { property: 'width', value: '96px' });
+      const result = dispatch(command as CommandId, { property: 'width', value: '', ...args });
+      const node = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === target?.id);
+      const written = node === undefined ? null : storedValue(node, 'width', MODEL_RULES);
+      if (written !== expected) found.push(`${command} com o campo vazio: ${result.status}, width ${String(written)} (esperado ${expected})`);
+    }
+    expect(found, 'comandos de campo que não partem do valor do elemento').toEqual([]);
+  });
+
   it('toda recusa dos comandos de campo e de estilo tem palavras nos dois catálogos', () => {
     const flat = (o: unknown, prefix = ''): string[] => Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => (typeof v === 'string' ? [`${prefix}${k}`] : flat(v, `${prefix}${k}.`)));
     const pt = new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/pt-BR.json', 'utf8'))));

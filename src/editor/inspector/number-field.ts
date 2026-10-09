@@ -21,9 +21,9 @@
 // step, any other by the step itself; a field that holds no number to step (a keyword, calc()) says so
 // (status.value.notSteppable) and writes nothing. An empty field steps from the value it shows (its placeholder): the
 // value the elements hold at the layer written, else the one the page computes for them, when they share it; nothing
-// when they do not, or when the page draws none. The rule lives here, once, for every door of the step and the scrub
-// (the step buttons, the arrows, the wheel, the label): each door hands the text the field holds, typed or empty
-// (CLAUDE.md, rule G3).
+// when they do not, or when the page draws none. The rule lives here, once, for every door of the step, the scrub and
+// the unit (the step buttons, the arrows, the wheel, the label, the unit menu): each door hands the text the field
+// holds, typed or empty (CLAUDE.md, rule G3).
 import { message, registerHandler, type HandlerContext, type Outcome } from '../../core/commands/registry.ts';
 import { locate, type NodeId } from '../../core/document/model.ts';
 import { storedValue } from '../../core/style/stored.ts';
@@ -94,7 +94,8 @@ export const setFieldUnit = registerHandler('field.setUnit', (context, { propert
   const chosen = readValue(context, property, unit);
   // a keyword of the property (auto, min-content…) is its own value
   if (chosen?.value.kind === 'keyword') return writeStyle(context, property, chosen.css);
-  const read = readValue(context, property, value);
+  // an empty field converts the value it shows, by the same rule as a step (startOf: DEF-0552, rule G3)
+  const read = readValue(context, property, startOf(context, property, value));
   if (read === null || read.value.kind !== 'length') return refused;
   const converted = measuredConversion(context, property, read.value, unit);
   const css = converted === null ? null : writeValue(property, { kind: 'length', number: converted, unit }, context.rules);
