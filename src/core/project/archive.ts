@@ -7,6 +7,7 @@
 import { message, registerHandler, type Message } from '../commands/registry.ts';
 import { isEmptyProject, type DocumentJson } from '../document/model.ts';
 import { migrateDocument } from '../document/migrations.ts';
+import { MAX_DOCUMENT_NESTING, MAX_TREE_DEPTH, nestsDeeperThan } from '../document/shape.ts';
 import { validateDocument, type ModelRules } from '../document/validate.ts';
 import { ArchiveError, archiveReason, isZip, unzip, zip } from './zip.ts';
 
@@ -16,6 +17,8 @@ const invalid = (reason: string | Message): { readonly refused: Message } => ({ 
 // version, else the refusal naming why (a newer version, or what is wrong with it). A file of an older version is
 // carried forward first (document/migrations.ts, the one owner of the format's versions).
 export function readProject(parsed: unknown, rules: ModelRules): { readonly document: DocumentJson } | { readonly refused: Message } {
+  // a document deeper than any page is refused before anything walks it by recursion (DEF-0543)
+  if (nestsDeeperThan(parsed, MAX_DOCUMENT_NESTING)) return invalid(message('status.open.tooDeep', { depth: MAX_TREE_DEPTH }));
   const migrated = migrateDocument(parsed);
   if (!migrated.ok) {
     if (migrated.reason === 'newer') return { refused: message('status.open.newerVersion', { version: migrated.version ?? 0 }) };

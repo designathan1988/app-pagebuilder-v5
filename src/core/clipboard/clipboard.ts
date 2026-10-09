@@ -22,6 +22,7 @@
 //    the target's styles with them, one undo step, through the same holders every style write uses (styleHolders of
 //    core/style/set.ts), so the class that is the style target receives them and an instance's part writes into its
 //    component. Text, children and attributes stay (spec copy-paste-styles).
+import { treeShapeProblem } from '../document/shape.ts';
 import type { ClipboardContent, ClipboardNode, NodeId } from '../../generated/commands.ts';
 import type { ElementType, MessageId } from '../../generated/ids.ts';
 import { message, registerHandler, type HandlerContext, type Message, type Outcome } from '../commands/registry.ts';
@@ -120,7 +121,10 @@ function copiedNodes(text: string | null): Copied[] | null {
   if (text === null) return null;
   try {
     const parsed = JSON.parse(text) as { format?: unknown; nodes?: unknown };
-    return parsed.format === ELEMENTS_FORMAT && Array.isArray(parsed.nodes) && parsed.nodes.length > 0 ? (parsed.nodes as Copied[]) : null;
+    if (parsed.format !== ELEMENTS_FORMAT || !Array.isArray(parsed.nodes) || parsed.nodes.length === 0) return null;
+    // the app's format with nodes that are no tree of nodes (a text written by hand, another tool): no elements to
+    // paste, never a copy walked into a throw (DEF-0544)
+    return (parsed.nodes as unknown[]).every((node, index) => treeShapeProblem(node, String(index), false) === null) ? (parsed.nodes as Copied[]) : null;
   } catch {
     return null;
   }

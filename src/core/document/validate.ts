@@ -15,6 +15,7 @@ import type { ElementType, MessageId } from '../../generated/ids.ts';
 import { boxSizeOf, outputModelFromManifest, type OutputModel } from '../render/output.ts';
 import type { Attribute, Coupling, ElementsFile, GeneratedHtml, PropertiesFile, TemplateNode } from '../../manifest/schema.ts';
 import { contentModelFrom, nestingProblems, type ContentModel } from '../elements/content-model.ts';
+import { treeShapeProblem } from './shape.ts';
 import { orphanReferences, setReferenceAttributes } from '../elements/references.ts';
 import { addressAllowed } from '../elements/address.ts';
 import { projectPathProblem } from '../files/path-rule.ts';
@@ -350,21 +351,26 @@ export function validateDocument(doc: DocumentJson, selection: Selection, manife
   // elements, the references), and one of them would throw on a page that is not a page, or on a node that is not a
   // node, instead of reporting it (DEF-0517). Such a document is refused with its shape, and nothing else is read from
   // it; the shape the readers below walk is a node's id, its attributes and its children.
+  // The trees of the components are read the same way (DEF-0544), and the shape is read without recursion, within the
+  // deepest a page stands (shape.ts, DEF-0543).
   const notATree: Invalid[] = [];
   const nodeShaped = (value: unknown, at: string): void => {
-    if (!isRecord(value) || typeof value.id !== 'string' || !isRecord(value.attributes) || !Array.isArray(value.children)) {
-      notATree.push({ path: at, message: 'a page’s tree is a tree of nodes, each with its id, its attributes and its children' });
-      return;
-    }
-    value.children.forEach((child, i) => nodeShaped(child, `${at}/children/${i}`));
+    const problem = treeShapeProblem(value, at);
+    if (problem !== null) notATree.push(problem);
   };
   if (Array.isArray(doc.pages)) {
     doc.pages.forEach((page, i) => {
       if (isRecord(page) && isRecord(page.tree)) nodeShaped(page.tree, `/pages/${i}/tree`);
       else notATree.push({ path: `/pages/${i}/tree`, message: 'a page has a tree' });
     });
-    if (notATree.length > 0) return notATree;
   }
+  if (Array.isArray(doc.components)) {
+    (doc.components as readonly unknown[]).forEach((component, c) => {
+      if (isRecord(component) && isRecord(component.tree)) nodeShaped(component.tree, `/components/${c}/tree`);
+      else notATree.push({ path: `/components/${c}/tree`, message: 'a component has a tree' });
+    });
+  }
+  if (notATree.length > 0) return notATree;
   if (doc.language !== undefined && (typeof doc.language !== 'string' || !languageTagAllowed(doc.language))) bad('/language', 'invalid project language');
   if (doc.codeLanguage !== undefined && (typeof doc.codeLanguage !== 'string' || !languageTagAllowed(doc.codeLanguage))) bad('/codeLanguage', 'invalid code language');
   if (doc.version !== DOCUMENT_VERSION) bad('/version', `the document version is ${DOCUMENT_VERSION}`);

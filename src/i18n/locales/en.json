@@ -1857,6 +1857,7 @@
   "status.needsSingleSelection": "This needs a single selection.",
   "status.nest.noPrevious": "There is no previous element that can hold it.",
   "status.open.invalidArchive": "This file is not a valid project archive: {reason}",
+  "status.open.tooDeep": "it holds elements nested deeper than {depth} levels, deeper than any page",
   "status.open.newerVersion": "This project uses format version {version}, which this app cannot read.",
   "status.open.opened": "Opened the project.",
   "status.page.settingInvalid": "{setting} cannot be {value}.",

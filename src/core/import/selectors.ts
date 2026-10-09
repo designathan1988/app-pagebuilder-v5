@@ -238,8 +238,12 @@ export function splitSelectorList(text: string): string[] {
 }
 
 const higher = (a: Specificity, b: Specificity): Specificity => (compareSpecificity(a, b) >= 0 ? a : b);
-// the most specific of a selector list's selectors
-const mostSpecific = (list: string): Specificity => splitSelectorList(list).map(specificityOf).reduce(higher, [0, 0, 0]);
+// the most specific of a selector list's selectors, so many functional pseudo-classes deep
+const mostSpecific = (list: string, depth: number): Specificity => splitSelectorList(list).map((one) => specificityOf(one, depth)).reduce(higher, [0, 0, 0]);
+// How deep the arguments of :is(), :not(), :has() and :nth-child(... of S) are counted: no selector a person writes
+// nests them this deep, and a deeper one (a hostile page, a captured stylesheet) is counted no further instead of
+// exhausting the stack (DEF-0545; the app's own bound: Selectors 4 sets none)
+const MAX_SELECTOR_NESTING = 64;
 
 // How two specificities rank: positive when the first wins.
 export function compareSpecificity(a: Specificity, b: Specificity): number {
@@ -257,7 +261,7 @@ const IDENT = /^(?:\\.|[\w-]|\P{ASCII})+/u;
 // :has() count their most specific argument; :nth-child() and :nth-last-child() count one pseudo-class and the most
 // specific selector of their "of S". readSelector's own count is the same on the selectors it reads; this one counts
 // every selector, for the canvas, which asks the browser which rules match an element (canvas/coordinates.ts).
-export function specificityOf(selector: string): Specificity {
+export function specificityOf(selector: string, depth = 0): Specificity {
   let ids = 0;
   let others = 0;
   let types = 0;
@@ -303,11 +307,13 @@ export function specificityOf(selector: string): Specificity {
       if (args !== null) at = args.end;
       if (element || LEGACY_ELEMENTS.has(lowered)) types += 1;
       else if (lowered === 'where') continue;
-      else if (BY_ARGUMENT.has(lowered)) add(mostSpecific(args?.text ?? ''));
+      else if (BY_ARGUMENT.has(lowered)) {
+        if (depth < MAX_SELECTOR_NESTING) add(mostSpecific(args?.text ?? '', depth + 1));
+      }
       else {
         others += 1;
         const of = (lowered === 'nth-child' || lowered === 'nth-last-child') && args !== null ? /\sof\s/iu.exec(args.text) : null;
-        if (of !== null && args !== null) add(mostSpecific(args.text.slice(of.index + of[0].length)));
+        if (of !== null && args !== null && depth < MAX_SELECTOR_NESTING) add(mostSpecific(args.text.slice(of.index + of[0].length), depth + 1));
       }
     } else if (char === '*' || char === '|' || char === '&') {
       at += 1;

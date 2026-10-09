@@ -32,7 +32,10 @@ function widestCapture(page: unknown): unknown {
   if (page === null || typeof page !== 'object' || !('capture' in page)) return page;
   const capture = (page as { capture: unknown }).capture as { viewports?: unknown; resourceProblems?: unknown } | null;
   if (capture === null || typeof capture !== 'object' || !Array.isArray(capture.viewports)) return page;
-  const widest = [...(capture.viewports as { width: number; root: unknown }[])].sort((a, b) => b.width - a.width)[0];
+  // only the snapshots that are one (an object with its width): a file written by hand may hold anything there, and
+  // the validator refuses the capture it leaves (DEF-0544)
+  const snapshots = (capture.viewports as unknown[]).filter((one): one is { width: number; root: unknown } => one !== null && typeof one === 'object' && typeof (one as { width?: unknown }).width === 'number');
+  const widest = [...snapshots].sort((a, b) => b.width - a.width)[0];
   if (widest === undefined) return page;
   return { ...page, capture: { widths: [widest.width], root: widest.root, ...(capture.resourceProblems === undefined ? {} : { resourceProblems: capture.resourceProblems }) } };
 }

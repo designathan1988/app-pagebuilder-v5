@@ -4893,6 +4893,7 @@ export const MESSAGE_IDS = [
   "status.needsSingleSelection",
   "status.nest.noPrevious",
   "status.open.invalidArchive",
+  "status.open.tooDeep",
   "status.open.newerVersion",
   "status.open.opened",
   "status.page.settingInvalid",

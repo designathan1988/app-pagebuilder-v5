@@ -1857,6 +1857,7 @@
   "status.needsSingleSelection": "Isto exige uma seleção única.",
   "status.nest.noPrevious": "Não há elemento anterior que possa contê-lo.",
   "status.open.invalidArchive": "Este arquivo não é um arquivo de projeto válido: {reason}",
+  "status.open.tooDeep": "ele tem elementos aninhados em mais de {depth} níveis, mais fundo que qualquer página",
   "status.open.newerVersion": "Este projeto usa a versão de formato {version}, que este aplicativo não consegue ler.",
   "status.open.opened": "Projeto aberto.",
   "status.page.settingInvalid": "{setting} não aceita {value}.",

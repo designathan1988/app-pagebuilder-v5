@@ -115,6 +115,10 @@ function selectorsIn(prelude: string): string[] {
 // The rules of a stylesheet's text, in order, each with the media conditions it sits in and its line. A block at the
 // top level is a rule; `@media` recurses with its condition added; every other at-rule is collected as one the caller
 // cannot map (a nested `@media` counts as unmappable too: two conditions at once are no breakpoint).
+// How deep @media blocks are read: no stylesheet a person writes nests them this deep, and a rule inside two at once is
+// no breakpoint already (import.ts mediaPlace); the app's own bound (CSS sets none)
+const MAX_MEDIA_NESTING = 64;
+
 export function readStylesheet(source: string): CssSheet {
   const text = withoutComments(source);
   const rules: CssRule[] = [];
@@ -146,7 +150,9 @@ export function readStylesheet(source: string): CssSheet {
         if (name === 'media') {
           const condition = prelude.slice('@media'.length).trim();
           if (media.length > 0) atRules.push({ name, line: lineAt(text, pieceAt) });
-          walk(open + 1, end, [...media, condition]);
+          // its rules are read down to MAX_MEDIA_NESTING conditions; a block nested deeper is the one at-rule it
+          // already counts as, instead of a descent that exhausts the stack (DEF-0545)
+          if (media.length < MAX_MEDIA_NESTING) walk(open + 1, end, [...media, condition]);
         } else {
           atRules.push({ name, line: lineAt(text, pieceAt) });
         }

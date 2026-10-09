@@ -13,6 +13,13 @@ import { createEditorStore, MODEL_RULES } from '../../../src/editor/store.ts';
 import { translate } from '../../../src/i18n/index.ts';
 import { lexerCss } from '../css-lexer-port.ts';
 import { fixture } from './harness.ts';
+import { readProject } from '../../../src/core/project/archive.ts';
+import { capturedProblems } from '../../../src/core/document/captured.ts';
+import { validateDocument } from '../../../src/core/document/validate.ts';
+import { readStylesheet } from '../../../src/core/import/stylesheet.ts';
+import { specificityOf } from '../../../src/core/import/selectors.ts';
+import { workOut } from '../../../src/core/style/codecs.ts';
+import type { CommandId } from '../../../src/generated/ids.ts';
 
 // the room one read of one text may take: a linear reader takes microseconds, an exponential one takes minutes, and a
 // recursion that overflows the stack throws instead of taking time at all
@@ -123,5 +130,33 @@ describe('um texto hostil contra os leitores que o leem', () => {
     expect((({}) as Record<string, unknown>).polluted).toBeUndefined();
     expect(Object.getOwnPropertyNames(Object.prototype).sort().join(',')).toBe(before);
     expect(applied.document).toBeTruthy();
+  });
+
+  // What comes from outside and is deeper or of another shape than any page (DEF-0543, DEF-0544, DEF-0545): refused, or
+  // read as far as it goes, never a throw.
+  it('uma árvore funda, um componente sem filhos, uma captura antiga malformada, uma colagem malformada e um CSS aninhado fundo são recusados ou lidos, nunca derrubam o leitor', () => {
+    const chain = (depth: number): Record<string, unknown> => {
+      let node: Record<string, unknown> = { id: 'n0', type: 'div', name: 'n0', tag: 'div', attributes: {}, classes: [], styles: {}, text: null, children: [] };
+      for (let i = 1; i < depth; i += 1) node = { id: `n${String(i)}`, type: 'div', name: `n${String(i)}`, tag: 'div', attributes: {}, classes: [], styles: {}, text: null, children: [node] };
+      return node;
+    };
+    const deep = { version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: { id: 'root', type: 'page', name: 'Page', tag: 'body', attributes: {}, classes: [], styles: {}, text: null, children: [chain(4000)] } }] };
+    const read = readProject(deep, MODEL_RULES);
+    expect('refused' in read && read.refused.params?.reason, 'um projeto de 4.000 níveis é recusado pela profundidade').toMatchObject({ key: 'status.open.tooDeep' });
+    let captured: unknown = { kind: 'text', id: 't', value: 'x' };
+    for (let i = 0; i < 10_000; i += 1) captured = { kind: 'element', id: `c${String(i)}`, namespace: 'http://www.w3.org/1999/xhtml', tag: 'div', attributes: [], children: [captured] };
+    expect(capturedProblems({ widths: [1280], root: captured }).length, 'uma captura de 10.000 níveis é recusada').toBeGreaterThan(0);
+    const page = fixture('aurora');
+    const withComponent = { ...page, components: [{ name: 'Cartão', tree: { id: 'k', type: 'div', name: 'k', tag: 'div', attributes: {}, classes: [], styles: {}, text: null } }] };
+    expect(validateDocument(withComponent as never, [], MODEL_RULES).some((problem) => problem.path.startsWith('/components/0/tree')), 'um componente cuja árvore não tem filhos é recusado').toBe(true);
+    const oldCapture = { version: 3, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: { id: 'root', type: 'page', name: 'Page', tag: 'body', attributes: {}, classes: [], styles: {}, text: null, children: [] }, capture: { viewports: [null] } }] };
+    expect('refused' in readProject(oldCapture, MODEL_RULES), 'um projeto de versão 3 com uma captura nula é recusado').toBe(true);
+    const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('r'), restored: { document: fixture('aurora'), selection: ['n-title'] }, ports: { readOnly: () => false }, freeze: true });
+    const pasted = (store.dispatch as (id: CommandId, args: unknown) => { status: string })('clipboard.paste' as CommandId, { clipboard: { status: 'read', html: null, text: JSON.stringify({ format: 'builder/elements', nodes: [{ id: 'x', name: 'X' }] }) } });
+    expect(['done', 'refused'], 'a colagem de elementos malformados no formato do app termina').toContain(pasted.status);
+    expect(() => readStylesheet(`${'@media (min-width: 1px) {'.repeat(5000)} a { color: red } ${'}'.repeat(5000)}`), 'um CSS com 5.000 @media aninhados é lido').not.toThrow();
+    // the unary signs of a sum are bounded as its parentheses are (DEF-0516: only the parentheses had a mutant)
+    expect(workOut(`${'-'.repeat(10_000)}1`), 'uma conta com 10.000 sinais unários é recusada').toBeNull();
+    expect(() => specificityOf(`${':is('.repeat(5000)}a${')'.repeat(5000)}`), 'um seletor com 5.000 :is( aninhados é contado').not.toThrow();
   });
 });

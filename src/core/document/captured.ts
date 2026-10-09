@@ -3,6 +3,7 @@
 // that differs at a width says so in `at` (absent there, or its attributes, text or state there). Tag and attribute
 // namespaces are browser values, not inferred from names. An open shadow root is kept as the host's `shadow`. The
 // editor's browser port parses HTML only for legacy packages and inserted markup; this model is plain JSON.
+import { MAX_DOCUMENT_NESTING, MAX_TREE_DEPTH, nestsDeeperThan } from './shape.ts';
 import type { IdGenerator } from '../ports/ids.ts';
 import { browserPorts } from '../ports/browser.ts';
 import { rewriteSrcsetUrls } from '../files/srcset.ts';
@@ -129,6 +130,11 @@ export function capturedProblems(value: unknown): CapturedProblem[] {
   };
   if (!isRecord(value) || !Array.isArray(value.widths) || value.widths.length === 0 || !isRecord(value.root)) {
     bad('', 'a captured page has its observed widths and one root element');
+    return problems;
+  }
+  // a tree deeper than any page is refused before the readers below walk it by recursion (DEF-0543)
+  if (nestsDeeperThan(value.root, MAX_DOCUMENT_NESTING)) {
+    bad('/root', `a captured tree stands no deeper than ${String(MAX_TREE_DEPTH)} elements`);
     return problems;
   }
   if (value.resourceProblems !== undefined && (!Array.isArray(value.resourceProblems) || value.resourceProblems.some((one: unknown) =>
