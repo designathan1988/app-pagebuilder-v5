@@ -302,18 +302,20 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
   // so a burst merges only when no other command came in between (spec absolute-nudge)
   let lastMergeable: string | null = null;
 
-  // a committed state whose selection changed, with the editor state that follows it
-  const followSelection = (before: StoreState<Ui>, next: StoreState<Ui>): StoreState<Ui> => {
-    if (options.followSelection === undefined || deepEqual(before.selection, next.selection)) return next;
+  // a committed state whose selection changed, with the editor state that follows it; `always`: another document came
+  // (a project opened, a step undone or redone), and what follows the selection is read again from it even when the
+  // selection stayed the same (an empty one), so nothing of the document before lingers (DEF-0542)
+  const followSelection = (before: StoreState<Ui>, next: StoreState<Ui>, always = false): StoreState<Ui> => {
+    if (options.followSelection === undefined || (!always && deepEqual(before.selection, next.selection))) return next;
     const { ui, message: said } = options.followSelection(next);
     if (ui === next.ui && said === undefined) return next;
     const followed = { ...next, ui, ...(said === undefined ? {} : { message: said }) };
     return options.freeze ? deepFreeze(followed) : followed;
   };
 
-  const publish = (committed: StoreState<Ui>, patches: readonly Patch[] = [], follow = true) => {
+  const publish = (committed: StoreState<Ui>, patches: readonly Patch[] = [], follow = true, always = false) => {
     const before = state;
-    const next = follow ? followSelection(before, committed) : committed;
+    const next = follow ? followSelection(before, committed, always) : committed;
     const breaches = options.invariants?.(before, next, patches) ?? [];
     if (breaches.length > 0) {
       reportError('a publication broke a rule of the history', breaches.join('\n'));
@@ -487,13 +489,13 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       const action = tx.message ?? LAST_CHANGE;
       // the context the change was made in comes back with it (DCS-009), so the editor shows what the step changed
       const ui = tx.context !== undefined && options.restoreContext !== undefined ? options.restoreContext({ ...state, ...restored }, tx.context) : state.ui;
-      publish(commit({ ...state, ...restored, ui, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches);
+      publish(commit({ ...state, ...restored, ui, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches, true, true);
       return { status: 'done', changed: true };
     }
     if (outcome.kind === 'load') {
       if (gesture) throw new Error(`${id} cannot run inside a gesture`);
       const loaded = commit({ ...state, document: outcome.document, selection: [], history: EMPTY_HISTORY, message: outcome.message ?? (state.refused === true ? null : state.message), refusal: null, refused: false }, id);
-      publish(loaded, [{ op: 'replace', path: ['pages'], value: outcome.document.pages }]);
+      publish(loaded, [{ op: 'replace', path: ['pages'], value: outcome.document.pages }], true, true);
       return { status: 'done', changed: true };
     }
 

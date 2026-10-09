@@ -40,6 +40,7 @@ import { historyBreaches } from '../core/history/invariants.ts';
 import { restoreEditContext } from './view/edit-context.ts';
 import { reportError } from '../core/incidents.ts';
 import { modeBreaches, modesOf } from './input/modes.ts';
+import { capturedFollowsSelection } from './capture/selection.ts';
 
 export type EditorStore = Store<EditorUi>;
 export type EditorState = StoreState<EditorUi>;
@@ -156,7 +157,9 @@ export function createEditorStore(options: EditorStoreOptions = {}): EditorStore
     // edit and a rename end once their node is not the selection
     // alone, and when an undoable command runs
     followSelection: (state) => {
-      const opened = { ...state, ui: pageFollowsSelection(state) };
+      // a captured element's selection goes with any other selection, or with the document that held it (DEF-0542)
+      const captured = { ...state, ui: capturedFollowsSelection(state) };
+      const opened = { ...captured, ui: pageFollowsSelection(captured) };
       const revealed = { ...opened, ui: targetOffSelection({ ...opened, ui: revealSelection(opened) }) };
       // the style state goes back to Base when the selection holds an element it does not stand on (AUD-03)
       return styleStateFollows({ ...revealed, ui: endRenameOffSelection({ ...revealed, ui: endOffSelection(revealed) }) });
