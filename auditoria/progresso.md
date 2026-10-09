@@ -6,28 +6,31 @@ Este arquivo é a memória do trabalho e a única fonte para retomar. A seção 
 
 **Decisão do dono (2026-10-08), registrada em `deepseek-tarefa.md`:** a manutenção dos registros de `auditoria/` — citações, inventário, fluxos, matriz, pares, `check.mjs` — para. Não se rodam mais `recitar.mjs`, `inventariar.mjs`, `matriz.mjs`, `renumerar.mjs`, `esqueletos.mjs` nem `check.mjs`; não se atualizam citações, fluxos, pares, `estado.md`, `entradas.md` nem `inventario-arquivos.md`. A prova de que o app funciona passa a ser: os detectores (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`. Continuam em uso: este arquivo (andamento), `auditoria/defeitos.md` (cada defeito, com a correção e o mutante) e `auditoria/mecanismos.md` (cada mecanismo novo).
 
-Instrução em vigor: a "Tarefa do DeepSeek" — item 1, os 8 elementos classificados como "porta faltando" (conferir `aria-controls` pela G2 e a mesma intenção ao mesmo tratador pela G3; achado vira DEF- com mutante ou passo de modelo que acusa antes e não acusa depois da correção); item 2, a parte sem navegador do C8 (`auditoria/investigacao/relatorio.md`: chaves de i18n dos dois idiomas, corpus de importação contra XSS, corrupção e migração do que é salvo, ReDoS, poluição de protótipo, compatibilidade, contadores de render em happy-dom). Sem nada visual nem de navegador; a etapa 4 inteira e as partes de navegador da etapa 5 estão na seção "Para o Claude", no fim deste arquivo.
+Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elementos classificados como "porta faltando": nenhum é porta que falta no manifesto; a categoria "parte de porta" ficou em DCS-020, e o rastreamento achou o DEF-0514, G2, e o DEF-0515, G3, os dois corrigidos com o grupo `drafts` e os mutantes M52 a M56) e **item 2 feito** (a parte sem navegador do C8: os grupos `robustness`, `storage`, `i18n`, `import`, `compat` e `render`, MEC-13 a MEC-18, com os DEF-0516 e DEF-0517 corrigidos). Sem nada visual nem de navegador; a etapa 4 inteira e as partes de navegador da etapa 5 estão na seção "Para o Claude", no fim deste arquivo.
 
 | etapa | conteúdo | estado |
 |---|---|---|
 | 0 | decisões D-A a D-E gravadas (`decisoes.md`, DCS-009 a DCS-014) | feita |
 | 1 | modelo da store (`tools/runner/model/`), catálogo de mutantes (`tools/runner/mutants.ts`), invariantes do histórico em DEV e prova P5, seletor de impacto (MEC-01 a MEC-04) | feita |
 | 2 | Fase 8: DEF- abertos por causa raiz, cada um com detector, correção e mutante | feita (o DEF-0512 ganhou detector no ponto 2 do dono: grupo `composer`, M51) |
-| 3 | detectores durante a Fase 8: contratos de campo (C5), inventário e `builder/interactive-owner` (C1), modos, `builder/listener-scope`, escopo de vida e corridas (C6/C3) — MEC-05 a MEC-11 | feita, com a classificação dos 8 elementos "porta faltando" em revisão (ponto 3 do dono) |
-| 4 | fonte empacotada (DCS-012), medição de texto (C4), lote único do navegador | não iniciada (licença OFL da Source Sans 3 já obtida em `scratchpad/licenca/LICENSE.md`, fora do repositório; os TTF em `scratchpad/fontes/`) |
-| 5 | Fase 9: contadores de render, LoAF, memória, catálogo C8 | não iniciada |
+| 3 | detectores durante a Fase 8: contratos de campo (C5), inventário e `builder/interactive-owner` (C1), modos, `builder/listener-scope`, escopo de vida e corridas (C6/C3) — MEC-05 a MEC-11 | feita (a classificação dos 8 elementos "porta faltando" virou o item 1 da Tarefa do DeepSeek: MEC-12, DCS-020 e DCS-021) |
+| 4 | fonte empacotada (DCS-012), medição de texto (C4), lote único do navegador | não iniciada, e fora da Tarefa do DeepSeek (seção "Para o Claude"; licença OFL da Source Sans 3 já obtida em `scratchpad/licenca/LICENSE.md`, fora do repositório; os TTF em `scratchpad/fontes/`) |
+| 5 | Fase 9: contadores de render, LoAF, memória, catálogo C8 | não iniciada; a parte sem navegador do catálogo C8 virou o item 2 da Tarefa do DeepSeek (MEC-13 a MEC-18); Long Animation Frames e a memória pelo CDP ficam na seção "Para o Claude" |
 
-**Defeitos** (`auditoria/defeitos.md`): 23 registrados, nenhum com status aberto.
-- Com detector que acusa antes da correção e não acusa depois: DEF-0512 (grupo `composer`, M51, o código anterior à alteração), DEF-0001 (grupo `lifetime`, M41, M42), DEF-0508 (invariantes e grupo `history`, M28, M29), DEF-0509 (grupo `fields`, M34), DEF-0510 (grupo `machine`, M36, M37), DEF-0511 (grupos `history` e `style`, M38 a M40), DEF-0513 (grupo `races`, M49, M50).
+**Defeitos** (`auditoria/defeitos.md`): 26 registrados, 1 com status aberto (DEF-0518, o verificador do manifesto, fora do item 2).
+- Com detector que acusa antes da correção e não acusa depois: DEF-0512 (grupo `composer`, M51, o código anterior à alteração), DEF-0001 (grupo `lifetime`, M41, M42), DEF-0508 (invariantes e grupo `history`, M28, M29), DEF-0509 (grupo `fields`, M34), DEF-0510 (grupo `machine`, M36, M37), DEF-0511 (grupos `history` e `style`, M38 a M40), DEF-0513 (grupo `races`, M49, M50), DEF-0514 e DEF-0515 (grupo `drafts`, M52 a M56), DEF-0516 (grupo `robustness`, M57, M58), DEF-0517 (grupo `storage`, M65).
 - Defeitos de registro da auditoria, sem código da aplicação, conferidos pelo verificador (C2, C6): DEF-0002 a DEF-0008, DEF-0286, DEF-0289, DEF-0501 a DEF-0507.
 
-**Mecanismos** (`auditoria/mecanismos.md`): MEC-01 a MEC-11. Catálogo de mutantes: 51, 48 acusados, 3 equivalentes com motivo (100,0% dos não equivalentes), 74,1 s. Detectores sem navegador: 12 grupos, 23 testes, 7,0 s juntos.
+**Mecanismos** (`auditoria/mecanismos.md`): MEC-01 a MEC-18. Detectores sem navegador: 20 grupos, 59 testes, 9,0 s juntos (medido: 20 arquivos, 59 testes, 9,03 s com `npx vitest run --config tools/runner/model/vitest.config.ts`).
 
-**Verificação na última rodada:** `node tools/audit/check.mjs` com `TOTAL: 0 pendências`; `npm run typecheck` e `npm run lint` com saída 0.
+**Catálogo de mutantes** (`node tools/runner/mutants-run.ts`, 2026-10-08): **66 mutantes, 63 acusados, 3 equivalentes com motivo (100,0% dos não equivalentes), 99,2 s**; linha de base 14,0 s; o processo mais lento, 7,7 s (M23). Nenhum sobrevivente sem motivo.
 
-**Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos).
+**Verificação na última rodada:** os detectores (`npx vitest run --config tools/runner/model/vitest.config.ts`) 20 arquivos e 59 testes sem falha; `npm run typecheck` e `npm run lint` com saída 0; catálogo de mutantes sem sobrevivente sem motivo.
 
-**Próximo passo:** item 1 da Tarefa do DeepSeek — os 8 elementos que a classificação deu como "porta faltando" (o form de `src/editor/canvas/edit-handles.tsx`, o corpo de `src/editor/canvas/side-frame.tsx`, os 2 forms de `src/editor/shell/class-bar.tsx`, os 3 elementos de `src/editor/shell/easing-curve.tsx`, o form de `src/editor/shell/guides-grids.tsx`): conferir com citação se cada popover em portal está ligado ao campo por `aria-controls` (`src/editor/input/pending.ts`, limite do campo) e se cada um envia a mesma intenção ao mesmo tratador que a porta com `data-door`; achado vira DEF- com detector, correção e mutante.
+**Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos), bd52de1 (a manutenção da auditoria para; CLAUDE.md sem as travas), 81be75c (item 1: os 8 elementos "porta faltando").
+
+**Próximo passo:** a Tarefa do DeepSeek está feita nos dois itens. O que fica: (a) o DEF-0518 aberto (a lista de arquivos do `manifest:check`, com o esquema dos dois artefatos gerados a decidir, ou a isenção deles); (b) a seção "Para o Claude", com a etapa 4 e as partes de navegador da etapa 5.
+
 
 ### Procedimentos
 - **Depois de alterar:** rode os detectores da área (`npx vitest run --config tools/runner/model/vitest.config.ts`), `npm run typecheck` e `npm run lint`; todo defeito corrigido ganha um mutante no catálogo que o detector acusa antes da correção e não acusa depois.
@@ -42,12 +45,24 @@ Instrução em vigor: a "Tarefa do DeepSeek" — item 1, os 8 elementos classifi
   - controles montados contra `manifest/generated/inventory.json`;
   - larguras fluidas;
   - para cada comando desfazível: DOM do canvas incremental, o mesmo documento aberto do zero e a exportação (DCS-002);
-  - o que ficar pendente dos pontos 2 e 3 da revisão do dono (DEF-0512 e os 8 elementos "porta faltando").
+  - a lista de exceções da regra `builder/interactive-owner` conferida contra `manifest/generated/inventory.json`, e os pontos da revisão do dono que o navegador tiver de fechar (o DEF-0512 já tem detector sem navegador, o grupo `composer`, M51).
+- **A parte sem navegador do item 2 está feita** (MEC-13 a MEC-18): o que resta do catálogo C8 são as classes que precisam do navegador (vazamento de memória pelo CDP, Long Animation Frames, memória, IME, área de transferência, fidelidade da exportação, classes forçadas, texto bidirecional, várias abas, cota).
+- **O DEF-0518 (aberto):** o `npm run manifest:check` falha com 2 problemas porque a lista de arquivos aceitos não inclui `generated/behavior.json` nem `generated/inventory.json`; a correção é a lista (ou o esquema dos dois artefatos), e ela não foi feita por estar fora do item 2.
 
+
+### Fim da Tarefa do DeepSeek (2026-10-08)
+- **Item 1 e item 2 feitos.** O item 1 fechou com a categoria "parte de porta" (DCS-020), a decisão dos diálogos de criação (DCS-021) e os DEF-0514 e DEF-0515 corrigidos (MEC-12, mutantes M52 a M56). O item 2 fechou com seis grupos novos (MEC-13 a MEC-18), os DEF-0516 e DEF-0517 corrigidos e os mutantes M57 a M66.
+- **Taxa de acusação do catálogo de mutantes:** 66 mutantes, 63 acusados, 3 equivalentes com motivo (M19, M25, M30, os mesmos de antes), **100,0% dos não equivalentes**, 99,2 s (linha de base 14,0 s). Saída completa em `.cache/mutants/summary.json`.
+- **Verificação final:** `npx vitest run --config tools/runner/model/vitest.config.ts` — 20 arquivos, 59 testes, sem falha; `npm run typecheck` — saída 0; `npm run lint` — saída 0; as provas da área tocada (145 testes de `src/core/document`, `src/core/data`, `src/core/project`, `src/core/elements`, `src/core/history`; 87 de `src/core/store` e `src/manifest`) sem falha.
+- **Para o Claude:** a seção acima; nada visual e nada de navegador foi feito.
 
 ### Lições
 - Um caso de detector precisa provar que passou pelo caminho que confere: o caso do autosave passava sem trocar de projeto, porque a troca pedia confirmação, e o M48 sobrevivente mostrou; o grupo `races` exige os dois desfechos.
 - Um fluxo registrado pode afirmar uma regra que não vale: o fluxo da colagem pela tecla dizia "G1: ok" e o grupo `races` reproduziu o DEF-0513.
+- Um detector novo erra pela convenção do projeto antes de errar pelo código: o grupo `i18n` acusou 58 chaves na primeira rodada porque supôs que `.one` pede `.other`, quando a chave base é o plural (`status.pages.madeFromCollection` serve os números que não são 1) e há textos de modelo que só terminam em `.one` por coincidência (`template.accordion.answer.one`); a conferência passou a ler do próprio código as bases que o `pluralForm` conta.
+- Uma diferença entre dois filtros pode ser proposital: o filtro da captura não decodifica referências de caractere (`java&#115;cript:`) e o do SVG decodifica, e não é defeito — o valor capturado vai à página por `setAttribute` e a exportação escapa o `&`, enquanto o markup do SVG é lido como markup, onde o parser decodifica antes de o endereço executar.
+- Um caso de controle pode não ser uma contagem: a vista cujo seletor devolve um objeto novo a cada publicação não redesenha mais vezes, o React a recusa com "The result of getSnapshot should be cached"; o controle útil é a mudança de outra parte do estado, que não pode redesenhar.
+- O detector do inventário (`manifest/generated/inventory.json`) exige o arquivo gerado fresco: mudar código de `src/` obriga a rodar `node tools/inventory/write.ts` antes de fechar.
 
 ## Histórico (não é o estado atual)
 

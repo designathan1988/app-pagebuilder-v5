@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -105,6 +105,16 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M54', file: 'src/editor/canvas/edit-handles.tsx', from: '        onInput={() => held.current?.typed()}\n', to: '', breaks: 'a banda digitada guarda a digitação só para si, fora do registro (o código de antes do DEF-0514)', source: 'DEF-0514', detectors: ['drafts'] },
   { id: 'M55', file: 'src/editor/shell/guides-grids.tsx', from: "    run(entry, { axis, at: typedNumber(field?.value ?? '') });", to: "    if (field !== null && field.value.trim() !== '' && Number.isFinite(Number(field.value))) run(entry, { axis, at: Number(field.value) });", breaks: 'o formulário de nova guia decide sozinho que um texto vazio ou não numérico não roda o comando (o código de antes do DEF-0515)', source: 'DEF-0515', detectors: ['drafts'] },
   { id: 'M56', file: 'src/editor/input/held-draft.ts', from: "(text.trim() === '' ? Number.NaN : Number(text))", to: '(Number(text))', breaks: 'um campo numérico vazio vira 0 e roda o comando como se a pessoa tivesse digitado 0', source: 'DEF-0515', detectors: ['drafts'] },
+  { id: 'M57', file: 'src/core/style/codecs.ts', from: "    if (token === '(') {\n      if (nesting >= MAX_NESTING) return null;\n      nesting += 1;\n      const inner = sum();\n      nesting -= 1;\n", to: "    if (token === '(') {\n      const inner = sum();\n", breaks: 'a conta de números segue um aninhamento sem limite e derruba o leitor (o código de antes do DEF-0516)', source: 'DEF-0516', detectors: ['robustness'] },
+  { id: 'M58', file: 'src/core/style/codecs.ts', from: "    if (token.text === '(') {\n      if (nesting >= MAX_NESTING) return null;\n      nesting += 1;\n      const inner = sum();\n      nesting -= 1;\n", to: "    if (token.text === '(') {\n      const inner = sum();\n", breaks: 'a conta de comprimentos segue um aninhamento sem limite e derruba o leitor (o código de antes do DEF-0516)', source: 'DEF-0516', detectors: ['robustness'] },
+  { id: 'M59', file: 'src/core/history/transaction.ts', from: '  Object.defineProperty(container, key, { value, writable: true, enumerable: true, configurable: true });', to: '  container[key] = value;', breaks: 'uma chave __proto__ num patch escreve no protótipo em vez de ser uma chave comum do objeto', source: 'C8', detectors: ['robustness'] },
+  { id: 'M60', file: 'src/core/document/captured.ts', from: "  if (name.startsWith('on') || name === 'srcdoc') return true;", to: "  if (name === 'srcdoc') return true;", breaks: 'um atributo de evento (on…) atravessa a captura de uma página', source: 'C8', detectors: ['import'] },
+  { id: 'M61', file: 'src/core/elements/svg.ts', from: "      if (lower.startsWith('on') || ((LINK_ATTRIBUTES.has(lower) || ANIMATED_VALUES.has(lower)) && scripted(value))) continue;", to: "      if ((LINK_ATTRIBUTES.has(lower) || ANIMATED_VALUES.has(lower)) && scripted(value)) continue;", breaks: 'um atributo de evento (on…) atravessa o sanitizador do markup de SVG', source: 'C8', detectors: ['import'] },
+  { id: 'M62', file: 'src/editor/shell/preview.tsx', from: 'sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox"', to: 'sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox allow-same-origin"', breaks: 'o quadro da prévia junta allow-scripts com allow-same-origin, o que anula o isolamento', source: 'C8', detectors: ['compat'] },
+  { id: 'M63', file: 'src/editor/shell/preview.tsx', from: '      if (event.source === null || event.source !== frame.current?.contentWindow) return;\n', to: '', breaks: 'um ouvinte de message da janela deixa de conferir a janela que enviou', source: 'C8', detectors: ['compat'] },
+  { id: 'M64', file: 'src/editor/store.ts', from: '  return useSyncExternalStore(store.subscribe, () => select(store.getState()));', to: '  return useSyncExternalStore(store.subscribe, store.getState) as unknown as T;', breaks: 'a vista lê o estado inteiro em vez da fatia que mostra, e redesenha a cada publicação', source: 'C8', detectors: ['render'] },
+  { id: 'M65', file: 'src/core/document/validate.ts', from: '    if (notATree.length > 0) return notATree;\n', to: '', breaks: 'uma página cuja árvore não é uma árvore de nós derruba a validação em vez de ser recusada (o código de antes do DEF-0517)', source: 'DEF-0517', detectors: ['storage'] },
+  { id: 'M66', file: 'src/i18n/locales/en.json', from: '  "easing.title": "Curve",\n', to: '', breaks: 'uma chave do catálogo inglês deixa de ter par no português', source: 'C8', detectors: ['i18n'] },
 ];
 
 export const ALL_DETECTORS = ALL;

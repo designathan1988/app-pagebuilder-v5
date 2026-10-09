@@ -156,3 +156,52 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Mutantes:** M52 a M56, acusados.
 - **Tempo medido:** grupo `drafts` 4,1 s (10 casos).
 
+## MEC-13 — um texto hostil contra os leitores que o leem
+- **Capacidade:** C8 (as classes "ReDoS" e "poluição de protótipo", sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/robustness.test.ts` — o grupo `robustness`: uma lista de textos hostis (parênteses aninhados até 20 000, uma sequência longa de sinais unários, um número com expoente enorme, uma função sem fechar, um comentário sem fechar, uma corrida longa de um caractere) contra os leitores que um campo de valor e uma folha importada usam (`readValue` de `src/core/style/set.ts` para nove propriedades, com o codec de comprimento e os que o reusam) e contra o sanitizador do markup de SVG (`src/core/elements/svg.ts`); cada leitura tem de terminar sem lançar e abaixo de 500 ms.
+  - a mesma prova contra a poluição de protótipo: um patch com o caminho `__proto__` e um documento salvo com as chaves `__proto__` e `constructor` são lidos sem uma escrita em `Object.prototype`, e um caminho que atravessaria uma função é recusado com `PatchError`.
+- **Falhas de aceitação que precisa acusar:** DEF-0516; um patch que escreve `__proto__` no protótipo em vez de o guardar como chave comum do objeto.
+- **Mutantes:** M57 e M58 (o limite de aninhamento tirado de cada um dos dois leitores), M59 (o `setKey` escrevendo por atribuição em vez de por `defineProperty`), os três acusados.
+- **Tempo medido:** grupo `robustness` 3,2 s (4 casos, 189 leituras hostis).
+
+## MEC-14 — o que é salvo, contra corrupção e migração
+- **Capacidade:** C8 (a classe "persistência: corrupção e migração", sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/storage.test.ts` — o grupo `storage`: `readProject` (o leitor de todo arquivo de projeto) contra 400 valores quaisquer de `fc.anything()` mais nove projetos corrompidos (sem versão, versão não inteira, sem páginas, páginas que não são uma lista, página sem árvore, árvore que não é um nó, nó sem os seus campos, id repetido, filho que não é um nó) — cada leitura devolve um documento que o modelo aceita ou uma recusa com palavras, nunca lança, e nunca deixa passar um documento que `validateDocument` recusa; a cadeia de migrações cobre toda versão até a atual e recusa a mais nova e o degrau que falta; `restoredWork` (o trabalho salvo restaurado no início) não restaura o que o modelo recusa.
+- **Falhas de aceitação que precisa acusar:** DEF-0517; um documento corrompido cujo leitor lança em vez de recusar.
+- **Mutantes:** M65 (a conferência da forma das páginas tirada da validação, o código de antes do DEF-0517), acusado.
+- **Tempo medido:** grupo `storage` 2,4 s (5 casos, 400 valores arbitrários).
+
+## MEC-15 — os dois catálogos de mensagens
+- **Capacidade:** C8 (a classe "completude do i18n", sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/i18n.test.ts` — o grupo `i18n`: as chaves de `src/i18n/locales/en.json` e de `pt-BR.json` são o mesmo conjunto nos dois sentidos, os placeholders de cada chave coincidem, nenhuma chave está vazia nem fora do formato de um nome de mensagem, e toda base que o código conta com `pluralForm` (a lida do próprio código: um `plural:` do manifesto de comandos ou um `${pluralForm(` num molde) tem as duas formas `.one` e `.other` nos dois idiomas.
+- **Falhas de aceitação que precisa acusar:** uma chave só num dos idiomas; uma forma plural de uma base contada que falta.
+- **Mutantes:** M66 (uma chave tirada do catálogo inglês), acusado.
+- **Tempo medido:** grupo `i18n` 3,3 s (4 casos, 3 586 chaves por idioma).
+
+## MEC-16 — o que uma página importada pode carregar
+- **Capacidade:** C8 (a classe "HTML importado e XSS", sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/import.test.ts` — o grupo `import`: um corpus de vetores contra o filtro de atributos da captura (`unsafeCapturedAttribute` de `src/core/document/captured.ts`: 25 atributos que executam, entre eles o evento em qualquer caixa, o `javascript:` com espaço, tabulação, quebra de linha ou maiúsculas, o `srcdoc`, o `data:text/html`, o `srcset` com um endereço que executa) e contra o sanitizador do markup de SVG (`sanitizedSvgMarkup`: script, foreignObject, atributo de evento, endereço que executa, animação que escreve um vínculo); a lista dos atributos seguros não é recusada; o `data:` de uma imagem só passa numa imagem; um pacote de captura com atributo que executa é acusado com o seu caminho; um pacote com as chaves `__proto__` é lido sem poluir o protótipo.
+- **Falhas de aceitação que precisa acusar:** um atributo `on…` que atravessa a captura; um vetor que atravessa o sanitizador do SVG.
+- **Mutantes:** M60 (o filtro de eventos tirado da captura) e M61 (o filtro de eventos tirado do sanitizador do SVG), acusados.
+- **Tempo medido:** grupo `import` 2,5 s (7 casos, 25 vetores perigosos e 11 seguros).
+
+## MEC-17 — o que o app exige dos navegadores
+- **Capacidade:** C8 (as classes "isolamento do iframe", "postMessage" e "compatibilidade", sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/compat.test.ts` — o grupo `compat`: a varredura estática de todo `sandbox="…"` de `src/` recusa a combinação de `allow-scripts` com `allow-same-origin` (o MDN diz que ela anula o isolamento); todo ouvinte de `message` da janela confere `event.source` antes de ler a mensagem; e cada API do navegador que o app chama, numa lista declarada com o caminho dela no `@mdn/browser-compat-data` 8.1.2, é sustentada pelas versões estáveis de Chrome, Firefox e Safari, ou tem a razão de ser segura declarada com ela (o `requestIdleCallback`, guardado por um teste de presença com reserva de `setTimeout`; o `URL.canParse`, sem entrada no BCD). A mesma prova confere que a lista não está velha: uma API declarada que o código não chama mais é acusada.
+- **Falhas de aceitação que precisa acusar:** `allow-same-origin` acrescentado ao `sandbox` de um quadro com scripts; um ouvinte de `message` sem a conferência de `event.source`; uma API que nem os três navegadores sustentam, sem razão declarada.
+- **Mutantes:** M62 (o `sandbox` da prévia ganha `allow-same-origin`) e M63 (a conferência de `event.source` tirada), acusados.
+- **Tempo medido:** grupo `compat` 2,9 s (4 casos, 485 arquivos de `src/` varridos).
+
+## MEC-18 — quantas vezes uma vista redesenha
+- **Capacidade:** C8 (a classe "re-render desnecessário", a parte sem navegador).
+- **Arquivos:**
+  - `tools/runner/model/render.test.ts` — o grupo `render`: uma vista de uma fatia do estado (`useEditorState`) montada em happy-dom com um `<Profiler>` em volta, com duas testemunhas do número de desenhos (o corpo do componente e o `onRender` do `<Profiler>`): a montagem desenha uma vez, a mudança da fatia desenha de novo, e a mudança de outra parte do estado (`view.zoomIn`) não desenha. O comentário do grupo registra por que a vista cujo seletor não é estável não é um caso de contagem: o React a recusa com "The result of getSnapshot should be cached", e as vistas do app mantêm toda resposta um texto ou um número por isso.
+- **Falhas de aceitação que precisa acusar:** a vista que lê o estado inteiro em vez da fatia que mostra.
+- **Mutantes:** M64 (o `useEditorState` devolvendo o estado inteiro), acusado.
+- **Tempo medido:** grupo `render` 2,7 s (1 caso).
+

@@ -74,21 +74,34 @@ const NUMBER_WITH_UNIT = /^([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*([a-z%]*)$/i;
 const ARITHMETIC = /^[\d.\s+\-*/()]+$/;
 const EXPRESSION = /^(calc|min|max|clamp)\(.*\)$/i;
 
+// The nesting a reader of a text follows before it gives up: a value nested deeper than this is no value the editor
+// reads (a field's text, a captured stylesheet's), and the descents below are recursive, so following a deeper one
+// overflows the stack instead of refusing. A person never writes one; a hostile text does (DEF-0516).
+const MAX_NESTING = 64;
+
 // Arithmetic on plain numbers, worked out by a small recursive descent over + - * / and parentheses; null when the
-// text is not such a sum or its result is not a finite number. No text is ever evaluated as code.
+// text is not such a sum, is nested past MAX_NESTING, or its result is not a finite number. No text is ever evaluated
+// as code.
 export function workOut(text: string): number | null {
   const tokens = text.match(/\d+(?:\.\d*)?|\.\d+|[+\-*/()]/g) ?? [];
   if (tokens.join('') !== text.replace(/\s+/g, '')) return null;
   let at = 0;
+  let nesting = 0;
   const peek = () => tokens[at];
   const factor = (): number | null => {
     const token = tokens[at++];
     if (token === '+' || token === '-') {
+      if (nesting >= MAX_NESTING) return null;
+      nesting += 1;
       const inner = factor();
+      nesting -= 1;
       return inner === null ? null : token === '-' ? -inner : inner;
     }
     if (token === '(') {
+      if (nesting >= MAX_NESTING) return null;
+      nesting += 1;
       const inner = sum();
+      nesting -= 1;
       return tokens[at++] === ')' ? inner : null;
     }
     return token !== undefined && /^[\d.]/.test(token) ? Number(token) : null;
@@ -118,8 +131,8 @@ export function workOut(text: string): number | null {
 // Arithmetic on lengths (the plan's stage 3, "contas"): numbers with the units the property offers, + - * / and
 // parentheses. One unit throughout (a plain number beside it takes it) is worked out: "16px*2" is 32px, "10px + 4" is
 // 14px. Lengths of different units added or taken away are the browser's to work out: written as calc(), spaced as
-// CSS writes it ("100% - 20px" is calc(100% - 20px)). Two lengths multiplied, a division by a length or by zero, or
-// a unit the property does not offer: null.
+// CSS writes it ("100% - 20px" is calc(100% - 20px)). Two lengths multiplied, a division by a length or by zero, a
+// unit the property does not offer, or a nesting past MAX_NESTING: null.
 const LENGTH_TERM = /(\d+(?:\.\d*)?|\.\d+)([a-z%]*)|[+\-*/()]/gi;
 export function workOutLengths(text: string, units: readonly string[]): Value | null {
   const tokens = [...text.matchAll(LENGTH_TERM)].map((m) => ({ text: m[0], number: m[1] === undefined ? null : Number(m[1]), unit: (m[2] ?? '').toLowerCase() || null }));
@@ -127,16 +140,23 @@ export function workOutLengths(text: string, units: readonly string[]): Value | 
   if (tokens.some((t) => t.unit !== null && !units.includes(t.unit))) return null;
   type Quantity = { readonly n: number; readonly unit: string | null } | 'mixed';
   let at = 0;
+  let nesting = 0;
   const peek = () => tokens[at]?.text;
   const factor = (): Quantity | null => {
     const token = tokens[at++];
     if (token === undefined) return null;
     if (token.text === '+' || token.text === '-') {
+      if (nesting >= MAX_NESTING) return null;
+      nesting += 1;
       const inner = factor();
+      nesting -= 1;
       return inner === null || inner === 'mixed' ? inner : { n: token.text === '-' ? -inner.n : inner.n, unit: inner.unit };
     }
     if (token.text === '(') {
+      if (nesting >= MAX_NESTING) return null;
+      nesting += 1;
       const inner = sum();
+      nesting -= 1;
       return tokens[at++]?.text === ')' ? inner : null;
     }
     return token.number === null ? null : { n: token.number, unit: token.unit };
