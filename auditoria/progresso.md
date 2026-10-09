@@ -62,8 +62,9 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 - [feito] a conferência da vírgula que passava com as duas leituras recusadas: DEF-0558, M120.
 - [feito] o caso do `__proto__` que não lia o documento (DEF-0559, M121) e a metade unária do DEF-0516 (M122, M123).
 - [feito] a aceitação dos longhands sem unidade (DEF-0560, M124), que achou o `pointer-events` recusando `visiblePainted` (DEF-0561, M125); no Chrome, a primeira tecla depois de uma recusa sumia (DEF-0562, `useMessagesWhileTyping`, M126).
+- [feito] o começo do toque do dono do ponteiro sem detector (`events.ts:58` e `:51`–`52`): DEF-0563, M127, M128.
 - [próximo] o que resta, em ordem:
-  2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), lote-navegador (onclick, cores forçadas, IME, cota, LoAF), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), G1/G2 do arnês (events.ts:58, classe/quadro-chave, seleção com o foco no campo), seletor de impacto cego ao manifesto, colagem por clique, contador de render, events.ts:51-52, DCS-001 sem detector, D-1/DEC-70.
+  2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), lote-navegador (onclick, cores forçadas, IME, cota, LoAF), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), G1/G2 do arnês (classe/quadro-chave, seleção com o foco no campo), seletor de impacto cego ao manifesto, colagem por clique, contador de render, DCS-001 sem detector, D-1/DEC-70.
   3. `npm run gen:check` (lê behavior.md como JSON).
   4. registros da seção 4 (progresso, otimizacoes.md, campos de defeitos.md, causas erradas, citações das decisões, DEF-0002, tokens.css).
   5. a suíte de navegador inteira nas duas condições, e o catálogo de mutantes.

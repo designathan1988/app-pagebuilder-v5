@@ -17,6 +17,8 @@ import { storedValue } from '../../../src/core/style/stored.ts';
 import { TypedBand } from '../../../src/editor/canvas/edit-handles.tsx';
 import { QuickPanel } from '../../../src/editor/canvas/quick-panel.tsx';
 import { installKeymap } from '../../../src/editor/input/keymap.ts';
+import { installPointer } from '../../../src/editor/input/pointer.ts';
+import { sharedOf } from '../../../src/editor/input/pointer/shared.ts';
 import { quickPanelOpen } from '../../../src/editor/quick-panel/quick-panel.ts';
 import { saveFieldDraft, startDrafts } from '../../../src/editor/persistence/drafts.ts';
 import { keyframeTarget } from '../../../src/editor/timeline/playhead.ts';
@@ -394,5 +396,72 @@ describe('a digitação depois de uma recusa', () => {
     drawn.stop();
     stop();
     expect(found, 'teclas perdidas depois de uma recusa').toEqual([]);
+  });
+});
+
+// The pointer owner (src/editor/input/pointer.ts), installed on happy-dom's window, its events dispatched as the browser
+// sends them: the typing a field holds is kept at the very start of a press outside the field (rule G2,
+// input/pointer/events.ts onDown; the verification's finding: removed, no detector saw it), and a press of a pointer
+// whose release was lost ends the gesture it left open before its own begins (DCS-013, DEF-0510, DEF-0556).
+describe('o dono do ponteiro', () => {
+  const pointer = (type: string, target: EventTarget, pointerId: number) =>
+    act(() => void target.dispatchEvent(new PointerEvent(type, { pointerId, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: 10, clientY: 10, bubbles: true, cancelable: true })));
+  const openPanel = async () => {
+    const store = storeOf();
+    const tree = store.getState().document.pages[0]?.tree;
+    const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+    dispatch(store, 'selection.select', { target: leaf?.id });
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stopKeys = installKeymap(store, window);
+    const stopPointer = installPointer(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const width = drawn.host.querySelector<HTMLElement>('[data-door*="quick-panel-width"]');
+    const stop = () => {
+      drawn.stop();
+      stopPointer();
+      stopKeys();
+    };
+    return { store, leaf, width, stop };
+  };
+
+  it('a digitação de um campo é gravada no começo de um toque fora dele', async () => {
+    const { store, leaf, width, stop } = await openPanel();
+    try {
+      const field = width?.querySelector('input') ?? null;
+      expect(field, 'o painel desenhou o campo da largura').not.toBeNull();
+      if (field === null) return;
+      type(field, '77px');
+      expect(heldTyping()?.field, 'o campo segura a digitação').toBe(field);
+      pointer('pointerdown', document.body, 1);
+      const node = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === leaf?.id);
+      expect(node === undefined ? null : storedValue(node, 'width', MODEL_RULES), 'a largura gravada logo no toque').toBe('77px');
+      pointer('pointerup', document.body, 1);
+    } finally {
+      stop();
+    }
+  });
+
+  it('o toque de um ponteiro cuja soltura se perdeu encerra o gesto aberto antes de abrir o seu', async () => {
+    const { store, stop } = await openPanel();
+    try {
+      // the canvas's stage, as the pointer owner reads it (data-canvas-stage): a press on it is a gesture of the machine
+      const label = document.createElement('div');
+      label.setAttribute('data-canvas-stage', '');
+      document.body.append(label);
+      pointer('pointerdown', label, 1);
+      const first = sharedOf(store).open;
+      expect(first, 'o toque abriu um gesto').not.toBeNull();
+      // another pointer's release turns pressing off; the first pointer's own release never comes
+      pointer('pointerup', window, 2);
+      pointer('pointerdown', label, 1);
+      const second = sharedOf(store).open;
+      expect(second === null || second === first ? 'o gesto perdido continua aberto' : 'um gesto novo', 'o gesto depois do segundo toque').toBe('um gesto novo');
+      pointer('pointerup', label, 1);
+      label.remove();
+    } finally {
+      stop();
+    }
   });
 });
