@@ -22,6 +22,9 @@ export interface Interactive {
 
 const TAGS = new Set(['button', 'input', 'select', 'textarea', 'a', 'summary', 'option']);
 const ROLES = new Set(['button', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'tab', 'option', 'slider', 'spinbutton', 'checkbox', 'switch', 'treeitem', 'combobox', 'radio', 'link', 'gridcell', 'separator']);
+// the same two sets for a check that reads the drawn page instead of the source (tests/e2e/lote-visual.spec.ts)
+export const INTERACTIVE_TAGS = TAGS;
+export const INTERACTIVE_ROLES = ROLES;
 const HANDLERS = /^on(Click|DoubleClick|PointerDown|PointerUp|MouseDown|KeyDown|KeyUp|Change|Input|Wheel|ContextMenu|Submit|DragStart|Drop|Focus|Blur)$/;
 
 // Whether an element the attribute names and role describe is one a person acts on: the rule the lint applies too

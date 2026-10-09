@@ -111,7 +111,10 @@ test('the exported elements stand where the canvas draws them: no space between 
   const html = files.get('index.html')?.toString('utf8') ?? '';
   const css = files.get('css/styles.css')?.toString('utf8') ?? '';
   const exported: Page = await context.newPage();
-  const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentDocument?.documentElement.clientWidth ?? 0);
+  // the width the site lays out at is the body's: the canvas reserves the browser's scrollbar width as padding on the
+  // html (src/editor/canvas/render/render.ts:170), so the body is 15 px narrower than the frame whenever the editor
+  // draws scrollbars (E2E_SCROLLBARS=shown), and the exported page, which does not scroll, would come out wider (DEF-0521)
+  const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentDocument?.body.clientWidth ?? 0);
   await exported.setViewportSize({ width, height: 900 });
   await exported.route('https://site.test/**', (route) =>
     new URL(route.request().url()).pathname === '/css/styles.css' ? route.fulfill({ contentType: 'text/css', body: css }) : route.fulfill({ contentType: 'text/html', body: html }),

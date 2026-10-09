@@ -50,9 +50,13 @@ test('the exported page has the canvas\'s computed styles at every breakpoint', 
     // panned out of view (with the 336 px inspector of DEC-66 the Laptop tab fell under the sidebar at 1600 px)
     await page.keyboard.press('Shift+1');
     await runDoor(page, tab(breakpoint));
-    // the canvas at 100 %: the frame is the breakpoint wide and its page lays out in whole pixels
+    // the canvas at 100 %: the frame is the breakpoint wide and its page lays out in whole pixels. The width compared
+    // is the one the site lays out at, the body's: the canvas reserves the browser's scrollbar width as padding on the
+    // html (src/editor/canvas/render/render.ts:170, html { padding-right: <scrollbar> }), so the body is 15 px narrower
+    // than the frame's documentElement whenever the editor draws scrollbars (E2E_SCROLLBARS=shown); the exported page,
+    // which does not scroll, would come out those 15 px wider (DEF-0521)
     await page.keyboard.press('Control+0');
-    const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentWindow?.innerWidth ?? 0);
+    const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentDocument?.body.clientWidth ?? 0);
     const canvas = await frame.locator('body').evaluate(styles, PROPERTIES);
     // tall enough that the exported page does not scroll, as the frame's page does not
     await exported.setViewportSize({ width, height: 2000 });

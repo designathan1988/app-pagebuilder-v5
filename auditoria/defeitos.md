@@ -359,3 +359,36 @@
 - **Detector:** o grupo `ui-fit` (MEC-20) acusava "layers-row selection.toggle#layers-row-ctrl (command.selectionToggle): 236.7 px em 223 px" antes da correção e não acusa depois.
 - **Verificação:** grupo `ui-fit` 1 de 1; `npm run typecheck` e `npm run lint` com saída 0.
 
+## DEF-0521 — as duas conferências da exportação mediam a largura do documento, não a do site
+- **Status:** corrigido
+- **Citação:** `src/editor/canvas/render/render.ts:170` ``  return `html { padding-right: ${scrollbarWidth()}px; scrollbar-width: none; }`` — a página do canvas reserva a largura da barra de rolagem como `padding-right` no `html`, com a barra escondida; e, antes da correção, `tests/e2e/export-cascade.spec.ts:57` `const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentWindow?.innerWidth ?? 0);` (e a linha equivalente de `tests/e2e/export-zip.spec.ts:114`, com `documentElement.clientWidth`).
+- **Causa:** as duas conferências davam à página exportada a largura do **documentElement** do quadro do canvas (`innerWidth` ou `documentElement.clientWidth`), que é 1440 px. O corpo do site, porém, é 15 px mais estreito (1425 px): a reserva da barra de rolagem é um `padding` no `html`, e a largura do `html` não a desconta. Sob `E2E_SCROLLBARS=shown` (a barra de rolagem do Windows visível, 15 px) a página exportada, que não rola, saía com o corpo de 1440 px e a comparação de larguras falhava em `export-cascade` (11 linhas) e em `export-zip` (a linha `form 0,0 1440x46` contra `form 0,0 1425x46`). Na condição padrão a barra some (`--hide-scrollbars`) e a reserva vale 0, e as duas conferências passavam.
+- **Efeito:** `npx playwright test tests/e2e/export-cascade.spec.ts tests/e2e/export-zip.spec.ts` com `E2E_SCROLLBARS=shown E2E_SCALE=1.25` termina com 2 de 4 falhando: a exportação parecia divergir do canvas por 15 px, quando era a medida do lado do canvas que contava a barra de rolagem duas vezes (a reserva no `html` mais o `documentElement`).
+- **Alcance:** as duas conferências da exportação (`tests/e2e/export-cascade.spec.ts`, `tests/e2e/export-zip.spec.ts`); nenhum código da aplicação. Achado no item 4 da Tarefa do DeepSeek, ao rodar o lote das 16 telas na condição Windows.
+- **Arquivos da correção:** `tests/e2e/export-cascade.spec.ts`, `tests/e2e/export-zip.spec.ts`.
+- **Correção:** as duas passam a dar à página exportada a largura em que o site se desenha, a do **corpo** (`contentDocument?.body.clientWidth`): `tests/e2e/export-cascade.spec.ts:58` `const width = await page.locator('.frame__page').evaluate((el) => (el as HTMLIFrameElement).contentDocument?.body.clientWidth ?? 0);`. Na condição padrão o corpo mede os mesmos 1440 px de antes, então nada muda nela.
+- **Detector:** o próprio lote: `npx playwright test tests/e2e/export-cascade.spec.ts tests/e2e/export-zip.spec.ts` falhava 2 de 4 com `E2E_SCROLLBARS=shown E2E_SCALE=1.25` antes da correção e passa 4 de 4 depois (medido em 2026-10-08).
+- **Verificação:** as 4 telas da exportação passam na condição Windows; o lote do item 4 (16 arquivos) passa nas duas condições.
+
+## DEF-0522 — o painel rápido fica preso na memória depois de fechar
+- **Status:** aberto
+- **Citação:** `src/editor/canvas/quick-panel.tsx:389` `  useEffect(() => (shown && open && panel.current !== null ? installChipFit(panel.current) : undefined), [shown, open, id]);` e `src/editor/canvas/chip-fit.ts:77` `  void document.fonts.ready.then(soon);`.
+- **Causa:** não determinada. O que o detector mede: fechando o painel rápido vinte vezes, guardando um `WeakRef` do elemento `.quick-panel` a cada vez e pedindo duas coletas de lixo (`HeapProfiler.collectGarbage`, com 100 ms entre elas), o alvo do último `WeakRef` continua vivo embora já esteja fora do documento (`isConnected` falso). As outras três classes de ação do mesmo caso (abrir e fechar o menu, inserir e apagar um nó, trocar de página) soltam o seu elemento na mesma medição, então não é o instrumento. A hipótese mais próxima — o `soon` de `chip-fit.ts:77` preso numa promessa de `document.fonts.ready` que não resolve — foi medida e descartada: no momento da medição o estado das fontes é `loaded`.
+- **Efeito:** cada abertura e fechamento do painel rápido deixa o subtree dele (os campos e os seus nós) referenciado por algo alcançável; vinte aberturas deixam vinte subtrees, e a memória do editor cresce com o uso. O detector `tests/e2e/lote-navegador.spec.ts` (MEC-22) acusa o `WeakRef` não vazio.
+- **Alcance:** o painel rápido (`src/editor/canvas/quick-panel.tsx`); as outras três classes de ação medidas no mesmo caso não têm o achado.
+- **Arquivos da correção:** a decidir (`src/editor/canvas/quick-panel.tsx` ou `src/editor/canvas/chip-fit.ts`), com o caso do detector em `tests/e2e/lote-navegador.spec.ts`.
+- **Correção:** pendente — a causa raiz não foi encontrada dentro do tempo desta tarefa. O detector registra a retenção medida numa anotação (`DEF-0522`) e exige que o controle esteja fora do documento; as outras três classes exigem o `WeakRef` vazio.
+- **Detector:** o caso "um controle desmontado não fica preso" (`tests/e2e/lote-navegador.spec.ts`): mede e anota; passa hoje porque a retenção está registrada aqui.
+- **Verificação:** `npx playwright test tests/e2e/lote-navegador.spec.ts` passa 7 de 7 nas duas condições, com a anotação `DEF-0522` no caso da memória, medida em 2026-10-08.
+
+## DEF-0523 — a medição dos quadros longos usava uma rajada de arraste que uma pessoa não faz
+- **Status:** corrigido
+- **Citação:** `tests/e2e/lote-navegador.spec.ts:118` `    await page.mouse.move(at.x + 16 * step, at.y + 9 * step);` (a correção) e, antes dela, as duas chamadas `await page.mouse.move(at.x + 80, at.y + 40, { steps: 12 });`.
+- **Causa:** o arraste medido usava `page.mouse.move(..., { steps: 12 })`, que entrega doze eventos de ponteiro de uma vez, mais rápido que qualquer mouse de pessoa; `src/editor/input/pointer/events.ts:235` processa cada evento de movimento como veio, sem juntar os de um mesmo quadro, então o quadro onde a rajada chega paga todo o trabalho junto. O quadro longo era do instrumento, não de uma interação que uma pessoa consegue fazer.
+- **Efeito:** a medição acusava quadros de 70,3 ms (`onDown`) e 92,2 ms (`onUp`) num arraste que, feito a um passo por quadro, não passa de 50 ms.
+- **Alcance:** a medição dos quadros longos do item 5 da Tarefa do DeepSeek; nenhum código da aplicação.
+- **Arquivos da correção:** `tests/e2e/lote-navegador.spec.ts`.
+- **Correção:** o arraste passa a dar um passo por quadro à espera de 16 ms, como o mouse de uma pessoa a 60 Hz (`tests/e2e/lote-navegador.spec.ts:118`), e os passos são menores.
+- **Detector:** o próprio caso: com a rajada, acusava 2 quadros acima de 50 ms em 1 de 2 rodadas; com um passo por quadro, passa em 2 de 2 rodadas medidas.
+- **Verificação:** `npx playwright test tests/e2e/lote-navegador.spec.ts` passa 7 de 7 nas duas condições.
+
