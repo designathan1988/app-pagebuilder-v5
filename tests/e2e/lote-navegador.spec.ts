@@ -143,22 +143,25 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
       if (el === null) throw new Error(`o elemento ${sel} não está desenhado`);
       (window as unknown as { __probe: WeakRef<Element> }).__probe = new WeakRef(el);
     }, selector);
-  // Cada ação vinte vezes; no fim, duas coletas de lixo (a primeira fecha o trabalho pendente do ciclo, a segunda
-  // recolhe o que ela deixou livre) e o WeakRef da última volta. Toda ação tem de tirar o seu controle do documento; a
-  // que o deixa preso é uma retenção medida, e `retido` nomeia o defeito aberto dela (auditoria/defeitos.md).
+  // Cada ação vinte vezes; no fim, coletas de lixo em laço (até doze, com uma espera entre elas: uma só é instável,
+  // e foi uma medição instável que fez a primeira hipótese do DEF-0522 cair) e o WeakRef da última volta, que precisa
+  // estar vazio: o controle fora do documento não pode continuar referenciado. `retido` nomeia, para a ação que ainda
+  // prende o seu controle, o defeito aberto que mede isso (auditoria/defeitos.md).
   const cycle = async (what: string, action: () => Promise<void>, retido?: string): Promise<void> => {
     for (let i = 0; i < 20; i++) await action();
-    await cdp.send('HeapProfiler.collectGarbage');
-    await page.waitForTimeout(100);
-    await cdp.send('HeapProfiler.collectGarbage');
-    const held = await page.evaluate(() => {
-      const el = (window as unknown as { __probe?: WeakRef<Element> }).__probe?.deref();
-      return el === undefined || el === null ? null : el.isConnected ? 'conectado' : 'preso';
-    });
+    let held: string | null = 'nao medido';
+    for (let round = 0; round < 12 && held !== null; round++) {
+      await cdp.send('HeapProfiler.collectGarbage');
+      await page.waitForTimeout(60);
+      held = await page.evaluate(() => {
+        const el = (window as unknown as { __probe?: WeakRef<Element> }).__probe?.deref();
+        return el === undefined || el === null ? null : el.isConnected ? 'conectado' : 'preso';
+      });
+    }
     if (held === null) return;
     if (retido !== undefined) {
       expect(held, `${what}: a retenção medida é de um controle fora do documento`).toBe('preso');
-      test.info().annotations.push({ type: retido, description: what });
+      test.info().annotations.push({ type: retido, description: `${what} (${held})` });
       return;
     }
     alive.push(`${what} (${held})`);
@@ -170,6 +173,8 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
     await page.keyboard.press('Escape');
     await expect(page.locator('[data-region="menu:file"]'), 'o menu fecha').toHaveCount(0);
   });
+  // O painel rápido fechado pelo Esc (o caminho que o DEF-0522 mede: fechado pelo próprio chip, o mesmo elemento é
+  // recolhido) ainda deixa o elemento referenciado; o defeito está aberto e o caso o registra.
   await cycle(
     'o painel rápido',
     async () => {
@@ -210,6 +215,7 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
     await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'a página trocada sai do quadro').toHaveCount(0);
   });
 
+  console.log('limpezas:', await page.evaluate(() => (globalThis as unknown as { __chipCleanups?: number }).__chipCleanups ?? -1));
   expect(alive, 'controles que continuam vivos depois da coleta de lixo').toEqual([]);
 });
 
