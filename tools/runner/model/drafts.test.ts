@@ -17,10 +17,12 @@ import { TypedBand } from '../../../src/editor/canvas/edit-handles.tsx';
 import { QuickPanel } from '../../../src/editor/canvas/quick-panel.tsx';
 import { installKeymap } from '../../../src/editor/input/keymap.ts';
 import { quickPanelOpen } from '../../../src/editor/quick-panel/quick-panel.ts';
+import { saveFieldDraft, startDrafts } from '../../../src/editor/persistence/drafts.ts';
+import { keyframeTarget } from '../../../src/editor/timeline/playhead.ts';
 import { heldTyping, keepTypingBefore } from '../../../src/editor/input/pending.ts';
 import { GuidesGridsDialog } from '../../../src/editor/shell/guides-grids.tsx';
 import { PanelField } from '../../../src/editor/shell/panel-field.tsx';
-import { createEditorStore, MODEL_RULES, StoreContext, type EditorStore } from '../../../src/editor/store.ts';
+import { createEditorStore, editContextOf, MODEL_RULES, StoreContext, type EditorStore } from '../../../src/editor/store.ts';
 import type { CommandId } from '../../../src/generated/ids.ts';
 import { manifest } from '../../../src/manifest/runtime.ts';
 import { fixture } from './harness.ts';
@@ -278,5 +280,48 @@ describe('a banda digitada e a seleção que muda', () => {
     expect(typedInto.length, 'a conferência alcança as portas de campo de estilo').toBeGreaterThan(200);
     const missing = [...new Set(typedInto.filter((d) => !('targets' in d.command.args) && !('target' in d.command.args)).map((d) => d.command.id))];
     expect(missing, 'comandos de campo de estilo sem targets: o campo descartaria a digitação ou gravaria noutro elemento').toEqual([]);
+  });
+});
+
+// The session's draft keeps the context its typing began in, the keyframe the playhead sat on among it: a reloaded tab
+// restores the field where it was typed (rule G1, "on the restoring of a draft"; DEF-0531).
+describe('o rascunho da sessão e o contexto da digitação', () => {
+  it('o rascunho restaurado volta ao quadro-chave em que foi digitado (G1)', () => {
+    window.sessionStorage.clear();
+    const kept = (() => {
+      let held: string | null = null;
+      return { read: () => held, write: (text: string) => void (held = text) };
+    })();
+    const make = (prefix: string, document = fixture('aurora'), selection: readonly string[] = []) =>
+      createEditorStore({ storage: memory(), workspace: kept, clock: manualClock(1_000_000), ids: sequentialIds(prefix), restored: { document, selection: [...selection] }, ports: { readOnly: () => false }, freeze: true });
+    const before = make('a');
+    const stopBefore = startDrafts(before, () => 7, () => true);
+    const tree = before.getState().document.pages[0]?.tree;
+    const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type);
+    dispatch(before, 'selection.select', { target: leaf?.id });
+    expect(dispatch(before, 'animation.create', { name: 'Entrada' }), 'a animação foi criada').toMatchObject({ status: 'done' });
+    dispatch(before, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
+    // the playhead on the animation's last keyframe (its time clamped to the duration)
+    dispatch(before, 'timeline.setPlayhead', { time: 100_000 });
+    const typedOn = keyframeTarget(before.getState());
+    expect(typedOn, 'o playhead está sobre um quadro-chave').not.toBeNull();
+    // an inspector field with a text typed and not kept: the session's draft
+    const row = document.createElement('div');
+    row.setAttribute('data-door', 'style.set#inspector-opacity');
+    const input = document.createElement('input');
+    input.setAttribute('aria-label', 'Opacity');
+    row.append(input);
+    document.body.append(row);
+    input.dataset.shown = '';
+    input.value = '0.2';
+    saveFieldDraft(input);
+    stopBefore();
+    // the tab reloaded: the same work, the same selection, the same workspace kept
+    const after = make('b', before.getState().document, before.getState().selection);
+    const stopAfter = startDrafts(after, () => 7, () => true);
+    const restored = editContextOf(after.getState()).keyframe ?? null;
+    stopAfter();
+    row.remove();
+    expect(restored, 'o contexto restaurado é o quadro-chave em que o valor foi digitado').toEqual(typedOn);
   });
 });

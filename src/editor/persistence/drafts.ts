@@ -9,6 +9,8 @@ import { setOpen } from '../quick-panel/quick-panel.ts';
 import { setStyleTarget } from '../inspector/style-target.ts';
 import { activeLayer, setStyleState, STATES } from '../view/style-state.ts';
 import { setBreakpoint } from '../view/breakpoints.ts';
+import { keyframeTarget, setPlayheadCommand, showAnimationCommand, timelineOf } from '../timeline/playhead.ts';
+import { setPanelOpen } from '../workspace/panels.ts';
 import { revealField } from '../inspector/sections.ts';
 import { manifest } from '../../manifest/runtime.ts';
 import type { EditorStore } from '../store.ts';
@@ -24,8 +26,12 @@ const rangeSchema = z.object({ start: z.number().int().nonnegative(), end: z.num
 const common = {
   version: z.literal(1), revision: z.number().int().nonnegative(), selection: z.array(z.string()),
   // the context the typing began in (CLAUDE.md, rule G1): the breakpoint among it, so a restored draft is kept where it
-  // was typed whatever the preferences say by then (a draft of an older editor carries none)
-  context: z.object({ quick: z.boolean(), styleState: z.string().nullable(), styleTarget: z.string().nullable(), revealed: z.string().nullable(), breakpoint: z.string().nullable().optional() }),
+  // was typed whatever the preferences say by then (a draft of an older editor carries none), and the keyframe the
+  // playhead sat on: the animation the Timeline showed and the playhead's time (DEF-0531)
+  context: z.object({
+    quick: z.boolean(), styleState: z.string().nullable(), styleTarget: z.string().nullable(), revealed: z.string().nullable(), breakpoint: z.string().nullable().optional(),
+    keyframe: z.object({ animation: z.string(), time: z.number().nonnegative() }).nullable().optional(),
+  }),
 };
 const schema = z.discriminatedUnion('kind', [
   z.object({ ...common, kind: z.literal('field'), key: z.string(), shown: z.string(), value: z.string(), range: rangeSchema.nullable() }),
@@ -70,11 +76,13 @@ function persist(next: Draft | null): void {
 }
 function context() {
   const state = store?.getState();
+  const keyframe = state === undefined ? null : keyframeTarget(state);
   return {
     version: 1 as const, revision: revision(), selection: [...(state?.selection ?? [])],
     context: {
       quick: state?.ui.quickPanelOpen === true, styleState: state?.ui.styleState ?? null, styleTarget: state?.ui.styleTarget ?? null, revealed: state?.ui.revealed?.field ?? null,
       breakpoint: state === undefined ? null : activeLayer(state).breakpoint,
+      keyframe: state === undefined || keyframe === null ? null : { animation: keyframe.animation, time: timelineOf(state.ui).time },
     },
   };
 }
@@ -167,6 +175,13 @@ export function startDrafts(owner: EditorStore, currentRevision: () => number, c
     const styleState = STATES.find(s => s.id === draft.context.styleState);
     if (styleState) owner.dispatch(setStyleState.command, { state: styleState.id as CommandArgs[typeof setStyleState.command]['state'] });
     if (draft.context.styleTarget && owner.getState().document.classes?.some(c => c.name === draft.context.styleTarget)) owner.dispatch(setStyleTarget.command, { target: 'class', className: draft.context.styleTarget });
+    // the keyframe the typing began on: the Timeline open, its animation shown and the playhead where it was
+    const keyframe = draft.context.keyframe ?? null;
+    if (keyframe !== null) {
+      owner.dispatch(setPanelOpen.command, { panel: 'timeline', open: 'open' } as CommandArgs[typeof setPanelOpen.command]);
+      owner.dispatch(showAnimationCommand.command, { animation: keyframe.animation });
+      owner.dispatch(setPlayheadCommand.command, { time: keyframe.time });
+    }
     if (draft.context.quick) owner.dispatch(setOpen.command, { open: 'open' });
     if (draft.kind === 'field' && draft.context.revealed) {
       const property = manifest.properties.properties.find(p => p.id === draft.context.revealed);
