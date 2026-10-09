@@ -12,10 +12,12 @@ import {
   elementsFileSchema,
   environmentSchema,
   featuresFileSchema,
+  generatedBehaviorSchema,
   generatedCompatSchema,
   generatedCssSchema,
   generatedHtmlSchema,
   generatedIconsSchema,
+  generatedInventorySchema,
   exclusionsFileSchema,
   type ExclusionsFile,
   interactionsFileSchema,
@@ -34,8 +36,10 @@ import {
   type GeneratedCompat,
   type GeneratedCss,
   type LayoutFile,
+  type GeneratedBehavior,
   type GeneratedHtml,
   type GeneratedIcons,
+  type GeneratedInventory,
   type InteractionsFile,
   type PropertiesFile,
   type Recipe,
@@ -193,6 +197,8 @@ export interface Parsed {
   compat: GeneratedCompat;
   html: GeneratedHtml;
   icons: GeneratedIcons;
+  behavior: GeneratedBehavior;
+  inventory: GeneratedInventory;
   exclusions: ExclusionsFile;
   commandFiles: { file: string; data: CommandsFile }[];
   featureFiles: { file: string; data: FeaturesFile }[];
@@ -213,6 +219,8 @@ const SINGLE_FILES: Record<string, { key: keyof Parsed; schema: z.ZodType }> = {
   'generated/css-compat.json': { key: 'compat', schema: generatedCompatSchema },
   'generated/html-elements.json': { key: 'html', schema: generatedHtmlSchema },
   'generated/icons.json': { key: 'icons', schema: generatedIconsSchema },
+  'generated/behavior.json': { key: 'behavior', schema: generatedBehaviorSchema },
+  'generated/inventory.json': { key: 'inventory', schema: generatedInventorySchema },
   'css-exclusions.json': { key: 'exclusions', schema: exclusionsFileSchema },
 };
 

@@ -1320,6 +1320,73 @@ export const generatedIconsSchema = z.strictObject({
   icons: z.array(iconName),
 });
 
+// The behaviour map (tools/map/generate.ts): the gesture machine's transition table, the combinations it ignores
+// with the reason, and the modes with what each refuses while it is on.
+export const generatedBehaviorSchema = z.strictObject({
+  machines: z.strictObject({
+    gesture: z.strictObject({
+      source: z.string().min(1),
+      threshold: z.number(),
+      transitions: z.array(
+        z.strictObject({
+          phase: z.string().min(1),
+          event: z.string().min(1),
+          next: z.string().min(1),
+          effect: z.string().min(1).nullable(),
+        }),
+      ),
+      ignored: z.array(z.strictObject({ combination: z.string().min(1), why: z.string().min(1) })),
+    }),
+    modes: z.strictObject({
+      source: z.string().min(1),
+      modes: z.array(z.string().min(1)),
+      refusedWhile: z.record(z.string(), z.array(z.string().min(1))),
+    }),
+  }),
+});
+
+// The inventory of the application (tools/inventory/write.ts): the totals, the features with what each reaches, the
+// value fields with their contract, the store's state parts and the interactive elements with their owner.
+export const generatedInventorySchema = z.strictObject({
+  totals: z.strictObject({
+    features: z.number(),
+    built: z.number(),
+    commands: z.number(),
+    doors: z.number(),
+    scenarios: z.number(),
+    modules: z.number(),
+    lines: z.number(),
+    fields: z.number(),
+    interactive: z.number(),
+  }),
+  features: z.array(
+    z.strictObject({ id: z.string().min(1), built: z.boolean(), commands: z.array(z.string().min(1)), doors: z.number(), scenarios: z.number() }),
+  ),
+  fields: z.array(
+    z.strictObject({
+      property: z.string().min(1),
+      kind: z.string().min(1),
+      codec: z.string().min(1),
+      registered: z.boolean(),
+      reachedByStyleSet: z.boolean(),
+      structured: z.boolean(),
+    }),
+  ),
+  state: z.array(z.string().min(1)),
+  interactive: z.strictObject({
+    owners: z.record(z.string(), z.number()),
+    elements: z.array(
+      z.strictObject({
+        key: z.string().min(1),
+        tag: z.string().min(1),
+        role: z.string().min(1).nullable(),
+        handlers: z.array(z.string().min(1)),
+        owner: z.string().min(1),
+      }),
+    ),
+  }),
+});
+
 // Each manifest file and its schema, keyed as consumers.json names them.
 export const FILE_SCHEMAS = {
   environment: environmentSchema,
@@ -1366,4 +1433,6 @@ export type GeneratedCss = z.infer<typeof generatedCssSchema>;
 export type GeneratedCompat = z.infer<typeof generatedCompatSchema>;
 export type GeneratedHtml = z.infer<typeof generatedHtmlSchema>;
 export type GeneratedIcons = z.infer<typeof generatedIconsSchema>;
+export type GeneratedBehavior = z.infer<typeof generatedBehaviorSchema>;
+export type GeneratedInventory = z.infer<typeof generatedInventorySchema>;
 export type ExclusionsFile = z.infer<typeof exclusionsFileSchema>;

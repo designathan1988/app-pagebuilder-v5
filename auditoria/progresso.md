@@ -8,6 +8,11 @@ Este arquivo é a memória do trabalho e a única fonte para retomar. A seção 
 
 Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elementos classificados como "porta faltando": nenhum é porta que falta no manifesto; a categoria "parte de porta" ficou em DCS-020, e o rastreamento achou o DEF-0514, G2, e o DEF-0515, G3, os dois corrigidos com o grupo `drafts` e os mutantes M52 a M56) e **item 2 feito** (a parte sem navegador do C8: os grupos `robustness`, `storage`, `i18n`, `import`, `compat` e `render`, MEC-13 a MEC-18, com os DEF-0516 e DEF-0517 corrigidos). Sem nada visual nem de navegador; a etapa 4 inteira e as partes de navegador da etapa 5 estão na seção "Para o Claude", no fim deste arquivo.
 
+**Instrução em vigor (nova, 2026-10-08): a "Tarefa do DeepSeek: a parte visual e de navegador"** (`deepseek-tarefa.md`, 5 itens, a lista da seção "Para o Claude"). Andamento:
+- **Item 1 (DEF-0518) feito:** os dois artefatos gerados (`generated/behavior.json`, `generated/inventory.json`) entraram em `SINGLE_FILES` com um esquema zod cada, o grupo `manifest` (MEC-19) e o mutante M67. `npm run manifest:check` passa.
+- **Item 2 (fonte da interface, DCS-012):** próximo a começar.
+- **Itens 3 a 5:** medição de texto (C4), lote do navegador e as partes de navegador da etapa 5 — pendentes.
+
 | etapa | conteúdo | estado |
 |---|---|---|
 | 0 | decisões D-A a D-E gravadas (`decisoes.md`, DCS-009 a DCS-014) | feita |
@@ -29,7 +34,7 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 
 **Commits locais** (o repositório não tem remoto; o dono pediu commit local por enquanto; ficam fora `PROMPT.md`, `deepseek.ps1` e a pasta do dono): 253b9a3 (etapas 1 a 3 até o MEC-08), d6a6b4a (registro do commit), faab19e (MEC-09 e MEC-10), 549f5f3 (autosave e DEF-0513), 023c536 (leitores da conferência dos modos), bd52de1 (a manutenção da auditoria para; CLAUDE.md sem as travas), 81be75c (item 1: os 8 elementos "porta faltando").
 
-**Próximo passo:** a Tarefa do DeepSeek está feita nos dois itens. O que fica: (a) o DEF-0518 aberto (a lista de arquivos do `manifest:check`, com o esquema dos dois artefatos gerados a decidir, ou a isenção deles); (b) a seção "Para o Claude", com a etapa 4 e as partes de navegador da etapa 5.
+**Próximo passo:** seguir a "Tarefa do DeepSeek: a parte visual e de navegador" (`deepseek-tarefa.md`). Item 1 (DEF-0518) feito; o próximo é o **item 2**, a fonte da interface (Source Sans 3, pesos 400 e 600, em `src/ui/fonts/`, com o `@font-face` e a troca de `--font-ui` em `src/ui/tokens.css`), seguido dos testes de tela nas duas condições e das fotos de referência. Depois, os itens 3 (medição de texto sem navegador), 4 (lote do navegador) e 5 (partes de navegador da etapa 5).
 
 
 ### Procedimentos

@@ -205,3 +205,12 @@ Os mecanismos de verificação construídos a partir de `auditoria/investigacao/
 - **Mutantes:** M64 (o `useEditorState` devolvendo o estado inteiro), acusado.
 - **Tempo medido:** grupo `render` 2,7 s (1 caso).
 
+
+## MEC-19 — o manifest/ inteiro contra o verificador do manifesto
+- **Capacidade:** C1 (inventário dinâmico: a prova de que a lista de arquivos aceitos acompanha o diretório).
+- **Arquivos:**
+  - `tools/runner/model/manifest.test.ts` — o grupo `manifest`: `loadManifest` lê todo o `manifest/` do disco e `checkManifest` roda as dez famílias de regras; o caso exige zero problemas, de modo que um arquivo `.json` que entra no diretório sem uma entrada em `SINGLE_FILES` (`src/manifest/check/base.ts`) é acusado. Estreia com os dois artefatos gerados que faltavam na lista, `generated/behavior.json` e `generated/inventory.json` (DEF-0518), cada um com um esquema zod da forma atual (gerados por `tools/map/generate.ts` e por `tools/inventory/write.ts`).
+  - `tools/impact/detectors.ts` — a linha `manifest: /^manifest\/.*\.json$/` em `READ_FROM_DISK`, para que a mudança de um dado do manifesto escolha o grupo.
+- **Falhas de aceitação que precisa acusar:** um arquivo do `manifest/` fora da lista aceita; um artefato gerado com a forma mudada.
+- **Mutantes:** M67 (as duas entradas tiradas de `SINGLE_FILES`, o código de antes do DEF-0518), acusado.
+- **Tempo medido:** grupo `manifest` 3,2 s (1 caso); linha de base do catálogo, 21 arquivos, 60 testes, 15,2 s.

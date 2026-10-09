@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { normalizePath, type Plugin } from 'vite';
 
-export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render';
+export type Detector = 'history' | 'style' | 'structure' | 'text' | 'pages' | 'fields' | 'machine' | 'lifetime' | 'inventory' | 'lint' | 'modes' | 'races' | 'composer' | 'drafts' | 'robustness' | 'i18n' | 'import' | 'storage' | 'compat' | 'render' | 'manifest';
 
 export interface Mutant {
   readonly id: string;
@@ -26,7 +26,7 @@ export interface Mutant {
   readonly equivalent?: string;
 }
 
-const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render'];
+const ALL: readonly Detector[] = ['history', 'style', 'structure', 'text', 'pages', 'fields', 'machine', 'lifetime', 'inventory', 'lint', 'modes', 'races', 'composer', 'drafts', 'robustness', 'i18n', 'import', 'storage', 'compat', 'render', 'manifest'];
 
 export const MUTANTS: readonly Mutant[] = [
   { id: 'M01', file: 'src/core/history/history.ts', from: '    selection: tx.selectionBefore,', to: '    selection: tx.selectionAfter,', breaks: 'desfazer restaura a seleção de depois do comando', source: 'prova C7', detectors: ['history'] },
@@ -115,6 +115,7 @@ export const MUTANTS: readonly Mutant[] = [
   { id: 'M64', file: 'src/editor/store.ts', from: '  return useSyncExternalStore(store.subscribe, () => select(store.getState()));', to: '  return useSyncExternalStore(store.subscribe, store.getState) as unknown as T;', breaks: 'a vista lê o estado inteiro em vez da fatia que mostra, e redesenha a cada publicação', source: 'C8', detectors: ['render'] },
   { id: 'M65', file: 'src/core/document/validate.ts', from: '    if (notATree.length > 0) return notATree;\n', to: '', breaks: 'uma página cuja árvore não é uma árvore de nós derruba a validação em vez de ser recusada (o código de antes do DEF-0517)', source: 'DEF-0517', detectors: ['storage'] },
   { id: 'M66', file: 'src/i18n/locales/en.json', from: '  "easing.title": "Curve",\n', to: '', breaks: 'uma chave do catálogo inglês deixa de ter par no português', source: 'C8', detectors: ['i18n'] },
+  { id: 'M67', file: 'src/manifest/check/base.ts', from: "  'generated/behavior.json': { key: 'behavior', schema: generatedBehaviorSchema },\n  'generated/inventory.json': { key: 'inventory', schema: generatedInventorySchema },\n", to: '', breaks: 'a lista de arquivos do verificador deixa de conhecer os dois artefatos gerados (o código de antes do DEF-0518)', source: 'DEF-0518', detectors: ['manifest'] },
 ];
 
 export const ALL_DETECTORS = ALL;
