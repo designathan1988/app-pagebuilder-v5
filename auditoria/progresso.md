@@ -79,8 +79,13 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
     - o campo de largura em foco já foi medido no Lote 3.
   - Specs das áreas (117) nas duas condições: 116 de 117. A falha era da paleta e foi corrigida (`alsoScore`); os 15 casos da paleta passam nas duas condições. Detectores 117 de 117; typecheck e lint sem erro.
 
+- **Sessão de uso em pt-BR a 1280×720 (2026-10-09), sem defeito a corrigir:**
+  - Passos: abrir o Aurora; tamanho da fonte 18 no Desktop e 14 no Tablet; estado Hover com cor; classe "destaque"; inserir uma Seção; desfazer e refazer; exportar.
+  - O documento ficou com cada valor no seu contexto: `desktop.base.font-size` 18px, `tablet.base.font-size` 14px, `desktop.hover.color` #b9512a e a classe "destaque". O desfazer e o refazer devolveram 5 passos, e a exportação gerou `site.zip`.
+  - Sem erro de console nem incidente; as 11 fotos foram olhadas.
+
 ## Próximo passo
-**Mais uso real** (`CLAUDE.md`, seção 0, "Produção primeiro"): os fluxos não cobrem a interface em pt-BR a 1280×720, porque procuram rótulos em inglês. Uma sessão manual mais longa nessa tela (inserir, estilizar em dois breakpoints, estado hover, classe, quadro-chave, exportar) é o próximo lote.
+Nada pendente dos lotes. Quando o dono pedir uma nova rodada: mais uso real (fluxos com quadros-chave e dados em pt-BR) e o quadro de `onUp` sob carga (`otimizacoes.md`, "O que fica para uma próxima rodada").
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".
