@@ -4,7 +4,7 @@
 - **Status:** corrigido
 - **Citação:** as duas linhas que pedem o quadro, hoje `src/editor/test-boot.ts:125` `if (!stopped) frame = target.requestAnimationFrame(settle);` e `src/editor/test-boot.ts:122` `else frame = target.requestAnimationFrame(settle);`; antes da correção elas pediam o quadro sem guardar o identificador.
 - **Causa:** `settle` (`src/editor/test-boot.ts:110`) reagendava-se com `target.requestAnimationFrame(settle)` até o palco ficar do mesmo tamanho por três quadros ou até 120 quadros; o pedido não guardava o identificador do quadro e não havia chamada de anulação no caminho.
-- **Efeito:** o ciclo de quadros corre até o seu próprio limite e não há como anulá-lo de fora; um desmonte durante a espera deixa o quadro seguinte agendado.
+- **Efeito:** o ciclo de quadros corre até o seu próprio limite e não há como anulá-lo de fora; um desmonte durante a espera deixa o quadro seguinte agendado. Acréscimo (2026-10-09, verificação integral, grupo A): o único chamador do app, `src/main.tsx:86` `if (__BUILDER_TEST_PORT__ && boot !== null) runDrawnTestBoot(store, boot, booted);`, descarta a parada, e nenhum caminho do app desmonta o boot de teste. O defeito é de forma, sem efeito que se observe no app: a parada existe para quem a pede, e o grupo `lifetime` (M41, M42) a prova.
 - **Alcance:** ENT-L05a-0015.
 - **Itens de estado tocados:** nenhum.
 - **Arquivos da correção:** `src/editor/test-boot.ts` (a parada devolvida), `tools/runner/model/lifetime.test.ts` (o detector, MEC-07).

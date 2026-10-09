@@ -68,6 +68,7 @@ Instrução em vigor: a "Tarefa do DeepSeek" — **item 1 feito** (os 8 elemento
 - [feito] o contador de render que contava só uma vista do teste e a testemunha de commits vazia: DEF-0567, M135, M136.
 - [feito] a DCS-001 sem detector: DEF-0568, M137.
 - [feito] o seletor de impacto cego ao manifesto e aos arquivos do disco: DEF-0569, grupo `impact`, M138, M139.
+- [feito] o DEF-0001 "sem efeito no app": o registro passou a dizer que o defeito é de forma (o chamador do app descarta a parada; nenhum caminho desmonta o boot).
 - [pendente, conhecido] a intermitência de `draft-recovery.spec.ts` "quick panel draft…": o chip não reabre o painel depois da última recarga; 8 falhas em 120 na base 4fcd3d43, 2 em 120 agora (DEF-0565, registro).
 - [próximo] o que resta, em ordem:
   2. detectores da seção 3 do RELATORIO: lote-visual (G7 que só roda a seleção, controles, painel nunca aberto), lote-navegador (onclick, cores forçadas, IME, cota, LoAF), ui-fit (rótulos pulados, hash, coluna, DEF-0520 falso positivo), D-1/DEC-70.
