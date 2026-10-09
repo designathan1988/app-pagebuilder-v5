@@ -13,6 +13,7 @@ import { describe, expect, it } from 'vitest';
 import { manualClock } from '../../../src/core/ports/clock.ts';
 import { sequentialIds } from '../../../src/core/ports/ids.ts';
 import { walk } from '../../../src/core/document/model.ts';
+import { message } from '../../../src/core/commands/registry.ts';
 import { storedValue } from '../../../src/core/style/stored.ts';
 import { TypedBand } from '../../../src/editor/canvas/edit-handles.tsx';
 import { QuickPanel } from '../../../src/editor/canvas/quick-panel.tsx';
@@ -463,5 +464,155 @@ describe('o dono do ponteiro', () => {
     } finally {
       stop();
     }
+  });
+});
+
+// Rule G1 with the real field (the quick panel's Width, a NumberField) and the real store: the typing is kept in the
+// context of its first key when what the field edits moves with the focus still in the field — the class the Style tab
+// targets, the keyframe under the playhead, the selection (the verification's finding: the harness, tools/runner/model/
+// harness.ts, never changes the class nor the keyframe, nor the selection with the focus in the field; DEF-0564).
+describe('o contexto da primeira tecla (G1)', () => {
+  const nodes = (store: EditorStore) => [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))];
+  const leaves = (store: EditorStore) => nodes(store).filter((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+  async function typedThen(prepare: (store: EditorStore) => void, move: (store: EditorStore) => void): Promise<EditorStore> {
+    const store = storeOf();
+    dispatch(store, 'selection.select', { target: leaves(store)[0]?.id });
+    prepare(store);
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stop = installKeymap(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const field = [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('quick-panel-width'));
+    if (field === undefined) throw new Error('no width field');
+    type(field, '33px');
+    expect(heldTyping()?.field, 'o campo segura a digitação').toBe(field);
+    // what the field edits moves, the focus still in the field (a key, a command from the field's own region)
+    act(() => {
+      field.focus();
+      move(store);
+    });
+    await frames(2);
+    drawn.stop();
+    stop();
+    return store;
+  }
+
+  it('a classe-alvo trocada com a digitação pendente: o valor vai à classe em que foi digitado', async () => {
+    const store = await typedThen(
+      (s) => {
+        dispatch(s, 'classes.create', { name: 'destaque' });
+        dispatch(s, 'classes.apply', { className: 'destaque' });
+        dispatch(s, 'inspector.setStyleTarget', { target: 'class', className: 'destaque' });
+      },
+      (s) => void dispatch(s, 'inspector.setStyleTarget', { target: 'element' }),
+    );
+    const own = leaves(store)[0];
+    const cls = (store.getState().document.classes ?? []).find((c) => c.name === 'destaque');
+    expect({ classe: JSON.stringify(cls?.styles ?? {}).includes('"33px"'), elemento: own === undefined ? null : (storedValue(own, 'width', MODEL_RULES) ?? null) }, 'onde o valor foi gravado').toEqual({ classe: true, elemento: null });
+  });
+
+  it('o playhead movido para outro quadro-chave com a digitação pendente: o valor vai ao quadro-chave em que foi digitado', async () => {
+    let typedOn: unknown = null;
+    const store = await typedThen(
+      (s) => {
+        dispatch(s, 'animation.create', { name: 'Entrada' });
+        dispatch(s, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
+        dispatch(s, 'timeline.setPlayhead', { time: 0 });
+        typedOn = keyframeTarget(s.getState());
+      },
+      (s) => void dispatch(s, 'timeline.setPlayhead', { time: 100_000 }),
+    );
+    expect(typedOn, 'o playhead estava sobre o quadro-chave de 0%').not.toBeNull();
+    const animation = leaves(store)[0]?.animations?.[0];
+    const holding = (animation?.keyframes ?? []).filter((k) => JSON.stringify(k).includes('"33px"')).map((k) => k.offset);
+    expect(holding, 'os quadros-chave que guardam o valor').toEqual([0]);
+  });
+
+  it('a seleção trocada com a classe como alvo e o foco no campo: o valor vai à classe em que foi digitado', async () => {
+    let other: string | undefined;
+    const store = await typedThen(
+      (s) => {
+        dispatch(s, 'classes.create', { name: 'destaque' });
+        dispatch(s, 'classes.apply', { className: 'destaque' });
+        dispatch(s, 'inspector.setStyleTarget', { target: 'class', className: 'destaque' });
+        other = nodes(s).find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.id !== leaves(s)[0]?.id)?.id;
+      },
+      (s) => void dispatch(s, 'selection.select', { target: other }),
+    );
+    const first = leaves(store)[0];
+    const second = nodes(store).find((n) => n.id === other);
+    const cls = (store.getState().document.classes ?? []).find((c) => c.name === 'destaque');
+    expect({ classe: JSON.stringify(cls?.styles ?? {}).includes('"33px"'), primeiro: first === undefined ? null : (storedValue(first, 'width', MODEL_RULES) ?? null), segundo: second === undefined ? null : (storedValue(second, 'width', MODEL_RULES) ?? null) }, 'onde o valor foi gravado').toEqual({ classe: true, primeiro: null, segundo: null });
+  });
+
+  it('a seleção trocada com o foco no campo: o valor vai ao elemento em que foi digitado', async () => {
+    let other: string | undefined;
+    const store = await typedThen(
+      (s) => {
+        other = nodes(s).find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.id !== leaves(s)[0]?.id)?.id;
+      },
+      (s) => void dispatch(s, 'selection.select', { target: other }),
+    );
+    const first = leaves(store)[0];
+    const second = nodes(store).find((n) => n.id === other);
+    expect({ primeiro: first === undefined ? null : (storedValue(first, 'width', MODEL_RULES) ?? null), segundo: second === undefined ? null : (storedValue(second, 'width', MODEL_RULES) ?? null) }, 'onde o valor foi gravado').toEqual({ primeiro: '33px', segundo: null });
+  });
+});
+
+// A word the editor says while a field holds typing — an autosave's notice, the motion runtime's, the assistant's, a
+// capture's (store.notice) — is no change of what the field edits: the typing stays in the field, held, and is kept
+// when the person keeps it (rule G2; DEF-0565: any message arriving during the typing put the document's value back
+// and let the typing go). The field's own refusal still shows the document again (FD2).
+describe('um aviso do editor durante a digitação', () => {
+  it('não apaga nem solta o que a pessoa digita', async () => {
+    const store = storeOf();
+    const tree = store.getState().document.pages[0]?.tree;
+    const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+    dispatch(store, 'selection.select', { target: leaf?.id });
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stop = installKeymap(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const field = [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('quick-panel-width'));
+    if (field === undefined) throw new Error('no width field');
+    type(field, '33px');
+    act(() => store.notice(message('status.save.journalInDatabase')));
+    await frames(2);
+    const during = { value: field.value, held: heldTyping()?.field === field };
+    act(() => {
+      field.focus();
+      field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
+    });
+    await frames(2);
+    const node = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === leaf?.id);
+    const kept = node === undefined ? null : (storedValue(node, 'width', MODEL_RULES) ?? null);
+    drawn.stop();
+    stop();
+    expect({ ...during, kept }, 'a digitação depois do aviso').toEqual({ value: '33px', held: true, kept: '33px' });
+  });
+
+  // the field's own word still puts the document's value back (FD2): Escape in the field runs field.cancel, its own
+  it('o Esc do próprio campo ainda devolve o valor do documento e solta a digitação', async () => {
+    const store = storeOf();
+    const tree = store.getState().document.pages[0]?.tree;
+    const leaf = tree === undefined ? undefined : [...walk(tree)].find((n) => n.children.length === 0 && n.type !== MODEL_RULES.root.type && n.tag === 'div');
+    dispatch(store, 'selection.select', { target: leaf?.id });
+    dispatch(store, 'quickPanel.setOpen', { open: 'open' });
+    const stop = installKeymap(store, window);
+    const stage = createRef<HTMLDivElement>();
+    const drawn = mount(store, createElement('div', { ref: stage }, createElement(QuickPanel, { stage })));
+    await frames(2);
+    const field = [...drawn.host.querySelectorAll<HTMLInputElement>('.quick-panel__fields input')].find((one) => (one.closest('[data-door]')?.getAttribute('data-door') ?? '').includes('quick-panel-width'));
+    if (field === undefined) throw new Error('no width field');
+    type(field, '33px');
+    // the field's own Escape (its key context's, field.cancel), not the quick panel's: the panel's Escape closes it
+    act(() => store.dispatch('field.cancel' as CommandId, { property: 'width' } as never));
+    await frames(2);
+    const after = { value: field.value, held: heldTyping()?.field === field };
+    drawn.stop();
+    stop();
+    expect(after, 'o campo depois do seu próprio cancelamento').toEqual({ value: '', held: false });
   });
 });

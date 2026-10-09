@@ -55,7 +55,7 @@ import { createToken, tokenKindOf, tokensOf } from '../../core/design/tokens.ts'
 import { compactFieldValue, FieldOriginBadge, FieldValueSlot, useFieldAppearance } from './field-face.tsx';
 import { restoreFieldDraft } from '../persistence/drafts.ts';
 import { DRAFT_KEPT, markFieldKept, recordFieldInput } from '../input/drafts.ts';
-import { heldTyping, holdTyping, keepTyping, releaseTyping } from '../input/pending.ts';
+import { heldTyping, holdTyping, keepTyping, ownCommandRunning, releaseTyping } from '../input/pending.ts';
 import { floatBelow, type Placed } from './float.ts';
 import { onPageChange } from '../canvas/page-clock.ts';
 import { VariableSuggestions } from './variable-suggestions.tsx';
@@ -164,11 +164,14 @@ export function usePageValues(node: NodeId | null, properties: readonly string[]
   return read !== null && read.node === node ? read.values : null;
 }
 
-// How many messages arrived while the field held typing not kept: a change elsewhere (an undo, a refusal, another
-// command's word, a cleared status) during the typing, after which the field shows the document's value again (the
-// audit's FD2). A count that only grows, read once per store change: the key typed after the field showed the
-// document again is never taken for another arrival (DEF-0562: a selector's value went back to null at that key, the
-// field's effect took the change for a new message and wiped the key).
+// How many times the field's own command said its word (a refusal, a cancel, a step) while the field held typing not
+// kept, after which the field shows the document's value again (the audit's FD2). Any other word that arrives during
+// the typing — a notice of the autosave, of the motion runtime, of the assistant, another command's word — changes
+// nothing the field edits (a change of the document from elsewhere keeps the typing first: rule G2,
+// input/pending.ts), so the typing stays (DEF-0565: every message put the document's value back and let the typing
+// go). The field's own commands are the ones its held typing declares, run by the editor's store through runOwn
+// (ownCommandRunning). A count that only grows, read once per store change: the key typed after the field showed the
+// document again is never taken for another arrival (DEF-0562).
 function useMessagesWhileTyping(draft: RefObject<{ typed: boolean; message: EditorState['message'] }>): number {
   const store = useStore();
   const [arrived, setArrived] = useState(0);
@@ -178,7 +181,7 @@ function useMessagesWhileTyping(draft: RefObject<{ typed: boolean; message: Edit
         const now = store.getState().message;
         if (!draft.current.typed || now === draft.current.message) return;
         draft.current.message = now;
-        setArrived((count) => count + 1);
+        if (ownCommandRunning()) setArrived((count) => count + 1);
       }),
     [store, draft],
   );

@@ -928,3 +928,59 @@
   - M127: sem a gravação no começo do toque;
   - M128: sem o `lost ||`.
 - **Verificação:** detectores 25 arquivos e 103 testes sem falha; os 128 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0. O commit 3ece4691 entrou sem este registro e com dois comentários longos no teste, que o lint acusava; o commit seguinte os corrige.
+## DEF-0564 — a G1 com digitação pendente nunca é provada na troca de classe-alvo, de quadro-chave ou de seleção com o foco no campo
+- **Status:** corrigido
+- **Citação:** `tools/runner/model/harness.ts:213` `  if (context.layer === undefined || (context.styleClass ?? null) !== null || (context.keyframe ?? null) !== null) return;`
+- **Causa:** o arnês dos grupos de modelo:
+  - confere onde a gravação da digitação escreve só quando o contexto não tem classe-alvo nem quadro-chave;
+  - o passo `Context` troca só o breakpoint e o estado;
+  - nenhum passo troca a seleção com o foco no campo (`dispatchStep` tira o foco do campo antes de um comando de fora).
+
+  A fixture não tem classe nem animação (verificação integral, seção 3, G1/G2).
+- **Efeito:** uma regressão que gravasse a digitação na classe ou no quadro-chave de depois da troca, ou no elemento selecionado depois, passaria pelos detectores. Os três casos novos, rodados sobre o código de hoje, passam; montá-los achou o DEF-0565.
+- **Alcance:** a prova da G1 no registro de digitação e na store do editor.
+- **Arquivos da correção:** `tools/runner/model/drafts.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** nenhum.
+- **Correção:** o grupo `drafts` ganhou o describe "o contexto da primeira tecla (G1)", com o campo da largura do painel rápido (um `NumberField`), a store real e o keymap. Em cada caso, `33px` é digitado e o que o campo edita muda com o foco ainda no campo:
+  - a classe-alvo trocada para o elemento: o valor vai à classe;
+  - o playhead movido do quadro-chave de 0% para o de 100%: o valor vai só ao de 0%;
+  - a seleção trocada para outro elemento: o valor vai ao da primeira tecla;
+  - a seleção trocada com a classe como alvo: o valor vai à classe.
+- **Detector:** mutantes acusados:
+  - M131: a store ignora o quadro-chave pedido;
+  - M132: o campo grava sem os elementos da primeira tecla.
+
+  O M130 (a store ignora a classe pedida) entrou como equivalente, com o motivo medido: a classe-alvo só muda por comando desfazível (`inspector.setStyleTarget` e `classes.*`), que grava a digitação antes de rodar (G2), e a troca de seleção mantém a classe-alvo da interface. Os 25 grupos passam com ele.
+- **Verificação:** detectores 25 arquivos e 109 testes sem falha; os 133 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0; os testes de navegador dos campos e do lote do navegador (`field-refusal`, `field-history`, `inspector-number-fields`, `inspector-fields`, `number-fields-one-rule`, `draft-recovery`, `quick-panel`, `edicao-pendente`, `font-menu-draft`, `lote-navegador`, `E2E_WORKERS=2`, prioridade baixa): 80 de 80.
+## DEF-0565 — um aviso do editor que chega durante a digitação apaga o que a pessoa digita e solta a digitação sem gravar
+- **Status:** corrigido
+- **Citação:** `src/editor/shell/field.tsx:179` `        if (!draft.current.typed || now === draft.current.message) return;` (o gancho `useMessagesWhileTyping`, que herdou do seletor de antes do DEF-0562 a regra de reagir a toda mensagem)
+- **Causa:** o campo devolve o valor do documento e solta a digitação a qualquer mensagem da store que chegue com digitação não gravada. A regra FD2 trata da recusa do comando do próprio campo, e o que muda o documento de fora já grava a digitação antes (G2, `src/editor/input/pending.ts`). Com a digitação em curso, as mensagens que chegam são:
+  - a recusa do comando do próprio campo;
+  - um aviso (`store.notice`): o do autosave (`src/editor/persistence/autosave.ts:267`, `status.save.journalInDatabase`), o do runtime de animação (`src/editor/motion/use-canvas-motion.ts:39`), os do assistente e os da captura;
+  - a palavra de um comando que não muda o documento.
+
+  As duas últimas apagam a digitação.
+- **Efeito:** medido com o campo de verdade (a largura do painel rápido) e a store real, no caso novo "um aviso do editor durante a digitação": `33px` digitado, um aviso `status.save.journalInDatabase`, e o campo fica vazio, a digitação é solta e o Enter não grava nada (`{ value: '', held: false, kept: null }`). Fere a G2 (digitação nunca some).
+- **Alcance:** os três campos que seguram digitação no registro (`NumberField`, o campo de texto de estilo e o campo de texto do elemento).
+- **Arquivos da correção:** `src/editor/shell/field.tsx`, `tools/runner/model/drafts.test.ts`, `tools/runner/mutants.ts`.
+- **Itens de estado tocados:** o rascunho de cada campo (`draft.current`), local ao componente.
+- **Correção:** o campo devolve o valor do documento só quando a palavra vem de um comando que a digitação segurada declara como seu: a recusa, o cancelamento (Esc, `field.cancel`) e o passo.
+  - A store do editor roda esses comandos por `runOwn` (`src/editor/input/pending.ts`; o despacho de `src/editor/store.ts` já sabia quando o comando é do campo, `own`).
+  - O gancho `useMessagesWhileTyping` (`src/editor/shell/field.tsx`) só conta a chegada quando `ownCommandRunning()`. Outra palavra é anotada e deixa a digitação no campo.
+  - Uma primeira versão contava só a recusa, e o Esc do campo deixou de devolver o valor do documento (`inspector-number-fields.spec.ts:256` falhou). A marca do comando próprio cobre os dois.
+- **Detector:** o grupo `drafts` (MEC-12), dois casos novos:
+  - "um aviso do editor durante a digitação não apaga nem solta o que a pessoa digita": `33px`, um aviso `status.save.journalInDatabase`, e depois o Enter grava `33px`;
+  - "o Esc do próprio campo ainda devolve o valor do documento e solta a digitação".
+
+  Mutantes acusados:
+  - M129: toda mensagem conta, o código de antes;
+  - M133: o despacho sem `runOwn`.
+
+  O M126 teve o trecho atualizado para o corpo novo do gancho e continua acusado.
+- **Verificação:** detectores 25 arquivos e 109 testes sem falha; os 133 trechos do catálogo no código; `npm run typecheck` e `npm run lint` com saída 0; os testes de navegador dos campos e do lote do navegador (`field-refusal`, `field-history`, `inspector-number-fields`, `inspector-fields`, `number-fields-one-rule`, `draft-recovery`, `quick-panel`, `edicao-pendente`, `font-menu-draft`, `lote-navegador`, `E2E_WORKERS=2`, prioridade baixa): 80 de 80.
+- **No app:** com o `localStorage` cheio (`cota-digitacao.mjs` no scratchpad da sessão), digitar `77px` na Largura não emitiu o aviso do diário durante a digitação, nem no build sem a correção: por esse caminho o diário não é escrito enquanto se digita. Não achei como provocar um aviso real no meio da digitação no navegador; o efeito está medido pelo caso do detector, com o campo e a store de verdade.
+- **Intermitência medida no caminho (não é deste defeito):** `draft-recovery.spec.ts`, "quick panel draft warns before reload…", falha na reabertura do painel pelo chip depois da última recarga (`tests/e2e/door.ts:179`).
+  - Na base da sessão (4fcd3d43), 8 falhas em 120; no código de agora, 2 em 120.
+  - A bissecção que apontava o DEF-0555 (1 em 60 contra 0 em 60) foi desfeita por essa amostra maior.
+  - Registrada em `progresso.md` para investigar.

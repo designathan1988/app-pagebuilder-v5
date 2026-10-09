@@ -35,7 +35,7 @@ import { initialEditorUi, type EditorUi } from './state.ts';
 import { siteScripts } from './forms/script.ts';
 import { deriveData } from '../core/data/derive.ts';
 import { wiring } from './wiring.ts';
-import { beforeCommand, heldTyping, keepsWaitWhile, keepTyping, keepWhatWaited } from './input/pending.ts';
+import { beforeCommand, heldTyping, keepsWaitWhile, keepTyping, keepWhatWaited, runOwn } from './input/pending.ts';
 import { historyBreaches } from '../core/history/invariants.ts';
 import { restoreEditContext } from './view/edit-context.ts';
 import { reportError } from '../core/incidents.ts';
@@ -287,10 +287,12 @@ function gestureSafe(store: EditorStore): EditorStore {
       const at = context ?? beforeCommand(id, args, changesDocument);
       const edited = heldTyping() === null || own ? null : editedKey(store.getState());
       let result: DispatchResult;
-      if (open === null) result = store.dispatch(id, args, at);
+      // the field's own command says the field's own word (input/pending.ts runOwn; DEF-0565)
+      const running = (run: () => DispatchResult): DispatchResult => (own ? runOwn(run) : run());
+      if (open === null) result = running(() => store.dispatch(id, args, at));
       else if (!changesDocument && !opensRefused(id, args)) {
         const gesture = open;
-        result = inGesture(id, () => gesture.dispatch(id, args));
+        result = running(() => inGesture(id, () => gesture.dispatch(id, args)));
       } else result = afterGesture(id, args, at ?? editContextOf(store.getState()));
       if (edited !== null && heldTyping() !== null && editedKey(store.getState()) !== edited) keepTyping();
       return result;

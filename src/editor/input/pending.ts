@@ -70,6 +70,20 @@ export function releaseTyping(field: HTMLElement): void {
 // The typing held now, if any.
 export const heldTyping = (): Typing | null => held;
 
+// Whether a command the held typing owns is running now (the editor's store runs one through `runOwn`): what the store
+// says meanwhile is the field's own word — its refusal, its cancel, its step —, after which the field shows the
+// document's value again (the audit's FD2); any other word that arrives during the typing leaves it alone (DEF-0565).
+let ownRunning = 0;
+export function runOwn<T>(run: () => T): T {
+  ownRunning += 1;
+  try {
+    return run();
+  } finally {
+    ownRunning -= 1;
+  }
+}
+export const ownCommandRunning = (): boolean => ownRunning > 0;
+
 // Keeps the typing held now, if any; while a command group holds the editor, once it has ended.
 export function keepTyping(): void {
   const typing = held;
