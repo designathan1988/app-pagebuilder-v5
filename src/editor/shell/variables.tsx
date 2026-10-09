@@ -164,12 +164,15 @@ export function Variables() {
           <div key={kind} className="variables__group" role="group" aria-label={t(GROUPS[i] ?? 'panel.variables')}>
             <div className="variables__group-title">{t(GROUPS[i] ?? 'panel.variables')}</div>
             {group.map((token) => (
-              <div key={token.name} className={`variables__row${kind === COLOUR_KIND ? ' variables__row--colour' : ''}`}>
+              <div key={token.name} className={`variables__row variables__row--token${kind === COLOUR_KIND ? ' variables__row--colour' : ''}`}>
                 {/* a colour variable wears its colour (the canonical Styles view's 14 px swatch) */}
                 {kind === COLOUR_KIND ? <span className="variables__swatch" style={{ '--swatch-colour': token.value } as CSSProperties} aria-hidden /> : null}
                 {RENAME !== undefined ? <VariableField key={`${token.name}-name`} entry={RENAME} token={token.name} filled="name" held={token.name} label={t('styles.variableName')} /> : null}
-                {UPDATE !== undefined ? <VariableField key={`${token.name}-value`} entry={UPDATE} token={token.name} filled="value" held={token.value} label={t('styles.variableValue')} /> : null}
-                {DELETE !== undefined ? <DoorControl entry={DELETE} args={{ token: token.name }} ready={isFeatureBuilt(DELETE.door.feature as FeatureId)} /> : null}
+                {/* the value and its delete go together: where the name leaves them no room they go under it, whole */}
+                <span className="variables__end">
+                  {UPDATE !== undefined ? <VariableField key={`${token.name}-value`} entry={UPDATE} token={token.name} filled="value" held={token.value} label={t('styles.variableValue')} /> : null}
+                  {DELETE !== undefined ? <DoorControl entry={DELETE} args={{ token: token.name }} ready={isFeatureBuilt(DELETE.door.feature as FeatureId)} /> : null}
+                </span>
               </div>
             ))}
           </div>

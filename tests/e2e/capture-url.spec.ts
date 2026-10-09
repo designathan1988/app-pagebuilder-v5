@@ -230,11 +230,20 @@ test('picture sources keep the selected artwork in the exported desktop and phon
 test('a standalone responsive image retains the browser-selected local source at each width', runs('project.captureUrl#capture-url-run', 'project.export#menu-file'), async ({ page, context }) => {
   test.setTimeout(120_000);
   const original = await context.newPage();
-  for (const [width, colour] of [[1440, '#123456'], [390, '#abcdef']] as const) {
+  // the candidate the browser itself picks at each width: at a device scale of 1 the narrow window takes #abcdef and
+  // the wide one #123456; at 1.25 (Windows, E2E_SCALE) it may take the larger one at both. The capture keeps whichever
+  // the browser picks, so the export is held to the same choice (DEF-0579)
+  const chosen = new Map<number, string>();
+  const natural = new Map<number, number>();
+  for (const width of [1440, 390]) {
     await original.setViewportSize({ width, height: 900 });
     await original.goto(`http://127.0.0.1:${SITE_PORT}/responsive-img.html`);
     const source = await original.locator('#responsive-img').evaluate(async (img) => (await fetch((img as HTMLImageElement).currentSrc)).text());
-    expect(source, `${width}px original browser selection`).toContain(colour);
+    const colour = ['#123456', '#abcdef'].find((one) => source.includes(one));
+    expect(colour, `${width}px original browser selection`).toBeDefined();
+    chosen.set(width, colour ?? '');
+    // a w descriptor's candidate is drawn at its density: its natural width is the file's divided by it
+    natural.set(width, await original.locator('#responsive-img').evaluate((img) => (img as HTMLImageElement).naturalWidth));
   }
   await original.close();
   await openEditor(page);
@@ -258,11 +267,11 @@ test('a standalone responsive image retains the browser-selected local source at
     if (bytes === undefined) return route.fulfill({ status: 404, body: '' });
     return route.fulfill({ contentType: name.endsWith('.svg') ? 'image/svg+xml' : name.endsWith('.css') ? 'text/css' : 'text/html', body: bytes });
   });
-  for (const [width, colour] of [[1440, '#123456'], [390, '#abcdef']] as const) {
+  for (const [width, colour] of chosen) {
     await exported.setViewportSize({ width, height: 900 });
     await exported.goto('http://made.capture.test/responsive-img.html');
     const image = exported.locator('#responsive-img');
-    await expect.poll(() => image.evaluate((img) => (img as HTMLImageElement).naturalWidth)).toBe(120);
+    await expect.poll(() => image.evaluate((img) => (img as HTMLImageElement).naturalWidth)).toBe(natural.get(width));
     expect(await image.getAttribute('srcset'), `${width}px retains candidate selection`).not.toBeNull();
     const source = await image.evaluate(async (img) => (await fetch((img as HTMLImageElement).currentSrc)).text());
     expect(source, `${width}px uses its browser-selected local image candidate`).toContain(colour);

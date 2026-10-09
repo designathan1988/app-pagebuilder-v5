@@ -1176,3 +1176,69 @@
 - Sintoma: `tests/e2e/resize-handles.spec.ts` "the east handle of a full-width element…" falhava 4 de 4 na condição Windows. O app está certo: a barra de rolagem da página (15 px) faz a seção terminar antes da borda da moldura, e o centro da alça é a própria alça, que recebe o clique.
 - Causa: `tests/e2e/resize-handles.spec.ts:345` exigia o palco sob o centro da alça em qualquer condição.
 - Prova: a premissa confere o palco quando o centro passa da moldura e a alça quando não passa. O spec deu 14 de 14 nas duas condições; antes, 4 falhas em 4 na condição Windows.
+
+## DEF-0577 — a recusa de um arquivo com uma referência quebrada dizia só "/pages"
+- Status: corrigido (Lote 4)
+- Sintoma: depois do DEF-0549 a razão de recusa é só o caminho do problema; para um rótulo que aponta para um elemento que não existe, o caminho era `/pages`, sem o elemento nem o atributo. O spec `link-picker-and-references` ainda esperava a frase antiga do validador.
+- Causa: `src/core/document/validate.ts`: o problema da referência órfã era registrado em `/pages`.
+- Prova: o problema leva o caminho do atributo (`…/children/N/attributes/labelFor`); caso novo no grupo `robustness`, mutante M142 acusado; o spec espera os dois caminhos e passa nas duas condições.
+
+## DEF-0578 — o estado vazio da aba Configurações encostava nas bordas do painel
+- Status: corrigido (Lote 4)
+- Sintoma: com nada selecionado, "Nothing selected" e as dicas da aba Configurações tocavam a borda esquerda e a direita do inspector; a aba Estilo tem a margem do `inspector-body--empty`.
+- Causa: `src/editor/shell/inspector-settings.tsx`: o corpo vazio usava `inspector-body` sem o modificador.
+- Prova: caso novo em `tests/e2e/inspector-empty-style.spec.ts`; sem a correção falha (folga 0), com ela passa.
+
+## DEF-0579 — o caso da imagem responsiva fixava a escolha do navegador na escala 1
+- Status: corrigido (Lote 4)
+- Sintoma: `capture-url.spec.ts` "a standalone responsive image…" falhava na escala 1,25: o navegador escolhe outro candidato do `srcset` e a largura natural de um candidato com descritor `w` é a do arquivo dividida pela densidade (33 em vez de 120).
+- Causa: o teste esperava cores e largura natural da escala 1.
+- Prova: o teste grava a escolha e a largura natural do navegador em cada largura e exige as mesmas no site exportado; passa nas duas condições.
+
+## DEF-0580 — o diagnóstico de diferença misturava pixels do aparelho e pixels CSS
+- Status: corrigido (Lote 4)
+- Sintoma: `corpus-reference.spec.ts` dava a faixa em 125 em vez de 100 na escala 1,25, e o elemento procurado nela era o errado.
+- Causa: `tools/capture/diagnose.ts` lia a faixa nas linhas da foto (pixels do aparelho) e as caixas em pixels CSS.
+- Prova: tudo o que o diagnóstico informa sai em pixels CSS (pela `devicePixelRatio`); o spec passa nas duas condições.
+
+## DEF-0581 — a tolerância do caso de coordenadas valia só na escala 1
+- Status: corrigido (Lote 4)
+- Sintoma: `coordinates.spec.ts` falhava na escala 1,25, só em 25 % de zoom: a caixa pintada ficou até 1,98 px CSS (2,5 px do aparelho) da calculada; em 50 % e acima, menos de 1 px. `screenBox` (`src/editor/canvas/coordinates.ts:85`) é cálculo puro; o desvio é a rasterização do Chrome numa escala efetiva de 0,3125.
+- Causa: a tolerância de 1 px CSS supunha 1 px CSS = 1 px do aparelho.
+- Prova: tolerância de 3 px do aparelho fora da escala 1, 1 px na escala 1; medidas por zoom registradas no comentário; passa nas duas condições.
+
+## DEF-0582 — o nome de uma variável era cortado na aba Estilos com barra de rolagem visível
+- Status: corrigido (Lote 4)
+- Sintoma: na condição Windows (15 px de barra), "terracota-escuro" aparecia "terracota-escur".
+- Causa: `src/editor/shell/window-overlays.css`: a linha de variável era uma grade de uma linha só, e o nome ficava com o que o valor deixava.
+- Prova: a linha quebra só quando falta espaço: o valor e o excluir descem juntos para baixo do nome (`variables__end`). `styles-view.spec.ts` falhava na condição Windows e passa nas duas; foto: na padrão a linha é a mesma, na Windows o valor desce.
+
+## DEF-0583 — o caso da página vazia esperava 1440 px com barra de rolagem visível
+- Status: corrigido (Lote 4)
+- Sintoma: `empty-page-size.spec.ts` falhava na condição Windows com "1425 × 900".
+- Causa: a página do desktop deixa livre a largura da barra por decisão do dono (A3.22); o teste esperava 1440.
+- Prova: o teste espera 1440 menos a largura da barra medida; passa nas duas condições.
+
+## DEF-0584 — a premissa do encaixe na coluna dependia da largura da página
+- Status: corrigido (Lote 4)
+- Sintoma: `smart-guides.spec.ts` "…snaps to it" falhava com barra visível: a linha desenhada ficou a 166 px da coluna.
+- Causa: na página de 1425 px a borda direita do título caía a menos de 4 px de outra borda de coluna, e o encaixe pega o alvo mais próximo, como deve.
+- Prova: o teste escolhe a coluna em que só a borda esquerda fica perto de um alvo; passa nas duas condições.
+
+## DEF-0585 — a seleção feita logo antes de recarregar se perdia com a máquina ocupada
+- Status: corrigido (Lote 4)
+- Sintoma: `draft-recovery.spec.ts` "a confirmed draft never returns…" falhou na suíte inteira (passa sozinho): depois da recarga, "Nothing selected".
+- Causa: `src/editor/persistence/autosave.ts`, `guard`: ao sair da página, só uma revisão que muda o documento ia para o diário; a seleção sozinha esperava a gravação ociosa.
+- Prova: o diário de saída leva a revisão pendente também quando só a seleção mudou; caso novo no grupo `lifetime`, que falha sem a correção; mutante M143 acusado.
+
+## DEF-0586 — um caso da barra de status abria o editor duas vezes declarando um perfil novo
+- Status: corrigido (Lote 4)
+- Sintoma: `status-bar.spec.ts` "every control of the status bar is as tall as the bar" falhou na suíte com "nothing was stored before it loaded" (1 item no `localStorage`).
+- Causa: o `beforeEach` já abre o editor com o Aurora; o caso chamava `openEditor` de novo na mesma página, e a saída da primeira carga grava no diário a seleção pendente (DEF-0585), como deve.
+- Prova: o caso usa o editor que o `beforeEach` abriu; o spec passa 6 de 6.
+
+## DEF-0587 — três casos liam antes de o app terminar, com a máquina ocupada
+- Status: corrigido (Lote 4)
+- Sintoma: na terceira passada da condição Windows falharam `props-flex-container` (0 paradas de tabulação na matriz), `wrap-row-column` (documento salvo indefinido) e `forms-runtime` (campo da pré-visualização não achado em 5 s); sozinhos, 15 de 15.
+- Causa: leituras de uma vez só: as paradas da matriz antes do desenho, o documento no IndexedDB antes da gravação ociosa, e o primeiro campo antes de a pré-visualização montar a página.
+- Prova: as duas primeiras leituras esperam o valor (`expect.poll`) e a pré-visualização tem 15 s para desenhar o formulário; os três passam nas duas condições.

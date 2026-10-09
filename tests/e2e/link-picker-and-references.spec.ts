@@ -156,8 +156,10 @@ test('a project file whose semantics are broken is refused with the reason', run
     { id: 'a1', type: 'input', name: 'Input', tag: 'input', attributes: { inputType: 'potato' }, classes: [], styles: {}, text: null, children: [] },
     { id: 'a2', type: 'label', name: 'Label', tag: 'label', attributes: { labelFor: 'gone:01' }, classes: [], styles: {}, text: null, children: [] },
   ];
-  // a plain id attribute the file carried ('button-24') is left alone; a reference that names no element is refused
-  for (const [broken1, expected] of [[true, 'potato'], [false, 'names no element']] as const) {
+  // a plain id attribute the file carried ('button-24') is left alone; a reference that names no element is refused.
+  // The reason names where the document is not valid, in the catalogue's words (DEF-0549): the input type's path, then
+  // the label's reference
+  for (const [broken1, expected] of [[true, '/attributes/inputType'], [false, '/attributes/labelFor']] as const) {
     if (!broken1) delete (root.children[0] as { attributes: Record<string, unknown> }).attributes.inputType;
     await openMenu(page, 'file');
     const chooser = page.waitForEvent('filechooser');

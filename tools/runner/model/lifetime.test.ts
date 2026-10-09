@@ -106,4 +106,24 @@ describe('o que fica agendado depois de parar', () => {
       vi.useRealTimers();
     }
   });
+
+  // DEF-0585: a selection made just before the tab reloads, its write still waiting for the idle moment (a busy
+  // machine), went with the page: the journal written on leaving took only a change of the document.
+  it('a seleção feita logo antes de sair da página fica no diário que a recarga lê', () => {
+    vi.useFakeTimers();
+    try {
+      window.localStorage.clear();
+      const page = fixture('aurora');
+      const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(0), ids: sequentialIds('a'), restored: { document: page, selection: [] }, ports: { readOnly: () => false } });
+      const stop = startAutosave(store, { revision: 1, format: page.version, document: page, selection: [] }, true);
+      (store.dispatch as (id: CommandId, args: unknown) => unknown)('selection.select' as CommandId, { target: 'n-intro' });
+      // the idle write has not run: the tab leaves now
+      window.dispatchEvent(new Event('beforeunload', { cancelable: true }));
+      const journal = JSON.parse(window.localStorage.getItem('work-journal') ?? 'null') as { selection?: readonly string[] } | null;
+      expect(journal?.selection, 'o diário guarda a seleção de agora').toEqual(['n-intro']);
+      stop();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });

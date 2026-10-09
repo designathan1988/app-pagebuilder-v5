@@ -341,8 +341,9 @@ export function startAutosave<Ui>(store: Store<Ui>, saved: SavedWork | null | un
     const draft = hasPendingDraft();
     // the work not written yet goes to the journal now, which a write finishes before the page can unload (an
     // IndexedDB write started now could be cut short: the next start reads the journal). A selection-only revision
-    // is written too while it binds an unconfirmed draft, so that draft finds the same revision on the next start.
-    journalNow(draft);
+    // is written too: the next start restores the selection of now (a selection made just before a reload, its idle
+    // write not run on a busy machine, was lost, DEF-0585), and an unconfirmed draft finds the same revision.
+    journalNow(true);
     if (state !== 'saving' && refusal === null && !draft && !unwritten) return;
     event.preventDefault();
     event.returnValue = '';

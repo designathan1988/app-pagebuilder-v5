@@ -116,17 +116,25 @@ export async function diagnosePictures(
     };
   }, { source: original.toString('base64'), made: exported.toString('base64'), tolerance: TOLERANCE });
   fs.writeFileSync(`${output}.png`, Buffer.from(pixels.png, 'base64'));
-  const at = pixels.firstBand;
+  // the pictures are in device pixels and the layouts in CSS pixels: at a device scale other than 1 (Windows at 125 %,
+  // E2E_SCALE) a band read in the picture's rows named the wrong element and the wrong row (DEF-0580); every place the
+  // diagnosis reports is in CSS pixels, the layouts' unit
+  const scale = (await page.evaluate(() => window.devicePixelRatio)) || 1;
+  const css = (n: number): number => Math.round(n / scale);
+  const band = pixels.firstBand;
+  const at = band === null ? null : { start: css(band.start), end: css(band.end), x: css(band.x), changedPixelsAtStart: band.changedPixelsAtStart };
+  const sourceSize = { width: css(pixels.sourceSize.width), height: css(pixels.sourceSize.height) };
+  const exportSize = { width: css(pixels.exportSize.width), height: css(pixels.exportSize.height) };
   const candidates = at === null ? [] : exportLayout.filter((box) => contains(box, at.x, at.start)).sort((a, b) => area(a) - area(b));
   const exportElement = candidates[0] ?? null;
   const matchedSource = exportElement?.capturePath ? originalLayout.find((box) => box.capturePath === exportElement.capturePath) : null;
   const sourceAtPixel = at === null ? null : originalLayout.filter((box) => contains(box, at.x, at.start)).sort((a, b) => area(a) - area(b))[0] ?? null;
   const originalElement = at !== null && matchedSource !== null && matchedSource !== undefined && contains(matchedSource, at.x, at.start) ? matchedSource : sourceAtPixel;
-  const limit = viewportWidth ?? pixels.sourceSize.width;
+  const limit = viewportWidth ?? sourceSize.width;
   const horizontalOverflow = exportLayout.filter((box) => box.tag !== 'html' && box.tag !== 'body' && box.bounds.width > 0 && box.bounds.x + box.bounds.width > limit + 1)
     .map((element) => ({ element, excess: Math.round(element.bounds.x + element.bounds.width - limit) }))
     .sort((a, b) => b.excess - a.excess || area(a.element) - area(b.element)).slice(0, 10);
-  const diagnosis: DifferenceDiagnosis = { sourceSize: pixels.sourceSize, exportSize: pixels.exportSize, firstDifferentRow: pixels.firstDifferentRow, firstBand: at, originalElement, exportElement, horizontalOverflow };
+  const diagnosis: DifferenceDiagnosis = { sourceSize, exportSize, firstDifferentRow: pixels.firstDifferentRow === null ? null : css(pixels.firstDifferentRow), firstBand: at, originalElement, exportElement, horizontalOverflow };
   fs.writeFileSync(`${output}.json`, `${JSON.stringify(diagnosis, null, 2)}\n`);
   return diagnosis;
 }

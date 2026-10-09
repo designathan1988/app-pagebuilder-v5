@@ -365,7 +365,9 @@ export function SettingsTab({ head = null }: { readonly head?: ReactNode } = {})
     <div className="inspector-tab inspector-tab--settings" data-region="inspector-settings">
       {head}
       <div className="inspector-scroll">
-        <div className="inspector-body">
+        {/* with no element to show, the words keep the Style tab's room from the panel's edges (DEF-0578: they touched
+            them) */}
+        <div className={`inspector-body${count === 0 || node === null ? ' inspector-body--empty' : ''}`}>
           {count === 0 ? (
             <>
               <p className="inspector-empty">{t('inspector.nothingSelected')}</p>

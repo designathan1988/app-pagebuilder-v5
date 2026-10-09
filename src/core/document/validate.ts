@@ -487,8 +487,11 @@ export function validateDocument(doc: DocumentJson, selection: Selection, manife
   for (const problem of motionProblems(doc)) bad(problem.path, problem.message);
   // the event interactions of every element (core/events/interactions.ts, the audit's EV2): read as strictly as the
   // motion data, so an opened file never holds an address that runs code or a target that is not there
+  // where each element of the pages stands, for a reference's problem below to name its own attribute (DEF-0577)
+  const pathOf = new Map<string, string>();
   doc.pages.forEach((page, p) => {
     const visit = (node: DocNode, at: string): void => {
+      pathOf.set(node.id, at);
       if ('interactions' in node) {
         const held: unknown = node.interactions;
         if (!Array.isArray(held) || held.length === 0) bad(`${at}/interactions`, 'interactions is a list of at least one interaction, or absent');
@@ -500,8 +503,11 @@ export function validateDocument(doc: DocumentJson, selection: Selection, manife
     };
     if (isRecord(page) && isRecord(page.tree)) visit(page.tree as DocNode, `/pages/${p}/tree`);
   });
+  // the path names the attribute that holds the reference: the reason a refused file shows is that path alone, in the
+  // catalogue's words (DEF-0549), and "/pages" said nothing of which element or which reference (DEF-0577)
   for (const orphan of orphanReferences(doc)) {
-    bad('/pages', `${orphan.node.name} holds ${orphan.attribute} "${orphan.value}", which names no element of the document`);
+    const at = pathOf.get(orphan.node.id);
+    bad(at === undefined ? '/pages' : `${at}/attributes/${orphan.attribute}`, `${orphan.node.name} holds ${orphan.attribute} "${orphan.value}", which names no element of the document`);
   }
   return problems;
 }

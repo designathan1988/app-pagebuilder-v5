@@ -80,8 +80,9 @@ test('the cells are buttons the keyboard reaches and presses', runs(OPEN, ROW, D
 test('Tab reaches the matrix with no cell pressed, and ArrowDown moves a row down', runs(OPEN, ROW, DISPLAY, MATRIX), async ({ page }) => {
   await type(page, DISPLAY, 'flex');
   await expect.poll(async () => (await declared(page, 'n-grid')).display).toBe('flex');
-  const stops = await page.locator(`[data-door="${MATRIX}"]`).evaluateAll((els) => els.filter((el) => (el as HTMLElement).tabIndex === 0).length);
-  expect(stops).toBe(1);
+  // one Tab stop once the matrix is drawn for the flex container: read when it is, never in the frame before (the
+  // read found none on a busy machine, DEF-0587)
+  await expect.poll(() => page.locator(`[data-door="${MATRIX}"]`).evaluateAll((els) => els.filter((el) => (el as HTMLElement).tabIndex === 0).length)).toBe(1);
   await control(page, MATRIX, { args: { x: 'start', y: 'start' } }).focus();
   await page.keyboard.press('ArrowDown');
   await expect(control(page, MATRIX, { args: { x: 'start', y: 'center' } })).toBeFocused();

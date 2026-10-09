@@ -65,6 +65,55 @@
   color: var(--color-text);
 }
 
+/* A variable's row lays its name, then its value with its delete, on one line while they fit; where the name is wider
+   than what the value leaves it (a long name, or the 15 px a Windows scrollbar takes from the sidebar: 209 px left
+   "terracota-escur", DEF-0582), the value and its delete go to a second line, under the name, and nothing is cut. The
+   name is as wide as it reads (field-sizing: content) and takes the rest of its line. */
+.variables__row--token {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.variables__row--token > .variables__swatch {
+  flex: none;
+}
+
+.variables__row--token > .variables__field {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.variables__row--token > .variables__field .input {
+  field-sizing: content;
+  width: 100%;
+  min-width: calc(var(--space-9) * 2);
+}
+
+.variables__end {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.variables__end > .variables__field .input {
+  field-sizing: content;
+  min-width: calc(var(--space-9) * 2);
+}
+
+.variables__end > .door {
+  width: var(--size-target-min);
+  min-width: var(--size-target-min);
+  color: var(--color-text-subtle);
+}
+
+.variables__row:hover .variables__end > .door,
+.variables__row:focus-within .variables__end > .door {
+  color: var(--color-text);
+}
+
 .variables__swatch {
   /* the colour, set on each swatch (variables.tsx); none without it */
   --swatch-colour: transparent;

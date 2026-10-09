@@ -99,8 +99,8 @@ test('the size and the context follow the commands', runs(OPEN, CLICK, WIDTH, PH
 
 // The bar's controls are as tall as the bar (the audit's U-038: 26 and 28 px buttons in a 24 px bar).
 test('every control of the status bar is as tall as the bar', runs(OPEN, CLICK), async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await openEditor(page);
+  // (the aurora project is open at 1440 × 900: beforeEach. Opening the editor again here reloaded a profile that was no
+  // longer fresh, which the saved selection of the first load then showed, DEF-0586)
   // a press on the page selects it: the breadcrumb draws its button
   const centre = await pagePoint(page);
   await page.mouse.click(centre.x, centre.y);

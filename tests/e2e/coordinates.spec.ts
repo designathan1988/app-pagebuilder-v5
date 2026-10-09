@@ -232,12 +232,17 @@ test('a click on a page point hits the element laid out there, and screenBox is 
         });
       }, scene.targets);
       const painted = await paintedBoxes(page, scene.targets.map((id) => byId(id).color));
+      // at a device scale of 1 a CSS pixel is a screen pixel; at a fractional one (Windows at 125 %, E2E_SCALE) Chrome
+      // rasterizes the zoomed page on the device grid, which getBoundingClientRect never reports: measured at 1.25, the
+      // painted edges stand up to 2.5 device px (1.98 CSS px) from the boxes at 25 %, under one at 50 % and above
+      // (DEF-0581); three device pixels, in CSS pixels
+      const ratio = await page.evaluate(() => window.devicePixelRatio);
+      const tolerance = ratio === 1 ? 1 : 3 / ratio;
       scene.targets.forEach((id, i) => {
         const box = computed[i];
         const real = painted[i];
         if (!box || !real) throw new Error(`#${id} has no box ${where}: screenBox ${JSON.stringify(box)}, painted ${JSON.stringify(real)}`);
-        const off = Math.max(Math.abs(box.x - real.x), Math.abs(box.y - real.y), Math.abs(box.width - real.width), Math.abs(box.height - real.height));
-        expect(off, `screen pixels between screenBox(#${id}) ${JSON.stringify(box)} and its painted box ${JSON.stringify(real)} ${where}`).toBeLessThanOrEqual(1);
+        const off = Math.max(Math.abs(box.x - real.x), Math.abs(box.y - real.y), Math.abs(box.width - real.width), Math.abs(box.height - real.height));        expect(off, `screen pixels between screenBox(#${id}) ${JSON.stringify(box)} and its painted box ${JSON.stringify(real)} ${where}`).toBeLessThanOrEqual(tolerance);
       });
     }
   }

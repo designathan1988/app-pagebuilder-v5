@@ -165,8 +165,15 @@ test('with Snap and the column grid on a box four px from a column edge snaps to
   await runDoor(page, APPLY);
   await runDoor(page, COLUMNS);
   const title = await screenBox(page, 'n-title');
-  const column = await page.locator('.chrome__grid-column').nth(1).boundingBox();
-  if (column === null) throw new Error('the column grid is not drawn');
+  // the column whose left edge the Title's left edge is taken to, with its right edge then far from every column edge:
+  // the snap takes the nearest target, and on a page a scrollbar narrows (Windows, A3.22) the second column put the
+  // right edge nearer another column's edge than four px (DEF-0584)
+  await expect(page.locator('.chrome__grid-column').nth(1), 'the column grid is drawn').toBeVisible();
+  const columns = (await page.locator('.chrome__grid-column').evaluateAll((all) => all.map((one) => { const b = one.getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; })));
+  const edges = columns.flatMap((one) => [one.x, one.x + one.width]);
+  const wide = title.right - title.x;
+  const column = columns.slice(1).find((one) => edges.every((edge) => Math.abs(one.x + 4 * title.zoom + wide - edge) > 8 * title.zoom)) ?? null;
+  if (column === null) throw new Error('the column grid is not drawn, or no column leaves the right edge clear');
   // the Title's left edge taken to four page px right of the second column's left edge, past the threshold first
   await holdDrag(page, 'n-title', { x: column.x - title.x + 4 * title.zoom, y: 60 });
   const line = page.locator('[data-snap-line="x"][data-snap-source="grid"]');

@@ -196,3 +196,8 @@
 ## DCS-024 — a pseudo-expansão da medição de texto é aviso, não falha
 - **Origem:** DEF-0573. Com o espaço medido por porta, 51 rótulos não comportam o inglês com 140 % de expansão.
 - **Decidido:** preserva-se a interface como está. A pseudo-expansão vai para `.cache/model/ui-fit-pseudo.json` como aviso; pt-BR e inglês reais continuam falha. Alargar colunas para a expansão é decisão de produto do dono.
+
+## DCS-025 — os cenários das especificações rodam no ambiente de referência
+- **Origem:** Lote 4. A suíte inteira na condição Windows (`E2E_SCROLLBARS=shown E2E_SCALE=1.25`) deu 76 falhas, 69 delas em cenários de `tools/runner/scenarios.ts`: larguras de página 1440 (dão 1425), ladrilhos, contornos, réguas, zoom em volta do ponteiro e a largura que o compositor grava (1425).
+- **Rastreamento:** a página do desktop deixa livre a largura da barra de rolagem por decisão do dono (A3.22, `tests/e2e/overlay-scrollbar-width.spec.ts`), e todo painel que rola fica 15 px mais estreito. Os números dos cenários são os das especificações, medidos sem barra e na escala 1.
+- **Decidido:** preserva-se o comportamento do app. Na condição Windows ficam pulados, com a anotação `screen-condition`, só o recurso `layout-composer` e os 21 cenários que falharam por esses números, numa lista explícita (`REFERENCE_NUMBERS` em `tools/runner/scenarios.ts`). O `export-bem-css` entra porque o clique no centro do campo de nome cai sob a faixa de ações, exceção já registrada em `tests/support/screen-guard-allowed.ts`. Os demais cenários rodam nas duas condições.

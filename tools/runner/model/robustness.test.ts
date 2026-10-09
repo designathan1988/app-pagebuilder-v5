@@ -143,6 +143,16 @@ describe('um texto hostil contra os leitores que o leem', () => {
     }
   });
 
+  // A file whose label points at an element that is not there is refused with the place of that reference: the reason
+  // a refusal shows is the path alone (DEF-0549), and "/pages" named neither the element nor the reference (DEF-0577).
+  it('um arquivo com uma referência que não nomeia elemento é recusado com o caminho do atributo', () => {
+    const page = fixture('aurora') as unknown as { pages: { tree: { children: unknown[] } }[] };
+    const children = page.pages[0]?.tree.children ?? [];
+    children.push({ id: 'r-label', type: 'label', name: 'Label', tag: 'label', attributes: { labelFor: 'gone:01' }, classes: [], styles: {}, text: null, children: [] });
+    const read = readProject(page, MODEL_RULES);
+    expect('refused' in read && read.refused.params?.reason, 'a recusa diz o atributo da referência').toMatchObject({ key: 'status.open.invalidDocument', params: { path: `/pages/0/tree/children/${String(children.length - 1)}/attributes/labelFor` } });
+  });
+
   // What comes from outside and is deeper or of another shape than any page (DEF-0543, DEF-0544, DEF-0545): refused, or
   // read as far as it goes, never a throw.
   it('uma árvore funda, um componente sem filhos, uma captura antiga malformada, uma colagem malformada e um CSS aninhado fundo são recusados ou lidos, nunca derrubam o leitor', () => {

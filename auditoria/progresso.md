@@ -28,8 +28,26 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
     - a medida "1360 × 41" é a prévia da área de um traço do compositor (`overlay.tsx:172`), sem controle.
   - Os 12 specs do canvas passam nas duas condições; detectores 115 de 115; typecheck e lint sem erro.
 
-## Próximo passo
-**Lote 4 — fim de etapa:** a suíte de navegador inteira nas duas condições (`E2E_WORKERS=3`, prioridade baixa, saída em arquivo) e o catálogo inteiro de mutantes; as falhas viram DEF-.
+- **Lote 4 (2026-10-09), fim de etapa — feito:**
+  - Primeira passada da suíte inteira:
+    - condição padrão: 2.927 de 2.929, em 30,6 min;
+    - condição Windows: 2.847 de 2.929, com 76 falhas, em 33,4 min.
+  - 69 das falhas são cenários com os números das especificações, medidos sem barra de rolagem. Pela A3.22, a página do desktop deixa a barra livre e os painéis ficam 15 px mais estreitos. Ficam pulados na condição Windows (DCS-025).
+  - Os demais viraram DEF-0577 a DEF-0585, todos corrigidos. Defeitos do app:
+    - DEF-0577, a recusa por referência quebrada dizia só "/pages";
+    - DEF-0578, o estado vazio da aba Configurações sem margem;
+    - DEF-0582, o nome da variável cortado na aba Estilos;
+    - DEF-0585, a seleção perdida numa recarga logo depois de selecionar.
+  - Defeitos de teste: DEF-0579, DEF-0580, DEF-0581, DEF-0583 e DEF-0584.
+  - Mutantes M142 e M143 acusados; `ui-widths.json` medido de novo nas três condições; detectores 117 de 117; typecheck e lint sem erro.
 
-## Fila depois do próximo passo, em ordem
-1. **Lote 5 — Fase 9 (otimização):** criar `auditoria/otimizacoes.md`. Alvos já vistos: as fontes em TTF (431 KB e 426 KB; as WOFF2 de contornos TrueType do mesmo repositório têm 109,6 KB e 108,9 KB); o bundle sem divisão de código; o quadro de `onUp` perto de 60 ms com a CPU ocupada. Medir antes e depois: re-renders (grupo `render`), leituras de layout forçadas, operações na árvore de blocos e o tamanho do bundle (`npx vite build`).
+  - Segunda passada:
+    - condição padrão: 2.928 de 2.930. As duas falhas foram o quadro de 70,3 ms em `onUp` com a CPU disputada (alvo do Lote 5) e o DEF-0586: `status-bar.spec.ts` abria o editor duas vezes na mesma página, declarando um perfil novo; o spec passa 6 de 6.
+    - condição Windows: 886 passaram e 0 falharam, mas com todos os cenários pulados. A DCS-025 foi restringida ao `layout-composer` e a 21 cenários listados (`REFERENCE_NUMBERS`), e a condição Windows roda de novo (saída `l4c-windows.txt`).
+
+  - Terceira passada da condição Windows: 2.857 passaram, 70 foram pulados (DCS-025) e 3 falharam por leituras feitas cedo demais com a máquina ocupada (DEF-0587, corrigido). Sozinhos, 15 de 15; depois da correção, 23 de 23 nas duas condições.
+  - Catálogo inteiro de mutantes: 143, com 140 acusados e 3 equivalentes com motivo (M19, M25, M30), 100% dos não equivalentes, em 197,6 s.
+  - Detectores 117 de 117; typecheck e lint sem erro.
+
+## Próximo passo
+**Lote 5 — Fase 9 (otimização):** criar `auditoria/otimizacoes.md`. Alvos já vistos: as fontes em TTF (431 KB e 426 KB; as WOFF2 de contornos TrueType do mesmo repositório têm 109,6 KB e 108,9 KB); o bundle sem divisão de código; o quadro de `onUp` perto de 60 ms com a CPU ocupada. Medir antes e depois: re-renders (grupo `render`), leituras de layout forçadas, operações na árvore de blocos e o tamanho do bundle (`npx vite build`).

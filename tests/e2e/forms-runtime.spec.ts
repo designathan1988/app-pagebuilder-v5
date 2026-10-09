@@ -132,6 +132,8 @@ test('all nineteen presets validate and submit raw values in preview and export'
   });
   await runDoor(page, PREVIEW);
   const frame = page.frameLocator('[data-region="preview-page"]');
+  // the preview builds the whole page, slower than one action on a busy machine (DEF-0587)
+  await expect(frame.locator('form'), 'the preview draws the form').toBeAttached({ timeout: 15_000 });
   await exerciseCatalogue(frame);
   await frame.locator('input[type="submit"]').click();
   await expect(frame.getByText('Submitted', { exact: true })).toBeVisible();

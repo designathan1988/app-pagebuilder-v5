@@ -293,8 +293,10 @@ test('autosave never records the accidental wrapper in a word but saves an isola
       read.onsuccess = () => { database.close(); resolve((read.result as { document?: unknown } | undefined)?.document); };
     };
   }));
+  // the opened project reaches IndexedDB at autosave's idle moment: read once it is there, never before (the read came
+  // too early on a busy machine, DEF-0587)
+  await expect.poll(savedDocument).toBeDefined();
   const before = await savedDocument();
-  expect(before).toBeDefined();
   // the R and the word after it in one burst, then the burst and autosave's idle wait over
   await withTimeStill(page, async () => {
     await page.keyboard.press('r');
