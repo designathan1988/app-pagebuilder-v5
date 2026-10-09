@@ -1242,3 +1242,9 @@
 - Sintoma: na terceira passada da condição Windows falharam `props-flex-container` (0 paradas de tabulação na matriz), `wrap-row-column` (documento salvo indefinido) e `forms-runtime` (campo da pré-visualização não achado em 5 s); sozinhos, 15 de 15.
 - Causa: leituras de uma vez só: as paradas da matriz antes do desenho, o documento no IndexedDB antes da gravação ociosa, e o primeiro campo antes de a pré-visualização montar a página.
 - Prova: as duas primeiras leituras esperam o valor (`expect.poll`) e a pré-visualização tem 15 s para desenhar o formulário; os três passam nas duas condições.
+
+## DEF-0588 — o caso da cota cheia dependia do tempo da gravação
+- Status: corrigido (Lote 5)
+- Sintoma: `lote-navegador.spec.ts` "com o armazenamento cheio…" falhava 1 vez em 5 sozinho, e 3 em 12: o aviso `status.save.journalInDatabase` não era dito.
+- Causa: a exclusão chegava com a gravação da seleção ainda em curso; o laço do `flush` (`src/editor/persistence/autosave.ts:307`) grava a revisão seguinte direto no IndexedDB, sem tentar o diário, e nenhum aviso é devido (o documento está salvo). O teste esperava o aviso em qualquer tempo.
+- Prova: o caso espera a seleção chegar ao IndexedDB (e o diário da abertura sair do localStorage) antes de excluir; 20 de 20 sozinho, 7 de 7 do spec nas duas condições.

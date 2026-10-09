@@ -49,5 +49,17 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
   - Catálogo inteiro de mutantes: 143, com 140 acusados e 3 equivalentes com motivo (M19, M25, M30), 100% dos não equivalentes, em 197,6 s.
   - Detectores 117 de 117; typecheck e lint sem erro.
 
+- **Lote 5 (2026-10-09), Fase 9 — feito (`auditoria/otimizacoes.md`):**
+  - OTM-001: a fonte da interface passou a WOFF, igual à TTF tabela por tabela e com o hinting. Foi de 857.100 para 375.504 bytes (−56,2%); com gzip, −7,7%. As 14 fotos de referência passam sem atualização.
+  - As WOFF2 foram descartadas: vêm sem hinting e mudaram as fotos.
+  - OTM-002 (`elementBoxes`) e OTM-003 (`fitNames`) foram desfeitas: as contagens por arraste não mudaram, e o ganho medido antes por tempo era ruído da carga da máquina.
+  - A divisão de código não se aplica (DCS-026).
+  - DEF-0588 (o caso da cota dependia do tempo da gravação) corrigido.
+  - Specs da área (128) nas duas condições: 128 de 128 na Windows; na padrão, só o caso da cota falhou, e foi corrigido. `lote-navegador`: 7 de 7 nas duas.
+  - Detectores 117 de 117; typecheck e lint sem erro.
+
 ## Próximo passo
-**Lote 5 — Fase 9 (otimização):** criar `auditoria/otimizacoes.md`. Alvos já vistos: as fontes em TTF (431 KB e 426 KB; as WOFF2 de contornos TrueType do mesmo repositório têm 109,6 KB e 108,9 KB); o bundle sem divisão de código; o quadro de `onUp` perto de 60 ms com a CPU ocupada. Medir antes e depois: re-renders (grupo `render`), leituras de layout forçadas, operações na árvore de blocos e o tamanho do bundle (`npx vite build`).
+**Fechamento:** a suíte inteira nas duas condições com o código final (saídas `final-*.txt` no scratchpad); falha que restar vira DEF-, corrigida com prova. Depois, o relatório ao dono.
+
+## Para uma próxima rodada (fora dos lotes 1 a 5)
+- O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

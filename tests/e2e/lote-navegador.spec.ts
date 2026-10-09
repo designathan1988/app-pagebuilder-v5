@@ -455,6 +455,9 @@ test('numa página da direita para a esquerda, um texto com caracteres hebraicos
 test('com o armazenamento cheio o autosave não perde o documento e diz para onde o diário foi', runs(OPEN, DELETE), async ({ page }) => {
   test.setTimeout(120_000);
   await openAurora(page);
+  // the opened project's journal leaves localStorage once IndexedDB holds the project: filled before that, the space it
+  // freed then took the next journal, and no notice was due (DEF-0588)
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('work-journal')), { message: 'o diário da abertura saiu do localStorage', timeout: 15_000 }).toBeNull();
   // enche o localStorage até a cota
   // to its last bytes: a piece that no longer fits halves, down to one character (DEF-0571: the room the 256 KB pieces
   // left still held the journal, so the case never reached the notice)
@@ -478,8 +481,21 @@ test('com o armazenamento cheio o autosave não perde o documento e diz para ond
   });
   expect(full, 'o localStorage recusou a escrita: é o estado que a cota deixa').toBe(true);
   await runDoor(page, SELECT_ROW, { args: { target: 'n-actions' } });
-  await runDoor(page, DELETE);
+  // the selection's own write over first: a delete that arrives while it is in flight goes straight to IndexedDB in the
+  // same write loop, with no journal to try, so no notice is due (DEF-0588)
   const status = page.locator('.status-bar');
+  const savedSelection = () => page.evaluate(() => new Promise<unknown>((resolve, reject) => {
+    const request = indexedDB.open('work');
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const database = request.result;
+      const read = database.transaction('projects').objectStore('projects').get('current');
+      read.onerror = () => { database.close(); reject(read.error); };
+      read.onsuccess = () => { database.close(); resolve((read.result as { selection?: unknown } | undefined)?.selection); };
+    };
+  }));
+  await expect.poll(savedSelection, { message: 'a seleção foi gravada no IndexedDB', timeout: 20_000 }).toEqual(['n-actions']);
+  await runDoor(page, DELETE);
   await expect(status, 'o autosave para de gravar e diz em que estado ficou').not.toContainText(/Saving/i, { timeout: 20_000 });
   expect(await idsOf(page), 'a mudança continua no documento com o armazenamento cheio').not.toContain('n-actions');
   // the journal that no longer fits localStorage moves to IndexedDB, and the status bar says so (DEF-0571: the case
