@@ -38,13 +38,19 @@ export function pointerEffects(p: PointerOwner): Pick<PointerOwner, 'factsOf' | 
       const ending = editEndDoor(press, ps.buttons.button, ps.buttons.count, ps.buttons.modifier, p.factsOf(press));
       const endArgs = ending ? editArgs(store.getState(), ending.command) : null;
       ps.keeping = ending && endArgs ? { entry: ending, args: endArgs } : null;
-      shared.open = store.gesture();
-      ps.pressed = press;
-      ps.cancelsAtOpen = store.getState().ui.drag.cancels;
       // a key only a drag gesture holds (the duplicate's Alt) is no click's: the press selects as a plain one does
       const clickModifier = ps.buttons.modifier !== null && DRAG_ONLY_MODIFIERS.has(ps.buttons.modifier as never) ? null : ps.buttons.modifier;
       const picking = pickingOf(store.getState().ui);
       const entry = clickDoor(press, ps.buttons.button, ps.buttons.count, clickModifier, p.factsOf(press), picking);
+      // The secondary button's door (the context menu, on the canvas or a Layers row) is what the press asks for: it runs
+      // before the gesture holds the pointer, so the menu it opens is no layer opened under a gesture (the mode table,
+      // input/modes.ts, refuses what opens from outside one); it changes no document, and the gesture records nothing
+      // for it (DEF-0534)
+      const secondary = ps.buttons.button === 'secondary' && entry !== null && !(entry.door.kind === 'canvas-click' && (entry.door.target === 'pick-target' || entry.door.target === 'pick-motion-target')) ? entry : null;
+      if (secondary !== null) (store.dispatch as (id: CommandId, args: unknown) => unknown)(secondary.command.id as CommandId, argsFor(secondary, press, picking));
+      shared.open = store.gesture();
+      ps.pressed = press;
+      ps.cancelsAtOpen = store.getState().ui.drag.cancels;
       const selected = store.getState().selection;
       const plainPress = press.on === 'node' && !press.root && ps.buttons.button === 'primary' && ps.buttons.count === 1 && clickModifier === null;
       const ofSeveral = plainPress && selected.length > 1 && selected.includes(press.node as NodeId);
@@ -58,7 +64,7 @@ export function pointerEffects(p: PointerOwner): Pick<PointerOwner, 'factsOf' | 
       const deferred = (ofSeveral || insideSelected) && pickingDoor === null;
       ps.deferredClick = entry && deferred ? { entry, args: argsFor(entry, press, picking) as Record<string, unknown> } : null;
       if (pickingDoor !== null) ps.pickAfter = { entry: pickingDoor, args: argsFor(pickingDoor, press, picking) };
-      if (entry && !deferred && pickingDoor === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);
+      if (entry && !deferred && pickingDoor === null && secondary === null) shared.open.dispatch(entry.command.id as CommandId, argsFor(entry, press, picking) as never);
       // a press that lands on the edited text leaves the focus in it
       const edited = editedNode(store.getState());
       ps.keepFocus = edited !== null && press.on === 'node' && press.node === edited;
