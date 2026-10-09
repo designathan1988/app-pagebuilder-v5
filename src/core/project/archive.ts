@@ -11,7 +11,9 @@ import { MAX_DOCUMENT_NESTING, MAX_TREE_DEPTH, nestsDeeperThan } from '../docume
 import { validateDocument, type ModelRules } from '../document/validate.ts';
 import { ArchiveError, archiveReason, isZip, unzip, zip } from './zip.ts';
 
-const invalid = (reason: string | Message): { readonly refused: Message } => ({ refused: message('status.open.invalidArchive', { reason }) });
+// the reason a file is refused, always words of the catalogue: a text of its own (an error's, the validator's prose)
+// would reach the person in English whatever the interface's language (DCS-003, DEF-0549)
+const invalid = (reason: Message): { readonly refused: Message } => ({ refused: message('status.open.invalidArchive', { reason }) });
 
 // A project document read from its parsed JSON: the document when the model accepts it at this app's format
 // version, else the refusal naming why (a newer version, or what is wrong with it). A file of an older version is
@@ -22,13 +24,14 @@ export function readProject(parsed: unknown, rules: ModelRules): { readonly docu
   const migrated = migrateDocument(parsed);
   if (!migrated.ok) {
     if (migrated.reason === 'newer') return { refused: message('status.open.newerVersion', { version: migrated.version ?? 0 }) };
-    if (migrated.reason === 'no-step') return invalid(`it is a version ${migrated.version} document and this app has no way to carry it forward`);
-    return invalid('it is not a project document');
+    if (migrated.reason === 'no-step') return invalid(message('status.open.noMigration', { version: migrated.version }));
+    return invalid(message('status.open.notADocument'));
   }
   const document = migrated.document as DocumentJson;
-  if (!Array.isArray(document.pages)) return invalid('it is not a project document');
+  if (!Array.isArray(document.pages)) return invalid(message('status.open.notADocument'));
   const first = validateDocument(document, [], rules)[0];
-  if (first !== undefined) return invalid(`${first.path}: ${first.message}`);
+  // where the document is not valid: its path (a technical name, DCS-003), the validator's own words staying out
+  if (first !== undefined) return invalid(message('status.open.invalidDocument', { path: first.path }));
   return { document };
 }
 
@@ -67,8 +70,9 @@ export const openProject = registerHandler('project.open', ({ rules, state, conf
   let parsed: unknown;
   try {
     parsed = JSON.parse(args.file);
-  } catch (error) {
-    return { kind: 'refused' as const, message: invalid((error as Error).message).refused };
+  } catch {
+    // the parser's own words are the browser's, in its language: the reason is said in the interface's
+    return { kind: 'refused' as const, message: invalid(message('status.open.notJson')).refused };
   }
   // an archive the reader refused (projectFileText): its reason, read back only when it is one of the reader's
   const unread = parsed !== null && typeof parsed === 'object' && 'archive' in parsed ? archiveReason((parsed as { archive: unknown }).archive) : null;

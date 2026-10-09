@@ -302,9 +302,11 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
   // so a burst merges only when no other command came in between (spec absolute-nudge)
   let lastMergeable: string | null = null;
 
-  // a committed state whose selection changed, with the editor state that follows it; `always`: another document came
-  // (a project opened, a step undone or redone), and what follows the selection is read again from it even when the
-  // selection stayed the same (an empty one), so nothing of the document before lingers (DEF-0542)
+  // a committed state whose selection changed, with the editor state that follows it; `always`: another project came
+  // (project.open, its load), and what follows the selection is read again from it even when the selection stayed the
+  // same (an empty one), so nothing of the project before lingers (DEF-0542). An undo or a redo does not force it:
+  // it moved the view under a quick panel opened after a reload (measured: tests/e2e/draft-recovery.spec.ts failed 2
+  // in 30)
   const followSelection = (before: StoreState<Ui>, next: StoreState<Ui>, always = false): StoreState<Ui> => {
     if (options.followSelection === undefined || (!always && deepEqual(before.selection, next.selection))) return next;
     const { ui, message: said } = options.followSelection(next);
@@ -489,7 +491,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       const action = tx.message ?? LAST_CHANGE;
       // the context the change was made in comes back with it (DCS-009), so the editor shows what the step changed
       const ui = tx.context !== undefined && options.restoreContext !== undefined ? options.restoreContext({ ...state, ...restored }, tx.context) : state.ui;
-      publish(commit({ ...state, ...restored, ui, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches, true, true);
+      publish(commit({ ...state, ...restored, ui, message: outcome.kind === 'undo' ? undone(action) : redone(action), refusal: null, refused: false }, id), outcome.kind === 'undo' ? tx.inverses : tx.patches);
       return { status: 'done', changed: true };
     }
     if (outcome.kind === 'load') {

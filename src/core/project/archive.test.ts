@@ -37,6 +37,7 @@ describe('File › Open (src/core/project/archive.ts)', () => {
     const broken = JSON.parse(aurora) as { pages: { tree: { children: { type: string }[] } }[] };
     const first = broken.pages[0]?.tree.children[0];
     if (first) first.type = 'banner';
-    expect(refused(JSON.stringify(broken))).toEqual({ key: 'status.open.invalidArchive', params: { reason: '/pages/0/tree/children/0/type: "banner" is not an element type of elements.json' } });
+    // the reason is words of the catalogue with the path of the first problem, never the validator's prose (DEF-0549)
+    expect(refused(JSON.stringify(broken))).toEqual({ key: 'status.open.invalidArchive', params: { reason: { key: 'status.open.invalidDocument', params: { path: '/pages/0/tree/children/0/type' } } } });
   });
 });
