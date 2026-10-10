@@ -2,7 +2,10 @@
 
 Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritmo e formato: `CLAUDE.md`, seções 0 e 1. O histórico até 2026-10-09 está em `auditoria/historico-progresso.md` (só consulta; não descreve o estado).
 
-## Estado atual (2026-10-09)
+## Estado atual (2026-10-10)
+- **Prontidão para uso (2026-10-10):** `auditoria/prontidao.md`. O veredito é "pronto, com ressalvas". Um site de 3 páginas foi feito do zero no build de produção, salvo, reaberto e exportado, no Chrome e no Edge. Ficaram 7 defeitos abertos (DEF-0615 a DEF-0621); dois dão resultado errado: DEF-0615 (componente) e DEF-0620 (preço do CSV).
+
+## Estado anterior (2026-10-09)
 - **Repositório:** ramo `estrutura/edicao-e-espaco`, publicado em `origin` (`github.com/designathan1988/app-pagebuilder-v5`).
 - **Portões no último lote (DEF-0573):** detectores 25 arquivos e 115 testes sem falha; `npm run typecheck` e `npm run lint` sem erro; mutantes M68, M140, M141 acusados.
 - **Defeitos:** os 83 registrados (até o DEF-0573) corrigidos, nenhum aberto (`auditoria/defeitos.md`). Da verificação integral (`auditoria/verificacao/RELATORIO.md`), as seções 2 e 3 estão tratadas, exceto o detector de D-1/DEC-70.
@@ -124,7 +127,7 @@ Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritm
 - **Fim da etapa dos lotes 7 a 10 (2026-10-09):** catálogo inteiro de mutantes, 152, com 149 acusados e 3 equivalentes com motivo (M19, M25, M30), 100 % dos não equivalentes, em 294 s. A suíte inteira de navegador não rodou: o pedido do dono desta rodada a proíbe; cada lote rodou os specs da sua área nas duas condições.
 
 ## Próximo passo
-Decisões do dono pendentes: DEC-70 (rótulo e chip sobre o texto de cima, DCS-029), o ponto da alça na borda da página e sobre o vizinho (DCS-030), o texto vazio com valor próprio (DCS-031) e a agulha perto do quadro-chave (DCS-033). Depois, nova sessão de uso: movimento (painel Movimento e comportamentos) e o quadro de `onUp` sob carga (`otimizacoes.md`).
+Lote de correção da prontidão: DEF-0615 (instâncias seguem texto e atributos não sobrepostos), DEF-0620 (número da coleção no formato do idioma), DEF-0616 e DEF-0617 (foco no `data-autofocus`), DEF-0618 (chave da linha da variável), DEF-0619 (barra pronta no celular) e DEF-0621. Os atritos e cosméticos de `prontidao.md` vão para o dono decidir. Seguem pendentes as decisões DCS-029, DCS-030, DCS-031 e DCS-033.
 
 ## Para uma próxima rodada (fora dos lotes 1 a 5)
 - O quadro de `onUp` acima de 50 ms só com a CPU disputada: o caminho está em `otimizacoes.md`, "O que fica para uma próxima rodada".

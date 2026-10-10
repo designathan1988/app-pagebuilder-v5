@@ -1404,3 +1404,45 @@
 - Sintoma: no painel Dados em pt-BR, "Adicionar campo" (mais longo que "Add field") tomava a linha; o menu de tipo mostrava "T" e o nome do campo "Nome".
 - Causa: `src/editor/data/panel.css` `.data-fields__add`: nome, tipo e botão numa linha sem quebra; agora a linha quebra, o nome mantém uma largura legível e o menu a largura dos seus tipos.
 - Prova: `paineis-cabem.spec.ts`, "the new field form … reads whole in Portuguese": falha sem a correção, passa nas duas condições.
+
+## DEF-0615 — atualizar o componente não leva textos nem links às outras instâncias
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: cabeçalho do Início virou o componente "Cabeçalho do site", inserido em Sobre e Contato; no Início, "Marca" → "Torra Fresca" e os links do menu ligados às páginas; "Atualizar o componente a partir desta instância" diz "2 outras instâncias acompanham", mas Sobre e Contato seguem com "Marca" e links vazios, e o ZIP sai assim. O estilo (fundo) propaga.
+- Causa: `src/core/design/components.ts:394`: cada outra instância mantém `text` e `attributes` próprios mesmo sem nunca tê-los mudado; não há distinção entre valor herdado e sobreposto.
+- Prova: reproduzido 2× (links e texto da marca), fotos `auditoria/fotos/prontidao/78`, `80`, `81`; contorno: excluir a instância e inserir de novo (foto 83).
+
+## DEF-0616 — "+ Classe" com classe existente: o nome digitado some e o Enter aplica a primeira classe da lista
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: com `.botao-primario` no projeto, selecionar o parágrafo do rodapé, clicar "+ Classe", digitar "rodape-texto" e Enter: o campo fica vazio e a barra diz ".botao-primario aplicada".
+- Causa: `src/editor/shell/popover.tsx:78`: `querySelector(FOCUSABLE)` devolve o primeiro focável na ordem do documento (os itens da lista vêm antes do campo marcado `data-autofocus`).
+- Prova: reproduzido 2×, fotos 94 e 95; clicando antes no campo, a classe nova é criada.
+
+## DEF-0617 — "Abrir um endereço da web": o endereço digitado não entra no campo
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: Arquivo › Abrir um endereço da web…, digitar "https://example.com": o campo continua vazio; é preciso clicar nele antes.
+- Causa: `src/editor/shell/dialog.tsx:28`: o diálogo põe o foco no próprio painel e ignora o campo `data-autofocus` (`capture-url.tsx:44`); vale para os outros `ModalDialog` com campo assim.
+- Prova: reproduzido 2× (foco lido: `DIV dialog capture-url`), foto 100.
+
+## DEF-0618 — Variáveis: Tab no nome da variável nova perde o foco em vez de ir ao valor
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: Estilos › + › Cor, digitar "creme" e Tab: o foco vai para a página (`BODY`); o que se digita a seguir (ex.: "#6b3e26", Ctrl+A) vira atalho do editor (Ctrl+A selecionou os irmãos no canvas).
+- Causa: `src/editor/shell/variables.tsx:167`: a linha tem `key={token.name}`; o nome gravado no blur troca a chave, e o React refaz a linha com o campo de valor que acabava de receber o foco.
+- Prova: reproduzido 2×, fotos 11 e 93.
+
+## DEF-0619 — a "Barra de navegação" pronta passa da largura do Celular
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: inserir "Barra de navegação" e ver em Celular (390): a barra mede 423 px, "Entrar" fica cortado e o site exportado rola de lado no telefone.
+- Causa: `manifest/elements.json:88`: o elemento Navegação traz `padding` 20px 40px por padrão, somado aos 40px do modelo `template-navbar` (`manifest/elements.json:3195`), sem regra para telas estreitas.
+- Prova: reproduzido 2× (423 de 390), fotos 39 e 96.
+
+## DEF-0620 — o preço "6,50" de um CSV aparece no site como "6.5"
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: fluxo `data-c4` (cardapio.csv importado como coleção nova, preço ligado ao parágrafo, Preencher): a prévia mostra "6,50" e "5,00" e marca a coluna como Número, mas o canvas e o HTML exportado mostram "6.5", "5", "9.9". Contorno: trocar a coluna para Texto na prévia.
+- Causa: `src/core/data/collections.ts:116` `cellText` devolve `String(value)` do número, sem as casas decimais nem o separador do idioma do projeto.
+- Prova: reproduzido 3× (2 pelo subagente, 1 aqui com `pront-t3.mjs`), fotos `sub-a-11-preenchido-r1/r2`.
+
+## DEF-0621 — o menu de contexto que sobe até o topo fica por baixo da barra de menus
+- Status: aberto (prontidão, 2026-10-10)
+- Sintoma: clicar com o botão direito numa camada no meio do painel (Rodapé, Botão 2, a 1366×768): o menu abre em y=8, e "Organizar" da barra de menus aparece sobre "Renomear".
+- Causa: `src/editor/shell/top-bar.css:30`: os botões da barra têm `z-index: var(--z-menu-anchor)` (51), acima de `--z-menu` (50) do menu de contexto.
+- Prova: reproduzido 2× no Chrome (`elementFromPoint` no primeiro item = "Organizar"), fotos 68, 79 e `105-menu-contexto-*`.
