@@ -15,36 +15,36 @@ const pathOf = (s: EditorState, i: number): string | undefined => pick(s.documen
 
 const STEPS = [
   ...LOAD_STEPS,
-  fc.constantFrom('Sobre', 'Contato', 'Blog', 'Sobre').map((name) => command('pages.add', () => ({ name }), `NovaPágina(${name})`)),
-  fc.tuple(fc.nat(5), fc.constantFrom('Início', 'Equipe', 'x')).map(([i, name]) => command('pages.rename', (s) => ({ page: pathOf(s, i), name }), `Renomear(${i},${name})`)),
-  fc.nat(5).map((i) => command('pages.duplicate', (s) => ({ page: pathOf(s, i) }), `DuplicarPágina(${i})`)),
-  fc.nat(5).map((i) => command('pages.delete', (s) => ({ page: pathOf(s, i) }), `ApagarPágina(${i})`)),
-  fc.nat(5).map((i) => command('pages.switch', (s) => ({ page: pathOf(s, i) }), `IrParaPágina(${i})`)),
+  fc.constantFrom('Sobre', 'Contato', 'Blog', 'Sobre').map((name) => command('pages.add', () => ({ name }), `NewPage(${name})`)),
+  fc.tuple(fc.nat(5), fc.constantFrom('Início', 'Equipe', 'x')).map(([i, name]) => command('pages.rename', (s) => ({ page: pathOf(s, i), name }), `Rename(${i},${name})`)),
+  fc.nat(5).map((i) => command('pages.duplicate', (s) => ({ page: pathOf(s, i) }), `DuplicatePage(${i})`)),
+  fc.nat(5).map((i) => command('pages.delete', (s) => ({ page: pathOf(s, i) }), `DeletePage(${i})`)),
+  fc.nat(5).map((i) => command('pages.switch', (s) => ({ page: pathOf(s, i) }), `GoToPage(${i})`)),
   fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Estilo(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
 ];
 
-it('as páginas e a abertura de projeto seguem o modelo do manifesto', () => {
+it('the pages and the project opening follow the manifest model', () => {
   const summary = runModel('pages', STEPS);
   expect(summary.failure).toBeNull();
 });
 
 // The selection of a captured page's element (ui.capturedNode) follows the store's one selection (rule G6): another
 // selection takes it away, and so does opening another project, even with the selection empty (DEF-0542).
-it('a seleção de um elemento capturado não fica ao lado de outra seleção nem depois de abrir outro projeto', () => {
+it('the selection of a captured element does not stay beside another selection nor after opening another project', () => {
   const memory = () => ({ read: () => null, write: () => undefined });
   const make = (): EditorStore => createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('c'), restored: { document: fixture('captured-mixed'), selection: [] }, ports: { readOnly: () => false }, freeze: true });
   const run = (store: EditorStore, id: string, args: unknown) => (store.dispatch as (i: CommandId, a: unknown) => { status: string })(id as CommandId, args);
   const one = make();
   expect(run(one, 'capture.select', { target: 'captured-story' }).status).toBe('done');
-  expect(one.getState().ui.capturedNode, 'o elemento capturado está selecionado').toBe('captured-story');
+  expect(one.getState().ui.capturedNode, 'the captured element is selected').toBe('captured-story');
   const root = one.getState().document.pages[0]?.tree.id;
   run(one, 'selection.select', { target: root });
-  expect(one.getState().ui.capturedNode, 'uma seleção do documento tira a do elemento capturado').toBeUndefined();
+  expect(one.getState().ui.capturedNode, 'a document selection removes the captured element one').toBeUndefined();
   const two = make();
   run(two, 'capture.select', { target: 'captured-story' });
-  expect(two.getState().selection, 'a seleção do documento está vazia').toEqual([]);
+  expect(two.getState().selection, 'the document selection is empty').toEqual([]);
   // opening another project asks first (the work not saved): the person confirms
   if (run(two, 'project.open', { file: JSON.stringify(fixture('aurora')) }).status === 'confirm') two.answer(true);
-  expect(two.getState().document.pages[0]?.tree.children.some((n) => n.id === 'n-hero'), 'o outro projeto foi aberto').toBe(true);
-  expect(two.getState().ui.capturedNode, 'outro projeto aberto não guarda a seleção do capturado do anterior').toBeUndefined();
+  expect(two.getState().document.pages[0]?.tree.children.some((n) => n.id === 'n-hero'), 'the other project was opened').toBe(true);
+  expect(two.getState().ui.capturedNode, "another project opened does not keep the previous one's captured selection").toBeUndefined();
 });

@@ -1,19 +1,19 @@
 /* global CSS, console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0023 — a caixa do elemento capturado na página, lida em src/editor/canvas/chrome.tsx:602
-// `const found = iframe && origin ? capturedBox(iframe, id) : null;` (ENT-L07-0015, passo 4).
-// Estado: o projeto captured-mixed.json aberto e um elemento capturado selecionado (capture.select).
-// A caixa é lida do contorno desenhado ([data-chrome="captured-selection"]) e da tag do rótulo
-// ([data-chrome="captured-label"]), e refeita por capturedBox (src/editor/canvas/coordinates.ts:131) sobre os mesmos
-// valores que o navegador calcula.
-// Roda: cat auditoria/medicoes/MED-0023.mjs | node --input-type=module -
+// MED-0023 — the box of the captured element in the page, read in src/editor/canvas/chrome.tsx:602
+// `const found = iframe && origin ? capturedBox(iframe, id) : null;` (ENT-L07-0015, step 4).
+// State: the captured-mixed.json project open and a captured element selected (capture.select).
+// The box is read from the drawn outline ([data-chrome="captured-selection"]) and from the label tag
+// ([data-chrome="captured-label"]), and recomputed by capturedBox (src/editor/canvas/coordinates.ts:131) from the same
+// values the browser computes.
+// Run: cat auditoria/medicoes/MED-0023.mjs | node --input-type=module -
 import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/captured-mixed.json', 'utf8');
 const CAPTURED = 'captured-story';
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 const BOOT = { project: PROJECT, commands: [{ command: 'capture.select', args: { target: CAPTURED } }], drawn: [] };
 
@@ -42,8 +42,8 @@ const MEASURE = (id) => {
   };
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   page.on('pageerror', (e) => console.log('pageerror:', e.message));
@@ -56,7 +56,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     await new Promise((r) => setTimeout(r, 500));
   }, BOOT.commands.length + 1);
   const boot = await page.evaluate(() => window.__builderTestPort.boot().map((b) => `${b.command}:${b.status}`));
-  const valor = await page.evaluate(MEASURE, CAPTURED);
-  console.log(JSON.stringify({ config: nome, boot, valor }));
+  const value = await page.evaluate(MEASURE, CAPTURED);
+  console.log(JSON.stringify({ config: name, boot, value }));
   await browser.close();
 }

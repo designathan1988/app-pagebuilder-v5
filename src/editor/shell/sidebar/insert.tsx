@@ -99,7 +99,7 @@ export function Insert() {
               {/* the tiles are the palette's key context: Enter and Space insert the focused tile's entry */}
               {open ? (
                 // a group's tiles are one Tab stop, its first tile; the arrows walk the others (the palette key
-                // context; jornada03 plan, stage 5: the Insert panel was 74 Tab stops)
+                // context; journey03 plan, stage 5: the Insert panel was 74 Tab stops)
                 <div className="tiles" data-region="palette-tiles" data-key-context="palette">
                   {entries.map((e, index) => (
                     <DoorControl key={e.id} entry={INSERT_TILE} args={{ entry: e.id }} className="tile" label={t(e.labelKey as MessageId)} ready={isFeatureBuilt(e.feature as FeatureId)} tabbable={index === 0}>

@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-// Reading the data files a person hands over (spec data-import): Carla's original cardapio.csv from the jornada03 study
+// Reading the data files a person hands over (spec data-import): Carla's original cardapio.csv from the journey03 study
 // as it is, the same rows as TSV and JSON, quoted cells, and XLSX workbooks written as spreadsheet programs write them
 // (deflated parts, shared and inline strings, numbers, booleans, dates by their format and date system, holes in rows,
 // formulas with their saved values), each problem refused naming the file and where.

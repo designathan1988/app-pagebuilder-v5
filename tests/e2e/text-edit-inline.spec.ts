@@ -232,7 +232,7 @@ test('Enter with several elements selected says the edit needs one',runs('projec
   expect(await read(page)).toEqual({ hero: hero(INTRO), selection: ['n-intro', 'n-title'], undoSteps: 0 });
 });
 
-// jornada03 J4: Marina double-clicked the hero's button and typed "Conhecer os planos": the button kept
+// journey03 J4: Marina double-clicked the hero's button and typed "Conhecer os planos": the button kept
 // "Conhecerosplanos" (on a <button> the browser takes Space as a press of the button and types nothing). Space in the
 // text edited in place is a space on every element, a button included.
 test('spaces typed in a button edited in place are kept', runs('workspace.setPanelOpen#toolbar-activity-bar-insert', 'element.insert#elements-tile', DOUBLE_CLICK, ENTER_KEEP), async ({ page }) => {

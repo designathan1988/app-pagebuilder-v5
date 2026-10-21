@@ -296,7 +296,7 @@ function StyleSections() {
                 <SectionOrigin section={section} />
                 {summary !== null ? <span className="inspector-section__summary">{summary}</span> : null}
                 {/* how many values are set in the section: in the header's name, which a screen reader reads, never drawn —
-                    the origin dot and the summary say it to the eye (the owner's decision D-3; jornada02 R-07) */}
+                    the origin dot and the summary say it to the eye (the owner's decision D-3; journey02 R-07) */}
                 {set > 0 ? <span className="inspector-section__count visually-hidden">{t('inspector.valuesSet', { count: set })}</span> : null}
               </DoorControl>
             ) : null}

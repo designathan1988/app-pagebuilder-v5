@@ -203,7 +203,7 @@ export const previewMotionCommand = registerHandler<'motion.preview', EditorUi>(
   (state, args) => args.operation === 'play' && motionUiOf(state.ui).playing === true,
 );
 
-// Run mode (plan: "Executar interações"): the canvas runs the interactions as the page does, until it is turned off.
+// Run mode (plan: "Run interactions"): the canvas runs the interactions as the page does, until it is turned off.
 export const toggleRunCommand = registerHandler<'motion.toggleRun', EditorUi>(
   'motion.toggleRun',
   ({ state }) => {

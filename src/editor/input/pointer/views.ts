@@ -22,7 +22,7 @@ interface Band {
   readonly height: number;
 }
 
-// Where the last press went down, by the keys it gives the canvas (jornada03 J2): on the canvas (the stage or the page
+// Where the last press went down, by the keys it gives the canvas (journey03 J2): on the canvas (the stage or the page
 // in its frame), on the Layers tree, or elsewhere (a panel, a picker, a menu).
 export type PressRegion = 'canvas' | 'layers' | 'elsewhere';
 

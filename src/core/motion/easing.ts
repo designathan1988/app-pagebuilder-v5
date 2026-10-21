@@ -1,4 +1,4 @@
-// The one reader of an easing's text (plan stage 10, "aceleração: curva, passos, mola"): the CSS easing functions
+// The one reader of an easing's text (plan stage 10, "easing: curve, steps, spring"): the CSS easing functions
 // (the keywords, cubic-bezier(), steps(), linear()) and a spring, spring(mass, stiffness, damping), which CSS has no
 // function for and which is written for the browser as the linear() curve it traces over the action's duration.
 //

@@ -32,7 +32,7 @@ const HOLDS: Readonly<Record<string, (element: { readonly content: string; reado
   // its own"; the user's real-use audit, 5.1: an image showed the whole Text group)
   text: (element) => element.content === 'text',
   // an SVG shape, or the <svg> element itself: what it paints is inherited by the shapes inside it (the user's order,
-  // item 5.1, "SVG só em SVG"). An HTML element, whatever it is, takes no fill.
+  // item 5.1, "SVG only on SVG"). An HTML element, whatever it is, takes no fill.
   svgShape: (element) => element.namespace === SVG || (element.tags ?? []).includes(SVG),
   hasBox: (element) => element.namespace !== SVG,
 };
@@ -144,7 +144,7 @@ export function shownForContext(properties: readonly string[], context: ElementC
 }
 
 // The predicates that decide a field's kind: the tags above and the SVG shape. An SVG field (fill, stroke,
-// stroke-width) is shown only on an SVG element — the user's order, item 5.1 ("SVG só em SVG"): a fill written on a
+// stroke-width) is shown only on an SVG element — the user's order, item 5.1 ("SVG only on SVG"): a fill written on a
 // paragraph paints nothing, so its field is not offered.
 //
 // What an element *holds* narrows the *Essentials* a type shows and the quick panel's own fields (quick-panel.ts

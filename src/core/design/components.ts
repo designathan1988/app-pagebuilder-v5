@@ -199,7 +199,7 @@ export const repeatCommand = registerHandler('components.repeat', ({ state, ids,
   return { kind: 'change', patches, selection: [node.id], message: message('status.components.repeated', { name: definition.name, count }) };
 });
 
-// The fields an item fills (jornada03 J1/C4: the first column went into the image source by position and the whole
+// The fields an item fills (journey03 J1/C4: the first column went into the image source by position and the whole
 // fill failed silently): an element holding text and an image's source, in document order, each named by the
 // definition element it comes from.
 interface Field {
@@ -357,7 +357,7 @@ export const detachInstanceCommand = registerHandler('components.detach', ({ sta
   return { kind: 'change', patches: [{ op: 'replace', path: found.path, value: unmarked(found.node) }], message: message('status.components.detached', { name: found.node.name }) };
 });
 
-// components.updateFromInstance (the plan's stage 7, "modo de edição do mestre"; journey D2): an instance edited in
+// components.updateFromInstance (the plan's stage 7, "master edit mode"; journey D2): an instance edited in
 // place — elements added, removed or moved, styles of its own — becomes its component's definition, and every other
 // instance of the component takes the new structure and styles, keeping its own texts, attributes and names wherever an
 // element of the edited instance came from one it has (the same part); one undo step. The edited instance is the
@@ -431,7 +431,7 @@ export const insideInstance = registerPredicate('insideInstance', (state) => {
   return only !== undefined && others.length === 0 && instanceRootOf(state.document, only) !== null;
 });
 
-// Variants (the plan's stage 7, "variantes"; journey D2): a component's variant is a class named after it with the
+// Variants (the plan's stage 7, "variants"; journey D2): a component's variant is a class named after it with the
 // variant as a BEM modifier (component Plan, variant gold: .plan--gold), holding the styles in which the variant
 // differs; an instance chooses one by listing its class on its root. The one owner of:
 //  - variantBase / variantsOf: the modifier's base for a component, and the variants the project's classes give it;

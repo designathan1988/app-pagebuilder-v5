@@ -324,7 +324,7 @@ describe('the store', () => {
     const before = s.store.getState();
     const id = before.selection[0] ?? '';
     expect(() => s.store.dispatch('element.rename', { target: id, name: '' })).toThrow(InvalidStateError);
-    // nothing of the change is published; the status bar says the command's change was refused (jornada03 J1)
+    // nothing of the change is published; the status bar says the command's change was refused (journey03 J1)
     const after = s.store.getState();
     expect(after.document).toBe(before.document);
     expect(after.selection).toBe(before.selection);
@@ -555,7 +555,7 @@ describe('the store', () => {
     expect(recorded[0]?.kind).toBe('invariant');
     expect(recorded[0]?.what).toContain('element.insert');
     expect(recorded[0]?.detail).toContain('already used');
-    // the person is told, even in development where it throws (jornada03 J1: the silent failures)
+    // the person is told, even in development where it throws (journey03 J1: the silent failures)
     expect(s.store.getState().message?.key).toBe('status.change.invalid');
     // production (no freeze): the dispatch answers that the change was refused and says so in the status bar, the
     // previous document stays, the incident is recorded for the UI

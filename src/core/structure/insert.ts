@@ -192,8 +192,8 @@ export function paletteNode(make: NodeMaker, entry: string): DocNode {
   return item.inputType === null ? made : { ...made, attributes: { ...made.attributes, inputType: item.inputType } };
 }
 
-// A new element takes the classes every sibling of its kind already shares (the plan's stage 7, "novo elemento herda o
-// visual dos irmãos"; journey C3: a new link in a menu of styled links came out plain): the classes common to all the
+// A new element takes the classes every sibling of its kind already shares (the plan's stage 7, "a new element inherits
+// its siblings' look"; journey C3: a new link in a menu of styled links came out plain): the classes common to all the
 // receiver's children of the same type, when there is at least one such child and they share any.
 function withSiblingClasses(node: DocNode, siblings: readonly DocNode[]): DocNode {
   const kin = siblings.filter((one) => one.type === node.type);

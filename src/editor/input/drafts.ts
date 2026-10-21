@@ -1,5 +1,5 @@
 import { saveFieldDraft } from '../persistence/drafts.ts';
-// Whether a value field holds typing not kept yet (jornada03 J7): the field's element says so in data-draft, for the
+// Whether a value field holds typing not kept yet (journey03 J7): the field's element says so in data-draft, for the
 // keymap (with data-shown, the value it shows of the document), which leaves Ctrl+Z to the field while it does and
 // gives it to the editor's history once the field is kept (keymap.ts). The value fields write it
 // (src/editor/shell/field.tsx).

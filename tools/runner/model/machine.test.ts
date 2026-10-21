@@ -12,26 +12,26 @@ import { gestureTable, IGNORED_ON_PURPOSE, ignoredOf } from '../../map/gesture-t
 
 const press: Press = { on: 'stage' };
 
-describe('as máquinas do editor e o mapa gerado', () => {
-  it('a tabela gravada em manifest/generated/behavior.json é a que o código dá', () => {
+describe("the editor's machines and the generated map", () => {
+  it('the table saved in manifest/generated/behavior.json is the one the code gives', () => {
     const { json, markdown } = behaviorFiles();
     const held = fs.existsSync('manifest/generated/behavior.json') ? fs.readFileSync('manifest/generated/behavior.json', 'utf8') : '';
-    expect(held, 'o mapa gravado está atrás do código: rode node tools/map/generate.ts').toBe(json);
+    expect(held, 'the saved map is behind the code: run node tools/map/generate.ts').toBe(json);
     expect(fs.existsSync('manifest/generated/behavior.md') ? fs.readFileSync('manifest/generated/behavior.md', 'utf8') : '').toBe(markdown);
   });
 
-  it('toda combinação que a máquina de gestos ignora tem o motivo declarado', () => {
+  it('every combination the gesture machine ignores has its reason declared', () => {
     const ignored = ignoredOf(gestureTable().transitions);
-    expect(ignored.filter((c) => IGNORED_ON_PURPOSE[c] === undefined), 'ignorada em silêncio, sem motivo').toEqual([]);
-    expect(Object.keys(IGNORED_ON_PURPOSE).filter((c) => !ignored.includes(c)), 'declarada como ignorada e a máquina faz algo').toEqual([]);
+    expect(ignored.filter((c) => IGNORED_ON_PURPOSE[c] === undefined), 'ignored silently, with no reason').toEqual([]);
+    expect(Object.keys(IGNORED_ON_PURPOSE).filter((c) => !ignored.includes(c)), 'declared as ignored and the machine does something').toEqual([]);
   });
 
-  it('um ponteiro apertado com o gesto aberto, o mesmo ou outro, cancela o gesto e abre o novo (DCS-013)', () => {
+  it('a pointer pressed with the gesture open, the same one or another, cancels the gesture and opens the new one (DCS-013)', () => {
     for (const phase of ['pressed', 'dragging'] as const) {
       const open = { phase, pointer: 1, start: { x: 0, y: 0 }, press } as const;
       for (const pointer of [1, 2]) {
         const again = step(open, { type: 'down', pointer, at: { x: 9, y: 9 }, press });
-        expect(again.effect, `${phase} + down do ponteiro ${pointer}`).toBe('restart');
+        expect(again.effect, `${phase} + down of pointer ${pointer}`).toBe('restart');
         expect(again.machine).toEqual({ phase: 'pressed', pointer, start: { x: 9, y: 9 }, press });
       }
       // the moves and the release of another pointer do not join the open gesture

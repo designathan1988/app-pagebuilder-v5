@@ -1,5 +1,5 @@
-// The motion part of the inspector's Interactions tab (plan stage 10, the canonical card "Ao clicar → Reproduzir
-// animação": Applies to, Trigger, Action, Target, Options; spec motion-interactions, motion-behaviours): the selected
+// The motion part of the inspector's Interactions tab (plan stage 10, the canonical card "On click → Play
+// animation": Applies to, Trigger, Action, Target, Options; spec motion-interactions, motion-behaviours): the selected
 // element's interactions, one card each — the trigger and its options, the timeline it plays (any timeline of the
 // project, reusable by name) and how it plays it, the class it applies to, once, delay, breakpoints, reduced motion —
 // then the element's behaviours. Every control is a door of manifest/commands/motion.json drawn by the panel controls

@@ -65,8 +65,8 @@ function canvas(id: string): { readonly place: (x: number) => void; readonly sto
   };
 }
 
-describe('a camada do Layout Composer reaberta', () => {
-  it('o primeiro desenho depois de reabrir não usa a caixa medida na sessão anterior (DEF-0512)', async () => {
+describe('the Layout Composer layer reopened', () => {
+  it('the first draw after reopening does not use the box measured in the previous session (DEF-0512)', async () => {
     let rootId = '';
     const layout: Layout = { ...noLayout, box: (id) => (id === rootId ? rect(0, 0, 1440, 900) : null) };
     const store = createEditorStore({ storage: memory(), workspace: memory(), ids: sequentialIds('c'), clock: manualClock(0), ports: { layout, readOnly: () => false }, freeze: true });
@@ -80,19 +80,19 @@ describe('a camada do Layout Composer reaberta', () => {
     // a first session: the container the composer opens on, measured at the first box
     await act(async () => void dispatch('layout.enter' as CommandId, {}));
     const target = composerOf(store.getState().ui)?.target ?? '';
-    expect(target, 'o compositor abriu').not.toBe('');
+    expect(target, 'the composer opened').not.toBe('');
     const page = canvas(target);
     page.place(10);
     await act(async () => runFrame());
-    expect(stageLeft(), 'aberto e medido, o palco fica na caixa medida').toBe('10px');
+    expect(stageLeft(), 'open and measured, the stage sits in the measured box').toBe('10px');
     // closed, the container moves on the canvas, and the composer opens again
     await act(async () => void dispatch('layout.leave' as CommandId, {}));
     page.place(200);
     await act(async () => void dispatch('layout.enter' as CommandId, {}));
     const first = stageLeft();
-    expect(first === null || first === '200px', `o primeiro desenho depois de reabrir põe o palco em ${first ?? 'lugar nenhum'}; a caixa da sessão anterior era 10px`).toBe(true);
+    expect(first === null || first === '200px', `the first draw after reopening puts the stage at ${first ?? 'nowhere'}; the box of the previous session was 10px`).toBe(true);
     await act(async () => runFrame());
-    expect(stageLeft(), 'depois de medir, o palco fica na caixa nova').toBe('200px');
+    expect(stageLeft(), 'after measuring, the stage sits in the new box').toBe('200px');
     await act(async () => root.unmount());
     host.remove();
     page.stop();
@@ -100,7 +100,7 @@ describe('a camada do Layout Composer reaberta', () => {
 
   // The composer moved to another container while open (layout.enter on another one, with no close between): the
   // first drawing on the new container uses nothing measured on the last one (DEF-0546)
-  it('o primeiro desenho sobre outro contêiner, com o compositor aberto, não usa a caixa do anterior (DEF-0546)', async () => {
+  it('the first draw over another container, with the composer open, does not use the box of the previous one (DEF-0546)', async () => {
     const section = (id: string) => ({ id, type: 'section', name: id, tag: 'section', attributes: {}, classes: [], styles: {}, text: null, children: [] });
     const document0 = { version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: { id: 'root', type: 'page', name: 'Page', tag: 'body', attributes: {}, classes: [], styles: {}, text: null, children: [section('s1'), section('s2')] } }] };
     const layout: Layout = { ...noLayout, box: (id) => (id === 's1' ? rect(10, 20, 400, 300) : id === 's2' ? rect(300, 20, 400, 300) : null) };
@@ -115,15 +115,15 @@ describe('a camada do Layout Composer reaberta', () => {
     one.place(10);
     await act(async () => void dispatch('layout.enter' as CommandId, { target: 's1' }));
     await act(async () => runFrame());
-    expect(stageLeft(), 'aberto sobre o primeiro e medido, o palco fica na caixa dele').toBe('10px');
+    expect(stageLeft(), 'open over the first and measured, the stage sits in its box').toBe('10px');
     one.stop();
     const two = canvas('s2');
     two.place(300);
-    expect((await act(async () => dispatch('layout.enter' as CommandId, { target: 's2' }))).status, 'o compositor passou para o segundo contêiner').toBe('done');
+    expect((await act(async () => dispatch('layout.enter' as CommandId, { target: 's2' }))).status, 'the composer moved to the second container').toBe('done');
     const first = stageLeft();
-    expect(first === null || first === '300px', `o primeiro desenho sobre o segundo contêiner põe o palco em ${first ?? 'lugar nenhum'}; a caixa do primeiro era 10px`).toBe(true);
+    expect(first === null || first === '300px', `the first draw over the second container puts the stage at ${first ?? 'nowhere'}; the box of the first was 10px`).toBe(true);
     await act(async () => runFrame());
-    expect(stageLeft(), 'depois de medir, o palco fica na caixa do segundo').toBe('300px');
+    expect(stageLeft(), 'after measuring, the stage sits in the box of the second').toBe('300px');
     await act(async () => root.unmount());
     host.remove();
     two.stop();

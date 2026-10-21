@@ -1,4 +1,4 @@
-// Tracing a reference image (the plan's bet F, spec "Imagem de referência por baixo para decalcar"): an image the
+// Tracing a reference image (the plan's bet F, spec "Reference image underneath for tracing"): an image the
 // person lays under the composition — a wireframe, a screenshot, a sketch — read for its structure. The editor hands
 // the image's pixels as luminance; the lines where the image changes most along a whole row or column of a part are
 // the edges of its blocks, found by recursive XY-cut (the classic method of page layout analysis): the strongest line

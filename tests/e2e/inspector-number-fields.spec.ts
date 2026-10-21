@@ -270,7 +270,7 @@ test('Escape puts back what was typed, so leaving the field then keeps nothing; 
   await expect.poll(() => computedWidth(page)).toBe('320px');
 });
 
-// Changed on purpose with jornada03 J7: Ctrl+Z stays the field's while it holds typing not kept yet (the last press
+// Changed on purpose with journey03 J7: Ctrl+Z stays the field's while it holds typing not kept yet (the last press
 // here), and is the editor's history once the field shows the document's value again (next test).
 test('Delete, Backspace, letters and Ctrl+Z typed in a field stay in the field: the selection, the element and the history stay', runs(OPEN, SELECT, WIDTH, ENTER), async ({ page }) => {
   await typeWidth(page, '240');
@@ -283,7 +283,7 @@ test('Delete, Backspace, letters and Ctrl+Z typed in a field stay in the field: 
   await expect(drawn(page, ACTIONS)).toHaveCount(1);
 });
 
-// jornada03 J7: after Enter in Font size the focus stayed in the field and Ctrl+Z did nothing and said nothing; Marina
+// journey03 J7: after Enter in Font size the focus stayed in the field and Ctrl+Z did nothing and said nothing; Marina
 // had to click the canvas first. Once the field shows the document's value, Ctrl+Z undoes the last change and
 // Ctrl+Shift+Z redoes it, from the field.
 test('Ctrl+Z in a field just kept with Enter undoes the change, and Ctrl+Shift+Z redoes it', runs(OPEN, SELECT, WIDTH, ENTER, 'history.undo#key-ctrl-z-in-global'), async ({ page }) => {

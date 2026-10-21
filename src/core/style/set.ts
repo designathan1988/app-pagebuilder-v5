@@ -251,7 +251,7 @@ export function readValue<Ui>(context: HandlerContext<Ui>, property: string, typ
     if (rules.structures.has(property)) return null;
     const composite = rules.compositeFacts.get(property);
     if (composite === undefined) return { value: { kind: 'expression', text: written }, css: written };
-    // a composite is stored as its longhands (jornada03 J1: var(--line) as a border colour wrote the shorthand
+    // a composite is stored as its longhands (journey03 J1: var(--line) as a border colour wrote the shorthand
     // border-color, which the model refuses): a variable holding one value is every longhand's value where the
     // composite repeats one value per side, corner or axis; anything else is no value for it
     return SPREAD_CODECS.has(composite.codec) && !/\s/u.test(held.value.trim()) ? { value: { kind: 'longhands', values: composite.longhands.map(() => written), text: written }, css: written } : null;

@@ -16,7 +16,7 @@ export interface HoverSize {
 }
 
 // The hovered element's size chip: under the outline's bottom-left corner (its box on the screen), or under its
-// bottom-right one where it would meet the selection's label (`end`; jornada03 J16), saying its size as the page lays
+// bottom-right one where it would meet the selection's label (`end`; journey03 J16), saying its size as the page lays
 // it out, in CSS px rounded to whole ones, at any zoom (`size`: coordinates.ts nodeSize).
 export function hoverSizeOf(hovered: Box | null, size: { readonly width: number; readonly height: number } | null, end: boolean): HoverSize | null {
   if (hovered === null || size === null) return null;

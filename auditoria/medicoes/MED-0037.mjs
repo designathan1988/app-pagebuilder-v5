@@ -1,20 +1,20 @@
 /* global console, document, getComputedStyle, window */
-// MED-0037 — os valores calculados pelo navegador que o id cita.
-//  - L08 (ENT-L08-0013): o espaço rolável, a posição de rolagem da página e a caixa do elemento
-//    (src/editor/motion/runtime/scroll.ts:49, :50 e :52), medidos no documento do elemento (o quadro do canvas).
-//  - L09a (ENT-L09a-0121, ENT-L09a-0122): o espaço útil da linha de um campo de valores, o estilo calculado e a
-//    largura da cópia das palavras (src/editor/shell/field.tsx:1407, :1408 e :1409).
+// MED-0037 — the browser-computed values that the id cites.
+//  - L08 (ENT-L08-0013): the scrollable room, the page's scroll position and the element's box
+//    (src/editor/motion/runtime/scroll.ts:49, :50 and :52), measured in the element's document (the canvas frame).
+//  - L09a (ENT-L09a-0121, ENT-L09a-0122): the usable space of a value field's row, the computed style and the
+//    width of the copy of the words (src/editor/shell/field.tsx:1407, :1408 and :1409).
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/responsive-title.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
 async function open(c, commands) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands } }));
@@ -24,8 +24,8 @@ async function open(c, commands) {
   return { browser, page };
 }
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  // L08 — o espaço rolável, a posição de rolagem e a caixa do elemento (o quadro do canvas)
+for (const [name, c] of Object.entries(CONFIGS)) {
+  // L08 — the scrollable room, the scroll position and the element's box (the canvas frame)
   const a = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }]);
   const scroll = await a.page.evaluate(() => {
     const w = document.querySelector('.frame__page').contentWindow;
@@ -37,7 +37,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   });
   await a.browser.close();
 
-  // L09a — o espaço útil da linha de um campo de valores
+  // L09a — the usable space of a value field's row
   const b = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }]);
   await b.page.click('[data-door="workspace.setPanelOpen#toolbar-activity-bar-styles"]');
   await b.page.waitForTimeout(500);
@@ -50,5 +50,5 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   }));
   await b.browser.close();
 
-  console.log(JSON.stringify({ config: nome, scroll, fieldChoice }));
+  console.log(JSON.stringify({ config: name, scroll, fieldChoice }));
 }

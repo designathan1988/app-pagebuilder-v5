@@ -2,7 +2,12 @@
 
 Leia por inteiro antes de começar; atualize ao fim de cada lote. Regras de ritmo e formato: `CLAUDE.md`, seções 0 e 1. O histórico até 2026-10-09 está em `auditoria/historico-progresso.md` (só consulta; não descreve o estado).
 
-## Estado atual (2026-10-10)
+## Estado atual (2026-10-21)
+- **Verificação:** um comando só, `npm run verify` (`tools/verify/run.ts`), cerca de 56 s com os sete passos: manifesto 2 s, tipos (TypeScript 7) 2 s, lint 3 s, gerados 8 s (os quatro juntos), modelo 9 s, unitários 22 s, fumaça no navegador 17 s. A suíte de navegador inteira e os mutantes saíram do trabalho diário. Base: `reports/Verificação rápida do page builder.md`.
+- **Código em inglês:** comentários, identificadores, nomes de arquivo, títulos de teste e mensagens de ferramentas traduzidos (src, tools, tests, configs e o código de `auditoria/`).
+- **Falhas antigas da suíte unitária:** 22 falhavam no commit anterior, todas resolvidas. Teste velho depois da DEF-0601 (inserir ao lado da lista) e da DCS-013 (segundo toque reinicia o gesto); listas fixas velhas em `citations`, `run-inputs`, `check.test` e `declared-refusals`; um defeito do app, DEF-0622.
+
+## Estado anterior (2026-10-10)
 - **Prontidão para uso (2026-10-10):** `auditoria/prontidao.md`. O veredito é "pronto, com ressalvas". Um site de 3 páginas foi feito do zero no build de produção, salvo, reaberto e exportado, no Chrome e no Edge. Ficaram 7 defeitos abertos (DEF-0615 a DEF-0621); dois dão resultado errado: DEF-0615 (componente) e DEF-0620 (preço do CSV).
 
 ## Estado anterior (2026-10-09)

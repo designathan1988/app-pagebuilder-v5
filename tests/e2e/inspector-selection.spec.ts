@@ -1,4 +1,4 @@
-// The inspector never says something the store contradicts (brief "a aplicação completa", first task): its selector
+// The inspector never says something the store contradicts (the brief "the complete application", first task): its selector
 // bar names the one selected element (its name and exported tag), counts several, and says "Nothing selected" only
 // when the selection the test port reads is empty.
 import fs from 'node:fs';

@@ -1,4 +1,5 @@
-// The colours the site uses, and changing one everywhere at once (the plan's stage 7, "achar usos e trocar no site";
+// The colours the site uses, and changing one everywhere at once (the plan's stage 7, "find uses and replace across the
+// site";
 // journey C1: a rebrand was a hunt through every element). The one owner of:
 //  - siteColoursOf: every colour a style value of the project names — an element's own styles on every page, a class's,
 //    a component's tree — with how many values name it, the most used first. A colour is a hex colour (#rgb, #rrggbb,

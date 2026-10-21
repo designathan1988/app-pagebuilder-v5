@@ -1,4 +1,4 @@
-// A narrow window (the plan's stage 5, jornada03 J25 and H17: at 1280 x 720 the canvas had 41 % of the window): below
+// A narrow window (the plan's stage 5, journey03 J25 and H17: at 1280 x 720 the canvas had 41 % of the window): below
 // the manifest's width (interactions.json workspace.narrowWindow) a first visit opens with the sidebar closed, so the
 // canvas takes the room (src/editor/store.ts narrowStart). Opened, the sidebar takes its column as in any window: it
 // once opened over the canvas here, and the elements inserted from it, the canvas toolbar and the dock lay under it

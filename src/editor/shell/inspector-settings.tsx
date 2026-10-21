@@ -52,7 +52,7 @@ function toggleArgOf(entry: DoorEntry, attribute: AttributeId): { readonly args:
 }
 
 // A boolean attribute of the Settings tab (Open in a new tab, Required, Disabled…): a two-option segmented control,
-// Off | On (jornada02 GENERALISATION 1.3: the canonical has no checkbox), each option the door standing for its state
+// Off | On (journey02 GENERALISATION 1.3: the canonical has no checkbox), each option the door standing for its state
 // of the node, the one the node stores pressed; a press on the other runs the door's command with it, one undo step.
 // One Tab stop, the arrows between the two (a roving group).
 const TOGGLE_STATES = [false, true] as const;
@@ -382,7 +382,7 @@ export function SettingsTab({ head = null }: { readonly head?: ReactNode } = {})
             if (owned.length === 0 && section.id !== 'attributes') return null;
             return (
               <section key={section.id} className="settings-section" data-settings-section={section.id} aria-label={t(section.labelKey as MessageId)}>
-                {/* the section's title, and what it is for in its tooltip and its description (jornada02 GENERALISATION 1.3:
+                {/* the section's title, and what it is for in its tooltip and its description (journey02 GENERALISATION 1.3:
                     the permanent line under every title cost a row per section) */}
                 <div className="settings-section__header">
                   <h3 title={t(section.descriptionKey as MessageId)} aria-describedby={`settings-${section.id}-about`}>

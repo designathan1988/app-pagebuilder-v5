@@ -1,23 +1,23 @@
-// As classes de navegador da etapa 5 (item 5 da "Tarefa do DeepSeek: a parte visual e de navegador"): o que só o
-// navegador responde, com a fixture do projeto (a guarda de tela, o feed de incidentes e os erros do console vêm dela).
-//  - Quadros de animação longos (Long Animation Frames): inserir, arrastar, digitar num campo, desfazer e trocar de
-//    página, cada um com um observador de `long-animation-frame`; um quadro acima de 50 ms vira defeito, com os
-//    `scripts[]` do quadro. A rodada aquece antes de medir: o primeiro quadro de uma sessão paga a compilação. Este
-//    arquivo mede tempo de parede do navegador: rode-o sozinho, porque com outros navegadores na mesma máquina o quadro
-//    passa de 50 ms por contenção (medido: 70,2 ms num quadro `onUp` com quinze arquivos em voo, e nenhum quadro acima
-//    de 50 ms com este arquivo sozinho, nas duas condições).
-//  - Memória: um `WeakRef` do elemento antes de cada ação, vinte repetições, `HeapProfiler.collectGarbage` e todos os
-//    `WeakRef` vazios no fim (DEF-0571: só o da última volta era conferido).
-//  - Composição de texto (IME) pelo CDP: durante a composição a tecla que escolheria uma entrada não roda comando, e
-//    o texto entra inteiro; a composição é de um texto que casa com entradas, então só a guarda do keymap impede o
-//    Enter, e o mesmo Enter depois de a composição confirmar roda a entrada (o controle).
-//  - Área de transferência: copiar e colar um nó com estilo devolve o mesmo; colar HTML externo com `onclick` não
-//    deixa o atributo entrar no documento, e o nó colado clicado no canvas não roda nada.
-//  - Cores forçadas e movimento reduzido: nenhum controle que se via passa a não se ver, nem some contra o fundo (a
-//    cor do controle igual à do fundo que ele tem).
-//  - Texto bidirecional: uma página com `dir="rtl"` (`pageDirection`) e um texto de caracteres hebraicos e conteúdo
-//    latino misto; o canvas desenha o texto da direita para a esquerda, e a edição mostra o mesmo texto.
-//  - Cota: o localStorage cheio; o autosave não perde o documento e diz que o diário passou ao IndexedDB
+// The browser classes of stage 5 (item 5 of "DeepSeek's task: the visual and browser part"): what only the browser
+// answers, with the project's fixture (the screen guard, the incident feed and the console errors come from it).
+//  - Long Animation Frames: inserting, dragging, typing in a field, undoing and switching pages, each one with a
+//    `long-animation-frame` observer; a frame over 50 ms becomes a defect, with the frame's `scripts[]`. The run warms
+//    up before measuring: the first frame of a session pays for the compilation. This file measures the browser's wall
+//    time: run it alone, because with other browsers on the same machine a frame goes past 50 ms through contention
+//    (measured: 70.2 ms in an `onUp` frame with fifteen files in flight, and no frame over 50 ms with this file alone,
+//    in both conditions).
+//  - Memory: a `WeakRef` to the element before each action, twenty repetitions, `HeapProfiler.collectGarbage` and every
+//    `WeakRef` empty at the end (DEF-0571: only the last turn's was checked).
+//  - Text composition (IME) through the CDP: during the composition the key that would choose an entry runs no command,
+//    and the text goes in whole; the composition is of a text that matches entries, so only the keymap's guard stops the
+//    Enter, and the same Enter after the composition commits runs the entry (the control).
+//  - Clipboard: copying and pasting a node with a style gives back the same; pasting external HTML with `onclick` does
+//    not let the attribute into the document, and the pasted node clicked on the canvas runs nothing.
+//  - Forced colours and reduced motion: no control that could be seen stops being seen, nor vanishes against the
+//    background (the control's colour equal to that of the background it has).
+//  - Bidirectional text: a page with `dir="rtl"` (`pageDirection`) and a text of Hebrew characters and mixed Latin
+//    content; the canvas draws the text right to left, and editing shows the same text.
+//  - Quota: localStorage full; the autosave does not lose the document and says the journal moved to IndexedDB
 //    (`status.save.journalInDatabase`, src/editor/persistence/autosave.ts).
 import fs from 'node:fs';
 import { expect, test, type Page } from '../support/test.ts';
@@ -28,7 +28,7 @@ const FIXTURE = 'manifest/features/fixtures/aurora.json';
 const OPEN = 'project.open#menu-file';
 const INSERT = 'element.insert#elements-tile';
 const DELETE = 'element.delete#key-delete-in-canvas';
-// a exclusão pela Edit › Delete: o atalho do canvas só age com o contexto do canvas (a inserção deixa o foco na paleta)
+// the delete through Edit › Delete: the canvas shortcut only acts with the canvas context (inserting leaves the focus on the palette)
 const DELETE_MENU = 'element.delete#menu-edit';
 const UNDO = 'history.undo#key-ctrl-z-in-global';
 const COPY = 'clipboard.copy#key-ctrl-c-in-global';
@@ -37,7 +37,7 @@ const SELECT_ROW = 'selection.select#layers-row';
 const EXPLORER = 'workspace.setPanelOpen#toolbar-activity-bar-explorer';
 const INSERT_PANEL = 'workspace.setPanelOpen#toolbar-activity-bar-insert';
 
-// o documento de aurora, como o porto de teste o lê
+// aurora's document, as the test port reads it
 const tree = (page: Page) =>
   page.evaluate(() => {
     const port = (window as unknown as { __builderTestPort: { document: () => { pages: { tree: unknown }[] }; selection: () => readonly string[] } }).__builderTestPort;
@@ -74,7 +74,7 @@ const openAurora = async (page: Page): Promise<void> => {
   await runDoor(page, SELECT_ROW, { args: { target: 'n-hero' } });
 };
 
-// ---------------------------------------------------------------- quadros longos
+// ---------------------------------------------------------------- long frames
 
 interface Frame {
   readonly duration: number;
@@ -94,19 +94,19 @@ const observeFrames = async (page: Page): Promise<void> => {
 };
 const framesOf = (page: Page): Promise<readonly Frame[]> => page.evaluate(() => (window as unknown as { __frames: Frame[] }).__frames ?? []);
 
-test('nenhum quadro de animação passa de 50 ms ao inserir, arrastar, digitar, desfazer e trocar de página', runs(OPEN, INSERT, UNDO, EXPLORER, 'pages.add#explorer-add-page', 'pages.switch#file-tab', INSERT_PANEL), async ({ page }) => {
+test('no animation frame goes past 50 ms when inserting, dragging, typing, undoing and switching pages', runs(OPEN, INSERT, UNDO, EXPLORER, 'pages.add#explorer-add-page', 'pages.switch#file-tab', INSERT_PANEL), async ({ page }) => {
   test.setTimeout(180_000);
   await observeFrames(page);
   await openAurora(page);
 
-  // uma rodada de aquecimento com as mesmas ações: o primeiro quadro de cada caminho paga a compilação do código
+  // a warm-up run with the same actions: the first frame of each path pays for compiling the code
   await page.evaluate(() => ((window as unknown as { __frames: unknown[] }).__frames.length = 0));
   const tile = page.locator(`[data-door="${INSERT}"][data-args*='"entry":"section"']`).first();
-  // a segunda página, para a troca de página medida (DEF-0571: o caso abria e fechava a barra de comandos no lugar)
+  // the second page, for the measured page switch (DEF-0571: the case opened and closed the command bar instead)
   await runDoor(page, EXPLORER);
   await page.locator('[data-door="pages.add#explorer-add-page"]').first().click();
   const tabs = page.locator('[data-door="pages.switch#file-tab"]');
-  await expect(tabs, 'a página nova desenhou a sua aba').toHaveCount(2);
+  await expect(tabs, 'the new page drew its tab').toHaveCount(2);
   // the page tabs stand in the Explorer and the tiles in the Insert panel, which share the side: each comes back when
   // its control is out of sight, as a person opens it
   const toPage = async (index: number): Promise<void> => {
@@ -140,34 +140,34 @@ test('nenhum quadro de animação passa de 50 ms ao inserir, arrastar, digitar, 
   const beforeDrag = await undoSteps(page);
   await page.mouse.move(at.x, at.y);
   await page.mouse.down();
-  // um arraste de pessoa: um passo por quadro (~60 por segundo), e não a rajada que o mouse sintético entrega
+  // a person's drag: one step per frame (~60 per second), and not the burst the synthetic mouse delivers
   for (let step = 1; step <= 10; step++) {
     await page.mouse.move(at.x + 16 * step, at.y + 9 * step);
     await page.waitForTimeout(16);
   }
   await page.mouse.up();
   await undoTheDrag(page, beforeDrag);
-  // digitar num campo: o campo de busca do inspector
+  // typing in a field: the inspector's search field
   const field = page.locator('aside.inspector input[type="search"], aside.inspector input[type="text"]').first();
   if ((await field.count()) > 0) {
     await field.click();
     await page.keyboard.type('padding');
     await page.keyboard.press('Escape');
   }
-  // trocar de página: a outra aba e de volta, cada página desenhada no quadro
+  // switching pages: the other tab and back, each page drawn in the frame
   await toPage(1);
-  await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'a outra página está no quadro').toHaveCount(0);
+  await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'the other page is in the frame').toHaveCount(0);
   await toPage(0);
-  await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'a primeira página voltou ao quadro').toHaveCount(1);
+  await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'the first page came back to the frame').toHaveCount(1);
   await page.waitForTimeout(200);
 
   const long = (await framesOf(page)).filter((frame) => frame.duration > 50);
-  expect(long.map((frame) => `${frame.duration.toFixed(1)} ms: ${frame.scripts.join(', ')}`), 'quadros de animação acima de 50 ms').toEqual([]);
+  expect(long.map((frame) => `${frame.duration.toFixed(1)} ms: ${frame.scripts.join(', ')}`), 'animation frames over 50 ms').toEqual([]);
 });
 
-// ---------------------------------------------------------------- memória
+// ---------------------------------------------------------------- memory
 
-test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta', runs(OPEN, INSERT, DELETE_MENU), async ({ page, context }) => {
+test('an unmounted control is not held: the WeakRef empties after collection', runs(OPEN, INSERT, DELETE_MENU), async ({ page, context }) => {
   test.setTimeout(600_000);
   await openAurora(page);
   const cdp = await context.newCDPSession(page);
@@ -176,144 +176,144 @@ test('um controle desmontado não fica preso: o WeakRef esvazia depois da coleta
   const holdInPage = (selector: string): Promise<void> =>
     page.evaluate((sel) => {
       const el = document.querySelector(sel);
-      if (el === null) throw new Error(`o elemento ${sel} não está desenhado`);
+      if (el === null) throw new Error(`the element ${sel} is not drawn`);
       const held = window as unknown as { __probes?: WeakRef<Element>[] };
       (held.__probes ??= []).push(new WeakRef(el));
     }, selector);
-  // Cada ação vinte vezes; no fim, coletas de lixo em laço (até doze, com uma espera entre elas: uma só é instável,
-  // e foi uma medição instável que fez a primeira hipótese do DEF-0522 cair) e os WeakRef das vinte voltas, que
-  // precisam estar vazios: um controle fora do documento não pode continuar referenciado.
+  // Each action twenty times; at the end, garbage collections in a loop (up to twelve, with a wait between them: a
+  // single one is unstable, and it was an unstable measurement that brought down DEF-0522's first hypothesis) and the
+  // WeakRefs of the twenty turns, which must be empty: a control out of the document cannot stay referenced.
   const cycle = async (what: string, action: () => Promise<void>): Promise<void> => {
     await page.evaluate(() => void ((window as unknown as { __probes?: WeakRef<Element>[] }).__probes = []));
     for (let i = 0; i < 20; i++) await action();
     const turns = await page.evaluate(() => (window as unknown as { __probes?: WeakRef<Element>[] }).__probes?.length ?? 0);
-    expect(turns, `${what}: as vinte voltas guardaram o seu elemento`).toBe(20);
-    let held: readonly string[] = ['não medido'];
+    expect(turns, `${what}: the twenty turns kept their element`).toBe(20);
+    let held: readonly string[] = ['not measured'];
     for (let round = 0; round < 12 && held.length > 0; round++) {
       await cdp.send('HeapProfiler.collectGarbage');
       await page.waitForTimeout(60);
       held = await page.evaluate(() =>
         ((window as unknown as { __probes?: WeakRef<Element>[] }).__probes ?? []).flatMap((probe, turn) => {
           const el = probe.deref();
-          return el === undefined ? [] : [`volta ${String(turn + 1)} ${el.isConnected ? 'conectado' : 'preso'}`];
+          return el === undefined ? [] : [`turn ${String(turn + 1)} ${el.isConnected ? 'connected' : 'leaked'}`];
         }),
       );
     }
     // the element on the page now (the last turn's, when the action leaves it drawn) is no leak
-    const leaked = held.filter((one) => one.endsWith('preso'));
+    const leaked = held.filter((one) => one.endsWith('leaked'));
     if (leaked.length > 0) alive.push(`${what} (${leaked.join(', ')})`);
   };
 
-  await cycle('o menu', async () => {
+  await cycle('the menu', async () => {
     await page.locator('[data-menu="file"]').first().click();
     await holdInPage('[data-region="menu:file"]');
     await page.keyboard.press('Escape');
-    await expect(page.locator('[data-region="menu:file"]'), 'o menu fecha').toHaveCount(0);
+    await expect(page.locator('[data-region="menu:file"]'), 'the menu closes').toHaveCount(0);
   });
-  // O painel rápido fechado pelo Esc: o caminho do DEF-0522, corrigido (o foco volta ao chip com o painel ainda
-  // desenhado, e só então ele sai da página).
-  await cycle('o painel rápido', async () => {
+  // The quick panel closed by Esc: DEF-0522's path, corrected (the focus goes back to the chip with the panel still
+  // drawn, and only then does it leave the page).
+  await cycle('the quick panel', async () => {
     await openQuickPanel(page);
     await holdInPage('.quick-panel');
     await page.keyboard.press('Escape');
-    await expect(page.locator('.quick-panel'), 'o painel rápido fecha').toHaveCount(0);
+    await expect(page.locator('.quick-panel'), 'the quick panel closes').toHaveCount(0);
     // the focus stays on the chip, the same element the close gave it to (DEF-0533: a frame later it was mounted again
     // and the focus fell to the body; measured in Chrome before and after the correction)
-    await expect.poll(() => page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), { message: 'o foco fica no chip depois do fecho' }).toBe(true);
+    await expect.poll(() => page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), { message: 'the focus stays on the chip after the close' }).toBe(true);
     await page.waitForTimeout(50);
-    expect(await page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), 'o foco continua no chip um instante depois').toBe(true);
+    expect(await page.evaluate(() => document.activeElement?.matches('[data-quick-panel-chip][aria-expanded="false"]') === true), 'the focus is still on the chip a moment later').toBe(true);
   });
-  await cycle('o nó inserido e apagado', async () => {
+  await cycle('the node inserted and deleted', async () => {
     await page.locator(`[data-door="${INSERT}"][data-args*='"entry":"section"']`).first().click();
     const id = await page.evaluate(() => (window as unknown as { __builderTestPort: { selection: () => readonly string[] } }).__builderTestPort.selection()[0] ?? null);
-    if (id === null) throw new Error('a inserção não deixou seleção');
+    if (id === null) throw new Error('the insert left no selection');
     await page.evaluate((node) => {
       const el = document.querySelector<HTMLIFrameElement>('.frame__page')?.contentDocument?.querySelector(`[data-node="${node}"]`);
-      if (el === null || el === undefined) throw new Error(`o canvas não desenha ${node}`);
+      if (el === null || el === undefined) throw new Error(`the canvas does not draw ${node}`);
       ((window as unknown as { __probes?: WeakRef<Element>[] }).__probes ??= []).push(new WeakRef(el));
     }, id);
     await runDoor(page, DELETE_MENU);
-    await expect.poll(() => idsOf(page), { message: `o nó ${id} apagado sai do documento` }).not.toContain(id);
+    await expect.poll(() => idsOf(page), { message: `the deleted node ${id} leaves the document` }).not.toContain(id);
   });
   await runDoor(page, EXPLORER);
   await page.locator('[data-door="pages.add#explorer-add-page"]').first().click();
   const tabs = page.locator('[data-door="pages.switch#file-tab"]');
-  await expect(tabs, 'a página nova desenhou a sua aba').toHaveCount(2);
-  await cycle('a página trocada', async () => {
+  await expect(tabs, 'the new page drew its tab').toHaveCount(2);
+  await cycle('the switched page', async () => {
     await tabs.nth(0).click();
     await expect(page.locator('.frame__page')).toBeVisible();
     await page.evaluate(() => {
-      // um nó da página que sai, e não o corpo do quadro (que a troca reusa)
+      // a node of the page that leaves, and not the frame's body (which the switch reuses)
       const el = document.querySelector<HTMLIFrameElement>('.frame__page')?.contentDocument?.querySelector('[data-node="n-hero"]');
-      if (el === null || el === undefined) throw new Error('a página não desenhou o hero');
+      if (el === null || el === undefined) throw new Error('the page did not draw the hero');
       ((window as unknown as { __probes?: WeakRef<Element>[] }).__probes ??= []).push(new WeakRef(el));
     });
     await tabs.nth(1).click();
-    // a página que saiu deixa de ser desenhada: o quadro mostra a outra
-    await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'a página trocada sai do quadro').toHaveCount(0);
+    // the page that left is no longer drawn: the frame shows the other one
+    await expect(page.frameLocator('.frame__page').locator('[data-node="n-hero"]'), 'the switched page leaves the frame').toHaveCount(0);
   });
 
-  expect(alive, 'controles que continuam vivos depois da coleta de lixo').toEqual([]);
+  expect(alive, 'controls that stay alive after garbage collection').toEqual([]);
 });
 
-// ---------------------------------------------------------------- composição de texto (IME)
+// ---------------------------------------------------------------- text composition (IME)
 
-test('durante a composição nenhum atalho dispara e o texto entra inteiro', runs(OPEN), async ({ page, context }) => {
+test('during composition no shortcut fires and the text goes in whole', runs(OPEN), async ({ page, context }) => {
   test.setTimeout(120_000);
   await openAurora(page);
   const cdp = await context.newCDPSession(page);
   await page.keyboard.press('Control+k');
   const field = page.locator('[data-region="command-palette"] input[role="combobox"]');
-  await expect(field, 'a barra de comandos abre com o seu campo').toBeVisible();
+  await expect(field, 'the command bar opens with its field').toBeVisible();
   await field.click();
   await field.press('Control+a');
   await field.press('Backspace');
   const nodesBefore = await idsOf(page);
-  // A composição de um texto que casa com entradas (measured in Chrome: "wrap" lists Wrap in a row, in a column, in a
-  // container): o texto ainda não está confirmado, e o Enter, que chega com isComposing, não pode rodar a entrada
-  // (src/editor/input/keymap.ts, `if (event.isComposing || event.keyCode === 229) return;`). Sem a guarda, o Enter
-  // rodaria a primeira entrada listada (DEF-0571: a composição de kana não casava com nada e o caso passava sem ela).
+  // The composition of a text that matches entries (measured in Chrome: "wrap" lists Wrap in a row, in a column, in a
+  // container): the text is not committed yet, and the Enter, which arrives with isComposing, must not run the entry
+  // (src/editor/input/keymap.ts, `if (event.isComposing || event.keyCode === 229) return;`). Without the guard, the
+  // Enter would run the first listed entry (DEF-0571: the kana composition matched nothing and the case passed without it).
   await cdp.send('Input.imeSetComposition', { text: 'wrap', selectionStart: 4, selectionEnd: 4 });
-  await expect(page.locator('[data-region="command-palette"] [role="option"]').first(), 'a consulta em composição lista entradas').toBeVisible();
+  await expect(page.locator('[data-region="command-palette"] [role="option"]').first(), 'the query being composed lists entries').toBeVisible();
   await field.press('Enter');
-  expect(await idsOf(page), 'a tecla apertada durante a composição rodou um comando').toEqual(nodesBefore);
-  await expect(field, 'a barra continua aberta durante a composição').toBeVisible();
-  // a composição confirma o texto inteiro
+  expect(await idsOf(page), 'the key pressed during composition ran a command').toEqual(nodesBefore);
+  await expect(field, 'the bar stays open during composition').toBeVisible();
+  // the composition commits the whole text
   await cdp.send('Input.insertText', { text: 'wrap' });
   await expect(field).toHaveValue('wrap');
-  // o controle: o mesmo Enter, sem composição, roda a primeira entrada (um envoltório novo no documento)
+  // the control: the same Enter, without composition, runs the first entry (a new wrapper in the document)
   await field.press('Enter');
-  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'o Enter fora da composição roda a entrada listada' }).toBeGreaterThan(nodesBefore.length);
+  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'the Enter outside composition runs the listed entry' }).toBeGreaterThan(nodesBefore.length);
 });
 
-// ---------------------------------------------------------------- área de transferência
+// ---------------------------------------------------------------- clipboard
 
-test('copiar e colar um nó com estilo devolve o mesmo, e HTML externo com onclick não entra', runs(OPEN, COPY, PASTE), async ({ page, context }) => {
+test('copying and pasting a node with a style gives back the same, and external HTML with onclick does not get in', runs(OPEN, COPY, PASTE), async ({ page, context }) => {
   test.setTimeout(120_000);
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await openAurora(page);
   await runDoor(page, SELECT_ROW, { args: { target: 'n-title' } });
   const before = await idsOf(page);
   await runDoor(page, COPY);
-  // a cópia assenta na área de transferência antes de a colagem a ler: sem esta espera, com a máquina carregada a
-  // colagem lia antes da escrita e o comando era recusado (a bateria roda com três processos)
-  await expect.poll(() => page.evaluate(async () => (await navigator.clipboard.readText()).includes('builder/elements')), { message: 'a cópia assenta na área de transferência' }).toBe(true);
+  // the copy settles in the clipboard before the paste reads it: without this wait, with the machine loaded the paste
+  // read before the write and the command was refused (the battery runs with three processes)
+  await expect.poll(() => page.evaluate(async () => (await navigator.clipboard.readText()).includes('builder/elements')), { message: 'the copy settles in the clipboard' }).toBe(true);
   await runDoor(page, PASTE);
-  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'a colagem deixa um nó novo' }).toEqual(before.length + 1);
+  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'the paste leaves a new node' }).toEqual(before.length + 1);
   const after = await idsOf(page);
   const added = after.filter((id) => !before.includes(id));
-  expect(added, 'a colagem deixou um nó novo').toHaveLength(1);
+  expect(added, 'the paste left one new node').toHaveLength(1);
   const copy = added[0] as string;
-  expect(await stylesOf(page, copy), 'o estilo do nó colado é o do nó copiado').toEqual(await stylesOf(page, 'n-title'));
+  expect(await stylesOf(page, copy), "the pasted node's style is the copied node's").toEqual(await stylesOf(page, 'n-title'));
 
-  // HTML externo com onclick: o atributo não pode atravessar a colagem
+  // external HTML with onclick: the attribute must not get through the paste
   const nodes = (await idsOf(page)).length;
   await page.evaluate(async () => {
     await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob(['<div onclick="window.pwned=1">x</div>'], { type: 'text/html' }) })]);
   });
   const beforeExternal = await idsOf(page);
   await runDoor(page, PASTE);
-  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'a colagem do HTML externo deixa um nó' }).toBeGreaterThan(nodes);
+  await expect.poll(() => idsOf(page).then((ids) => ids.length), { message: 'pasting the external HTML leaves a node' }).toBeGreaterThan(nodes);
   // the attribute never enters the document: no attribute of the pasted nodes is an event handler (DEF-0571: the case
   // read only the editor's window, and nothing clicked the pasted node)
   const pasted = (await idsOf(page)).filter((id) => !beforeExternal.includes(id));
@@ -328,26 +328,26 @@ test('copiar e colar um nó com estilo devolve o mesmo, e HTML externo com oncli
     walk(port.document().pages[0]?.tree as Node);
     return all.filter((n) => ids.includes(n.id)).flatMap((n) => [...Object.keys(n.attributes), ...Object.keys(n.customAttributes ?? {})].filter((name) => /^on/i.test(name)).map((name) => `${n.id}.${name}`));
   }, pasted);
-  expect(pasted.length, 'a colagem deixou nós novos').toBeGreaterThan(0);
-  expect(handlers, 'atributos de evento nos nós colados').toEqual([]);
+  expect(pasted.length, 'the paste left new nodes').toBeGreaterThan(0);
+  expect(handlers, 'event attributes on the pasted nodes').toEqual([]);
   // the pasted node clicked on the canvas runs nothing, in the frame's window nor in the editor's
   const point = await page.evaluate((node) => {
     const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
     const el = iframe?.contentDocument?.querySelector(`[data-node="${node}"]`);
-    if (iframe === null || iframe === undefined || el === null || el === undefined) throw new Error('o canvas não desenhou o nó colado');
+    if (iframe === null || iframe === undefined || el === null || el === undefined) throw new Error('the canvas did not draw the pasted node');
     const zoom = iframe.currentCSSZoom;
     const frame = iframe.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     return { x: frame.left + (rect.left + rect.width / 2) * zoom, y: frame.top + (rect.top + rect.height / 2) * zoom };
   }, pasted[0] ?? '');
   await page.mouse.click(point.x, point.y);
-  expect(await page.evaluate(() => (window as unknown as { pwned?: number }).pwned), 'o onclick do HTML colado rodou no editor').toBeUndefined();
-  expect(await page.evaluate(() => (document.querySelector<HTMLIFrameElement>('.frame__page')?.contentWindow as unknown as { pwned?: number } | null)?.pwned), 'o onclick do HTML colado rodou no canvas').toBeUndefined();
+  expect(await page.evaluate(() => (window as unknown as { pwned?: number }).pwned), "the pasted HTML's onclick ran in the editor").toBeUndefined();
+  expect(await page.evaluate(() => (document.querySelector<HTMLIFrameElement>('.frame__page')?.contentWindow as unknown as { pwned?: number } | null)?.pwned), "the pasted HTML's onclick ran in the canvas").toBeUndefined();
 });
 
-// ---------------------------------------------------------------- cores forçadas e movimento reduzido
+// ---------------------------------------------------------------- forced colours and reduced motion
 
-test('com cores forçadas e movimento reduzido nenhum controle que se via passa a não se ver', runs(OPEN), async ({ page }) => {
+test('with forced colours and reduced motion no control that could be seen stops being seen', runs(OPEN), async ({ page }) => {
   test.setTimeout(120_000);
   await openAurora(page);
   // what forced colours change is colour: a control is seen when it is drawn and its colour (its text's and its
@@ -367,7 +367,7 @@ test('com cores forçadas e movimento reduzido nenhum controle que se via passa 
         const style = getComputedStyle(control);
         const drawn = style.visibility !== 'hidden' && style.display !== 'none' && control.getBoundingClientRect().width > 0;
         const marks = (control.textContent ?? '').trim() !== '' || control.querySelector('svg') !== null;
-        return { key: `${control.getAttribute('data-door') ?? control.getAttribute('data-local') ?? '?'}#${index}`, drawn, apart: !marks || style.color !== backgroundOf(control), colour: `${style.color} sobre ${backgroundOf(control)}` };
+        return { key: `${control.getAttribute('data-door') ?? control.getAttribute('data-local') ?? '?'}#${index}`, drawn, apart: !marks || style.color !== backgroundOf(control), colour: `${style.color} on ${backgroundOf(control)}` };
       });
     });
   const before = await seen();
@@ -375,14 +375,14 @@ test('com cores forçadas e movimento reduzido nenhum controle que se via passa 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const after = await seen();
   const wasSeen = new Map(before.map((one) => [one.key, one.drawn && one.apart]));
-  const lost = after.filter((one) => wasSeen.get(one.key) === true && !(one.drawn && one.apart)).map((one) => `${one.key}: ${one.drawn ? one.colour : 'não desenhado'}`);
-  expect(lost, 'controles que se viam e as cores forçadas esconderam ou apagaram contra o fundo').toEqual([]);
-  await page.locator('.workbench').screenshot({ path: 'test-results/lote-navegador-cores-forcadas.png' });
+  const lost = after.filter((one) => wasSeen.get(one.key) === true && !(one.drawn && one.apart)).map((one) => `${one.key}: ${one.drawn ? one.colour : 'not drawn'}`);
+  expect(lost, 'controls that could be seen and that forced colours hid or blended into the background').toEqual([]);
+  await page.locator('.workbench').screenshot({ path: 'test-results/browser-only-forced-colours.png' });
 });
 
-// ---------------------------------------------------------------- texto bidirecional
+// ---------------------------------------------------------------- bidirectional text
 
-test('numa página da direita para a esquerda, um texto com caracteres hebraicos e conteúdo misto aparece certo no canvas, na edição e em Camadas', runs(SELECT_ROW, 'text.startEdit#canvas-double-click-text-element'), async ({ page }) => {
+test('on a right-to-left page, a text with Hebrew characters and mixed content shows correctly on the canvas, in editing and in Layers', runs(SELECT_ROW, 'text.startEdit#canvas-double-click-text-element'), async ({ page }) => {
   test.setTimeout(120_000);
   const MIXED = 'שלום hello 123';
   const project = JSON.stringify({
@@ -424,19 +424,19 @@ test('numa página da direita para a esquerda, um texto com caracteres hebraicos
   const drawnText = page.frameLocator('.frame__page').locator('[data-node="r-text"]');
   expect(await drawnText.innerText()).toBe(MIXED);
   // the canvas draws it right to left: the page's direction reaches the paragraph, which starts at its right edge
-  expect(await drawnText.evaluate((el) => getComputedStyle(el).direction), 'a direção calculada do texto').toBe('rtl');
-  expect(await page.frameLocator('.frame__page').locator('html').getAttribute('dir'), 'o dir da página no canvas').toBe('rtl');
+  expect(await drawnText.evaluate((el) => getComputedStyle(el).direction), "the text's computed direction").toBe('rtl');
+  expect(await page.frameLocator('.frame__page').locator('html').getAttribute('dir'), "the page's dir on the canvas").toBe('rtl');
   await runDoor(page, SELECT_ROW, { args: { target: 'r-text' } });
   const layers = await page.locator('[data-region="layers-tree"] .row.is-selected').first().innerText();
   expect(layers).toContain('Texto misto');
   const field = await tree(page);
   expect(JSON.stringify(field.selection)).toContain('r-text');
-  // a edição do texto na própria página (um duplo clique): o mesmo texto, na mesma ordem. O ponto sai da posição do
-  // quadro mais a do nó vezes o zoom do quadro (seção 8 do CLAUDE.md): o boundingBox do Playwright não o aplica
+  // editing the text on the page itself (a double click): the same text, in the same order. The point comes from the
+  // frame's position plus the node's times the frame's zoom (section 8 of CLAUDE.md): Playwright's boundingBox does not apply it
   const at = await page.evaluate((node) => {
     const iframe = document.querySelector<HTMLIFrameElement>('.frame__page');
     const el = iframe?.contentDocument?.querySelector(`[data-node="${node}"]`);
-    if (iframe === null || iframe === undefined || el === null || el === undefined) throw new Error('o canvas não desenhou o texto');
+    if (iframe === null || iframe === undefined || el === null || el === undefined) throw new Error('the canvas did not draw the text');
     const zoom = iframe.currentCSSZoom;
     const frame = iframe.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
@@ -444,28 +444,28 @@ test('numa página da direita para a esquerda, um texto com caracteres hebraicos
   }, 'r-text');
   await page.mouse.dblclick(at.x, at.y);
   const editing = page.frameLocator('.frame__page').locator('[data-node="r-text"]');
-  await expect(editing, 'a edição abre no próprio texto').toHaveAttribute('contenteditable', 'plaintext-only');
+  await expect(editing, 'editing opens on the text itself').toHaveAttribute('contenteditable', 'plaintext-only');
   expect(await editing.innerText()).toBe(MIXED);
   await page.keyboard.press('Escape');
-  await page.locator('[data-region="canvas-frame"]').screenshot({ path: 'test-results/lote-navegador-bidi.png' });
+  await page.locator('[data-region="canvas-frame"]').screenshot({ path: 'test-results/browser-only-bidi.png' });
 });
 
-// ---------------------------------------------------------------- cota de armazenamento
+// ---------------------------------------------------------------- storage quota
 
-test('com o armazenamento cheio o autosave não perde o documento e diz para onde o diário foi', runs(OPEN, DELETE), async ({ page }) => {
+test('with storage full the autosave does not lose the document and says where the journal went', runs(OPEN, DELETE), async ({ page }) => {
   test.setTimeout(120_000);
   await openAurora(page);
   // the opened project's journal leaves localStorage once IndexedDB holds the project: filled before that, the space it
   // freed then took the next journal, and no notice was due (DEF-0588)
-  await expect.poll(() => page.evaluate(() => localStorage.getItem('work-journal')), { message: 'o diário da abertura saiu do localStorage', timeout: 15_000 }).toBeNull();
-  // enche o localStorage até a cota
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('work-journal')), { message: "the opening's journal left localStorage", timeout: 15_000 }).toBeNull();
+  // fills localStorage up to the quota,
   // to its last bytes: a piece that no longer fits halves, down to one character (DEF-0571: the room the 256 KB pieces
   // left still held the journal, so the case never reached the notice)
   await page.evaluate(() => {
     let piece = 256 * 1024;
     for (let i = 0; i < 4000 && piece >= 1; i++) {
       try {
-        localStorage.setItem(`cheio-${i}`, 'x'.repeat(piece));
+        localStorage.setItem(`filler-${i}`, 'x'.repeat(piece));
       } catch {
         piece = Math.floor(piece / 2);
       }
@@ -473,13 +473,13 @@ test('com o armazenamento cheio o autosave não perde o documento e diz para ond
   });
   const full = await page.evaluate(() => {
     try {
-      localStorage.setItem('cheio-fim', 'x');
+      localStorage.setItem('filler-end', 'x');
       return false;
     } catch {
       return true;
     }
   });
-  expect(full, 'o localStorage recusou a escrita: é o estado que a cota deixa').toBe(true);
+  expect(full, 'localStorage refused the write: it is the state the quota leaves').toBe(true);
   await runDoor(page, SELECT_ROW, { args: { target: 'n-actions' } });
   // the selection's own write over first: a delete that arrives while it is in flight goes straight to IndexedDB in the
   // same write loop, with no journal to try, so no notice is due (DEF-0588)
@@ -494,14 +494,14 @@ test('com o armazenamento cheio o autosave não perde o documento e diz para ond
       read.onsuccess = () => { database.close(); resolve((read.result as { selection?: unknown } | undefined)?.selection); };
     };
   }));
-  await expect.poll(savedSelection, { message: 'a seleção foi gravada no IndexedDB', timeout: 20_000 }).toEqual(['n-actions']);
+  await expect.poll(savedSelection, { message: 'the selection was written to IndexedDB', timeout: 20_000 }).toEqual(['n-actions']);
   await runDoor(page, DELETE);
-  await expect(status, 'o autosave para de gravar e diz em que estado ficou').not.toContainText(/Saving/i, { timeout: 20_000 });
-  expect(await idsOf(page), 'a mudança continua no documento com o armazenamento cheio').not.toContain('n-actions');
+  await expect(status, 'the autosave stops writing and says what state it was left in').not.toContainText(/Saving/i, { timeout: 20_000 });
+  expect(await idsOf(page), 'the change stays in the document with storage full').not.toContain('n-actions');
   // the journal that no longer fits localStorage moves to IndexedDB, and the status bar says so (DEF-0571: the case
   // checked no notice)
-  await expect.poll(() => page.evaluate(() => (window as unknown as { __builderTestPort: { keys: () => readonly string[] } }).__builderTestPort.keys()), { message: 'o aviso de que o diário passou ao IndexedDB foi dito' }).toContain('status.save.journalInDatabase');
+  await expect.poll(() => page.evaluate(() => (window as unknown as { __builderTestPort: { keys: () => readonly string[] } }).__builderTestPort.keys()), { message: 'the notice that the journal moved to IndexedDB was given' }).toContain('status.save.journalInDatabase');
   await page.reload();
   await expect(page.locator('.workbench')).toBeVisible();
-  await expect(page.frameLocator('.frame__page').locator('[data-node="n-actions"]'), 'a mudança sobreviveu à recarga').toHaveCount(0);
+  await expect(page.frameLocator('.frame__page').locator('[data-node="n-actions"]'), 'the change survived the reload').toHaveCount(0);
 });

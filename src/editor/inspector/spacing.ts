@@ -1,7 +1,7 @@
 // inspector.toggleSpacingLink (spec props-spacing, Problems in Pager 1 and 2): whether
 // a box of the box model editor (padding or margin) is edited as one value for its four sides. It changes only how the
 // box is edited and writes nothing to the document (no undo step). The link belongs to the element (J27 of the
-// jornada03 study: one global switch carried the link of the footer to every button): a box whose four sides hold the
+// journey03 study: one global switch carried the link of the footer to every button): a box whose four sides hold the
 // same value is linked, any other is not, until the person turns its link on or off for that element
 // (ui.spacingLinks, by element; editor state, not kept after a reload). The status bar says the box is linked or
 // unlinked; the link button stands for its box being linked.

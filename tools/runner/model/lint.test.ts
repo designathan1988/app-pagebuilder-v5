@@ -16,17 +16,17 @@ async function errorsOf(eslint: ESLint, file: string, text: string): Promise<str
   return (result?.messages ?? []).filter((m) => m.severity === 2).map((m) => `${m.ruleId ?? 'parse'}: ${m.message}`);
 }
 
-describe('o lint do projeto sobre o arquivo do mutante', () => {
-  it('o texto do arquivo não recebe erro que o arquivo em disco não recebe', async () => {
+describe("the project's lint over the mutant's file", () => {
+  it('the file text gets no error the file on disk does not get', async () => {
     const eslint = new ESLint();
     const found: string[] = [];
     for (const file of files) {
       const disk = fs.readFileSync(file, 'utf8');
       const before = await errorsOf(eslint, file, disk);
-      expect(before, `${file} em disco tem erros de lint`).toEqual([]);
+      expect(before, `${file} on disk has lint errors`).toEqual([]);
       const after = await errorsOf(eslint, file, mutatedSource(file, disk));
       found.push(...after.map((error) => `${file}: ${error}`));
     }
-    expect(found, 'erros que o texto do mutante recebe').toEqual([]);
+    expect(found, "errors the mutant's text gets").toEqual([]);
   }, 120_000);
 });

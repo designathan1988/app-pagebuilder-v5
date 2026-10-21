@@ -1,4 +1,4 @@
-// The shape of a stroke (spec "Gestos compostos"): one press-to-release path may say several things at once — a line
+// The shape of a stroke (spec "Compound gestures"): one press-to-release path may say several things at once — a line
 // that turns and crosses again is several cuts, a path that comes back to its start encircles regions to group them.
 // This reads a stroke's samples into the straight pieces and the closure the recognizer interprets.
 import type { Point } from '../intent/model.ts';

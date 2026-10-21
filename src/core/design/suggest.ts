@@ -1,4 +1,4 @@
-// Styles the site repeats, offered as one class (the plan's stage 7, "sugestões de repetição"; journey M3: the same
+// Styles the site repeats, offered as one class (the plan's stage 7, "repetition suggestions"; journey M3: the same
 // padding typed on every section, 24 edits where 6 would do). The one owner of:
 //  - suggestionsOf: for each element type with at least two elements on the project's pages, the declarations of the
 //    base breakpoint and state that every one of them holds with the same value (its own styles, not a class's) — a

@@ -1,21 +1,21 @@
 /* global MutationObserver, console, document, setTimeout, window */
-// MED-0038 — os valores calculados pelo navegador que o id cita.
-//  - L08 (ENT-L08-0021): a visibilidade da interseção (`isIntersecting` e `intersectionRatio`), de que os ramos de
-//    entrar e sair dependem (src/editor/motion/runtime/triggers.ts:179), lida no documento do quadro do canvas.
-//  - L09a (ENT-L09a-0060): o elemento ativo antes de a barra de comando abrir e a condição ao fechar
-//    (src/editor/shell/command-bar.tsx:148 e :151).
-//  - L09a (ENT-L09a-0074): o elemento ativo quando a caixa de diálogo abre (src/editor/shell/dialog.tsx:24).
+// MED-0038 — the browser-computed values that the id cites.
+//  - L08 (ENT-L08-0021): the intersection visibility (`isIntersecting` and `intersectionRatio`), on which the
+//    enter and leave branches depend (src/editor/motion/runtime/triggers.ts:179), read in the canvas frame's document.
+//  - L09a (ENT-L09a-0060): the active element before the command bar opens and the condition on closing
+//    (src/editor/shell/command-bar.tsx:148 and :151).
+//  - L09a (ENT-L09a-0074): the active element when the dialog box opens (src/editor/shell/dialog.tsx:24).
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/responsive-title.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false, menu: /Exibir/ },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true, menu: /View/ },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false, menu: /Exibir/ },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true, menu: /View/ },
 };
 
 async function open(c, commands) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands } }));
@@ -25,8 +25,8 @@ async function open(c, commands) {
   return { browser, page };
 }
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  // L08 — a visibilidade da interseção do elemento com a vista do quadro
+for (const [name, c] of Object.entries(CONFIGS)) {
+  // L08 — the visibility of the element's intersection with the frame's view
   const a = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }]);
   const intersection = await a.page.evaluate(() => new Promise((resolve) => {
     const w = document.querySelector('.frame__page').contentWindow;
@@ -36,11 +36,11 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
       if (entry) resolve({ isIntersecting: entry.isIntersecting, intersectionRatio: entry.intersectionRatio, boundingClientRect: { top: entry.boundingClientRect.top, height: entry.boundingClientRect.height } });
     }, { threshold: 0 });
     observer.observe(el);
-    setTimeout(() => resolve({ error: 'sem aviso de interseção' }), 2000);
+    setTimeout(() => resolve({ error: 'no intersection notice' }), 2000);
   }));
   await a.browser.close();
 
-  // L09a — a barra de comando e a caixa de diálogo
+  // L09a — the command bar and the dialog box
   const b = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }]);
   const beforeOpen = await b.page.evaluate(() => ({ tag: document.activeElement?.tagName, className: (document.activeElement?.className || '').toString() }));
   await b.page.click('[data-door="commandBar.open#toolbar-top-bar-search"]');
@@ -64,5 +64,5 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   const dialog = await b.page.evaluate(() => ({ open: !!document.querySelector('.dialog-shield .dialog') }));
   await b.browser.close();
 
-  console.log(JSON.stringify({ config: nome, intersection, commandBar: { beforeOpen, whileOpen, afterClose }, dialog: { ...dialog, beforeDialog } }));
+  console.log(JSON.stringify({ config: name, intersection, commandBar: { beforeOpen, whileOpen, afterClose }, dialog: { ...dialog, beforeDialog } }));
 }

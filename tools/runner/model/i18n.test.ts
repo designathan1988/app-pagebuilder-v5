@@ -1,4 +1,4 @@
-// The two catalogues against each other (the investigation's C8, "completude do i18n" without a browser): the keys of
+// The two catalogues against each other (the investigation's C8, "i18n completeness" without a browser): the keys of
 // src/i18n/locales/en.json and of pt-BR.json are the same set, every key of one has its placeholders in the other, no
 // text is empty, and every plural form the code takes by a count (.one, .other) exists in both. The source is read
 // from the disk with the passage of the mutant under run swapped (tools/runner/mutants.ts), so a key taken from a
@@ -58,20 +58,20 @@ function countedKeys(): readonly string[] {
   return [...keys].sort();
 }
 
-describe('os dois catálogos de mensagens', () => {
-  it('têm as mesmas chaves, nos dois sentidos', () => {
+describe('the two message catalogues', () => {
+  it('have the same keys, in both directions', () => {
     const [first, ...others] = LOCALES;
     const base = read(first);
     const missing: string[] = [];
     for (const locale of others) {
       const other = read(locale);
-      for (const key of Object.keys(base)) if (!(key in other)) missing.push(`${key} está em ${first} e falta em ${locale}`);
-      for (const key of Object.keys(other)) if (!(key in base)) missing.push(`${key} está em ${locale} e falta em ${first}`);
+      for (const key of Object.keys(base)) if (!(key in other)) missing.push(`${key} is in ${first} and missing from ${locale}`);
+      for (const key of Object.keys(other)) if (!(key in base)) missing.push(`${key} is in ${locale} and missing from ${first}`);
     }
-    expect(missing, 'chaves de um idioma sem par no outro').toEqual([]);
+    expect(missing, 'keys of one language with no match in the other').toEqual([]);
   });
 
-  it('têm os mesmos placeholders em cada chave', () => {
+  it('have the same placeholders in each key', () => {
     const [first, ...others] = LOCALES;
     const base = read(first);
     const broken: string[] = [];
@@ -82,77 +82,77 @@ describe('os dois catálogos de mensagens', () => {
         const b = other[key];
         if (typeof a !== 'string' || typeof b !== 'string') continue;
         const [x, y] = [holes(a), holes(b)];
-        if (x.join(',') !== y.join(',')) broken.push(`${key}: {${x.join('}, {')}} em ${first}, {${y.join('}, {')}} em ${locale}`);
+        if (x.join(',') !== y.join(',')) broken.push(`${key}: {${x.join('}, {')}} in ${first}, {${y.join('}, {')}} in ${locale}`);
       }
     }
-    expect(broken, 'chaves com placeholders diferentes entre os idiomas').toEqual([]);
+    expect(broken, 'keys with different placeholders between the languages').toEqual([]);
   });
 
-  it('não têm chave vazia nem texto vazio', () => {
+  it('have no empty key and no empty text', () => {
     const found: string[] = [];
     for (const locale of LOCALES) {
       for (const [key, text] of Object.entries(read(locale))) {
-        if (!/^[A-Za-z][A-Za-z0-9.-]*$/.test(key)) found.push(`${locale}: a chave "${key}" não é um nome de mensagem`);
-        if (typeof text !== 'string' || text.trim() === '') found.push(`${locale}: "${key}" está vazia`);
+        if (!/^[A-Za-z][A-Za-z0-9.-]*$/.test(key)) found.push(`${locale}: the key "${key}" is not a message name`);
+        if (typeof text !== 'string' || text.trim() === '') found.push(`${locale}: "${key}" is empty`);
       }
     }
-    expect(found, 'chaves fora do formato ou vazias').toEqual([]);
+    expect(found, 'keys out of format or empty').toEqual([]);
   });
 
-  it('toda base que o código conta tem as duas formas plurais nos dois idiomas', () => {
+  it('every base the code counts has both plural forms in both languages', () => {
     const bases = pluralBases();
-    expect(bases.length, 'o código conta plurais em algum lugar').toBeGreaterThan(0);
+    expect(bases.length, 'the code counts plurals somewhere').toBeGreaterThan(0);
     const found: string[] = [];
     for (const locale of LOCALES) {
       const catalogue = read(locale);
       for (const base of bases) {
         for (const form of ['one', 'other']) {
-          if (!(`${base}.${form}` in catalogue)) found.push(`${locale}: "${base}.${form}" falta (a base "${base}" é contada com um número)`);
+          if (!(`${base}.${form}` in catalogue)) found.push(`${locale}: "${base}.${form}" is missing (the base "${base}" is counted with a number)`);
         }
       }
     }
-    expect(found, 'formas plurais de uma base contada').toEqual([]);
+    expect(found, 'plural forms of a counted base').toEqual([]);
   });
 
-  it('toda chave contada pelo count que tem a forma de um num idioma a tem no outro, e uma contagem de um diz o singular', () => {
+  it('every key counted by count that has the form for one in one language has it in the other, and a count of one says the singular', () => {
     const counted = countedKeys();
-    expect(counted.length, 'o código passa count a alguma chave').toBeGreaterThan(50);
+    expect(counted.length, 'the code passes count to some key').toBeGreaterThan(50);
     const catalogues = LOCALES.map((locale) => [locale, read(locale)] as const);
     const found: string[] = [];
     for (const key of counted) {
       const holders = catalogues.filter(([, catalogue]) => `${key}.one` in catalogue).map(([locale]) => locale);
-      if (holders.length > 0 && holders.length < catalogues.length) for (const [locale] of catalogues) if (!holders.includes(locale)) found.push(`${locale}: "${key}.one" falta (a chave é contada pelo count, e ${holders.join(', ')} a tem)`);
+      if (holders.length > 0 && holders.length < catalogues.length) for (const [locale] of catalogues) if (!holders.includes(locale)) found.push(`${locale}: "${key}.one" is missing (the key is counted by count, and ${holders.join(', ')} has it)`);
     }
-    expect(found, 'formas de um que faltam num idioma').toEqual([]);
+    expect(found, 'forms for one missing in a language').toEqual([]);
     // the counts of one that read a plural noun without it (DEF-0547)
     const plural: string[] = [];
     for (const [locale] of catalogues)
       for (const [key, noun] of [['capture.editor.missingResources', locale === 'en' ? 'resources' : 'recursos'], ['canvas.selectedCount', locale === 'en' ? 'elements' : 'elementos'], ['inspector.elementCount', locale === 'en' ? 'elements' : 'elementos']] as const)
-        if (translate(locale, key as MessageId, { count: 1 }).includes(noun)) plural.push(`${locale}: ${key} com 1 diz "${noun}"`);
-    expect(plural, 'contagens de um no plural').toEqual([]);
+        if (translate(locale, key as MessageId, { count: 1 }).includes(noun)) plural.push(`${locale}: ${key} with 1 says "${noun}"`);
+    expect(plural, 'counts of one in the plural').toEqual([]);
   });
 
   // A file refused at File › Open says why in the words of the interface's language: never a text of its own, an
   // error's or the validator's prose in English (DCS-003, DEF-0549).
-  it('a recusa de abrir um arquivo diz o motivo nas palavras do catálogo', () => {
+  it('the refusal to open a file says the reason in the words of the catalogue', () => {
     const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('i'), restored: { document: fixture('aurora'), selection: [] }, ports: { readOnly: () => false }, freeze: true });
     const opened = (file: string) => {
       (store.dispatch as (id: CommandId, args: unknown) => unknown)('project.open' as CommandId, { file });
       return store.getState().message;
     };
     const files: readonly (readonly [string, string])[] = [
-      ['um texto que não é JSON', 'x{'],
-      ['um JSON que não é documento', '{"hello":1}'],
-      ['uma versão sem passo de migração', '{"version":0.5,"pages":[]}'],
-      ['um documento que a validação recusa', JSON.stringify({ version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: { id: 'r', type: 'page', name: 'Page', tag: 'body', attributes: {}, classes: [], styles: {}, text: null, children: [{ id: 'x', type: 'blink', name: 'x', tag: 'div', attributes: {}, classes: [], styles: {}, text: null, children: [] }] } }] })],
+      ['a text that is not JSON', 'x{'],
+      ['a JSON that is not a document', '{"hello":1}'],
+      ['a version with no migration step', '{"version":0.5,"pages":[]}'],
+      ['a document the validation refuses', JSON.stringify({ version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: { id: 'r', type: 'page', name: 'Page', tag: 'body', attributes: {}, classes: [], styles: {}, text: null, children: [{ id: 'x', type: 'blink', name: 'x', tag: 'div', attributes: {}, classes: [], styles: {}, text: null, children: [] }] } }] })],
     ];
     const found: string[] = [];
     for (const [name, file] of files) {
       const said = opened(file);
       const reason = (said?.params as { reason?: unknown } | undefined)?.reason;
-      if (said?.key !== 'status.open.invalidArchive') found.push(`${name}: a recusa não foi a de abrir (${said?.key ?? 'nenhuma'})`);
-      else if (reason === null || typeof reason !== 'object' || !('key' in reason)) found.push(`${name}: o motivo é um texto cru (${String(reason)})`);
+      if (said?.key !== 'status.open.invalidArchive') found.push(`${name}: the refusal was not the open one (${said?.key ?? 'none'})`);
+      else if (reason === null || typeof reason !== 'object' || !('key' in reason)) found.push(`${name}: the reason is a raw text (${String(reason)})`);
     }
-    expect(found, 'recusas de abrir com motivo fora do catálogo').toEqual([]);
+    expect(found, 'open refusals with a reason outside the catalogue').toEqual([]);
   });
 });

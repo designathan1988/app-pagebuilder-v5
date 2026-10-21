@@ -1,18 +1,18 @@
 /* global console, document, window */
-// MED-0043 — L09b (ENT-L09b-0061 a ENT-L09b-0063): a largura do nome e a da sua caixa de cada linha da árvore de
-// Camadas (`name.scrollWidth`, `name.clientWidth`) e a largura dos detalhes (`details.offsetWidth`), lidas em
-// src/editor/shell/sidebar/name-first.ts:22 e :23.
+// MED-0043 — L09b (ENT-L09b-0061 to ENT-L09b-0063): the width of the name and of its box for each row of the
+// Layers tree (`name.scrollWidth`, `name.clientWidth`) and the width of the details (`details.offsetWidth`), read in
+// src/editor/shell/sidebar/name-first.ts:22 and :23.
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/layout-wireframe.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: [] } }));
@@ -27,6 +27,6 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     return { name: name?.textContent ?? null, nameScrollWidth: name?.scrollWidth ?? null, nameClientWidth: name?.clientWidth ?? null, detailsOffsetWidth: details?.offsetWidth ?? null, nameFirst: 'nameFirst' in row.dataset, detailsWidth: row.dataset.detailsWidth ?? null };
   }));
 
-  console.log(JSON.stringify({ config: nome, rows }));
+  console.log(JSON.stringify({ config: configName, rows }));
   await browser.close();
 }

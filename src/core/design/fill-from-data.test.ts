@@ -1,4 +1,4 @@
-// Fill from data with the sheet a person brings (jornada03 J1/C4): Carla's cardapio.csv names its columns nome, preco,
+// Fill from data with the sheet a person brings (journey03 J1/C4): Carla's cardapio.csv names its columns nome, preco,
 // foto, in an order other than the card's fields (image, name, price), and names photos by their file names. The fill
 // matches columns by name, then by kind, finds the photos by name, and refuses a photo it cannot find, naming the row,
 // the column and the cell, before any patch: never a state the model refuses.

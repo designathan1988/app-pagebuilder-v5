@@ -149,7 +149,7 @@ function known(state: StoreState<never>, target: string) {
   if (!locate(state.document, target)) throw new Error(`adding to the selection: the document has no node ${target}`);
 }
 
-// selection.range (Shift+click on a Layers row; jornada03 J17): from the node selected last to the one clicked, every
+// selection.range (Shift+click on a Layers row; journey03 J17): from the node selected last to the one clicked, every
 // sibling between them joins the selection, in the order from that node to the clicked one, as a file tree selects a
 // run of rows. Rows of different parents are no run: the clicked node joins the selection as with Shift+click on the
 // canvas (selection.add). With nothing selected it is selected alone.
@@ -185,9 +185,9 @@ export const toggleCommand = registerHandler('selection.toggle', ({ state }, { t
 // The walk of the tree with the arrow keys (spec keyboard-tree-walk): one level per key from the primary node, the
 // node reached alone becomes the selection and the status bar names it; at an end the selection stays and the status
 // bar says why. Siblings are the parent's children, hidden or locked included; the page root is reached from its
-// children and has no parent. With nothing selected any arrow starts the walk at the open page's root (jornada03
-// plan, stage 5: "setas sem seleção começam pela raiz"; they said "Select an element first."). Walking changes no
-// document and records no history.
+// children and has no parent. With nothing selected any arrow starts the walk at the open page's root (journey03
+// plan, stage 5: "arrows with no selection start at the root"; they said "Select an element first."). Walking
+// changes no document and records no history.
 function walkFrom(state: StoreState<never>): Location | null {
   const primary = state.selection[0];
   if (primary === undefined) return null;

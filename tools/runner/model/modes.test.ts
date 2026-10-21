@@ -83,8 +83,8 @@ function press(e: Editor, chord: string): string[] {
   return [...modeBreaches(before, modesOf(e.store)).map((b) => `${chord}: ${b}`), ...errors];
 }
 
-describe('os modos de interação contra a tabela', () => {
-  it('com um gesto do ponteiro aberto, nenhum atalho do manifesto abre um modo que a tabela recusa', () => {
+describe('the interaction modes against the table', () => {
+  it('with a pointer gesture open, no manifest shortcut opens a mode the table refuses', () => {
     const found: string[] = [];
     for (const chord of CHORDS) {
       const e = editor();
@@ -96,10 +96,10 @@ describe('os modos de interação contra a tabela', () => {
     fs.mkdirSync('.cache/model', { recursive: true });
     fs.writeFileSync('.cache/model/modes.json', JSON.stringify({ chords: CHORDS.length, found }, null, 2));
     expect(CHORDS.length).toBeGreaterThan(50);
-    expect(found, 'modos recusados abertos durante um gesto').toEqual([]);
+    expect(found, 'refused modes opened during a gesture').toEqual([]);
   });
 
-  it('em sequências de atalhos, com gestos abertos e fechados entre eles, a tabela vale a cada tecla', () => {
+  it('in shortcut sequences, with gestures opened and closed between them, the table holds at every key', () => {
     const action = fc.oneof(fc.constantFrom(...CHORDS).map((chord) => ({ kind: 'key' as const, chord })), fc.constant({ kind: 'open' as const }), fc.constant({ kind: 'close' as const }));
     fc.assert(
       fc.property(fc.array(action, { minLength: 1, maxLength: 25 }), (actions) => {
@@ -123,13 +123,13 @@ describe('os modos de interação contra a tabela', () => {
 // The arrows of a positioned selection (spec absolute-nudge) hand a direction, and the one conversion of the keymap
 // (stepped) makes it the gesture's step of the manifest, Shift's the larger: every key door of the gesture moves by
 // the same step, never by one of its own (DCS-023, rule G3).
-describe('o passo das setas de empurrar', () => {
+describe('the step of the nudge arrows', () => {
   const constant = (id: string): number => {
     const value = manifest.interactions.constants.find((c) => c.id === id)?.value;
-    if (typeof value !== 'number') throw new Error(`interactions.json não tem o número ${id}`);
+    if (typeof value !== 'number') throw new Error(`interactions.json does not have the number ${id}`);
     return value;
   };
-  it('cada seta move o elemento posicionado pelo passo do manifesto, e com Shift pelo passo maior', () => {
+  it('each arrow moves the positioned element by the manifest step, and with Shift by the larger step', () => {
     const found: string[] = [];
     for (const [key, axis, sign] of [['ArrowRight', 'left', 1], ['ArrowLeft', 'left', -1], ['ArrowDown', 'top', 1], ['ArrowUp', 'top', -1]] as const) {
       for (const [shift, step] of [[false, constant('nudge.step')], [true, constant('nudge.shiftStep')]] as const) {
@@ -144,21 +144,21 @@ describe('o passo das setas de empurrar', () => {
           const node = id === undefined ? undefined : [...walkTree(e.store.getState().document.pages[0]?.tree)].find((n) => n.id === id);
           const held = node === undefined ? undefined : storedValue(node, axis, MODEL_RULES);
           const expected = `${100 + sign * step}px`;
-          if (held !== expected) found.push(`${shift ? 'Shift+' : ''}${key}: ${axis} ${String(held)} (esperado ${expected})`);
+          if (held !== expected) found.push(`${shift ? 'Shift+' : ''}${key}: ${axis} ${String(held)} (expected ${expected})`);
         } finally {
           e.stop();
         }
       }
     }
-    expect(found, 'setas que não movem pelo passo do manifesto').toEqual([]);
+    expect(found, 'arrows that do not move by the manifest step').toEqual([]);
   });
 });
 
 // A command from outside an open gesture (a file read that resolved, the assistant, a timer) that would open a mode the
 // table refuses waits for the gesture's end and runs then, in order (DEF-0555: it ran through the gesture, the layer
 // opened over it, and the table only said so afterwards).
-describe('um comando de fora durante o gesto', () => {
-  it('não abre um modo que o gesto recusa: espera o fim do gesto e abre depois', () => {
+describe('an outside command during the gesture', () => {
+  it('does not open a mode the gesture refuses: waits for the end of the gesture and opens afterwards', () => {
     const e = editor();
     try {
       openGesture(e);
@@ -171,7 +171,7 @@ describe('um comando de fora durante o gesto', () => {
       const during = e.store.getState().ui.commandBar === true;
       closeGesture(e);
       const after = e.store.getState().ui.commandBar === true;
-      expect({ thrown, during, after }, 'a barra de comandos pedida de fora durante o gesto').toEqual({ thrown: null, during: false, after: true });
+      expect({ thrown, during, after }, 'the command bar asked for from outside during the gesture').toEqual({ thrown: null, during: false, after: true });
     } finally {
       e.stop();
     }

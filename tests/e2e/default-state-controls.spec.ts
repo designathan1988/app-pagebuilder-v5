@@ -53,7 +53,7 @@ test('a control that cannot act is drawn clearly disabled', async ({ page }) => 
   // (the page root's Hide and Lock are enabled now — the root takes them, which is what its own feature asked for).
   // The three this test named before — the Split and Code views and the Interactions tab — are built too, and drawn
   // enabled. Disabled is the subtle ink on the control's own container, never faded (The interface
-  // contract; jornada02 G-13): its words stay legible, and the pointer finds no hover plate on it.
+  // contract; journey02 G-13): its words stay legible, and the pointer finds no hover plate on it.
   const subtle = await page.evaluate(() => {
     const probe = document.body.appendChild(document.createElement('span'));
     probe.style.color = 'var(--color-text-subtle)';

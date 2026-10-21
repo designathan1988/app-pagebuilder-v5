@@ -36,7 +36,7 @@ test('F6 walks the focus through the editor regions and Shift+F6 walks it back',
     walked.push(await region(page));
   }
   // every region the window draws takes the focus at some point in one full turn
-  // the Layers tree is a stop of its own (jornada03 J12)
+  // the Layers tree is a stop of its own (journey03 J12)
   for (const one of ['header.top-bar', 'nav.activity-bar', 'section[data-panel-area="layers"]', '.stage', 'aside.inspector', 'footer.status-bar']) {
     expect(walked, `F6 reaches ${one}`).toContain(one);
   }
@@ -70,7 +70,7 @@ test('Escape inside a panel gives the focus back to the canvas and keeps the sel
 });
 
 test('F6 puts the keys on the canvas page itself, with a visible focus, and walks on from there', async ({ page }) => {
-  // the audit's AUD-13 (jornada03 J12): the canvas's stop of the F6 ring focused the frame's breakpoint tabs, so the
+  // the audit's AUD-13 (journey03 J12): the canvas's stop of the F6 ring focused the frame's breakpoint tabs, so the
   // page's tree walk needed a click or Escape
   await page.setViewportSize({ width: 1440, height: 900 });
   await openEditor(page);

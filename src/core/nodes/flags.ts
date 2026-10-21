@@ -58,10 +58,15 @@ export function firstLockRefusal(document: DocumentJson, ids: readonly NodeId[],
 // A3.11; spec lock-element, Problems in Pager 3): drawn disabled, their reason is the lock's refusal (naming the lock),
 // before anything is typed. With nothing selected nothing is locked.
 // the elements a command edits: the one its door names (`args.target`: custom declarations of the element the field
-// stands for), else the selection — the lock that matters is theirs (the audit's M-02: the selection's was read)
-const edited = (selection: readonly NodeId[], args: unknown): readonly NodeId[] => {
-  const target = args !== null && typeof args === 'object' ? (args as { readonly target?: unknown }).target : undefined;
-  return typeof target === 'string' ? [target as NodeId] : selection;
+// stands for), the ones it names (`args.targets`: the elements typed into, which the style writers edit in place of
+// the selection, set.ts withTargets), else the selection — the lock and the state that matter are theirs (the audit's
+// M-02: the selection's was read; the invariant probe: a write to the page's padding while Disabled was the editor's
+// state passed the check on another selected element and broke the document)
+const edited = (document: DocumentJson, selection: readonly NodeId[], args: unknown): readonly NodeId[] => {
+  const given = args !== null && typeof args === 'object' ? (args as { readonly target?: unknown; readonly targets?: unknown }) : {};
+  if (typeof given.target === 'string') return [given.target as NodeId];
+  if (Array.isArray(given.targets)) return given.targets.filter((id): id is NodeId => typeof id === 'string' && locate(document, id as NodeId) !== null);
+  return selection;
 };
 // Why a style write may not go to the state the editor edits (the layer's state, `rules.base`): one of the nodes it
 // would change does not stand on that state (Visited on a heading), and the validator would refuse the result (the
@@ -79,7 +84,7 @@ export function stateRefusal(document: DocumentJson, ids: readonly NodeId[], rul
 }
 
 const editRefusal = (state: { readonly document: DocumentJson; readonly selection: Selection }, rules: ModelRules, args: unknown): Message | null => {
-  const ids = edited(state.selection, args);
+  const ids = edited(state.document, state.selection, args);
   return firstLockRefusal(state.document, ids, 'status.locked.edit') ?? stateRefusal(state.document, ids, rules);
 };
 export const editableSelection = registerPredicate(

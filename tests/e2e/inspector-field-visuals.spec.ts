@@ -51,7 +51,7 @@ test('paired resting values remain readable and editing keeps full units, steppi
   await expect.poll(() => page.frameLocator('.frame__page').locator('[data-node="n-title"]').evaluate(el => Math.round(parseFloat(getComputedStyle(el).width)))).toBe(241);
   await font.locator('input').click();
   // a pair field's Reset stands at the end of the row's label column, beside its cell, never inside the value cell
-  // (jornada02 A.0, J6: inside, it squeezed the number while the field held the focus)
+  // (journey02 A.0, J6: inside, it squeezed the number while the field held the focus)
   await font.locator('xpath=following-sibling::*[contains(@class, "field__end")][1]').locator(`[data-door="${RESET}"]`).click();
   await expect(font.locator('input')).toHaveValue('');
 });

@@ -33,7 +33,7 @@ interface DoorRow {
   readonly cell: LabelCell | null;
 }
 
-test(`mede a largura das regiões e dos rótulos (${CONDITION})`, async ({ page: first, browser }) => {
+test(`measures the width of the regions and the labels (${CONDITION})`, async ({ page: first, browser }) => {
   test.setTimeout(300_000);
   let page = first;
   const found = new Map<string, Cell>();
@@ -241,6 +241,6 @@ test(`mede a largura das regiões e dos rótulos (${CONDITION})`, async ({ page:
   const withoutText = { ...(before.textless ?? {}), [CONDITION]: [...textless].sort() };
   const sorted = <T>(record: Record<string, T>): Record<string, T> => Object.fromEntries(Object.entries(record).sort(([a], [b]) => a.localeCompare(b)));
   fs.writeFileSync(UI_WIDTHS, `${JSON.stringify({ $generated: { by: 'tools/ui-fit/measure.spec.ts', css: cssHash() }, regions: sorted(regions), doors: sorted(doors), textless: sorted(withoutText) }, null, 2)}\n`);
-  console.log(`ui-fit: ${String(found.size)} regiões e ${String(labels.size)} rótulos medidos, ${String(textless.size)} portas sem texto (${CONDITION})`);
+  console.log(`ui-fit: ${String(found.size)} regions and ${String(labels.size)} labels measured, ${String(textless.size)} doors without text (${CONDITION})`);
 });
 

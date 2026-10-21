@@ -71,7 +71,7 @@ function PageNameField({ page }: { readonly page: Page }) {
   }, [page.name, said]);
   // the page pages.add just made takes the focus with its name selected, so what is typed next names it (spec
   // explorer-pages, Problems 3: the journey "site" typed "Sobre" after the + and the name stayed "Page")
-  // so does a page pages.duplicate just made (jornada03 J20)
+  // so does a page pages.duplicate just made (journey03 J20)
   const added = (said?.key === 'status.pages.added' || said?.key === 'status.pages.duplicated') && said.params.file === page.file && shown;
   useEffect(() => {
     if (added && input.current !== null) {

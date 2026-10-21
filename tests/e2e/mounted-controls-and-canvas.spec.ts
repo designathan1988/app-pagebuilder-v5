@@ -1,16 +1,16 @@
-// O lote visual (item 4 da "Tarefa do DeepSeek: a parte visual e de navegador"): o que nenhum teste existente cobre.
-// Duas famílias, com a fixture do projeto (a guarda de tela, o feed de incidentes e os erros do console, em
+// The visual batch (item 4 of "DeepSeek's task: the visual and browser part"): what no existing test covers.
+// Two families, with the project's fixture (the screen guard, the incident feed and the console errors, in
 // tests/support/test.ts):
 //
-//  1. Controles montados: abrindo cada região que o editor monta, os `[data-door]` e `[data-local]` que a página
-//     desenha são conferidos contra o manifesto e contra `manifest/generated/inventory.json`: todo id montado é uma
-//     porta do manifesto e o manifesto a coloca naquela região; nenhum elemento interativo fora da lista de exceções
-//     da regra `builder/interactive-owner` (tools/lint/interactive-allowed.ts) aparece sem marca.
-//  2. O canvas é o documento (G7, DCS-002): para cada comando desfazível do manifesto, o comando é executado pelo boot
-//     de teste sobre um documento profundo, o DOM do quadro do canvas é serializado (atributos em ordem, sem as marcas
-//     do editor da lista fechada de DCS-002, `src/core/document/validate.ts:519`), o documento resultante é aberto do
-//     zero e serializado de novo, e as duas serializações são comparadas. Ao fim, o canvas é comparado com a
-//     exportação pelas propriedades calculadas, elemento a elemento, como tests/e2e/export-zip.spec.ts faz.
+//  1. Mounted controls: opening each region the editor mounts, the `[data-door]` and `[data-local]` the page draws are
+//     checked against the manifest and against `manifest/generated/inventory.json`: every mounted id is a door of the
+//     manifest and the manifest places it in that region; no interactive element outside the exception list of the
+//     `builder/interactive-owner` rule (tools/lint/interactive-allowed.ts) appears without a mark.
+//  2. The canvas is the document (G7, DCS-002): for each undoable command of the manifest, the command is run by the
+//     test boot on a deep document, the DOM of the canvas's frame is serialized (attributes in order, without the
+//     editor's marks from DCS-002's closed list, `src/core/document/validate.ts:519`), the resulting document is opened
+//     from scratch and serialized again, and the two serializations are compared. At the end, the canvas is compared
+//     with the export by computed properties, element by element, as tests/e2e/export-zip.spec.ts does.
 import fs from 'node:fs';
 import path from 'node:path';
 import { expect, test, type Page } from '../support/test.ts';
@@ -55,7 +55,7 @@ const offeredState = (args: Readonly<Record<string, unknown>>): boolean => {
 };
 const COMPONENT_REGIONS: ReadonlySet<string> = new Set(LAYOUT.regions.filter((one) => one.area === 'component').map((one) => one.id));
 
-// ------------------------------------------------ 1. os controles montados
+// ------------------------------------------------ 1. the mounted controls
 
 // A key of an element of tools/lint/interactive-allowed.ts, as the DOM names it: the tag and the attribute names, with
 // the DOM's spelling of the prop (class for className, for for htmlFor) and the props that never become an attribute
@@ -124,7 +124,7 @@ const readMounted = (page: Page): Promise<Found> =>
     return { doors, locals, unmarked };
   }, { marks: [...EDITOR_MARKS], tags: [...INTERACTIVE_TAGS], handles: [...INTERACTIVE_ROLES] });
 
-test('a porta que a região monta é a que o manifesto coloca nela, e nenhum controle fica sem marca', async ({ page }) => {
+test('the door a region mounts is the one the manifest places in it, and no control is left without a mark', async ({ page }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 1440, height: 900 });
   // an element selected, so the quick panel's chip is drawn and the panel is opened too (DEF-0572: the editor opened
@@ -150,13 +150,13 @@ test('a porta que a região monta é a que o manifesto coloca nela, e nenhum con
     }
     await page.keyboard.press('Escape');
   }
-  expect(menusOpened.length, 'os menus da barra do topo foram abertos').toBeGreaterThan(4);
+  expect(menusOpened.length, 'the top bar menus were opened').toBeGreaterThan(4);
   await page.keyboard.press('Control+k');
   states.push(await readMounted(page));
   await page.keyboard.press('Escape');
   await openQuickPanel(page);
   const panel = await readMounted(page);
-  expect(panel.doors.filter((one) => one.chain.includes('quick-panel')).length, 'o painel rápido desenhou as suas portas').toBeGreaterThan(5);
+  expect(panel.doors.filter((one) => one.chain.includes('quick-panel')).length, 'the quick panel drew its doors').toBeGreaterThan(5);
   states.push(panel);
   await page.keyboard.press('Escape');
   for (const selector of ['.activity-bar button[data-door]', '[data-region="dock-strip"] button[data-door]']) {
@@ -188,7 +188,7 @@ test('a porta que a região monta é a que o manifesto coloca nela, e nenhum con
       if (placement === 'none' && held.kind === 'shortcut') drawnKeys.push(`${mounted.chain.join(' › ')} › ${mounted.ref}`);
       if (typeof placement === 'object' && !COMPONENT_REGIONS.has(placement.region)) {
         const outside = placement.region === 'overlay' && mounted.chain.length === 0;
-        if (!outside && !mounted.chain.includes(placement.region)) wrongRegion.push(`${mounted.chain.join(' › ')} › ${mounted.ref} (o manifesto diz ${placement.region})`);
+        if (!outside && !mounted.chain.includes(placement.region)) wrongRegion.push(`${mounted.chain.join(' › ')} › ${mounted.ref} (the manifest says ${placement.region})`);
       }
     }
   for (const state of states) for (const local of state.locals) if (!LOCAL_CONTROLS.has(local.ref)) undeclaredLocals.push(`${local.chain.join(' › ')} › ${local.ref}`);
@@ -198,15 +198,15 @@ test('a porta que a região monta é a que o manifesto coloca nela, e nenhum con
       const attrs = element.ref.slice(element.ref.indexOf('[') + 1, -1).split(',').filter((a) => a !== '');
       if (!allowed(tag, attrs)) unmarked.push(`${element.chain.join(' › ')} › ${element.ref}`);
     }
-  expect([...new Set(unknown)], 'portas montadas que o manifesto não declara').toEqual([]);
-  expect([...new Set(wrongRegion)], 'portas montadas na região errada').toEqual([]);
-  expect([...new Set(unmarked)], 'controles sem data-door, sem data-local e fora da lista de exceções').toEqual([]);
-  expect([...new Set(drawnKeys)], 'portas de tecla desenhadas como controle').toEqual([]);
-  expect([...new Set(undeclaredLocals)], 'controles locais que manifest/layout.json não declara').toEqual([]);
-  expect([...new Set(menusMissing)], 'portas que o manifesto põe num menu e o menu aberto não desenha').toEqual([]);
+  expect([...new Set(unknown)], 'mounted doors the manifest does not declare').toEqual([]);
+  expect([...new Set(wrongRegion)], 'doors mounted in the wrong region').toEqual([]);
+  expect([...new Set(unmarked)], 'controls with no data-door, no data-local and outside the exception list').toEqual([]);
+  expect([...new Set(drawnKeys)], 'key doors drawn as a control').toEqual([]);
+  expect([...new Set(undeclaredLocals)], 'local controls manifest/layout.json does not declare').toEqual([]);
+  expect([...new Set(menusMissing)], 'doors the manifest puts in a menu that the open menu does not draw').toEqual([]);
 });
 
-// ------------------------------------------------ 2. o canvas é o documento
+// ------------------------------------------------ 2. the canvas is the document
 
 // The DOM the canvas draws, normalized: the attributes of each element in name order, the editor's own marks left out,
 // the text of each text node trimmed. The body of the canvas's frame is the page.
@@ -273,7 +273,7 @@ async function openWithBoot(page: Page, boot: TestBoot): Promise<readonly TestBo
 // contexts of their own, were out of its sight): the page's exceptions and console errors, and its incident feed
 const watchPage = (page: Page): string[] => {
   const found: string[] = [];
-  page.on('pageerror', (error) => found.push(`exceção: ${error.message}`));
+  page.on('pageerror', (error) => found.push(`exception: ${error.message}`));
   page.on('console', (message) => {
     if (message.type() === 'error' && !message.text().startsWith('Failed to load resource')) found.push(`console: ${message.text()}`);
   });
@@ -281,7 +281,7 @@ const watchPage = (page: Page): string[] => {
 };
 const incidentsOf = (page: Page): Promise<readonly unknown[]> => page.evaluate(() => (window as unknown as { __builderTestPort?: { incidents: () => unknown[] } }).__builderTestPort?.incidents() ?? []);
 
-test('o canvas é o documento, para cada comando desfazível', async ({ browser }) => {
+test('the canvas is the document, for every undoable command', async ({ browser }) => {
   test.setTimeout(2_700_000);
   // the elements a command is tried on, in turn, until one takes it: a section, then a heading (a command for text
   // refuses a section). Measured on 2026-10-09: the section alone ran 47 edits in 3 minutes; five elements (a
@@ -295,7 +295,7 @@ test('o canvas é o documento, para cada comando desfazível', async ({ browser 
   for (const id of UNDOABLE) {
     const ref = doorOf(id);
     if (ref === null) {
-      didNotRun.push(`${id} (sem porta)`);
+      didNotRun.push(`${id} (no door)`);
       continue;
     }
     // One context per command: the boot is fetched on a page's first load only, and the profile a page sees is the
@@ -306,7 +306,7 @@ test('o canvas é o documento, para cada comando desfazível', async ({ browser 
     let context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'en-US' });
     let page = await context.newPage();
     let errors = watchPage(page);
-    let status = 'sem resultado';
+    let status = 'no result';
     for (const [index, target] of TARGETS.entries()) {
       if (index > 0) {
         await context.close();
@@ -315,7 +315,7 @@ test('o canvas é o documento, para cada comando desfazível', async ({ browser 
         errors = watchPage(page);
       }
       const results = await openWithBoot(page, { project, commands: [run('selection.select#layers-row', { target })], drawn: [run(ref)] });
-      status = results.length < 3 ? 'sem resultado' : (results[results.length - 1]?.status ?? 'sem resultado');
+      status = results.length < 3 ? 'no result' : (results[results.length - 1]?.status ?? 'no result');
       if (status === 'done') break;
     }
     // a command that could not run on any of them (a canvas gesture, a picker, a state the fixture does not have)
@@ -330,26 +330,26 @@ test('o canvas é o documento, para cada comando desfazível', async ({ browser 
     await page.locator('.workbench').waitFor();
     await page.locator('.frame__page').waitFor();
     const fromScratch = await expect
-      .poll(() => serializeCanvas(page), { message: `${id}: o canvas depois de recarregar`, timeout: 4_000 })
+      .poll(() => serializeCanvas(page), { message: `${id}: the canvas after reloading`, timeout: 4_000 })
       .toBe(incremental)
       .then(() => true, () => false);
     if (!fromScratch) differences.push(id);
-    for (const incident of await incidentsOf(page)) problems.push(`${id}: incidente ${JSON.stringify(incident).slice(0, 200)}`);
+    for (const incident of await incidentsOf(page)) problems.push(`${id}: incident ${JSON.stringify(incident).slice(0, 200)}`);
     for (const error of errors) problems.push(`${id}: ${error}`);
     ran += 1;
     await context.close();
   }
-  test.info().annotations.push({ type: 'o boot recusou', description: didNotRun.join(', ') });
-  expect(differences, 'comandos cujo desenho incremental difere do desenho do zero').toEqual([]);
-  expect(problems, 'incidentes e erros das páginas do caso').toEqual([]);
+  test.info().annotations.push({ type: 'the boot refused', description: didNotRun.join(', ') });
+  expect(differences, 'commands whose incremental drawing differs from the drawing from scratch').toEqual([]);
+  expect(problems, 'incidents and errors of the case pages').toEqual([]);
   // only the edits that ran count (DEF-0572: a selection alone counted as a command run); the floor keeps the batch
   // from quietly shrinking, the refused ones listed with the test
-  expect(ran, 'comandos desfazíveis que rodaram depois do primeiro desenho e cujo desenho foi comparado').toBeGreaterThanOrEqual(RAN_FLOOR);
+  expect(ran, 'undoable commands that ran after the first drawing and whose drawing was compared').toBeGreaterThanOrEqual(RAN_FLOOR);
 });
 
-// ------------------------------------------------ 2b. o canvas e a exportação
+// ------------------------------------------------ 2b. the canvas and the export
 
-test('o canvas e a exportação desenham as mesmas propriedades calculadas', runs('project.export#toolbar-top-bar-export'), async ({ page, context }) => {
+test('the canvas and the export draw the same computed properties', runs('project.export#toolbar-top-bar-export'), async ({ page, context }) => {
   test.setTimeout(120_000);
   const PROPERTIES = ['display', 'position', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'font-family', 'font-size', 'font-weight', 'font-style', 'line-height', 'color', 'background-color', 'text-align', 'border-top-width', 'box-sizing', 'flex-direction', 'gap'];
   const styles = (root: Element, properties: readonly string[]) =>
@@ -384,13 +384,13 @@ test('o canvas e a exportação desenham as mesmas propriedades calculadas', run
   });
   await exported.goto('https://site.test/index.html');
   const written = await exported.locator('body').evaluate(styles, PROPERTIES);
-  expect(written.length, 'a página exportada tem os elementos do canvas').toBe(canvas.length);
+  expect(written.length, 'the exported page has the canvas elements').toBe(canvas.length);
   expect(written).toEqual(canvas);
   await exported.close();
 });
 
 // the inventory is read, not restated: the commands it names are the manifest's
-test('o inventário em disco conhece os comandos do manifesto', () => {
+test('the inventory on disk knows the manifest commands', () => {
   expect(INVENTORY_COMMANDS.size).toBeGreaterThan(0);
   expect([...DOORS.keys()].filter((ref) => !INVENTORY_COMMANDS.has(ref.split('#')[0] ?? ''))).toEqual([]);
 });

@@ -50,17 +50,17 @@ function countingWindow(): { target: Window; pending: () => number; runFrames: (
 }
 const memory = (): { read(): string | null; write(text: string): void } => ({ read: () => null, write: () => undefined });
 
-describe('o que fica agendado depois de parar', () => {
-  it('o boot de teste desenhado, parado no meio, não deixa quadro agendado nem roda os comandos (DEF-0001)', async () => {
+describe('what stays scheduled after stopping', () => {
+  it('the drawn test boot, stopped midway, leaves no frame scheduled and does not run the commands (DEF-0001)', async () => {
     const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(0), ids: sequentialIds('b') });
     const results: TestBootResult[] = [];
     // stopped while it waits for the fonts
     const early = countingWindow();
     const stopEarly = runDrawnTestBoot(store, { project: null, commands: [], drawn: [{ command: 'view.zoomIn', args: {} }] } as never, results, early.target);
-    expect(typeof stopEarly, 'runDrawnTestBoot devolve como parar').toBe('function');
+    expect(typeof stopEarly, 'runDrawnTestBoot returns how to stop').toBe('function');
     stopEarly();
     await early.fonts();
-    expect(early.pending(), 'parado antes das fontes, nenhum quadro é pedido').toBe(0);
+    expect(early.pending(), 'stopped before the fonts, no frame is requested').toBe(0);
     // stopped between two frames
     const late = countingWindow();
     const stopLate = runDrawnTestBoot(store, { project: null, commands: [], drawn: [{ command: 'view.zoomIn', args: {} }] } as never, results, late.target);
@@ -68,14 +68,14 @@ describe('o que fica agendado depois de parar', () => {
     late.runFrames();
     expect(late.pending()).toBe(1);
     stopLate();
-    expect(late.pending(), 'parado entre dois quadros, o quadro pendente é cancelado').toBe(0);
+    expect(late.pending(), 'stopped between two frames, the pending frame is cancelled').toBe(0);
     late.runFrames();
-    expect(results, 'parado, os comandos desenhados não rodam').toEqual([]);
+    expect(results, 'stopped, the drawn commands do not run').toEqual([]);
   });
 
-  it('o autosave, depois de uma troca de projeto com a gravação pendente, guarda só o projeto novo, e parado não deixa timer', async () => {
+  it('the autosave, after a project switch with the save pending, stores only the new project, and stopped leaves no timer', async () => {
     const [first, second] = FIXTURES;
-    expect(first !== undefined && second !== undefined, 'duas páginas de exemplo para trocar').toBe(true);
+    expect(first !== undefined && second !== undefined, 'two sample pages to switch between').toBe(true);
     vi.useFakeTimers();
     try {
       window.localStorage.clear();
@@ -91,17 +91,17 @@ describe('o que fica agendado depois de parar', () => {
       const before = store.getState().document;
       open(second ?? '');
       const opened = store.getState().document;
-      expect(JSON.stringify(opened) === JSON.stringify(before), 'o segundo projeto substituiu o primeiro').toBe(false);
+      expect(JSON.stringify(opened) === JSON.stringify(before), 'the second project replaced the first').toBe(false);
       await vi.advanceTimersByTimeAsync(IDLE_AND_RETRY);
       const journal = JSON.parse(window.localStorage.getItem('work-journal') ?? 'null') as { document?: unknown } | null;
-      expect(journal?.document, 'o diário guarda o projeto aberto por último').toEqual(opened);
+      expect(journal?.document, 'the journal stores the project opened last').toEqual(opened);
       // with no IndexedDB here the write is refused and a retry waits: stopping leaves nothing scheduled
-      expect(vi.getTimerCount(), 'a nova tentativa espera agendada antes de parar').toBeGreaterThan(0);
+      expect(vi.getTimerCount(), 'the retry waits scheduled before stopping').toBeGreaterThan(0);
       stop();
-      expect(vi.getTimerCount(), 'parado, o autosave não deixa timer agendado').toBe(0);
+      expect(vi.getTimerCount(), 'stopped, the autosave leaves no timer scheduled').toBe(0);
       const kept = window.localStorage.getItem('work-journal');
       await vi.advanceTimersByTimeAsync(IDLE_AND_RETRY);
-      expect(window.localStorage.getItem('work-journal'), 'parado, nada mais é gravado').toBe(kept);
+      expect(window.localStorage.getItem('work-journal'), 'stopped, nothing more is saved').toBe(kept);
     } finally {
       vi.useRealTimers();
     }
@@ -109,7 +109,7 @@ describe('o que fica agendado depois de parar', () => {
 
   // DEF-0585: a selection made just before the tab reloads, its write still waiting for the idle moment (a busy
   // machine), went with the page: the journal written on leaving took only a change of the document.
-  it('a seleção feita logo antes de sair da página fica no diário que a recarga lê', () => {
+  it('the selection made right before leaving the page stays in the journal the reload reads', () => {
     vi.useFakeTimers();
     try {
       window.localStorage.clear();
@@ -120,7 +120,7 @@ describe('o que fica agendado depois de parar', () => {
       // the idle write has not run: the tab leaves now
       window.dispatchEvent(new Event('beforeunload', { cancelable: true }));
       const journal = JSON.parse(window.localStorage.getItem('work-journal') ?? 'null') as { selection?: readonly string[] } | null;
-      expect(journal?.selection, 'o diário guarda a seleção de agora').toEqual(['n-intro']);
+      expect(journal?.selection, 'the journal stores the current selection').toEqual(['n-intro']);
       stop();
     } finally {
       vi.useRealTimers();

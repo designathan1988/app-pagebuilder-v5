@@ -7,11 +7,11 @@ import { describe, expect, it } from 'vitest';
 import { checkManifest } from '../../../src/manifest/check.ts';
 import { loadManifest } from '../../manifest/load.ts';
 
-describe('o verificador do manifesto', () => {
-  it('o manifest/ inteiro passa: todo arquivo do diretório é um que o verificador conhece', () => {
+describe('the manifest checker', () => {
+  it('the whole manifest/ passes: every file of the directory is one the checker knows', () => {
     const loaded = loadManifest();
     const result = checkManifest(loaded.input);
     const problems = [...loaded.problems, ...result.problems].map((p) => `${p.rule} ${p.file}${p.path === '' ? '' : ` › ${p.path}`}: ${p.message}`);
-    expect(problems, 'problemas do verificador do manifesto').toEqual([]);
+    expect(problems, 'problems of the manifest checker').toEqual([]);
   });
 });

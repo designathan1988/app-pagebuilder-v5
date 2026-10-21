@@ -1,6 +1,6 @@
 // Structural edits of the gesture algebra that the canvas and the panel both reach (spec "Constraint Painting",
-// "Pattern Recognition" → Repeat, "Ambiguity Engine", "Structural Suggestions", "Topological Editing", "Seleção"): each
-// returns one operation, so the store records it as one undo step.
+// "Pattern Recognition" → Repeat, "Ambiguity Engine", "Structural Suggestions", "Topological Editing", "Selection"):
+// each returns one operation, so the store records it as one undo step.
 import type { Axis, Constraint, LayoutIntent, Point, Region } from '../intent/model.ts';
 import { findRegion } from '../intent/model.ts';
 import { nextConstraintId } from '../intent/ids.ts';
@@ -130,7 +130,7 @@ export function removeRedundantWrappers(graph: LayoutIntent): Operation {
   return { kind: 'compose', operations: suggestions(graph).filter((s) => s.kind === 'remove-wrapper').map((s) => acceptSuggestion(graph, s)) };
 }
 
-// Selection cycling in overlapping areas (spec "Seleção"): the next region under the point, deepest first, round.
+// Selection cycling in overlapping areas (spec "Selection"): the next region under the point, deepest first, round.
 export function cycleSelection(graph: LayoutIntent, point: Point, current: string | null): string | null {
   const candidates = hitRegions(graph.regions, point);
   if (candidates.length === 0) return null;

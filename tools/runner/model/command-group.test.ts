@@ -56,82 +56,82 @@ function typed(store: EditorStore, value: string): { readonly kept: () => number
   return { kept: () => kept };
 }
 
-describe('o grupo de comandos contra as regras de todo comando', () => {
-  it('o desfazer de um grupo devolve o contexto em que a mudança foi feita (DCS-009)', () => {
+describe('the command group against the rules of every command', () => {
+  it('the undo of a group restores the context the change was made in (DCS-009)', () => {
     const { store, node, other } = ready();
     const group = store.commandGroup(busy);
     group.dispatch('view.setBreakpoint' as CommandId, { breakpoint: other } as never);
     expect(group.dispatch('style.set' as CommandId, { property: 'width', value: '33px' } as never).status).toBe('done');
     group.commit();
-    expect(styleAt(store, node, other, 'width'), 'o grupo gravou a largura no breakpoint para onde foi').toBe('33px');
+    expect(styleAt(store, node, other, 'width'), 'the group wrote the width to the breakpoint it moved to').toBe('33px');
     expect(run(store, 'history.undo', {}).status).toBe('done');
-    expect(activeLayer(store.getState()).breakpoint, 'o desfazer mostra o breakpoint em que a mudança foi feita').toBe(other);
+    expect(activeLayer(store.getState()).breakpoint, 'the undo shows the breakpoint the change was made in').toBe(other);
   });
 
-  it('um toque fora do campo durante o grupo não perde a digitação: ela é gravada quando o grupo termina (G2)', () => {
+  it('a press outside the field during the group does not lose the typing: it is kept when the group ends (G2)', () => {
     const { store, node, shown } = ready();
     const group = store.commandGroup(busy);
     const field = typed(store, '0.6');
     keepTypingBefore(document.body);
-    expect(heldTyping(), 'a digitação continua no registro enquanto o grupo segura o editor').not.toBeNull();
-    expect(styleAt(store, node, shown, 'opacity'), 'nada é gravado durante o grupo').toBeUndefined();
+    expect(heldTyping(), 'the typing stays in the registry while the group holds the editor').not.toBeNull();
+    expect(styleAt(store, node, shown, 'opacity'), 'nothing is written during the group').toBeUndefined();
     group.commit();
-    expect(field.kept(), 'a gravação pedida durante o grupo rodou uma vez, depois dele').toBe(1);
-    expect(styleAt(store, node, shown, 'opacity'), 'o valor digitado está no documento').toBe('0.6');
+    expect(field.kept(), 'the keep asked during the group ran once, after it').toBe(1);
+    expect(styleAt(store, node, shown, 'opacity'), 'the typed value is in the document').toBe('0.6');
     expect(heldTyping()).toBeNull();
   });
 
-  it('a troca de breakpoint pelo grupo grava a digitação no contexto em que ela começou, quando o grupo termina (G1)', () => {
+  it('a breakpoint change by the group keeps the typing in the context it began in, when the group ends (G1)', () => {
     const { store, node, shown, other } = ready();
     const group = store.commandGroup(busy);
     const field = typed(store, '0.4');
     group.dispatch('view.setBreakpoint' as CommandId, { breakpoint: other } as never);
     group.dispatch('style.set' as CommandId, { property: 'width', value: '33px' } as never);
     group.commit();
-    expect(field.kept(), 'a troca do que o campo edita pediu a gravação, que rodou no fim do grupo').toBe(1);
-    expect(styleAt(store, node, shown, 'opacity'), 'gravado no breakpoint em que a digitação começou').toBe('0.4');
-    expect(styleAt(store, node, other, 'opacity'), 'nada no breakpoint para onde o grupo foi').toBeUndefined();
+    expect(field.kept(), 'changing what the field edits asked for the keep, which ran at the end of the group').toBe(1);
+    expect(styleAt(store, node, shown, 'opacity'), 'written to the breakpoint the typing began in').toBe('0.4');
+    expect(styleAt(store, node, other, 'opacity'), 'nothing in the breakpoint the group moved to').toBeUndefined();
     expect(heldTyping()).toBeNull();
   });
 
-  it('um campo que começa a digitar durante o grupo não descarta a digitação do anterior (G2)', () => {
+  it('a field that starts typing during the group does not discard the typing of the previous one (G2)', () => {
     const { store, node, shown } = ready();
     const group = store.commandGroup(busy);
     const first = typed(store, '0.3');
     typed(store, '0.9');
     group.cancel();
-    expect(first.kept(), 'a digitação do primeiro campo foi gravada no fim do grupo').toBe(1);
-    expect(styleAt(store, node, shown, 'opacity'), 'o valor do primeiro campo está no documento').toBe('0.3');
-    expect(heldTyping(), 'o segundo campo continua segurando a sua digitação').not.toBeNull();
+    expect(first.kept(), 'the typing of the first field was kept at the end of the group').toBe(1);
+    expect(styleAt(store, node, shown, 'opacity'), 'the value of the first field is in the document').toBe('0.3');
+    expect(heldTyping(), 'the second field still holds its typing').not.toBeNull();
   });
 });
 
 // What an undo gives back of the keyframe (DCS-016, option b): the keyframe only when the change was made on it; a
 // change made off it — with the playhead on one, any command that writes no keyframe — leaves the Timeline as the
 // person has it (DEF-0532).
-describe('o quadro-chave que o desfazer devolve', () => {
+describe('the keyframe the undo restores', () => {
   // the leaf with an animation, the Timeline open and the playhead on the animation's last keyframe
   const onKeyframe = (): EditorStore => {
     const { store } = ready();
     expect(run(store, 'animation.create', { name: 'Entrada' }).status).toBe('done');
     run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'open' });
     run(store, 'timeline.setPlayhead', { time: 100_000 });
-    expect(keyframeTarget(store.getState()), 'o playhead está sobre um quadro-chave').not.toBeNull();
+    expect(keyframeTarget(store.getState()), 'the playhead is on a keyframe').not.toBeNull();
     return store;
   };
-  it('uma mudança feita fora do quadro-chave: o desfazer deixa a Timeline fechada como a pessoa a deixou', () => {
+  it('a change made off the keyframe: the undo leaves the Timeline closed as the person left it', () => {
     const store = onKeyframe();
     expect(run(store, 'element.duplicate', {}).status).toBe('done');
     run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'close' });
     expect(run(store, 'history.undo', {}).status).toBe('done');
-    expect(isPanelOpen(store.getState().ui, 'timeline'), 'o desfazer da duplicação reabriu a Timeline').toBe(false);
+    expect(isPanelOpen(store.getState().ui, 'timeline'), 'the undo of the duplication reopened the Timeline').toBe(false);
   });
-  it('uma mudança feita no quadro-chave: o desfazer reabre a Timeline nele (controle)', () => {
+  it('a change made on the keyframe: the undo reopens the Timeline on it (control)', () => {
     const store = onKeyframe();
     const on = keyframeTarget(store.getState());
     expect(run(store, 'style.set', { property: 'opacity', value: '0.5' }).status).toBe('done');
     run(store, 'workspace.setPanelOpen', { panel: 'timeline', open: 'close' });
     expect(run(store, 'history.undo', {}).status).toBe('done');
-    expect(keyframeTarget(store.getState()), 'o desfazer mostra o quadro-chave em que a mudança foi feita').toEqual(on);
+    expect(keyframeTarget(store.getState()), 'the undo shows the keyframe the change was made in').toEqual(on);
   });
 });

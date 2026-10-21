@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 // @vitest-environment-options {"settings":{"disableCSSFileLoading":true,"handleDisabledFileLoadingAsSuccess":true,"disableJavaScriptFileLoading":true}}
-// The silent-failure fuzz (jornada03 J1: a command's result the model refuses was dropped with nothing said). Every
+// The silent-failure fuzz (journey03 J1: a command's result the model refuses was dropped with nothing said). Every
 // command that takes a text, through each of its doors, on every fixture and on several kinds of selected element,
 // with texts a person might type (empty, spaces, numbers, units, colours, tokens, markup, scripts, long text, broken
 // syntax): the editor's own store, frozen as in development, throws InvalidStateError on a breach, and any throw is a

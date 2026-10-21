@@ -43,7 +43,7 @@ button[aria-disabled='true'] {
   cursor: not-allowed;
 }
 
-/* the one focus ring (jornada02 GRAMMAR R-40): 2 px of the focus colour, 1 px off the control; a control whose region clips
+/* the one focus ring (journey02 GRAMMAR R-40): 2 px of the focus colour, 1 px off the control; a control whose region clips
    its edges moves it inside with a negative offset, and nothing else draws a ring of its own */
 :focus-visible {
   outline: 2px solid var(--color-focus);

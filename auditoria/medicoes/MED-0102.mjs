@@ -1,25 +1,25 @@
 /* global console, document, getComputedStyle */
-// MED-0102 — a largura interna e a rolagem das linhas do painel, lidas em `src/editor/shell/row-fit.ts:60`
-// `  const inner = row.clientWidth - px(style.paddingLeft) - px(style.paddingRight);` e `src/editor/shell/row-fit.ts:71`
-// `    const overflow = choice.scrollWidth - choice.clientWidth;`, de que a decisão de empilhar depende
+// MED-0102 — the inner width and the scroll of the panel's rows, read in `src/editor/shell/row-fit.ts:60`
+// `  const inner = row.clientWidth - px(style.paddingLeft) - px(style.paddingRight);` and `src/editor/shell/row-fit.ts:71`
+// `    const overflow = choice.scrollWidth - choice.clientWidth;`, on which the decision to stack depends
 // (`src/editor/shell/row-fit.ts:108` `    const stacked = rows.map((row) => (typing !== null && row.contains(typing) ? 'stacked' in row.dataset : !fitsBeside(row, context)));`).
 //
-// Estado: um documento profundo (doze contêineres aninhados, cada um com um nome longo), cujo nível mais fundo é
-// um formulário com um rótulo e um seletor de nome longo. O rótulo é escolhido e aponta para o seletor
-// (element.setLabelTarget), de modo que o campo "Controle rotulado" da aba Configurações do inspetor — um campo
-// de valores oferecidos, com lista — leve o nome do controle. O inspetor é medido com todas as seções e linhas
-// abertas: na aba Estilo, a largura interna de cada linha (linha 60); na aba Configurações, a largura interna e a
-// rolagem do campo de valores oferecidos (linha 71), e se a linha empilha.
+// State: a deep document (twelve nested containers, each with a long name), whose deepest level is
+// a form with a label and a select with a long name. The label is chosen and points to the select
+// (element.setLabelTarget), so that the "Labelled control" field of the inspector's Settings tab — an
+// offered-values field, with a list — carries the control's name. The inspector is measured with every section and row
+// open: on the Style tab, the inner width of each row (line 60); on the Settings tab, the inner width and the
+// scroll of the offered-values field (line 71), and whether the row stacks.
 //
-// Rodar da raiz: cat auditoria/medicoes/MED-0102.mjs | node --input-type=module -
+// Run from the root: cat auditoria/medicoes/MED-0102.mjs | node --input-type=module -
 import { chromium } from '@playwright/test';
 
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-// o documento profundo: doze contêineres com nomes longos em volta de um formulário com rótulo e seletor
+// the deep document: twelve containers with long names around a form with a label and a select
 function deepProject() {
   const node = (id, type, name, tag, attributes = {}, children = [], text = null) => ({ id, type, name, tag, attributes, classes: [], styles: {}, text, children });
   const form = node('d-form', 'form', 'Formulário de inscrição na newsletter semanal', 'form', {}, [
@@ -40,21 +40,21 @@ const COMMANDS = [
   { command: 'element.setLabelTarget', args: { control: 'd-select' } },
 ];
 
-// a largura interna de uma linha, como a linha 60 a lê
+// a row's inner width, as line 60 reads it
 const innerOf = (row) => {
   const s = getComputedStyle(row);
   return +(row.clientWidth - (parseFloat(s.paddingLeft) || 0) - (parseFloat(s.paddingRight) || 0)).toFixed(2);
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: deepProject(), commands: COMMANDS, drawn: [] } }));
   await page.goto('http://localhost:5399/?test-boot');
   await page.waitForSelector('.workbench');
 
-  // todas as seções e as linhas do inspetor abertas
+  // every inspector section and row open
   for (let i = 0; i < 40; i += 1) {
     const closed = page.locator('.inspector-section [data-door="inspector.toggleSection#inspector-section-header"][aria-expanded="false"]');
     if ((await closed.count()) === 0) break;
@@ -67,11 +67,11 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   }
   await page.waitForTimeout(500);
 
-  const estilo = await page.evaluate((innerSrc) => {
+  const style = await page.evaluate((innerSrc) => {
     const innerOf = new Function('row', `return (${innerSrc})(row)`);
     const rows = [...new Set([...document.querySelectorAll('[data-region="inspector-style"] .field-row')])];
     const inner = rows.map((r) => innerOf(r));
-    return { linhas: rows.length, larguras_internas: [...new Set(inner)].sort((a, b) => a - b), empilhadas: rows.filter((r) => 'stacked' in r.dataset).length };
+    return { rows: rows.length, inner_widths: [...new Set(inner)].sort((a, b) => a - b), stacked: rows.filter((r) => 'stacked' in r.dataset).length };
   }, innerOf.toString());
 
   await page.locator('[data-door="workspace.setActiveTab#inspector-tab-settings"]').click();
@@ -83,18 +83,18 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   }
   await page.waitForTimeout(400);
 
-  const config = await page.evaluate((innerSrc) => {
+  const settings = await page.evaluate((innerSrc) => {
     const innerOf = new Function('row', `return (${innerSrc})(row)`);
     const rows = [...new Set([...document.querySelectorAll('[data-region="inspector-settings"] .field-row')])];
-    const escolha = rows
+    const choice = rows
       .filter((r) => r.querySelector(':scope > input[list]'))
       .map((r) => {
-        const campo = r.querySelector(':scope > input[list]');
-        return { rotulo: (r.querySelector(':scope > .field-row__label')?.textContent || ''), largura_interna: innerOf(r), valor: campo.value, campo_cw: campo.clientWidth, campo_sw: campo.scrollWidth, rolagem: campo.scrollWidth - campo.clientWidth, empilhada: 'stacked' in r.dataset };
+        const field = r.querySelector(':scope > input[list]');
+        return { label: (r.querySelector(':scope > .field-row__label')?.textContent || ''), inner_width: innerOf(r), value: field.value, field_cw: field.clientWidth, field_sw: field.scrollWidth, scroll: field.scrollWidth - field.clientWidth, stacked: 'stacked' in r.dataset };
       });
-    return { linhas: rows.length, empilhadas: rows.filter((r) => 'stacked' in r.dataset).length, escolha };
+    return { rows: rows.length, stacked: rows.filter((r) => 'stacked' in r.dataset).length, choice };
   }, innerOf.toString());
 
-  console.log(JSON.stringify({ config: nome, estilo, configuracoes: config }));
+  console.log(JSON.stringify({ config: configName, style, settings }));
   await browser.close();
 }

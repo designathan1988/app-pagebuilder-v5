@@ -1,4 +1,4 @@
-// The editor opens in the browser's language (jornada03 J26) when the person chose none.
+// The editor opens in the browser's language (journey03 J26) when the person chose none.
 import { describe, expect, it } from 'vitest';
 import { browserLocale, loadPreferences } from './preferences.ts';
 

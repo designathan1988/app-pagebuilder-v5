@@ -201,7 +201,7 @@ test('an embedded frame, a textarea and a video draw the fields their type needs
 });
 
 
-// A boolean attribute is an Off | On pair (spec settings-audit, "Settings layout"; jornada02 GENERALISATION 1.3): the
+// A boolean attribute is an Off | On pair (spec settings-audit, "Settings layout"; journey02 GENERALISATION 1.3): the
 // stored state pressed, a press on the other writes it in one step, and a press on the pressed one writes nothing.
 test('a boolean attribute is an Off | On pair: the stored state is pressed and a press on the other writes it', runs(INSERT, TILE, SETTINGS, 'element.setAttribute#inspector-plays-inline'), async ({ page }) => {
   await openInput(page, 'video');

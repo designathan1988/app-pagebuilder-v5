@@ -1,5 +1,5 @@
 // The interactive elements the editor draws, read from the source with the TypeScript compiler's API (the
-// investigation's C1, option A; grown from auditoria/investigacao/poc/c1-inventario/varrer.mjs): every intrinsic JSX
+// investigation's C1, option A; grown from auditoria/investigacao/poc/c1-inventario/scan.mjs): every intrinsic JSX
 // element a person acts on (a button, a field, a link, an element with a handler, an interactive ARIA role, a
 // tabIndex) and who owns it — a door of the manifest (data-door), a declared local control (data-local), part of a
 // door (inside an element that carries data-door), an object spread on it that holds data-door or data-local, or a
@@ -23,7 +23,8 @@ export interface Interactive {
 const TAGS = new Set(['button', 'input', 'select', 'textarea', 'a', 'summary', 'option']);
 const OWNER_MARKS: ReadonlySet<string> = new Set(['data-door', 'data-local']);
 const ROLES = new Set(['button', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'tab', 'option', 'slider', 'spinbutton', 'checkbox', 'switch', 'treeitem', 'combobox', 'radio', 'link', 'gridcell', 'separator']);
-// the same two sets for a check that reads the drawn page instead of the source (tests/e2e/lote-visual.spec.ts)
+// the same two sets for a check that reads the drawn page instead of the source
+// (tests/e2e/mounted-controls-and-canvas.spec.ts)
 export const INTERACTIVE_TAGS = TAGS;
 export const INTERACTIVE_ROLES = ROLES;
 const HANDLERS = /^on(Click|DoubleClick|PointerDown|PointerUp|MouseDown|KeyDown|KeyUp|Change|Input|Wheel|ContextMenu|Submit|DragStart|Drop|Focus|Blur)$/;

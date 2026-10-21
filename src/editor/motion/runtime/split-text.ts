@@ -1,4 +1,4 @@
-// Split text (plan stage 10, "texto dividido letra/palavra/linha com escalonamento"; spec motion-runtime, Split
+// Split text (plan stage 10, "text split by letter/word/line with a stagger"; spec motion-runtime, Split
 // text): an element's text cut into pieces an animation staggers, keeping what the text is made of — a bold word stays
 // bold, a link stays a link — because each text node is cut where it is, never the element's text rebuilt.
 //  - Letters and words are spans around the characters of each text node; spaces stay plain text so the line still

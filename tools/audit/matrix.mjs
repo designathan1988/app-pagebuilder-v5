@@ -1,6 +1,7 @@
 /* global console */
-// Fase 7: forma os grupos de escritores e de leitores pelas marcas dos fluxos e das
-// citações de trecho, e congela auditoria/matriz.md. Uso: node tools/audit/matriz.mjs
+// Phase 7: forms the writer and reader groups from the marks in the flows and the
+// snippet citations, and freezes auditoria/matriz.md. Usage: node tools/audit/matrix.mjs
+// The generated record keeps the Portuguese field labels that check.mjs parses.
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, computeMatrix } from './lib.mjs';
@@ -8,7 +9,7 @@ import { ROOT, computeMatrix } from './lib.mjs';
 const mat = computeMatrix();
 const ests = [...mat.keys()].sort();
 let out = '# Matriz\n\n';
-let pares = 0;
+let pairCount = 0;
 for (const est of ests) {
   const e = mat.get(est);
   const wFns = [...e.writers.keys()].sort();
@@ -26,11 +27,11 @@ for (const est of ests) {
     out += '- **Grupos de leitores:**\n';
     for (const u of rUnits) out += `  - ${u.id}: ${u.fn} — cobre ${u.ids.join(', ')}\n`;
   } else out += '- **Grupos de leitores:** nenhum\n';
-  // Um par precisa dos dois lados: um item sem grupo de um dos lados não tem par, e o C6 confere a mesma lista.
+  // A pair needs both sides: an item with no group on one side has no pair, and C6 checks the same list.
   const p = [];
   for (const w of wUnits) for (const r of rUnits) p.push(`${est}__${w.id}__${r.id}`);
-  pares += p.length;
+  pairCount += p.length;
   out += `- **Pares:** ${p.join(', ')}\n\n`;
 }
 fs.writeFileSync(path.join(ROOT, 'auditoria', 'matriz.md'), out);
-console.log(`matriz.md: ${ests.length} itens de estado, ${pares} pares`);
+console.log(`matriz.md: ${ests.length} state items, ${pairCount} pairs`);

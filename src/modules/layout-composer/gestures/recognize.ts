@@ -1,5 +1,5 @@
 import { ORDER, STROKE, lengthKey } from '../geometry/keys.ts';
-// One tool, many structural gestures (spec "Ferramenta única de construção"): a stroke is read by where it starts,
+// One tool, many structural gestures (spec "A single construction tool"): a stroke is read by where it starts,
 // what it crosses and where it ends, and becomes one operation of the gesture algebra. The same reading runs on every
 // pointer move for the preview (the predictor says what it understood before anything is committed) and once more by
 // the command's handler on the stroke the release hands it, so the committed change is exactly the one previewed.

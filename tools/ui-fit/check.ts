@@ -109,8 +109,9 @@ export function pseudoExpansion(text: string): string {
   return `【${accented.padEnd(Math.round(text.length * 1.4), '·')}】`;
 }
 
-// the hash of every stylesheet of the application, sorted, read with the passage of the mutant under run swapped: the
-// key of a measurement (the measurer writes the same hash: tools/ui-fit/measure.spec.ts)
+// the hash of every stylesheet of the application, sorted, read with the passage of the mutant under run swapped and
+// without its comments (a comment draws nothing, so rewording one keeps the measurement): the key of a measurement
+// (the measurer writes the same hash: tools/ui-fit/measure.spec.ts)
 export function cssHash(root = ''): string {
   const files: string[] = [];
   const walk = (dir: string): void => {
@@ -122,7 +123,7 @@ export function cssHash(root = ''): string {
   };
   walk('src');
   const hash = crypto.createHash('sha256');
-  for (const file of files.sort()) hash.update(`${file}\n${mutatedSource(file.split(path.sep).join('/'), fs.readFileSync(`${root}${file}`, 'utf8'))}`);
+  for (const file of files.sort()) hash.update(`${file}\n${mutatedSource(file.split(path.sep).join('/'), fs.readFileSync(`${root}${file}`, 'utf8')).replace(/\/\*[\s\S]*?\*\//gu, '')}`);
   return hash.digest('hex');
 }
 

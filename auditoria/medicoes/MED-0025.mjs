@@ -1,17 +1,17 @@
 /* global console, document, performance, setTimeout, window */
-// MED-0025 — o tamanho do rótulo (e da barra), lido em src/editor/canvas/chrome.tsx:454 e :719
+// MED-0025 — the size of the label (and of the bar), read in src/editor/canvas/chrome.tsx:454 and :719
 // `const size = label.current ? { width: label.current.offsetWidth, height: label.current.offsetHeight } : null;`
-// (ENT-L07-0011, passo 8; ENT-L07-0021, passo 9).
-// Estado: o rótulo da seleção ([data-chrome="label"]) de dois elementos de larguras diferentes, cada um num contexto
-// novo (um editor por página).
-// Roda: cat auditoria/medicoes/MED-0025.mjs | node --input-type=module -
+// (ENT-L07-0011, step 8; ENT-L07-0021, step 9).
+// State: the selection label ([data-chrome="label"]) of two elements with different widths, each in a fresh context
+// (one editor per page).
+// Run: cat auditoria/medicoes/MED-0025.mjs | node --input-type=module -
 import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const AURORA = fs.readFileSync('manifest/features/fixtures/aurora.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 const TARGETS = ['/Page/Hero/Title', '/Page/Plans/Grid/CardA'];
 
@@ -28,10 +28,10 @@ const READ = () => {
   };
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const valor = {};
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const value = {};
   for (const target of TARGETS) {
-    const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+    const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
     const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
     const page = await context.newPage();
     const boot = { project: AURORA, commands: [{ command: 'selection.select', args: { target: { $node: target } } }], drawn: [] };
@@ -43,8 +43,8 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
       while (!ready() && performance.now() < until) await new Promise((r) => setTimeout(r, 10));
       await new Promise((r) => setTimeout(r, 500));
     }, 2);
-    valor[target] = await page.evaluate(READ);
+    value[target] = await page.evaluate(READ);
     await browser.close();
   }
-  console.log(JSON.stringify({ config: nome, valor }));
+  console.log(JSON.stringify({ config: name, value }));
 }

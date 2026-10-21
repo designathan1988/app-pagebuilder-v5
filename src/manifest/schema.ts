@@ -257,7 +257,7 @@ const subsetSchema = z.strictObject({
   reason: z.string().min(1),
 });
 
-// A value offered ready-made (the plan's stage 3, "valores com prévia"): its name in the catalogues and the CSS text
+// A value offered ready-made (the plan's stage 3, "values with a preview"): its name in the catalogues and the CSS text
 // it writes, drawn as a thumbnail of that value (src/editor/shell/value-presets.tsx).
 const presetSchema = z.strictObject({
   id: kebabId,
@@ -455,7 +455,7 @@ export const propertiesFileSchema = z.strictObject({
         fields: z.array(z.strictObject({ target: z.union([cssName, kebabId]), prefixKey: i18nKey.nullable() })).min(2).max(2),
       }),
     ),
-  // The concept rows of the Style tab (plan item 2.D; jornada02 G-S1): one row per concept, its head drawn always, its
+  // The concept rows of the Style tab (plan item 2.D; journey02 G-S1): one row per concept, its head drawn always, its
   // details in an in-place disclosure (inspector.toggleRow). An item is a door of the Style tab ("<command>#<door>")
   // or a pair row ("pair:<id>"). A row with no head draws a summary head: its label (labelKey) and what its details
   // hold. Every item stands in one row, in the row's section (manifest:check rule concept-row).
@@ -853,7 +853,7 @@ export const layoutFileSchema = z.strictObject({
       anchors: z
         .array(z.strictObject({ region: regionId, order: z.number().int().positive(), drawnAs: z.enum(['icon-button', 'button', 'item']), icon: iconName.nullable() }))
         .min(1),
-      // the orders of the items a line stands before: the menu's groups (jornada02 G-18; the audit's U-033: Arrange's
+      // the orders of the items a line stands before: the menu's groups (journey02 G-18; the audit's U-033: Arrange's
       // 23 items read as one run). Optional: absent, the menu is one group.
       breaks: z.array(z.number().int().positive()).optional(),
     }),

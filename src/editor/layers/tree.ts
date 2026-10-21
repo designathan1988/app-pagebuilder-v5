@@ -100,7 +100,7 @@ export const collapseOrFocusParent = registerHandler<'layers.collapseOrFocusPare
 });
 
 // layers.collapseAll folds every branch below the page root, so the page's row and its first level stay in view (the
-// page's own outline; jornada03 J9: folding the root left one row and nothing to work with); layers.expandAll
+// page's own outline; journey03 J9: folding the root left one row and nothing to work with); layers.expandAll
 // unfolds every branch (spec layers-expand-collapse-all). A selection inside a folded branch unfolds its ancestors
 // (revealSelection, Problems in Pager 1).
 export const collapseAll = registerHandler<'layers.collapseAll', EditorUi>('layers.collapseAll', ({ state }) => {

@@ -61,7 +61,7 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
       for (const el of document.querySelectorAll('*')) {
         const s = getComputedStyle(el);
         if (!/(auto|scroll)/.test(s.overflowY) || el.closest(allowed) !== null || !shown(el)) continue;
-        if (el.scrollWidth > el.clientWidth + 1) out.push(`rola de lado (+${el.scrollWidth - el.clientWidth}px): ${name(el)}`);
+        if (el.scrollWidth > el.clientWidth + 1) out.push(`scrolls sideways (+${el.scrollWidth - el.clientWidth}px): ${name(el)}`);
       }
       // every bar holds its controls inside the window
       for (const bar of document.querySelectorAll('[data-region="top-bar"],[data-region="status-bar"],[data-region="canvas-toolbar"],[data-region="dock-strip"],[data-region="inspector-header"]')) {
@@ -69,7 +69,7 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
         for (const control of bar.querySelectorAll('button,[role=tab],[role=button],a[href],input')) {
           if (!shown(control)) continue;
           const r = control.getBoundingClientRect();
-          if (r.right > W + 1 || r.left < -1) out.push(`fora da janela: ${name(control)}`);
+          if (r.right > W + 1 || r.left < -1) out.push(`off the window: ${name(control)}`);
         }
       }
       // every control a person can see in the Inspector lies inside the window across
@@ -77,7 +77,7 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
         if (!shown(control) || control.closest('[aria-hidden="true"]') !== null) continue;
         const r = control.getBoundingClientRect();
         if (r.bottom < 0 || r.top > H) continue;
-        if (r.right > W + 1 || r.left < -1) out.push(`fora da janela: ${name(control)}`);
+        if (r.right > W + 1 || r.left < -1) out.push(`off the window: ${name(control)}`);
       }
       // no control of the bars lies under another part of the editor (a menu or a dialog open aside)
       if (!layerOpen) {
@@ -86,14 +86,14 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
           const r = control.getBoundingClientRect();
           if (r.right > W || r.bottom > H || r.left < 0 || r.top < 0) continue;
           const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-          if (hit !== null && !control.contains(hit) && !hit.contains(control)) out.push(`coberto: ${name(control)} sob ${name(hit)}`);
+          if (hit !== null && !control.contains(hit) && !hit.contains(control)) out.push(`covered: ${name(control)} under ${name(hit)}`);
         }
       }
       // the element just inserted shows on the canvas: nothing of the editor lies over its start
       if (inserted !== null) {
         const frame = document.querySelector<HTMLIFrameElement>('.frame__page');
         const el = frame?.contentDocument?.querySelector(`[data-node="${inserted}"]`);
-        if (!frame || !el) out.push('o elemento inserido não está no canvas');
+        if (!frame || !el) out.push('the inserted element is not on the canvas');
         else {
           const zoom = frame.currentCSSZoom;
           const f = frame.getBoundingClientRect();
@@ -102,8 +102,8 @@ function breaches(page: Page, insertedId: string | null): Promise<readonly strin
           const y = f.y + (r.y + Math.min(8, r.height / 2)) * zoom;
           const stage = document.querySelector('[data-region="canvas-stage"]')?.getBoundingClientRect();
           const hit = document.elementFromPoint(x, y);
-          if (stage === undefined || x < stage.left || x > stage.right || y < stage.top || y > stage.bottom) out.push('o início do elemento inserido está fora do palco');
-          else if (hit === null || hit.closest('[data-region="canvas-stage"]') === null) out.push(`o início do elemento inserido está sob ${hit === null ? 'nada' : name(hit)}`);
+          if (stage === undefined || x < stage.left || x > stage.right || y < stage.top || y > stage.bottom) out.push('the start of the inserted element is outside the stage');
+          else if (hit === null || hit.closest('[data-region="canvas-stage"]') === null) out.push(`the start of the inserted element is under ${hit === null ? 'nothing' : name(hit)}`);
         }
       }
       return out;
@@ -146,16 +146,16 @@ for (const c of CONDITIONS) {
       for (const breach of await breaches(page, inserted)) found.push(`${step}: ${breach}`);
       const v = await views(page);
       // Layers is compared where it is drawn (a narrow window's first visit keeps the sidebar closed)
-      if (v.selected.length === 1 && ((v.tree && !v.layers.includes(v.selected[0])) || !v.canvas.includes(v.selected[0] ?? null))) found.push(`${step}: as vistas não mostram a mesma seleção (${JSON.stringify(v)})`);
+      if (v.selected.length === 1 && ((v.tree && !v.layers.includes(v.selected[0])) || !v.canvas.includes(v.selected[0] ?? null))) found.push(`${step}: the views do not show the same selection (${JSON.stringify(v)})`);
     };
-    await check('aberto');
+    await check('opened');
     // the Insert panel, as a person opens it, and four elements inserted from it
     const insertTile = page.locator('[data-door="element.insert#elements-tile"]');
     if ((await insertTile.count()) === 0 || !(await insertTile.first().isVisible())) await page.locator('[data-door="workspace.setPanelOpen#toolbar-activity-bar-insert"]').click();
     for (const entry of ['section', 'heading', 'paragraph', 'button']) {
       await page.locator(`[data-door="element.insert#elements-tile"][data-args*='"entry":"${entry}"']`).click();
       const inserted = (await views(page)).selected[0] ?? null;
-      await check(`inserido ${entry}`, inserted);
+      await check(`inserted ${entry}`, inserted);
     }
     // the deepest heading chosen in Layers: the breadcrumb names thirteen levels
     const deep = page.locator(`[data-door="selection.select#layers-row"][data-args*='"d-title"']`).first();
@@ -170,15 +170,15 @@ for (const c of CONDITIONS) {
       await nextFrames(page);
     }
     await deep.click();
-    await check('título profundo escolhido nas Camadas');
+    await check('deep heading chosen in Layers');
     // a field of the Style tab with the focus, as Tab or a click gives it
     await page.locator('[data-door="style.set#inspector-font-size"] input').first().click();
-    await check('foco no tamanho da fonte');
+    await check('focus on the font size');
     const scrolled = await page.locator('.inspector-scroll').first().evaluate((el) => el.scrollLeft);
-    if (scrolled !== 0) found.push(`foco no tamanho da fonte: o Inspector andou ${scrolled}px de lado`);
+    if (scrolled !== 0) found.push(`focus on the font size: the Inspector moved ${scrolled}px sideways`);
     await page.keyboard.press('Escape');
     await page.locator('[data-door="workspace.setActiveTab#inspector-tab-settings"]').click();
-    await check('aba Configurações');
+    await check('Settings tab');
     expect(found, 'what breaks G4, G5 or G6').toEqual([]);
     // G7: the canvas a reload draws is the canvas the edits drew
     await expect(page.locator('[data-save-state]')).toHaveAttribute('data-save-state', 'saved');

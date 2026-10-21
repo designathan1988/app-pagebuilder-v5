@@ -39,7 +39,7 @@ type Meanwhile = 'nothing' | 'select' | 'breakpoint';
 // the door the paste comes from: Ctrl+V through the keymap, or the Edit menu's Paste clicked
 // (src/editor/doors/door.tsx, its own read of the clipboard: the verification's finding, no case went through it;
 // DEF-0566)
-type Door = 'tecla' | 'clique';
+type Door = 'key' | 'click';
 const MENU_PASTE = manifest.doors.find((d) => d.ref === `${'clipboard'}.paste#menu-edit`) ?? null;
 interface Pasted {
   readonly place: string | null;
@@ -48,7 +48,7 @@ interface Pasted {
 
 // Ctrl+C on the first element of the page, then Ctrl+V with the clipboard's read held by the scheduler, and what the
 // person does meanwhile run through the scheduler too: where the copy stands, and what the status bar says
-async function paste(s: fc.Scheduler, meanwhile: Meanwhile, door: Door = 'tecla'): Promise<Pasted> {
+async function paste(s: fc.Scheduler, meanwhile: Meanwhile, door: Door = 'key'): Promise<Pasted> {
   const store: EditorStore = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('r'), restored: { document: fixture('aurora'), selection: [] }, ports: { readOnly: () => false } });
   Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { read: () => s.schedule(Promise.resolve([] as ClipboardItem[]), 'clipboard read'), write: () => Promise.resolve(), writeText: () => Promise.resolve() } });
   const stop = installKeymap(store, window);
@@ -59,11 +59,11 @@ async function paste(s: fc.Scheduler, meanwhile: Meanwhile, door: Door = 'tecla'
     const elements = tree === undefined ? [] : [...walk(tree)].map((node) => node.id).filter((id) => id !== tree.id);
     const first = elements[0];
     const last = elements.at(-1);
-    expect(first !== undefined && last !== undefined && first !== last, 'dois elementos na página de exemplo').toBe(true);
+    expect(first !== undefined && last !== undefined && first !== last, 'two elements on the sample page').toBe(true);
     dispatch('selection.select' as CommandId, { target: first });
     window.dispatchEvent(chord('C'));
     const before = new Set(idsOf(store.getState().document));
-    if (door === 'tecla') window.dispatchEvent(chord('V'));
+    if (door === 'key') window.dispatchEvent(chord('V'));
     else {
       if (MENU_PASTE === null) throw new Error('the Edit menu has no Paste door');
       const host = document.createElement('div');
@@ -77,7 +77,7 @@ async function paste(s: fc.Scheduler, meanwhile: Meanwhile, door: Door = 'tecla'
       });
     }
     const other = breakpointsOf(store.getState().document).find((b) => b.id !== activeLayer(store.getState()).breakpoint);
-    expect(other, 'outro breakpoint na página de exemplo').toBeDefined();
+    expect(other, 'another breakpoint on the sample page').toBeDefined();
     const act = s.scheduleFunction(async () => {
       if (meanwhile === 'select') dispatch('selection.select' as CommandId, { target: last });
       if (meanwhile === 'breakpoint' && other !== undefined) dispatch('view.setBreakpoint' as CommandId, { breakpoint: other.id });
@@ -95,34 +95,34 @@ async function paste(s: fc.Scheduler, meanwhile: Meanwhile, door: Door = 'tecla'
   }
 }
 
-describe('as corridas das portas que leem algo que chega tarde', () => {
-  it('a colagem cai onde cairia sem a corrida, ou não cai e a barra de status avisa', async () => {
+describe('the races of the doors that read something that arrives late', () => {
+  it('the paste lands where it would without the race, or does not land and the status bar says so', async () => {
     const [one] = fc.sample(fc.scheduler(), { numRuns: 1, seed: 1 });
     if (one === undefined) throw new Error('fc.sample gave no scheduler');
     const reference = await paste(one, 'nothing');
-    expect(reference.place, 'sem nada no meio, a cópia é colada').not.toBeNull();
+    expect(reference.place, 'with nothing in between, the copy is pasted').not.toBeNull();
     const found: string[] = [];
     const outcomes = { kept: 0, refused: 0 };
     const doors = new Set<string>();
     await fc.assert(
-      fc.asyncProperty(fc.scheduler(), fc.constantFrom<Meanwhile>('nothing', 'select', 'breakpoint'), fc.constantFrom<Door>('tecla', 'clique'), async (s, meanwhile, door) => {
+      fc.asyncProperty(fc.scheduler(), fc.constantFrom<Meanwhile>('nothing', 'select', 'breakpoint'), fc.constantFrom<Door>('key', 'click'), async (s, meanwhile, door) => {
         const pasted = await paste(s, meanwhile, door);
         const kept = pasted.place === reference.place;
         const refused = pasted.place === null && pasted.message === 'status.stale';
         if (kept) outcomes.kept += 1;
         if (refused) outcomes.refused += 1;
-        if (kept) doors.add(`${door}: colada`);
-        if (refused) doors.add(`${door}: recusada`);
-        if (!kept && !refused) found.push(`${door}, ${meanwhile}: colada em ${pasted.place ?? 'lugar nenhum'} (${pasted.message ?? 'sem aviso'}), sem a corrida em ${reference.place ?? '?'}`);
+        if (kept) doors.add(`${door}: pasted`);
+        if (refused) doors.add(`${door}: refused`);
+        if (!kept && !refused) found.push(`${door}, ${meanwhile}: pasted at ${pasted.place ?? 'nowhere'} (${pasted.message ?? 'no notice'}), without the race at ${reference.place ?? '?'}`);
       }),
       { numRuns: 60, seed: 20261008 },
     );
     fs.mkdirSync('.cache/model', { recursive: true });
     fs.writeFileSync('.cache/model/races.json', JSON.stringify({ reference, outcomes, found: [...new Set(found)] }, null, 2));
-    expect([...new Set(found)], 'colagens fora do contexto da tecla').toEqual([]);
+    expect([...new Set(found)], "pastes outside the key's context").toEqual([]);
     // the runs went both ways: a context changed before the read arrived, and one changed after it or not at all
-    expect(outcomes.refused > 0 && outcomes.kept > 0, `as rodadas passaram pelos dois desfechos (${JSON.stringify(outcomes)})`).toBe(true);
+    expect(outcomes.refused > 0 && outcomes.kept > 0, `the runs went through both outcomes (${JSON.stringify(outcomes)})`).toBe(true);
     // and each door went both ways
-    expect([...doors].sort(), 'as duas portas passaram pelos dois desfechos').toEqual(['clique: colada', 'clique: recusada', 'tecla: colada', 'tecla: recusada']);
+    expect([...doors].sort(), 'both doors went through both outcomes').toEqual(['click: pasted', 'click: refused', 'key: pasted', 'key: refused']);
   }, 300_000);
 });

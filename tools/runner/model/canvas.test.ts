@@ -37,24 +37,24 @@ function compare(before: DocumentJson, patches: readonly Patch[]): { readonly in
 }
 const at = (...path: (string | number)[]) => ['pages', 0, 'tree', ...path];
 
-describe('o canvas é o documento: o render incremental é o render do zero', () => {
+describe('the canvas is the document: the incremental render is the render from scratch', () => {
   const button = node('b', 'button', 'button', { text: 'Enviar' });
   const cases: readonly { readonly name: string; readonly before: DocumentJson; readonly patches: readonly Patch[] }[] = [
     // what reaches beyond a node's own patch (DEF-0539)
-    { name: 'o idioma do projeto', before: page([node('t', 'paragraph', 'p', { text: 'Olá' })], { language: 'en' }), patches: [{ op: 'replace', path: ['language'], value: 'pt-BR' }] },
-    { name: 'um botão movido para dentro de um formulário', before: page([node('f', 'form', 'form'), button]), patches: [{ op: 'remove', path: at('children', 1) }, { op: 'add', path: at('children', 0, 'children', 0), value: button }] },
-    { name: 'um botão tirado de um formulário', before: page([node('f', 'form', 'form', { children: [button] })]), patches: [{ op: 'remove', path: at('children', 0, 'children', 0) }, { op: 'add', path: at('children', 1), value: button }] },
-    { name: 'o id do alvo de um link', before: page([node('hero', 'section', 'section', { attributes: { id: 'topo' } }), node('l', 'link', 'a', { text: 'Ir', attributes: { href: '#hero' } })]), patches: [{ op: 'replace', path: at('children', 0, 'attributes', 'id'), value: 'inicio' }] },
+    { name: 'the project language', before: page([node('t', 'paragraph', 'p', { text: 'Olá' })], { language: 'en' }), patches: [{ op: 'replace', path: ['language'], value: 'pt-BR' }] },
+    { name: 'a button moved into a form', before: page([node('f', 'form', 'form'), button]), patches: [{ op: 'remove', path: at('children', 1) }, { op: 'add', path: at('children', 0, 'children', 0), value: button }] },
+    { name: 'a button taken out of a form', before: page([node('f', 'form', 'form', { children: [button] })]), patches: [{ op: 'remove', path: at('children', 0, 'children', 0) }, { op: 'add', path: at('children', 1), value: button }] },
+    { name: 'the id of a link target', before: page([node('hero', 'section', 'section', { attributes: { id: 'topo' } }), node('l', 'link', 'a', { text: 'Ir', attributes: { href: '#hero' } })]), patches: [{ op: 'replace', path: at('children', 0, 'attributes', 'id'), value: 'inicio' }] },
     // the controls: a node's own patch
-    { name: 'o estilo de um nó', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'styles'), value: { desktop: { base: { color: 'red' } } } }] },
-    { name: 'o texto de um nó', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'text'), value: 'b' }] },
-    { name: 'um nó inserido', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'add', path: at('children', 1), value: node('u', 'paragraph', 'p', { text: 'c' }) }] },
-    { name: 'um nó removido', before: page([node('t', 'paragraph', 'p', { text: 'a' }), node('u', 'paragraph', 'p', { text: 'c' })]), patches: [{ op: 'remove', path: at('children', 0) }] },
-    { name: 'a tag de um nó', before: page([node('t', 'heading', 'h1', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'tag'), value: 'h2' }] },
+    { name: 'the style of a node', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'styles'), value: { desktop: { base: { color: 'red' } } } }] },
+    { name: 'the text of a node', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'text'), value: 'b' }] },
+    { name: 'an inserted node', before: page([node('t', 'paragraph', 'p', { text: 'a' })]), patches: [{ op: 'add', path: at('children', 1), value: node('u', 'paragraph', 'p', { text: 'c' }) }] },
+    { name: 'a removed node', before: page([node('t', 'paragraph', 'p', { text: 'a' }), node('u', 'paragraph', 'p', { text: 'c' })]), patches: [{ op: 'remove', path: at('children', 0) }] },
+    { name: 'the tag of a node', before: page([node('t', 'heading', 'h1', { text: 'a' })]), patches: [{ op: 'replace', path: at('children', 0, 'tag'), value: 'h2' }] },
   ];
   for (const one of cases)
     it(one.name, () => {
       const { incremental, scratch } = compare(one.before, one.patches);
-      expect(incremental, `${one.name}: o canvas difere do render do zero`).toBe(scratch);
+      expect(incremental, `${one.name}: the canvas differs from the render from scratch`).toBe(scratch);
     });
 });

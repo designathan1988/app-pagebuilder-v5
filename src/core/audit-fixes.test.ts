@@ -1,4 +1,4 @@
-// The functional bugs the 2026-09-30 code audit found (jornada02/MASTER-PLAN and the resolution plan, items B-xx and
+// The functional bugs the 2026-09-30 code audit found (journey02/MASTER-PLAN and the resolution plan, items B-xx and
 // M-xx), each proven on the handler that had it: every test here failed on the code before its fix.
 import { describe, expect, it } from 'vitest';
 import type { NodeId } from '../generated/commands.ts';

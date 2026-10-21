@@ -1,18 +1,18 @@
 /* global CSS, console, document, performance, setTimeout, window */
-// MED-0027 — os valores computados de um nó, lidos em src/editor/canvas/edit-handles.tsx:109
-// `const values = computedValues(node, wanted, lineStyles(MODEL_RULES));` (ENT-L07-0027, passo 2).
-// Estado: o projeto aurora.json aberto, o Hero selecionado (EditHandles desenha as faixas e o laço useComputed lê os
-// valores). As propriedades lidas são as escritas pelas portas das faixas (spacing e gap): padding-* , margin-*,
-// row-gap e column-gap. O valor é lido como computedValues o lê (src/editor/canvas/coordinates.ts:527):
-// `element.computedStyleMap()` -> `get(propriedade).toString()` para as propriedades que não são de linha.
-// Roda: cat auditoria/medicoes/MED-0027.mjs | node --input-type=module -
+// MED-0027 — the computed values of a node, read in src/editor/canvas/edit-handles.tsx:109
+// `const values = computedValues(node, wanted, lineStyles(MODEL_RULES));` (ENT-L07-0027, step 2).
+// State: the aurora.json project open, the Hero selected (EditHandles draws the bands and the useComputed loop reads the
+// values). The properties read are those written by the band handles (spacing and gap): padding-* , margin-*,
+// row-gap and column-gap. The value is read the way computedValues reads it (src/editor/canvas/coordinates.ts:527):
+// `element.computedStyleMap()` -> `get(property).toString()` for the properties that are not line properties.
+// Run: cat auditoria/medicoes/MED-0027.mjs | node --input-type=module -
 import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const AURORA = fs.readFileSync('manifest/features/fixtures/aurora.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 const PROPS = ['padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'row-gap', 'column-gap'];
 
@@ -27,8 +27,8 @@ const MEASURE = (props) => {
   return { computedValues: values, drawnHandles: handles };
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   const boot = { project: AURORA, commands: [{ command: 'selection.select', args: { target: { $node: '/Page/Hero' } } }], drawn: [] };
@@ -40,7 +40,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     while (!ready() && performance.now() < until) await new Promise((r) => setTimeout(r, 10));
     await new Promise((r) => setTimeout(r, 500));
   }, 2);
-  const valor = await page.evaluate(MEASURE, PROPS);
-  console.log(JSON.stringify({ config: nome, valor }));
+  const value = await page.evaluate(MEASURE, PROPS);
+  console.log(JSON.stringify({ config: name, value }));
   await browser.close();
 }

@@ -1,7 +1,7 @@
-// The jornada03 study's findings (J1–J28) replayed where no other test replays the persona's
+// The journey03 study's findings (J1–J28) replayed where no other test replays the persona's
 // path: each test drives the path that met the problem and asserts the outcome the fix gives. Every J is held to a test
-// by tests/e2e/jornada03.json (the test that replays it here, in another spec, a scenario or a unit test), checked by
-// tools/inventory/jornada03.test.ts.
+// by tests/e2e/journey03.json (the test that replays it here, in another spec, a scenario or a unit test), checked by
+// tools/inventory/journey03.test.ts.
 import fs from 'node:fs';
 import { expect, test, type Page } from '../support/test.ts';
 import { openEditor } from '../support/editor.ts';

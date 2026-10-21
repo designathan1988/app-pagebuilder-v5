@@ -12,21 +12,21 @@ import { uiFitFromDisk } from '../../ui-fit/check.ts';
 
 const report = uiFitFromDisk();
 fs.mkdirSync('.cache/model', { recursive: true });
-fs.writeFileSync('.cache/model/ui-fit-pseudo.json', JSON.stringify(report.stretched.map((f) => `${f.region} ${f.ref}: ${f.need.toFixed(1)} px em ${f.column.toFixed(1)} px`), null, 1));
-fs.writeFileSync('.cache/model/ui-fit-nao-medidas.json', JSON.stringify(report.unmeasured, null, 1));
+fs.writeFileSync('.cache/model/ui-fit-pseudo.json', JSON.stringify(report.stretched.map((f) => `${f.region} ${f.ref}: ${f.need.toFixed(1)} px in ${f.column.toFixed(1)} px`), null, 1));
+fs.writeFileSync('.cache/model/ui-fit-unmeasured.json', JSON.stringify(report.unmeasured, null, 1));
 
-describe('o texto da interface no espaço do seu rótulo', () => {
-  it('a medida foi tomada com as folhas de estilo de agora', () => {
-    expect(report.stale, 'manifest/generated/ui-widths.json é de outras folhas de estilo: rode npm run ui-fit:measure nas três condições').toBe(false);
+describe('the interface text in the space of its label', () => {
+  it('the measurement was taken with the current stylesheets', () => {
+    expect(report.stale, 'manifest/generated/ui-widths.json is from other stylesheets: run npm run ui-fit:measure in the three conditions').toBe(false);
   });
 
-  it('o texto de cada porta, em pt-BR e em inglês, cabe no espaço do seu rótulo, com 1 px de folga', () => {
-    const described = report.findings.map((f) => `${f.region} ${f.ref} "${f.text}": ${f.need.toFixed(1)} px em ${f.column.toFixed(1)} px`);
-    expect(described, 'textos que não cabem no espaço do seu rótulo').toEqual([]);
+  it('the text of each door, in pt-BR and in English, fits in the space of its label, with 1 px to spare', () => {
+    const described = report.findings.map((f) => `${f.region} ${f.ref} "${f.text}": ${f.need.toFixed(1)} px in ${f.column.toFixed(1)} px`);
+    expect(described, 'texts that do not fit in the space of their label').toEqual([]);
   });
 
-  it('toda porta com rótulo foi medida, ou está numa região cujo motivo de não ser medida está escrito', () => {
-    expect(report.unmeasured.length + report.textless.length, 'a conta das portas não medidas e das sem texto foi feita').toBeGreaterThan(0);
-    expect(report.unexplained.map((one) => `${one.region} › ${one.ref}`), 'portas com rótulo não medidas, numa região sem motivo').toEqual([]);
+  it('every door with a label was measured, or is in a region whose reason for not being measured is written', () => {
+    expect(report.unmeasured.length + report.textless.length, 'the count of the unmeasured doors and of the textless ones was made').toBeGreaterThan(0);
+    expect(report.unexplained.map((one) => `${one.region} › ${one.ref}`), 'labelled doors not measured, in a region with no reason').toEqual([]);
   });
 });

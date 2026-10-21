@@ -700,13 +700,13 @@ textarea.input {
   container-type: inline-size;
 }
 
-/* A pair is one label and two cells, the label in the same 100 px column as every other row (jornada02 R-06): a lean
+/* A pair is one label and two cells, the label in the same 100 px column as every other row (journey02 R-06): a lean
    cell — its value and its unit, the Reset only while hovered — fits a value such as "600px" in its half. */
 .field-row--pair {
   grid-template-columns: var(--size-label-column) minmax(0, 1fr) minmax(0, 1fr);
 }
 
-/* Every row of the Style tab keeps a 24 px column at its end for Reset this value (jornada02 A.0, J6): the value
+/* Every row of the Style tab keeps a 24 px column at its end for Reset this value (journey02 A.0, J6): the value
    cells keep their width whether the reset shows or not, so focusing a field never squeezes its number. Every field
    of the row places its reset in that one column; only the hovered or focused field's shows. A row with no reset
    (a pair, whose resets stand at its label column's end, a choice, the anchors, a concept row's summary) keeps the
@@ -851,7 +851,7 @@ textarea.input {
 }
 
 /* the input inside the box draws no border of its own: the box is the field, its value in the code role (12/18 mono,
-   jornada02 R-27) — it takes what its row's own affordances (the unit menu, the value list, the Reset) leave, so
+   journey02 R-27) — it takes what its row's own affordances (the unit menu, the value list, the Reset) leave, so
    nothing wraps to a second line and a pair's value keeps the room for it */
 .input-wrap .input {
   flex: 1;
@@ -994,7 +994,7 @@ textarea.input {
 [data-region='inspector-style'] .input-wrap:focus-within .field__actions:not(:empty),
 [data-region='inspector-style'] .field-choice:hover .field__actions:not(:empty),
 [data-region='inspector-style'] .field-choice:focus-within .field__actions:not(:empty) { display: flex; }
-/* the unit is the unit menu's trigger (jornada02 A.0): its text, 24 wide, parked at the field's end; a value that holds
+/* the unit is the unit menu's trigger (journey02 A.0): its text, 24 wide, parked at the field's end; a value that holds
    no unit (a keyword) draws the menu's chevron in its place */
 [data-region='inspector-style'] .field__unit-button .field__unit-value:not(:empty) + .icon { display: none; }
 /* while the field is edited its input holds the whole text ("48px"): the trigger shows the menu's chevron instead of
@@ -1457,7 +1457,7 @@ textarea.input {
   pointer-events: none;
 }
 /* Keyword buttons whose words do not fit are a keyword menu: the value on a field-like button with the menu's chevron at
-   its end (jornada02 GENERALISATION "Keyword buttons") */
+   its end (journey02 GENERALISATION "Keyword buttons") */
 .field-choice--menu { display: flex; justify-self: stretch; }
 [data-region='inspector-style'] .field__keyword {
   display: flex;

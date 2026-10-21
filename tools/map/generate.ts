@@ -15,7 +15,7 @@ try {
   fs.mkdirSync('manifest/generated', { recursive: true });
   fs.writeFileSync('manifest/generated/behavior.json', json);
   fs.writeFileSync('manifest/generated/behavior.md', markdown);
-  console.log('manifest/generated/behavior.json e behavior.md gravados');
+  console.log('manifest/generated/behavior.json and behavior.md written');
 } finally {
   await server.close();
 }

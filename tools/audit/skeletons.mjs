@@ -1,20 +1,21 @@
 /* global process, console */
-// Fase 7: cria os esqueletos dos pares de um item de estado em auditoria/interacoes/:
-// título, ids, membros dos grupos e títulos de seção. Nunca conteúdo.
-// Uso: node tools/audit/esqueletos.mjs <EST-x>
+// Phase 7: creates the skeletons of a state item's pairs in auditoria/interacoes/:
+// title, ids, group members and section titles. Never content.
+// The skeleton text is the Portuguese record format that check.mjs and renumber.mjs parse.
+// Usage: node tools/audit/skeletons.mjs <EST-x>
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, computeMatrix } from './lib.mjs';
 
 const est = process.argv[2];
 if (!est) {
-  console.error('uso: node tools/audit/esqueletos.mjs <EST-x>');
+  console.error('usage: node tools/audit/skeletons.mjs <EST-x>');
   process.exit(1);
 }
 const mat = computeMatrix();
 const e = mat.get(est);
 if (!e) {
-  console.error(`${est} não aparece em nenhum fluxo ou trecho.`);
+  console.error(`${est} does not appear in any flow or snippet.`);
   process.exit(1);
 }
 const wFns = [...e.writers.keys()].sort();
@@ -27,16 +28,16 @@ fs.mkdirSync(dir, { recursive: true });
 let n = 0;
 for (const w of wUnits) {
   for (const r of rUnits) {
-    const nome = `${est}__${w.id}__${r.id}.md`;
-    const p = path.join(dir, nome);
+    const name = `${est}__${w.id}__${r.id}.md`;
+    const p = path.join(dir, name);
     if (fs.existsSync(p)) continue;
-    const esc = `${w.id} (${w.fn}): ${w.ids.join(', ')}`;
-    const lei = `${r.id} (${r.fn}): ${r.ids.join(', ')}`;
-    const texto = [
+    const writer = `${w.id} (${w.fn}): ${w.ids.join(', ')}`;
+    const reader = `${r.id} (${r.fn}): ${r.ids.join(', ')}`;
+    const text = [
       `# ${est} × ${w.id} → ${r.id}`,
       `- **Estado:** ${est}`,
-      `- **Escritor:** ${esc}`,
-      `- **Leitor:** ${lei}`,
+      `- **Escritor:** ${writer}`,
+      `- **Leitor:** ${reader}`,
       '## Estados deixados por A',
       '## Casos',
       '### C1 final',
@@ -46,8 +47,8 @@ for (const w of wUnits) {
       '## Resultado',
       '',
     ].join('\n');
-    fs.writeFileSync(p, texto);
+    fs.writeFileSync(p, text);
     n++;
   }
 }
-console.log(`${est}: ${n} esqueletos criados em auditoria/interacoes/`);
+console.log(`${est}: ${n} skeletons created in auditoria/interacoes/`);

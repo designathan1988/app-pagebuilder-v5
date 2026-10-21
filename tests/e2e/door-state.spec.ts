@@ -98,7 +98,7 @@ test('the Theme and Language items are one choice of a set and say which is chos
   await expect(page.locator(door('workspace.toggleLeftDock#menu-view'))).toHaveAttribute('aria-checked', 'true');
 });
 
-// A control looks like it can run exactly when it can (brief "a aplicação completa": no enabled-looking control that
+// A control looks like it can run exactly when it can (the brief "the complete application": no enabled-looking control that
 // does nothing; finding 32): the top bar's main action, Export project (ZIP), wears the accent only while it can run.
 // Since export-zip is built it can: it wears the accent, and a click hands out the site (the unavailable case of this
 // rule has no main action left outside preview mode).

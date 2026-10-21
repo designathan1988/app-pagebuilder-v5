@@ -1,5 +1,5 @@
 // The proof that what development alone carries leaves the build (the investigation's proof P5, grown from
-// auditoria/investigacao/poc/c-producao/construir.mjs): it builds the app in memory twice, with import.meta.env.DEV
+// auditoria/investigacao/poc/c-producao/build.mjs): it builds the app in memory twice, with import.meta.env.DEV
 // replaced by false (every real build) and by true, and looks for each development-only mark in the chunks. The mark
 // must be absent from the first and present in the second: the second shows the search sees the code it looks for, so
 // the check vite.config.ts makes on every build (development-only) is not blind.
@@ -27,7 +27,7 @@ for (const dev of [false, true]) {
     const present = code.includes(mark);
     const right = present === dev;
     if (!right) failed = true;
-    console.log(`DEV=${String(dev)}: ${chunks.length} pedaços, ${code.length} bytes; marca ${mark} ${present ? 'PRESENTE' : 'ausente'} (${right ? 'como deve' : 'ERRADO'}); ${(performance.now() - start).toFixed(0)} ms`);
+    console.log(`DEV=${String(dev)}: ${chunks.length} chunks, ${code.length} bytes; mark ${mark} ${present ? 'PRESENT' : 'absent'} (${right ? 'as it should be' : 'WRONG'}); ${(performance.now() - start).toFixed(0)} ms`);
   }
 }
 process.exitCode = failed ? 1 : 0;

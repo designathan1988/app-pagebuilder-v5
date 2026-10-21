@@ -1,5 +1,5 @@
 // What the canvas overlay and the Intent Inspector show, as plain data (spec "Layout Lenses", "Structural Handles",
-// "Intent Inspector", "Hierarquia visual"). Six lenses over the one graph: the spatial composition, the structure
+// "Intent Inspector", "Visual hierarchy"). Six lenses over the one graph: the spatial composition, the structure
 // (containers, depth, every boundary and vertex), the constraints (the relations drawn between regions), the
 // responsive behaviour (what changes at narrower widths), the flow (direction and distribution) and the semantics
 // (header, nav, main…). The handles a selection shows follow what the layout is: track boundaries and gaps of a grid

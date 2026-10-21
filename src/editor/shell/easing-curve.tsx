@@ -1,4 +1,4 @@
-// The curve of an easing field (the plan's stage 3, "editor de curva para aceleração"; spec easing-curve): beside a
+// The curve of an easing field (the plan's stage 3, "a curve editor for easing"; spec easing-curve): beside a
 // field that holds an easing (a keyframe's, a motion action's), a button opens a layer that draws the easing as its
 // curve, offers the ready-made easings each drawn as its own curve, and edits a cubic Bézier by its two control
 // points (four numbers, the curve redrawn as they change). Choosing a curve runs the field's own door with it, as

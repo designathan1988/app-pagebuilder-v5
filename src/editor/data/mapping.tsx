@@ -1,4 +1,4 @@
-// Connect fields (spec content-data, "binding"; jornada03 C4, bet C): the element to repeat — the one selected, or the
+// Connect fields (spec content-data, "binding"; journey03 C4, bet C): the element to repeat — the one selected, or the
 // repeated item it lies in — and each of its parts that can show a value (a text, an image's source and alternative
 // text, a link's address), with the field it shows: chosen in its menu, or by dragging a column (of the grid or of the
 // list here) onto it, which the pointer owner runs (data-door, data-args). Under them, a preview of what the first

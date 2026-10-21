@@ -1,4 +1,4 @@
-// Structural import (spec "Importação estrutural", "Reedição"): the elements a container already holds — written by
+// Structural import (spec "Structural import", "Re-editing"): the elements a container already holds — written by
 // hand, imported from HTML, or compiled before and edited since — read back into a Layout Intent Graph. The canvas
 // measures each element and the document gives its declared styles (the host does both; this module never parses
 // HTML or measures a page). Where the styles say what was meant (a fixed width, a share of a row, a gap, a padding, a

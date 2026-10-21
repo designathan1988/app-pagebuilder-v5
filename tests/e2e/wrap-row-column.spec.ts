@@ -187,7 +187,7 @@ test(
 );
 
 // Words typed on the canvas are not shortcuts (keys.typingBurst; the dogfooding pass: words typed on the canvas wrapped,
-// moved and nested elements one letter at a time; jornada03 J2: the first letters still ran, "Grãos" wrapped an image in
+// moved and nested elements one letter at a time; journey03 J2: the first letters still ran, "Grãos" wrapped an image in
 // a grid and a row). Changed on purpose with J2: once a letter of the burst binds nothing (the "a"), the shortcuts the
 // burst already ran are taken back and the letters after it do not run; shortcuts pressed in a row (R then S, scenario
 // swapping-the-direction-of-a-row) still do; a letter on its own later runs again.
@@ -328,7 +328,7 @@ test('autosave never records the accidental wrapper in a word but saves an isola
   expect((await read(page)).tree).toContain('Row(Intro)');
 });
 
-// jornada03 J2: a press away from the canvas (Marina chose an image in the picker, which closed; her next click was
+// journey03 J2: a press away from the canvas (Marina chose an image in the picker, which closed; her next click was
 // swallowed) leaves the focus on the page body, and the letters she typed for the Alt text ran the canvas's keys. The
 // canvas's typed keys act only where the person chose the canvas or the Layers: elsewhere they do nothing and say why,
 // once; Escape on the canvas, or a press on it, chooses it again.

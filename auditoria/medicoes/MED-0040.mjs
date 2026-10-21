@@ -1,18 +1,18 @@
 /* global console, document, window */
-// MED-0040 — L09b (ENT-L09b-0045): o elemento ativo do documento comparado com o campo do nome da página
-// (`document.activeElement !== input.current`), de que o efeito que repõe o nome depende, lido em
+// MED-0040 — L09b (ENT-L09b-0045): the document's active element compared with the page name field
+// (`document.activeElement !== input.current`), on which the effect that restores the name depends, read in
 // src/editor/shell/sidebar/explorer.tsx:70.
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/responsive-title.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }] } }));
@@ -36,6 +36,6 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     };
   });
 
-  console.log(JSON.stringify({ config: nome, ...measured }));
+  console.log(JSON.stringify({ config: configName, ...measured }));
   await browser.close();
 }

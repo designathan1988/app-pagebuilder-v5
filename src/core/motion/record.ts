@@ -1,4 +1,4 @@
-// Record mode (plan stage 10, "gravar": a change in the inspector creates a keyframe at the playhead; spec
+// Record mode (plan stage 10, "record": a change in the inspector creates a keyframe at the playhead; spec
 // motion-timeline, Recording). While the Timeline records, the style owner (core/style/set.ts writeStyle) hands a write
 // of the primary selected element here instead of writing the element's styles: each property written becomes a
 // keyframe of the open timeline at the playhead, on the animation acting on that element there — the selected action

@@ -302,7 +302,7 @@ const LayersRow = memo(function LayersRow({ node, depth, view }: { readonly node
         {/* a coloured row shows its colour before its icon, as the canonical layers list does (stage 5); the palette
             that chooses it stays among the row's actions */}
         {colour === undefined || LAYERS_COLOUR === undefined ? null : <LayerPalette entry={LAYERS_COLOUR} node={node} lead />}
-        {/* an instance of a component wears the component's icon and names its component (jornada03 J21) */}
+        {/* an instance of a component wears the component's icon and names its component (journey03 J21) */}
         <Icon name={node.component !== undefined ? COMPONENT_ICON : (elementIcon(node.type) ?? GLYPHS.folder)} size="sm" />
         {renaming ? (
           <NameField node={node} />

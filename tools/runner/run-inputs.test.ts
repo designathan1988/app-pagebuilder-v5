@@ -4,13 +4,12 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { NOT_INPUTS, OUTPUTS, RUN_INPUTS, changedBetween, inputHashes, inputsFingerprint } from './run-inputs.ts';
+import { NOT_INPUTS, OUTPUTS, RUN_INPUTS, changedBetween, inputHashes, inputsFingerprint, isNotInput } from './run-inputs.ts';
 
 describe('the run inputs', () => {
   it('place every root path of the project in the inputs, out of them, or among the tools\' outputs', () => {
     const roots = fs.readdirSync('.').filter((name) => !OUTPUTS.has(name));
-    const placed = new Set([...RUN_INPUTS, ...NOT_INPUTS]);
-    expect(roots.filter((root) => !placed.has(root))).toEqual([]);
+    expect(roots.filter((root) => !RUN_INPUTS.includes(root) && !isNotInput(root))).toEqual([]);
     expect(RUN_INPUTS.filter((input) => NOT_INPUTS.includes(input))).toEqual([]);
   });
 

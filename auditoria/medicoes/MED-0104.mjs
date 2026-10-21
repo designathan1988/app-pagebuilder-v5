@@ -1,27 +1,27 @@
-// Corrida de MED-0011: a mesma medição, que mediu as partes citadas por fluxos de áreas diferentes; este registro guarda a parte do submenu (View → Tema), ENT-L05b-0028.
+// Run of MED-0011: the same measurement, which measured the parts cited by flows from different areas; this record keeps the submenu part (View → Theme), ENT-L05b-0028.
 /* global console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0011 — o id é citado por duas áreas com valores distintos, medidos os dois:
-//  (a) ENT-L05b-0028 (submenu): src/editor/doors/menu.tsx:118-131 — a largura medida do submenu, a caixa medida do item
-//      que o abre, a barra de rolagem do menu que o contém e o tamanho da janela;
-//  (b) ENT-L07-0002, 0011, 0012, 0021, 0029, 0056, 0059, 0060, 0077, 0078, 0092 (canvas/chrome): a caixa de um nó na
-//      página (nodeBox, coordinates.ts:371-374), a origem da caixa do palco e a caixa da sobreposição/camada das
-//      sobreposições (chrome.tsx, guides.tsx, view-overlays.tsx).
+// MED-0011 — the id is cited by two areas with distinct values, both measured:
+//  (a) ENT-L05b-0028 (submenu): src/editor/doors/menu.tsx:118-131 — the measured width of the submenu, the measured box of the item
+//      that opens it, the scrollbar of the menu that contains it and the window size;
+//  (b) ENT-L07-0002, 0011, 0012, 0021, 0029, 0056, 0059, 0060, 0077, 0078, 0092 (canvas/chrome): the box of a node on the
+//      page (nodeBox, coordinates.ts:371-374), the origin of the stage's box and the box of the overlay/overlays
+//      layer (chrome.tsx, guides.tsx, view-overlays.tsx).
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
-const PROJETO = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
-const COMANDOS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
+const PROJECT = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
+const COMMANDS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
 
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
-  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJETO, commands: COMANDOS } }));
+  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: COMMANDS } }));
   await page.goto('http://localhost:5399/?test-boot');
   await page.evaluate(async () => {
     const port = () => window.__builderTestPort;
@@ -62,6 +62,6 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     const b = item.getBoundingClientRect();
     return { width: list.getBoundingClientRect().width, itemBox: { left: b.left, top: b.top, right: b.right, bottom: b.bottom }, menuBar: bar, winWidth: window.innerWidth, winHeight: window.innerHeight };
   });
-  console.log(JSON.stringify({ config: nome, valor: { ...canvas, submenu } }));
+  console.log(JSON.stringify({ config: configName, value: { ...canvas, submenu } }));
   await browser.close();
 }

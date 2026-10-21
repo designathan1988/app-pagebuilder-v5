@@ -29,7 +29,7 @@ describe('panel visibility (workspace/panels.ts)', () => {
     for (const panel of Object.keys(PANELS) as Panel[]) expect([panel, atStart(panel)]).toEqual([panel, PANELS[panel].open]);
   });
 
-  // a fresh profile opens on Insert (the audit's AUD-21, jornada03 J26: it opened on the Explorer)
+  // a fresh profile opens on Insert (the audit's AUD-21, journey03 J26: it opened on the Explorer)
   it('starts with Insert, Layers and the inspector open and the dock collapsed with Timeline and Checks, neither shown', () => {
     const s = store();
     expect(openPanels(s)).toEqual(['elements', 'layers', 'inspector', 'canvas-tools']);

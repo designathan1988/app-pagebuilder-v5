@@ -31,7 +31,7 @@ export const focusActivate = registerHandler<'focus.activate', EditorUi>('focus.
 // activity bar and the panel it shows), the canvas, the code pane, the workbench's dock, the panels docked right or
 // floating, the inspector and the status bar. Regions a window does not draw (a closed dock, the sidebar when it is
 // collapsed, the canvas in the Code view) are skipped.
-// The Layers tree is a stop of its own inside the sidebar (jornada03 J12: F6 never reached it): a region inside another
+// The Layers tree is a stop of its own inside the sidebar (journey03 J12: F6 never reached it): a region inside another
 // comes right after it, and the focus is in the innermost region holding it.
 const LAYERS_REGION = 'section[data-panel-area="layers"]';
 // a panel's header (its name, Put back, Close)
@@ -46,7 +46,7 @@ const drawnRegions = (): Element[] => REGION_ROOTS.map((one) => document.querySe
 // The keyboard focus goes into a region: its first enabled control takes it, or the region itself when it holds none
 // (a region that takes the focus keeps the focus ring of its own).
 function focusRegion(region: Element): void {
-  // the canvas is entered on the page itself, never on the frame's breakpoint tabs (the audit's AUD-13, jornada03 J12):
+  // the canvas is entered on the page itself, never on the frame's breakpoint tabs (the audit's AUD-13, journey03 J12):
   // the stage takes the focus, its key context the canvas's (input/keymap.ts), so the tree walk and every canvas key
   // act at once, and it draws the focus ring; it gives the tabindex back when the focus leaves it
   if (region.matches(STAGE)) {
@@ -88,7 +88,7 @@ function focusRegion(region: Element): void {
 function focusTheCanvas(store: EditorStore): void {
   const held = document.activeElement;
   if (held instanceof HTMLElement && held !== document.body) held.blur();
-  // the keyboard chose the canvas: its single-letter keys act again (jornada03 J2, keymap.ts lettersChosen)
+  // the keyboard chose the canvas: its single-letter keys act again (journey03 J2, keymap.ts lettersChosen)
   pointerViews(store).chooseCanvasByKeyboard();
 }
 

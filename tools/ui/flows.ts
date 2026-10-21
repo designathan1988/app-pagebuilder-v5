@@ -285,7 +285,7 @@ export const FLOWS: readonly Flow[] = [
   },
   {
     name: 'data-c3',
-    about: 'jornada03 C3/H13: the header shared with every page, its menu changed once',
+    about: 'journey03 C3/H13: the header shared with every page, its menu changed once',
     steps: [
       { click: '[data-menu="file"]' },
       { files: { at: '[data-door="project.open#menu-file"]', paths: ['manifest/features/fixtures/content-site.json'] } },

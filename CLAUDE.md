@@ -5,14 +5,25 @@ Page builder com editor visual. O canvas é renderizado em iframe e há breakpoi
 Este arquivo contém **requisitos e regras de trabalho**. Ele não descreve o estado atual do código: o estado está em `auditoria/progresso.md`.
 
 ## 0. Ritmo e verificação (exigência do dono, 2026-10-21)
-**Proibido rodar testes e medições.** O dono encerrou: suítes de navegador, detectores (vitest), catálogo de mutantes, medições de tempo e de largura (`ui-widths`), `npm test`, `npm run e2e`, `npx playwright test`, `npx vitest`, `node tools/runner/mutants-run.ts`. Não escreva spec, detector nem mutante novo. Os arquivos ficam no repositório, parados: não se apagam, não se mantêm.
+**A verificação é um comando só: `npm run verify`** (`tools/verify/run.ts`). Ele roda em cerca de um minuto (os passos estáticos, juntos, em segundos), e cada passo tem orçamento de tempo: o passo que passa do orçamento é parado e reprova. Os passos são:
+1. manifesto e catálogos de mensagens;
+2. arquivos gerados em dia;
+3. tipos com o TypeScript 7 nativo;
+4. lint nos arquivos mudados;
+5. checagens por modelo (`tools/runner/model/`): sequências geradas de comandos sobre a store, conferidas a cada passo;
+6. testes unitários, com as sondas de sequências aleatórias em poucas execuções (a varredura exaustiva `tools/runner/fuzz.test.ts` e os testes das plantas do `manifest:check` ficam para o fim de etapa);
+7. fumaça no navegador: as jornadas centrais no servidor de desenvolvimento (`tools/verify/smoke.spec.ts`), quando a mudança chega ao navegador.
 
-A verificação passa a ter três partes:
-1. **Leitura de código (a principal):** antes e depois de cada correção, leia o fluxo inteiro: quem chama, o tratador, a store, o render. Confira contra as regras G1–G7 e a integridade do documento (seção 5). Subagentes fazem revisão cética por leitura, por área: cada um lê o código de uma área procurando defeitos que o usuário veria, e cada achado traz `caminho:linha` e o passo a passo de uso que o mostra.
-2. **Autoverificação do app em uso:** o app já confere a si mesmo em desenvolvimento (`src/core/incidents.ts`, invariantes da store em `src/core/store/store.ts`). Ao usar o app, o feed de incidentes e o console têm de ficar vazios. Uma regra que o app pode conferir sozinho ganha checagem lá, no ponto garantidor, e nunca um teste separado.
-3. **Uso real, curto:** uma sessão por lote no app (`npm run dev` em segundo plano), fazendo as ações do lote como o usuário faz, com fotos examinadas (regra abaixo). Sem roteiro automatizado nem repetição em várias condições.
+**Proibido rodar qualquer outra coisa de teste ou medição:** a suíte de navegador (`npm run e2e`, `npx playwright test`), `npm test`, o catálogo de mutantes, medições de tempo e de largura. Passo do `verify` que passou do orçamento se corrige no passo (menos casos, menos execuções), nunca aumentando o orçamento sem pedido do dono.
 
-Portões de cada lote, e só eles: `npm run typecheck`, `npm run lint` (são compilação, levam segundos), a sessão de uso com o feed de incidentes vazio, e um commit com push.
+**Código só em inglês (exigência do dono, 2026-10-21):** comentários, identificadores, nomes de arquivo, títulos de teste e mensagens de ferramentas. O português fica só no que o usuário vê (`pt-BR.json`), em dados de exemplo e nos documentos de `auditoria/`.
+
+Além do `verify`:
+- **Leitura de código:** antes e depois de cada correção, leia o fluxo inteiro (quem chama, o tratador, a store, o render) contra as regras G1–G7 e a integridade do documento (seção 5).
+- **Autoverificação do app:** regra que o app pode conferir sozinho ganha checagem no ponto garantidor (`src/core/incidents.ts`, invariantes da store em DEV); assim todo uso e toda jornada do `verify` a conferem.
+- **Uso real, curto:** uma sessão por lote no app, com as fotos examinadas (regra abaixo).
+
+Portões de cada lote: `npm run verify` sem falha, a sessão de uso com o feed de incidentes vazio, e um commit com push.
 - **Lotes por área:** corrija de 5 a 10 defeitos da mesma área por vez.
 - **Produção primeiro:** o tempo vai inteiro para defeitos do app que o usuário vê.
 - **Fim de lote:** encerre os servidores e navegadores que você abriu.
@@ -30,7 +41,7 @@ Portões de cada lote, e só eles: `npm run typecheck`, `npm run lint` (são com
 - `auditoria/decisoes.md`: decisões tomadas, que não se rediscutem.
 - `auditoria/mecanismos.md`: cada checagem nova do feed de incidentes, uma linha.
 - `auditoria/otimizacoes.md`: cada otimização, com a medida de antes e depois.
-- Os demais arquivos de `auditoria/` (inventários, fluxos, matriz, interações, `check.mjs`) estão **congelados** desde 2026-10-08: não se leem, não se atualizam, não se rodam.
+- Os demais arquivos de `auditoria/` (inventários, fluxos, matriz, interações) e `tools/audit/` estão **congelados** desde 2026-10-08: não se leem, não se atualizam, não se rodam.
 
 Formato do defeito:
 ```
@@ -51,10 +62,10 @@ Formato do defeito:
 2. Corrija no ponto único que garante a regra (seção 4), nunca em cada componente que manifesta o defeito.
 3. Todo defeito corrigido tem prova por leitura: o caminho do código que produzia o erro e por que a correção o fecha em todos os chamadores, não só no caso visto.
 4. Regra que o app consegue conferir sozinho em desenvolvimento ganha a checagem no ponto garantidor (feed de incidentes), não um teste.
-5. Antes de dizer que um lote está feito: typecheck e lint sem erro **e** o app usado como o usuário usa, com o feed de incidentes vazio (seção 8).
+5. Antes de dizer que um lote está feito: `npm run verify` sem falha **e** o app usado como o usuário usa, com o feed de incidentes vazio (seção 8).
 
 ## 4. Conduta
-- Proibido declarar "funciona", "corrigido" ou equivalente sem typecheck e lint sem erro e sem o uso real do lote.
+- Proibido declarar "funciona", "corrigido" ou equivalente sem a saída do `npm run verify` sem falha e sem o uso real do lote.
 - Proibido silenciar erros: `@ts-ignore`, `eslint-disable`, `any` para calar o tipo, try/catch vazio, fallback que esconde falha, remover funcionalidade.
 - Proibido mudar texto da interface só para caber. Rótulo que não cabe é corrigido no CSS do componente; encurtar a mensagem só quando o texto novo for igualmente claro (sem abreviação).
 - Bibliotecas externas: consulte a documentação oficial da versão instalada antes de usar uma API nova.
@@ -116,7 +127,9 @@ Após toda escrita: esquema de cada bloco válido; IDs únicos; nenhum bloco ór
 | Mensagens | `src/i18n/locales/en.json`, `src/i18n/locales/pt-BR.json` |
 | Geradores | `tools/gen/generate.ts`, `tools/map/generate.ts`, `tools/inventory/write.ts` |
 | Feed de incidentes (autoverificação) | `src/core/incidents.ts` |
-| Testes antigos (parados, não rodar) | `tests/`, `tools/runner/` |
+| Verificação rápida | `tools/verify/run.ts` (`npm run verify`), `tools/verify/smoke.spec.ts` |
+| Checagens por modelo | `tools/runner/model/` |
+| Suíte de navegador antiga (não rodar) | `tests/e2e/` |
 
 ## 8. Uso real
 - **Como:** `npm run dev` em segundo plano e o app aberto em Chrome headless (`chromium.launch({ channel: 'chrome', headless: true })`) ou no Claude in Chrome. Não use o painel de navegador do app: oculto, ele para de desenhar quadros. Um editor por página.
@@ -125,6 +138,7 @@ Após toda escrita: esquema de cada bloco válido; IDs únicos; nenhum bloco ór
 - **Ponto no canvas:** posição do iframe mais a posição do nó vezes `iframe.currentCSSZoom`.
 
 ## 9. Ambiente e armadilhas
+- **TypeScript:** `tsc` é o TypeScript 7 nativo (`typescript-native`); o pacote `typescript` fica no 6 porque o typescript-eslint ainda não roda no 7.
 - **Sistema:** Windows com PowerShell. Rode processos pesados com prioridade baixa (`Start-Process` e `PriorityClass = 'BelowNormal'`).
 - **Finais de linha:** convivem arquivos CRLF e LF. Ao editar por script, preserve o final de linha de cada arquivo.
 - **Ids do manifesto:** nunca se escrevem à mão (regra de lint `builder/no-manifest-id`). Leia do manifesto.

@@ -1,27 +1,27 @@
-// Configuração das provas de conceito da investigação. Roda só os arquivos *.poc.ts desta pasta, com a mesma
-// fiação, idioma e portas de navegador que os testes unitários do projeto usam (vitest.config.ts), e sem cache de
-// módulos: o plugin abaixo troca um trecho de um módulo quando POC_MUTANTE nomeia um mutante, e um módulo guardado
-// no cache sairia sem a troca.
+// Configuration for the investigation's proofs of concept. Runs only the *.poc.ts files in this folder, with the same
+// wiring, language and browser ports the project's unit tests use (vitest.config.ts), and without a module cache: the
+// plugin below swaps a passage of a module when POC_MUTANT names a mutant, and a module kept in the cache would come
+// out without the swap.
 import { defineConfig } from 'vitest/config';
-import { MUTANTES } from './c7-historico/mutantes.ts';
+import { MUTANTS } from './c7-historico/mutants.ts';
 
-const escolhido = process.env.POC_MUTANTE ?? '';
+const chosen = process.env.POC_MUTANT ?? '';
 
 export default defineConfig({
   plugins: [
     {
-      name: 'poc-mutante',
+      name: 'poc-mutant',
       enforce: 'pre',
       transform(code, id) {
-        if (escolhido === '') return undefined;
-        const mutante = MUTANTES.find((m) => m.id === escolhido);
-        if (mutante === undefined) throw new Error(`mutante desconhecido: ${escolhido}`);
-        const arquivo = (id.replaceAll('\\', '/').split('?')[0] ?? '');
-        if (!arquivo.endsWith(`/${mutante.arquivo}`)) return undefined;
-        const vezes = code.split(mutante.de).length - 1;
-        if (vezes !== 1) throw new Error(`mutante ${mutante.id}: o trecho aparece ${vezes} vezes em ${mutante.arquivo}`);
-        // o módulo avisa que carregou com a troca: um mutante cujo módulo não carregou não conta como sobrevivente
-        return `${code.replace(mutante.de, mutante.para)}\n(globalThis as Record<string, unknown>).__pocMutanteAplicado = '${mutante.id}';\n`;
+        if (chosen === '') return undefined;
+        const mutant = MUTANTS.find((m) => m.id === chosen);
+        if (mutant === undefined) throw new Error(`unknown mutant: ${chosen}`);
+        const file = (id.replaceAll('\\', '/').split('?')[0] ?? '');
+        if (!file.endsWith(`/${mutant.file}`)) return undefined;
+        const times = code.split(mutant.from).length - 1;
+        if (times !== 1) throw new Error(`mutant ${mutant.id}: the passage appears ${times} times in ${mutant.file}`);
+        // the module reports that it loaded with the swap: a mutant whose module did not load does not count as a survivor
+        return `${code.replace(mutant.from, mutant.to)}\n(globalThis as Record<string, unknown>).__pocMutantApplied = '${mutant.id}';\n`;
       },
     },
   ],

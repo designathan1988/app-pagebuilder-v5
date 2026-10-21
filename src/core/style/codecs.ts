@@ -128,7 +128,7 @@ export function workOut(text: string): number | null {
   return result !== null && at === tokens.length && Number.isFinite(result) ? result : null;
 }
 
-// Arithmetic on lengths (the plan's stage 3, "contas"): numbers with the units the property offers, + - * / and
+// Arithmetic on lengths (the plan's stage 3, "arithmetic"): numbers with the units the property offers, + - * / and
 // parentheses. One unit throughout (a plain number beside it takes it) is worked out: "16px*2" is 32px, "10px + 4" is
 // 14px. Lengths of different units added or taken away are the browser's to work out: written as calc(), spaced as
 // CSS writes it ("100% - 20px" is calc(100% - 20px)). Two lengths multiplied, a division by a length or by zero, a

@@ -133,7 +133,7 @@ test('two titles show no flex, grid or item field', runs(OPEN, ROW, ADD), async 
   }
 });
 
-// J27 of the jornada03 study: the padding link was one switch for every element, so linking the footer linked every
+// J27 of the journey03 study: the padding link was one switch for every element, so linking the footer linked every
 // button. The link now belongs to the element: turning it on for one title leaves the other unlinked, and an element
 // whose four sides hold the same value starts linked.
 test('a box link belongs to its element: linking one title leaves the other unlinked', runs(OPEN, ROW, LINK), async ({ page }) => {

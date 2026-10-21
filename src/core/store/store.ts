@@ -260,7 +260,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
 
   // A command that produced patches the model refuses is a bug, never a normal refusal: nothing of the change is
   // published (the previous document, selection and history stay), the incident feed records it, and development and
-  // tests throw so it is loud (plan T2). The person is never left with nothing (jornada03 J1, the silent failures):
+  // tests throw so it is loud (plan T2). The person is never left with nothing (journey03 J1, the silent failures):
   // the status bar says the command's change was refused and nothing changed, before development throws.
   // Predictable invalid operations are refused by the operation itself, before any patch exists.
   // A command is named by its name without placeholders when its label has some (the manifest's nameKey): no argument
@@ -440,7 +440,7 @@ export function createStore<Ui>(options: StoreOptions<Ui>): Store<Ui> {
       }
       return { status: 'refused', message: refusal };
     }
-    // a handler that throws is a defect too, never a silent one (jornada03 J1): the incident feed keeps what it threw,
+    // a handler that throws is a defect too, never a silent one (journey03 J1): the incident feed keeps what it threw,
     // the status bar says the command failed and nothing changed, and development and tests still throw
     let outcome: Outcome<Ui>;
     try {

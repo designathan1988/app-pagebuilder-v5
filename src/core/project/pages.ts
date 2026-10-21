@@ -12,7 +12,7 @@
 // page holds neither (so a file a link points at is never taken silently), and a name another page already holds is
 // refused.
 // pages.duplicate: a copy right after the page, every node with an id and a styles record of its own, "About 2" when
-// "About" is taken; the copy opens and its name field takes the focus, as a page the + adds (jornada03 J20).
+// "About" is taken; the copy opens and its name field takes the focus, as a page the + adds (journey03 J20).
 // pages.delete: the page goes; the home page (index.html, what the project opens on) cannot be deleted, and a project
 // keeps at least one page.
 import { message, registerHandler } from '../commands/registry.ts';

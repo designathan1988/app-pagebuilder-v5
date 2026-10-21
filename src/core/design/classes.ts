@@ -180,7 +180,7 @@ function mergedStyles(under: StyleClass['styles'], over: StyleClass['styles']): 
   return merged as StyleClass['styles'];
 }
 
-// classes.moveInto (the plan's stage 7, "mover para classe existente"; journey D1): the primary selected element's own
+// classes.moveInto (the plan's stage 7, "move to an existing class"; journey D1): the primary selected element's own
 // styles go into a class the project has, laid over the class's (the element looked as it does, and now the class says
 // it), the element keeps none of its own and lists the class; one undo step. Every element listing the class takes the
 // moved styles with it, which is the point.
@@ -202,7 +202,7 @@ export const moveIntoClassCommand = registerHandler('classes.moveInto', (context
   return { kind: 'change', patches, message: message('status.classes.moved', { element: found.node.name, name: className }) };
 });
 
-// classes.applyToSimilar (the plan's stage 7, "aplicar a todos os parecidos"): the class goes on the elements of a
+// classes.applyToSimilar (the plan's stage 7, "apply to all similar ones"): the class goes on the elements of a
 // scope that do not list it yet, one undo step; a locked one refuses the whole change. The scope (the audit's AUD-19:
 // the three price cards' class went on the three benefit cards too): the elements of the primary selected element's
 // type on its page, the narrowest and the default; or on every page. The selected elements themselves take a class with

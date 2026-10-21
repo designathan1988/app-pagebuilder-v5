@@ -207,7 +207,7 @@ const isDataUpload = (file: Pick<UploadedFile, 'name' | 'type'>): boolean => DAT
 export const uploadCommand = registerHandler('files.upload', ({ state }, { files, folder }) => {
   const list = fileList(files).filter((f) => f !== null && typeof f === 'object');
   if (list.length === 0) throw new Error('files.upload: no file');
-  // the Explorer's upload keeps data files too (jornada03 J13); an image dropped on the canvas still takes images only
+  // the Explorer's upload keeps data files too (journey03 J13); an image dropped on the canvas still takes images only
   const wrong = list.find((f) => !supportedType(f.type) && !isDataUpload(f));
   if (wrong !== undefined) return { kind: 'refused' as const, message: message('status.files.unsupportedType', { name: wrong.name }) };
   const records = recordsFor(state.document, list, folder as string | undefined);

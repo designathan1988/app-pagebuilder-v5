@@ -16,7 +16,7 @@ export interface Box extends Point {
 
 export type Axis = 'x' | 'y';
 
-// How a region takes its size along one axis (spec "Modos de sizing"): a fixed length, a share of what its group
+// How a region takes its size along one axis (spec "Sizing modes"): a fixed length, a share of what its group
 // holds (fluid, proportional), whatever is left (fill-available), or its content's own size (hug). The compiler
 // decides the CSS; the inspector shows these words.
 export type Sizing = 'fixed' | 'fluid' | 'fill-available' | 'hug' | 'proportional';

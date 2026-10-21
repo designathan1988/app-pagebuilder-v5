@@ -2,7 +2,7 @@
 // @vitest-environment-options {"settings":{"disableCSSFileLoading":true,"handleDisabledFileLoadingAsSuccess":true,"disableJavaScriptFileLoading":true}}
 // The model of the structure commands (tools/runner/model/harness.ts): insert, delete, duplicate, move, wrap, unwrap,
 // rename and hide, mixed with typing and gestures; and the integrity the store leans on after every write (CLAUDE.md,
-// "Integridade do documento"): the model refuses a document with an id used twice, and a patch never adds past the end
+// "Document integrity"): the model refuses a document with an id used twice, and a patch never adds past the end
 // of a list.
 import fc from 'fast-check';
 import { expect, it } from 'vitest';
@@ -17,20 +17,20 @@ import type { CommandId } from '../../../src/generated/ids.ts';
 import { command, FIXTURES, fixture, nodesOf, PALETTE, pick, runModel } from './harness.ts';
 
 const STEPS = [
-  fc.nat(30).map((e) => command('element.insert', () => ({ entry: pick(PALETTE, e) }), `Inserir(${pick(PALETTE, e) ?? ''})`)),
-  fc.nat(30).map((e) => command('element.insert', () => ({ entry: pick(PALETTE, e) }), `Inserir(${pick(PALETTE, e) ?? ''})`)),
-  fc.constant(null).map(() => command('element.delete', () => ({}), 'Apagar')),
-  fc.constant(null).map(() => command('element.duplicate', () => ({}), 'Duplicar')),
-  fc.constant(null).map(() => command('element.moveUp', () => ({}), 'Subir')),
-  fc.constant(null).map(() => command('element.moveDown', () => ({}), 'Descer')),
-  fc.constant(null).map(() => command('element.wrapRow', () => ({}), 'EnvolverEmLinha')),
-  fc.constant(null).map(() => command('element.unwrap', () => ({}), 'Desembrulhar')),
-  fc.tuple(fc.integer({ min: -3, max: 3 }), fc.integer({ min: -3, max: 3 })).map(([dx, dy]) => command('position.move', () => ({ dx, dy }), `Mover(${dx},${dy})`)),
-  fc.tuple(fc.nat(40), fc.constantFrom('Cartão', 'Hero', '')).map(([i, name]) => command('element.rename', (s) => ({ target: pick(nodesOf(s), i), name }), `RenomearElemento(${i},${name})`)),
-  fc.constant(null).map(() => command('element.toggleHidden', () => ({}), 'Ocultar')),
+  fc.nat(30).map((e) => command('element.insert', () => ({ entry: pick(PALETTE, e) }), `Insert(${pick(PALETTE, e) ?? ''})`)),
+  fc.nat(30).map((e) => command('element.insert', () => ({ entry: pick(PALETTE, e) }), `Insert(${pick(PALETTE, e) ?? ''})`)),
+  fc.constant(null).map(() => command('element.delete', () => ({}), 'Delete')),
+  fc.constant(null).map(() => command('element.duplicate', () => ({}), 'Duplicate')),
+  fc.constant(null).map(() => command('element.moveUp', () => ({}), 'MoveUp')),
+  fc.constant(null).map(() => command('element.moveDown', () => ({}), 'MoveDown')),
+  fc.constant(null).map(() => command('element.wrapRow', () => ({}), 'WrapInRow')),
+  fc.constant(null).map(() => command('element.unwrap', () => ({}), 'Unwrap')),
+  fc.tuple(fc.integer({ min: -3, max: 3 }), fc.integer({ min: -3, max: 3 })).map(([dx, dy]) => command('position.move', () => ({ dx, dy }), `Move(${dx},${dy})`)),
+  fc.tuple(fc.nat(40), fc.constantFrom('Cartão', 'Hero', '')).map(([i, name]) => command('element.rename', (s) => ({ target: pick(nodesOf(s), i), name }), `RenameElement(${i},${name})`)),
+  fc.constant(null).map(() => command('element.toggleHidden', () => ({}), 'Hide')),
 ];
 
-it('os comandos de estrutura seguem o modelo do manifesto', () => {
+it('the structure commands follow the manifest model', () => {
   const summary = runModel('structure', STEPS);
   expect(summary.failure).toBeNull();
 });
@@ -48,7 +48,7 @@ function childLists(document: DocumentJson): { path: Path; length: number }[] {
   return out;
 }
 
-it('a integridade do documento: um id usado duas vezes é recusado, e nenhum patch acrescenta além do fim de uma lista', () => {
+it('the document integrity: an id used twice is refused, and no patch appends past the end of a list', () => {
   fc.assert(
     fc.property(fc.constantFrom(...FIXTURES), fc.nat(500), fc.nat(500), fc.nat(3), (name, a, b, past) => {
       const document = fixture(name);
@@ -74,34 +74,34 @@ it('a integridade do documento: um id usado duas vezes é recusado, e nenhum pat
 });
 
 // Which element stands in which, by the HTML content model, after every write and on a file opened (CLAUDE.md,
-// "consistência pai/filho e regras de aninhamento"; DEF-0540): the validator refuses the nestings the commands that
+// "parent/child consistency and nesting rules"; DEF-0540): the validator refuses the nestings the commands that
 // place elements refuse, and a change of an attribute that makes an element interactive inside a link is refused.
 const element = (id: string, type: string, tag: string, children: unknown[] = [], attributes: Record<string, unknown> = {}) => ({ id, type, name: id, tag, attributes, classes: [], styles: {}, text: null, children });
 const onePage = (children: unknown[]): DocumentJson => ({ version: 4, pages: [{ id: 'p', name: 'Home', file: 'index.html', tree: element('root', 'page', 'body', children) }] }) as unknown as DocumentJson;
-it('o aninhamento das tags: o validador recusa o que os comandos de colocação recusam', () => {
+it('the nesting of tags: the validator refuses what the placement commands refuse', () => {
   const nested: readonly (readonly [string, DocumentJson])[] = [
-    ['<li> dentro de <div>', onePage([element('d', 'div', 'div', [element('l', 'listItem', 'li')])])],
-    ['<a> dentro de <a>', onePage([element('a1', 'linkBlock', 'a', [element('a2', 'linkBlock', 'a', [], { href: 'https://example.invalid/x' })], { href: 'https://example.invalid/y' })])],
-    ['<form> dentro de <form>', onePage([element('f1', 'form', 'form', [element('f2', 'form', 'form')])])],
-    ['<tr> dentro de <section>', onePage([element('s', 'section', 'section', [element('t', 'tableRow', 'tr')])])],
-    ['<video controls> dentro de <a>', onePage([element('a1', 'linkBlock', 'a', [element('v', 'video', 'video', [], { controls: true })], { href: 'https://example.invalid/y' })])],
+    ['<li> inside <div>', onePage([element('d', 'div', 'div', [element('l', 'listItem', 'li')])])],
+    ['<a> inside <a>', onePage([element('a1', 'linkBlock', 'a', [element('a2', 'linkBlock', 'a', [], { href: 'https://example.invalid/x' })], { href: 'https://example.invalid/y' })])],
+    ['<form> inside <form>', onePage([element('f1', 'form', 'form', [element('f2', 'form', 'form')])])],
+    ['<tr> inside <section>', onePage([element('s', 'section', 'section', [element('t', 'tableRow', 'tr')])])],
+    ['<video controls> inside <a>', onePage([element('a1', 'linkBlock', 'a', [element('v', 'video', 'video', [], { controls: true })], { href: 'https://example.invalid/y' })])],
   ];
   const accepted = nested.filter(([, doc]) => !validateDocument(doc, [], MODEL_RULES).some((problem) => problem.path.endsWith('/children/0') && /inside|only accepts|holds one/.test(problem.message))).map(([name]) => name);
-  expect(accepted, 'aninhamentos que o validador aceita').toEqual([]);
-  expect(validateDocument(onePage([element('u', 'list', 'ul', [element('l', 'listItem', 'li')])]), [], MODEL_RULES), 'um <li> dentro de <ul> é aceito (controle)').toEqual([]);
+  expect(accepted, 'nestings the validator accepts').toEqual([]);
+  expect(validateDocument(onePage([element('u', 'list', 'ul', [element('l', 'listItem', 'li')])]), [], MODEL_RULES), 'an <li> inside <ul> is accepted (control)').toEqual([]);
   // the store: an attribute that makes the video interactive inside the link is refused, the document as it was
   const memory = () => ({ read: () => null, write: () => undefined });
   const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: onePage([element('a1', 'linkBlock', 'a', [element('v', 'video', 'video')], { href: 'https://example.invalid/y' })]), selection: [] }, ports: { readOnly: () => false }, freeze: true });
   const before = store.getState().document;
   const outcome = (store.dispatch as (id: CommandId, args: unknown) => { status: string })('element.setAttribute' as CommandId, { target: 'v', attribute: 'controls', value: true });
-  expect(outcome.status, 'controls num vídeo dentro de um link é recusado').toBe('refused');
-  expect(store.getState().document, 'o documento ficou como estava').toBe(before);
+  expect(outcome.status, 'controls on a video inside a link is refused').toBe('refused');
+  expect(store.getState().document, 'the document stayed as it was').toBe(before);
 });
 
 // DEF-0601: with a container selected that does not take the element clicked in the Insert panel (a list takes only
 // its items), the element goes right after the container, where its parent takes it, as after a leaf; a container
 // that takes it still holds it (control: a section takes a container).
-it('inserir com uma lista selecionada: o que ela não aceita vai logo depois dela; uma seção recebe dentro', () => {
+it('inserting with a list selected: what it does not accept goes right after it; a section receives inside', () => {
   const memory = () => ({ read: () => null, write: () => undefined });
   const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: fixture('aurora'), selection: ['n-perks'] }, ports: { readOnly: () => false }, freeze: true });
   const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
@@ -112,30 +112,30 @@ it('inserir com uma lista selecionada: o que ela não aceita vai logo depois del
   const listParent = parentOf('n-perks');
   if (listParent === null) throw new Error('no parent of n-perks');
   const at = listParent.children.findIndex((child) => child.id === 'n-perks');
-  expect(dispatch('element.insert' as CommandId, { entry: 'template-table' }).status, 'uma tabela com a lista selecionada').toBe('done');
+  expect(dispatch('element.insert' as CommandId, { entry: 'template-table' }).status, 'a table with the list selected').toBe('done');
   const table = store.getState().selection[0] ?? '';
-  expect(parentOf(table)?.id, 'a tabela fica no pai da lista').toBe(listParent.id);
-  expect(parentOf(table)?.children.findIndex((child) => child.id === table), 'logo depois da lista').toBe(at + 1);
+  expect(parentOf(table)?.id, "the table sits in the list's parent").toBe(listParent.id);
+  expect(parentOf(table)?.children.findIndex((child) => child.id === table), 'right after the list').toBe(at + 1);
   expect(validateDocument(store.getState().document, [], MODEL_RULES)).toEqual([]);
   expect(dispatch('selection.select' as CommandId, { target: 'n-hero' }).status).toBe('done');
   expect(dispatch('element.insert' as CommandId, { entry: 'container' }).status).toBe('done');
-  expect(parentOf(store.getState().selection[0] ?? '')?.id, 'um contêiner com a seção selecionada fica dentro dela').toBe('n-hero');
+  expect(parentOf(store.getState().selection[0] ?? '')?.id, 'a container with the section selected goes inside it').toBe('n-hero');
 });
 
 // DEF-0609: a class of the registry with a letter of another language ("botão-principal", taken by classes.apply) was
 // refused by an interaction's toggle-class and scope ("This trigger does not apply"), though the field offered it. One
 // grammar of a class name, the registry's, everywhere a class is named.
-it('uma classe com acento do registro serve na interação que alterna classe e no escopo', () => {
+it('an accented class of the registry works in the interaction that toggles a class and in the scope', () => {
   const memory = () => ({ read: () => null, write: () => undefined });
   const store = createEditorStore({ storage: memory(), workspace: memory(), clock: manualClock(1_000_000), ids: sequentialIds('n'), restored: { document: fixture('aurora'), selection: ['n-intro'] }, ports: { readOnly: () => false }, freeze: true });
   const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
-  expect(dispatch('classes.apply' as CommandId, { className: 'botão-principal' }).status, 'o registro aceita').toBe('done');
+  expect(dispatch('classes.apply' as CommandId, { className: 'botão-principal' }).status, 'the registry accepts').toBe('done');
   expect(dispatch('interactions.add' as CommandId, { trigger: 'click', action: 'toggle-class' }).status).toBe('done');
-  expect(dispatch('interactions.update' as CommandId, { interaction: 0, field: 'value', changes: 'botão-principal' }).status, 'a classe a alternar').toBe('done');
-  expect(dispatch('interactions.update' as CommandId, { interaction: 0, changes: { scope: 'botão-principal' } }).status, 'o escopo').toBe('done');
+  expect(dispatch('interactions.update' as CommandId, { interaction: 0, field: 'value', changes: 'botão-principal' }).status, 'the class to toggle').toBe('done');
+  expect(dispatch('interactions.update' as CommandId, { interaction: 0, changes: { scope: 'botão-principal' } }).status, 'the scope').toBe('done');
   const intro = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === 'n-intro');
-  expect(intro?.interactions?.[0], 'a interação gravada').toMatchObject({ className: 'botão-principal', scope: 'botão-principal' });
+  expect(intro?.interactions?.[0], 'the saved interaction').toMatchObject({ className: 'botão-principal', scope: 'botão-principal' });
   expect(validateDocument(store.getState().document, [], MODEL_RULES)).toEqual([]);
   // the motion's reader names classes by the same grammar (a scroll trigger's scope, a class operation)
-  expect(['botão-principal', 'cor-primária', '_x', '-y'].filter((name) => !MOTION_CLASS_NAME.test(name)), 'nomes que o movimento recusa').toEqual([]);
+  expect(['botão-principal', 'cor-primária', '_x', '-y'].filter((name) => !MOTION_CLASS_NAME.test(name)), 'names the motion refuses').toEqual([]);
 });

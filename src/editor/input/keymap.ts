@@ -241,7 +241,7 @@ const STEPPED: Readonly<Record<string, { readonly step: number; readonly shiftSt
 const SHIFT = 'Shift';
 // how soon after a letter another letter is typing rather than a shortcut (interactions.json)
 const TYPING_BURST = numberConstant('keys.typingBurst');
-// the contexts whose typed keys wait for the person to choose them (jornada03 J2), and the focus contexts they arrive
+// the contexts whose typed keys wait for the person to choose them (journey03 J2), and the focus contexts they arrive
 // in
 const CANVAS_CONTEXT = 'canvas' as KeyContextId;
 const LAYERS_CONTEXT = 'layers-tree' as KeyContextId;
@@ -345,7 +345,7 @@ export function installKeymap(store: EditorStore, target: Window = window): () =
   let lastLetterAt = Number.NEGATIVE_INFINITY;
   let typing = false;
   // The canvas's typed keys (its letters, digits and signs, with or without Shift) act only where the person chose the
-  // canvas or the Layers (jornada03 J2: a press in the image picker, the picker closing, the focus left on the page
+  // canvas or the Layers (journey03 J2: a press in the image picker, the picker closing, the focus left on the page
   // body, and "Grãos de café" ran G and R: the image wrapped in a grid and a row, its direction flipped). Chosen by a
   // press on the canvas or a Layers row, by the keyboard reaching a Layers row, by F6 onto the canvas, and by Escape on
   // it; unchosen by a press anywhere else and by a focus lost to nowhere (a panel or a picker closing under it).

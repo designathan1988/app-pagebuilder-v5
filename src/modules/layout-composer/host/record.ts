@@ -1,9 +1,9 @@
 // What the Layout Composer keeps on the document (core/document/authoring.ts, namespace "layout-composer"):
 //  - on the composed container, its record: the Layout Intent Graph the person built, so the container reopens as it
-//    was drawn (spec "Reedição");
+//    was drawn (spec "Re-editing");
 //  - on every element the composer placed or wrote, a marker: the key of the compiled node it stands for (a region id,
 //    a wrapper's group key) and the declarations the compiler wrote on it, by breakpoint, so a later compilation takes
-//    back exactly what it wrote and never touches the person's own styles (spec "Integração com estilos").
+//    back exactly what it wrote and never touches the person's own styles (spec "Integration with styles").
 // No node id is stored: an element is found by its marker inside the container, so duplicating or copying the
 // container copies a record that still holds together.
 import type { DocNode, JsonValue } from '../../../editor/host.ts';

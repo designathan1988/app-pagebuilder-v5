@@ -272,7 +272,7 @@ function StateBadge() {
   );
 }
 
-// While a breakpoint other than the base is edited (spec breakpoint-overrides; jornada03 J22), a band over the frame
+// While a breakpoint other than the base is edited (spec breakpoint-overrides; journey03 J22), a band over the frame
 // says where the edits go: "Tablet · 834 px — edits apply to this screen and narrower ones".
 function BreakpointBadge() {
   const t = useT();

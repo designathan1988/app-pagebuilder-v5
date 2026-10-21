@@ -41,7 +41,7 @@ input[type='radio'] {
 
 /* a control that cannot act (its feature not built, nothing it applies to): clearly disabled, never looking like one
    that works (the user's real-use audit, item 1.4) — the subtle ink on its own container, no hover plate, the
-   not-allowed pointer and its reason in the tooltip; never faded, so its words stay legible (jornada02 G-13) */
+   not-allowed pointer and its reason in the tooltip; never faded, so its words stay legible (journey02 G-13) */
 .door.is-unavailable:not(.door--primary) {
   color: var(--color-text-subtle);
 }
@@ -270,7 +270,7 @@ input[type='radio'] {
   background: var(--color-text-muted);
 }
 
-/* the place the content takes now: a bar of the value's own ink, as the canonical matrix draws it (jornada02 R-29) */
+/* the place the content takes now: a bar of the value's own ink, as the canonical matrix draws it (journey02 R-29) */
 .matrix__cell.door.is-current::before {
   width: calc(var(--space-6) + var(--space-1));
   height: var(--space-2);

@@ -21,7 +21,7 @@ test('at 1024 px the window does not scroll sideways, and the Phone tab is reach
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1024);
 });
 
-// jornada03 J25 and H17: at 1280 × 720 the canvas has at least half of the window, measured as the study measured it,
+// journey03 J25 and H17: at 1280 × 720 the canvas has at least half of the window, measured as the study measured it,
 // an area (the audit's AUD-06: this test measured 55 % of the width while the stage had 41 % of the window); and the
 // canvas toolbar fits whole (its buttons drawn as their icons, their names in their tooltips) instead of scrolling.
 // Below the narrow window's width the sidebar keeps no column: a first visit opens with it closed.

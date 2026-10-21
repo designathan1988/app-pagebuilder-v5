@@ -1,4 +1,4 @@
-// Smart input (the plan's stage 3, "entrada inteligente"): arithmetic on lengths worked out or written as calc(), and
+// Smart input (the plan's stage 3, "smart input"): arithmetic on lengths worked out or written as calc(), and
 // keywords typed and shown in the person's language.
 import { describe, expect, it } from 'vitest';
 import { lengthPercentage, workOutLengths, type ValueFacts } from './codecs.ts';

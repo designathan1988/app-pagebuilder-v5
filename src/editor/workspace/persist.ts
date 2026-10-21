@@ -1,5 +1,5 @@
-// The workspace between sessions (spec dock-toggles; the user's real-use audit, A3.18: "o estado dos painéis
-// sobrevive a recarregar"): which sidebar view shows, whether the sidebar and each section are open, the dock's tabs
+// The workspace between sessions (spec dock-toggles; the user's real-use audit, A3.18: "the panels' state
+// survives a reload"): which sidebar view shows, whether the sidebar and each section are open, the dock's tabs
 // and state, and the inspector's tab, kept in the browser's storage under its own key — the preferences' writer owns
 // the preferences, this one the panels and the layout. A stored value that no longer names a panel or a dock state of
 // the manifest is left out, so an older or edited state never opens a panel the editor does not draw.

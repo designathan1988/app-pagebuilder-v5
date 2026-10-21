@@ -91,7 +91,7 @@ test('Ctrl+wheel keeps the page point under the pointer (A3.21)', runs(OPEN, ZOO
 });
 
 // Each setting of Guides & Grids is a field row: its label in the card's column (the token; 116 px since LR2, 72 before),
-// its field beside it on the same line (spec layout-grid-overlay; jornada02 pairing 5.2).
+// its field beside it on the same line (spec layout-grid-overlay; journey02 pairing 5.2).
 test('the Guides & Grids settings are field rows, the label beside its field', runs('workspace.openDialog#menu-view-guides-grids'), async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openEditor(page);

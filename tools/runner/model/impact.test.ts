@@ -7,8 +7,8 @@ import type { Detector } from '../mutants.ts';
 
 const chosen = (file: string): readonly Detector[] => [...selectDetectors([file], graphReaches).models.keys()];
 
-describe('o seletor de impacto', () => {
-  it('escolhe os grupos que leem o que mudou: o manifesto, o mapa gerado e as fixtures', () => {
+describe('the impact selector', () => {
+  it('chooses the groups that read what changed: the manifest, the generated map and the fixtures', () => {
     const missing: string[] = [];
     const cases: readonly (readonly [string, readonly Detector[]])[] = [
       // drag.threshold makes the machine's table; the coalescing window, the history; the field step, the fields
@@ -21,8 +21,8 @@ describe('o seletor de impacto', () => {
     ];
     for (const [file, groups] of cases) {
       const got = chosen(file);
-      for (const group of groups) if (!got.includes(group)) missing.push(`${file} não escolhe ${group} (escolhe ${got.join(', ') || 'nada'})`);
+      for (const group of groups) if (!got.includes(group)) missing.push(`${file} does not choose ${group} (chooses ${got.join(', ') || 'nothing'})`);
     }
-    expect(missing, 'grupos que o seletor deixa de escolher').toEqual([]);
+    expect(missing, 'groups the selector fails to choose').toEqual([]);
   });
 });

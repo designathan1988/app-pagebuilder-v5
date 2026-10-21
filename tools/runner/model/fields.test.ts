@@ -1,5 +1,5 @@
 // The contracts of the value fields (the investigation's C5; grown from
-// auditoria/investigacao/poc/c5-campos/ida-e-volta.poc.ts), over the real reader and writers (readValue of
+// auditoria/investigacao/poc/c5-campos/round-trip.poc.ts), over the real reader and writers (readValue of
 // src/core/style/set.ts, the codecs of src/core/style/codecs.ts) and the CSS port of the lexer
 // (tools/runner/css-lexer-port.ts), for every contract of tools/runner/contracts.ts:
 //  - every property a door of style.set or of a number field writes has a codec registered under the id it names;
@@ -36,13 +36,13 @@ const contextOf = (store: ReturnType<typeof storeOn>) => ({ state: store.getStat
 const CONTRACTS = fieldContracts();
 const NUMBER_WITH_UNIT = /^\s*([+-]?(?:\d+\.?\d*|\.\d+))\s*([a-z%]+)\s*$/i;
 
-describe('os contratos dos campos de valor', () => {
-  it('toda propriedade que uma porta de style.set ou de campo escreve tem um codec registrado', () => {
+describe('the contracts of the value fields', () => {
+  it('every property a style.set or field door writes has a registered codec', () => {
     const missing = CONTRACTS.filter((c) => c.reachedByStyleSet && !c.structured && !c.registered).map((c) => `${c.property} (codec ${c.codec})`);
-    expect(missing, 'codec declarado no manifesto e não registrado em src/core/style/codecs.ts').toEqual([]);
+    expect(missing, 'codec declared in the manifest and not registered in src/core/style/codecs.ts').toEqual([]);
   });
 
-  it('ida e volta, gramática, número preservado e aceitação, com a porta do lexer', () => {
+  it('round trip, grammar, preserved number and acceptance, with the lexer door', () => {
     const context = contextOf(storeOn());
     const breaks: string[] = [];
     for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured && c.units.length > 0)) {
@@ -57,19 +57,19 @@ describe('os contratos dos campos de valor', () => {
           const read = readValue(context, contract.property, typed);
           const plain = NUMBER_WITH_UNIT.exec(typed);
           if (read === null) {
-            if (plain !== null && contract.units.includes((plain[2] ?? '').toLowerCase()) && matchImplemented(contract.property, typed.trim()) === null) breaks.push(`recusou ${contract.property}: "${typed}", que a sintaxe aceita numa unidade oferecida`);
+            if (plain !== null && contract.units.includes((plain[2] ?? '').toLowerCase()) && matchImplemented(contract.property, typed.trim()) === null) breaks.push(`refused ${contract.property}: "${typed}", which the syntax accepts in an offered unit`);
             return;
           }
           const again = readValue(context, contract.property, read.css);
-          if (again === null || again.css !== read.css) breaks.push(`ida e volta ${contract.property}: "${typed}" gravou "${read.css}", que lido de novo grava ${again === null ? 'nada' : `"${again.css}"`}`);
-          if (!lexerCss.supports(contract.property, read.css)) breaks.push(`gramática ${contract.property}: "${typed}" gravou "${read.css}"`);
+          if (again === null || again.css !== read.css) breaks.push(`round trip ${contract.property}: "${typed}" wrote "${read.css}", which read again writes ${again === null ? 'nothing' : `"${again.css}"`}`);
+          if (!lexerCss.supports(contract.property, read.css)) breaks.push(`grammar ${contract.property}: "${typed}" wrote "${read.css}"`);
           if (read.value.kind === 'length' && plain !== null) {
             const expected = writeNumber(Number(plain[1]));
             const written = NUMBER_WITH_UNIT.exec(read.css);
-            if (written === null || written[1] !== expected || (expected !== '0' && (written[2] ?? '').toLowerCase() !== (plain[2] ?? '').toLowerCase())) breaks.push(`número ${contract.property}: "${typed}" gravou "${read.css}", esperado ${expected}${plain[2] ?? ''}`);
+            if (written === null || written[1] !== expected || (expected !== '0' && (written[2] ?? '').toLowerCase() !== (plain[2] ?? '').toLowerCase())) breaks.push(`number ${contract.property}: "${typed}" wrote "${read.css}", expected ${expected}${plain[2] ?? ''}`);
           }
           // the codecs whose grammar the browser checks keep the text as typed (DCS-015)
-          if (read.value.kind === 'length' && /(^|[\s(,])-0(?![.\d])/.test(read.css)) breaks.push(`menos zero ${contract.property}: "${typed}" gravou "${read.css}"`);
+          if (read.value.kind === 'length' && /(^|[\s(,])-0(?![.\d])/.test(read.css)) breaks.push(`minus zero ${contract.property}: "${typed}" wrote "${read.css}"`);
         }),
         { seed: 20261008, numRuns: 120 },
       );
@@ -80,7 +80,7 @@ describe('os contratos dos campos de valor', () => {
   // The acceptance of the properties with no unit too (the grid lines, the transition lists: DEF-0509's longhands,
   // whose codecs the loop above never reaches; DEF-0560): every keyword a property offers that its syntax takes is
   // read, so a codec registered that refuses every text is accused, not only a codec that is missing.
-  it('toda palavra-chave que uma propriedade oferece e a sintaxe aceita é lida, com ou sem unidades', () => {
+  it('every keyword a property offers and the syntax accepts is read, with or without units', () => {
     const context = contextOf(storeOn());
     const refused: string[] = [];
     let read = 0;
@@ -91,22 +91,22 @@ describe('os contratos dos campos de valor', () => {
         if (readValue(context, contract.property, keyword) === null) refused.push(`${contract.property} (codec ${contract.codec}): "${keyword}"`);
       }
     }
-    expect(read, 'palavras-chave conferidas').toBeGreaterThan(50);
-    expect(refused, 'palavras-chave oferecidas e recusadas').toEqual([]);
+    expect(read, 'keywords checked').toBeGreaterThan(50);
+    expect(refused, 'keywords offered and refused').toEqual([]);
   });
 
-  it('a vírgula decimal do pt-BR é lida como ponto', () => {
+  it('the pt-BR decimal comma is read as a point', () => {
     const context = contextOf(storeOn());
     for (const contract of CONTRACTS.filter((c) => c.kind === 'property' && c.registered && !c.structured && c.units.includes('px'))) {
       const comma = readValue(context, contract.property, '1,5px');
       const point = readValue(context, contract.property, '1.5px');
       // the point is read (a length the property offers): two refusals are no equal reading (DEF-0558)
-      expect(point?.css, `${contract.property}: "1.5px" é lido`).toBeDefined();
+      expect(point?.css, `${contract.property}: "1.5px" is read`).toBeDefined();
       expect(comma?.css, `${contract.property}: "1,5px"`).toBe(point?.css);
     }
   });
 
-  it('o passo de campo move pelo passo e pelos fatores do manifesto', () => {
+  it('the field step moves by the step and the factors of the manifest', () => {
     const cases = [
       { size: 'step', modifier: undefined, delta: STEP_FACTS.step },
       { size: 'step', modifier: 'Shift', delta: STEP_FACTS.step * STEP_FACTS.shiftFactor },
@@ -130,7 +130,7 @@ describe('os contratos dos campos de valor', () => {
 
   // Every door of a field hands the text the field holds, empty included, and the command decides what an empty field
   // starts from (startOf: rule G3, DEF-0552): the step and the unit from the same value of the element.
-  it('um campo vazio parte do valor do elemento no passo e na troca de unidade', () => {
+  it("an empty field starts from the element's value on step and on unit change", () => {
     const found: string[] = [];
     for (const [command, args, expected] of [['field.step', { direction: 'up', size: 'step' }, `${writeNumber(96 + STEP_FACTS.step)}px`], ['field.setUnit', { unit: 'pt' }, '72pt']] as const) {
       const store = storeOn();
@@ -141,12 +141,12 @@ describe('os contratos dos campos de valor', () => {
       const result = dispatch(command as CommandId, { property: 'width', value: '', ...args });
       const node = [...walk(store.getState().document.pages[0]?.tree ?? ({ children: [] } as never))].find((n) => n.id === target?.id);
       const written = node === undefined ? null : storedValue(node, 'width', MODEL_RULES);
-      if (written !== expected) found.push(`${command} com o campo vazio: ${result.status}, width ${String(written)} (esperado ${expected})`);
+      if (written !== expected) found.push(`${command} with the field empty: ${result.status}, width ${String(written)} (expected ${expected})`);
     }
-    expect(found, 'comandos de campo que não partem do valor do elemento').toEqual([]);
+    expect(found, "field commands that do not start from the element's value").toEqual([]);
   });
 
-  it('toda recusa dos comandos de campo e de estilo tem palavras nos dois catálogos', () => {
+  it('every refusal of the field and style commands has words in both catalogues', () => {
     const flat = (o: unknown, prefix = ''): string[] => Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => (typeof v === 'string' ? [`${prefix}${k}`] : flat(v, `${prefix}${k}.`)));
     const pt = new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/pt-BR.json', 'utf8'))));
     const en = new Set(flat(JSON.parse(fs.readFileSync('src/i18n/locales/en.json', 'utf8'))));
@@ -158,15 +158,15 @@ describe('os contratos dos campos de valor', () => {
 // DEF-0605: an Enter in a field the element holds no value of its own in, nothing typed, was refused as '"" is not a
 // value this field takes'. It asks for nothing: no refusal, no change. Where the element holds a value, the empty text
 // keeps the refusal (DCS-031).
-it('Enter num campo vazio sem valor próprio não recusa nem muda nada; com valor próprio, a recusa continua', () => {
+it('Enter in an empty field with no value of its own neither refuses nor changes anything; with a value of its own, the refusal stays', () => {
   const store = storeOn();
   const dispatch = store.dispatch as (id: CommandId, args: unknown) => { status: string };
   expect(dispatch('selection.select' as CommandId, { target: 'n-intro' }).status).toBe('done');
   const before = store.getState().document;
   for (const property of ['letter-spacing', 'width', 'font-size', 'margin']) {
-    expect(dispatch('style.set' as CommandId, { property, value: '' }).status, `${property} vazio`).not.toBe('refused');
+    expect(dispatch('style.set' as CommandId, { property, value: '' }).status, `${property} empty`).not.toBe('refused');
   }
-  expect(store.getState().document, 'o documento como estava').toBe(before);
+  expect(store.getState().document, 'the document as it was').toBe(before);
   expect(dispatch('style.set' as CommandId, { property: 'letter-spacing', value: '3px' }).status).toBe('done');
-  expect(dispatch('style.set' as CommandId, { property: 'letter-spacing', value: '' }).status, 'vazio com valor próprio').toBe('refused');
+  expect(dispatch('style.set' as CommandId, { property: 'letter-spacing', value: '' }).status, 'empty with a value of its own').toBe('refused');
 });

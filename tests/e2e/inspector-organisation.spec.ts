@@ -240,7 +240,7 @@ test('every field of a pair row takes what is typed into it', runs(OPEN, ROW, SE
   }
 });
 
-// J10 of the jornada03 study: a breakpoint that inherits two columns showed "0 tracks"; the lists were unnamed and the
+// J10 of the journey03 study: a breakpoint that inherits two columns showed "0 tracks"; the lists were unnamed and the
 // + moved after the first add. The editor shows the inherited tracks, names its axis, keeps + in its header, and an
 // edited inherited track writes the whole list at the edited breakpoint only.
 test('a breakpoint that inherits two columns shows them, and editing one writes the list there only', runs(OPEN, ROW, 'style.set#inspector-display', 'style.setGridTracks#inspector-grid-template-columns-add-track', 'style.setGridTracks#inspector-grid-template-columns-track', 'view.setBreakpoint#toolbar-breakpoint-tabs-tablet'), async ({ page }) => {

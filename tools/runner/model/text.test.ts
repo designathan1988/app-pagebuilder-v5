@@ -17,13 +17,13 @@ const STEPS = [
     command('text.set', (s) => {
       const target = pick(textNodes(s), i);
       return target === undefined ? { target: s.document.pages[0]?.tree.id, content: TEXTS[t] } : { target, content: TEXTS[t] };
-    }, `Texto(${i},${JSON.stringify(TEXTS[t]).slice(0, 12)})`),
+    }, `Text(${i},${JSON.stringify(TEXTS[t]).slice(0, 12)})`),
   ),
-  fc.tuple(fc.nat(30), fc.nat(TEXTS.length - 1)).map(([i, t]) => command('text.set', (s) => ({ target: pick(textNodes(s), i) ?? s.document.pages[0]?.tree.id, content: TEXTS[t] }), `Texto(${i},${JSON.stringify(TEXTS[t]).slice(0, 12)})`)),
-  fc.nat(30).map((i) => command('selection.select', (s) => ({ target: pick(textNodes(s), i) ?? s.document.pages[0]?.tree.id }), `SelecionarTexto(${i})`)),
+  fc.tuple(fc.nat(30), fc.nat(TEXTS.length - 1)).map(([i, t]) => command('text.set', (s) => ({ target: pick(textNodes(s), i) ?? s.document.pages[0]?.tree.id, content: TEXTS[t] }), `Text(${i},${JSON.stringify(TEXTS[t]).slice(0, 12)})`)),
+  fc.nat(30).map((i) => command('selection.select', (s) => ({ target: pick(textNodes(s), i) ?? s.document.pages[0]?.tree.id }), `SelectText(${i})`)),
 ];
 
-it('os comandos de texto seguem o modelo do manifesto com a digitação pendente', () => {
+it('the text commands follow the manifest model with pending typing', () => {
   const summary = runModel('text', STEPS);
   expect(summary.failure).toBeNull();
 });

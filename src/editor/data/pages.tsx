@@ -1,4 +1,4 @@
-// Pages from a page and shared regions (spec content-data; jornada03 C2, C3): new pages from the open page and a list
+// Pages from a page and shared regions (spec content-data; journey03 C2, C3): new pages from the open page and a list
 // of names (one per line), or one page per item of the collection the panel shows; and the regions every page shows —
 // share the selected header, footer or menu with the chosen pages (and the pages made later), detach a page's copy,
 // stop sharing.

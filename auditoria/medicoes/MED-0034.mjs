@@ -1,22 +1,22 @@
 /* global HTMLInputElement, HTMLTextAreaElement, WheelEvent, console, document, getComputedStyle, requestAnimationFrame, window */
-// MED-0034 — os valores calculados pelo navegador que o id cita.
-//  - L08 (ENT-L08-0009): o comprimento da trilha da marquise (src/editor/motion/runtime/behaviours.ts:100).
-//  - L09a (ENT-L09a-0016): a largura e a altura do palco vistas pelo observador (src/editor/shell/canvas.tsx:265).
-//  - L09a (ENT-L09a-0083, ENT-L09a-0084): o elemento ativo sobre o campo numérico quando a roda dispara
+// MED-0034 — the browser-computed values that the id cites.
+//  - L08 (ENT-L08-0009): the length of the marquee track (src/editor/motion/runtime/behaviours.ts:100).
+//  - L09a (ENT-L09a-0016): the stage's width and height as seen by the observer (src/editor/shell/canvas.tsx:265).
+//  - L09a (ENT-L09a-0083, ENT-L09a-0084): the active element over the number field when the wheel fires
 //    (src/editor/shell/field.tsx:127).
-//  - L09b (ENT-L09b-0023 a ENT-L09b-0028): o elemento ativo e as larguras das linhas do inspector
+//  - L09b (ENT-L09b-0023 to ENT-L09b-0028): the active element and the widths of the inspector rows
 //    (src/editor/shell/row-fit.ts:107, :47, :60).
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/responsive-title.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
 async function open(c, commands) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands } }));
@@ -26,8 +26,8 @@ async function open(c, commands) {
   return { browser, page };
 }
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  // L08 — a marquise do título: o comprimento da trilha
+for (const [name, c] of Object.entries(CONFIGS)) {
+  // L08 — the title's marquee: the track length
   const a = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }, { command: 'motion.setBehaviour', args: { behaviour: 'marquee', amount: 60 } }]);
   for (const b of await a.page.locator('.menu-button').all()) { if (/Exibir|View/.test((await b.textContent()) ?? '')) { await b.click(); break; } }
   await a.page.waitForTimeout(200);
@@ -42,7 +42,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   });
   await a.browser.close();
 
-  // L09a — a caixa de conteúdo do palco, a roda sobre o campo numérico; L09b — as linhas do inspector
+  // L09a — the stage's content box, the wheel over the number field; L09b — the inspector rows
   const b = await open(c, [{ command: 'selection.select', args: { target: { $node: '/Page/Title' } } }]);
   await b.page.click('[data-door="workspace.setPanelOpen#toolbar-activity-bar-styles"]');
   await b.page.waitForTimeout(500);
@@ -60,7 +60,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   });
   const wheel = await b.page.evaluate(async () => {
     const input = document.querySelector('.inspector input.box__input');
-    if (input === null) return { error: 'sem campo numérico' };
+    if (input === null) return { error: 'no number field' };
     input.focus();
     const atFocus = document.activeElement === input;
     input.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, bubbles: true, cancelable: true }));
@@ -69,5 +69,5 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   });
   await b.browser.close();
 
-  console.log(JSON.stringify({ config: nome, marquee, ...measured, wheel }));
+  console.log(JSON.stringify({ config: name, marquee, ...measured, wheel }));
 }

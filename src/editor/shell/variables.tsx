@@ -68,7 +68,7 @@ function KindItem({ entry, args, label, onDone, first }: { readonly entry: DoorE
         door.run();
         onDone();
         // the new variable is brought into view and its name takes the focus, selected, so the name typed next is its
-        // own (jornada03 plan, stage 5: the focus fell to the page and the row could be out of sight)
+        // own (journey03 plan, stage 5: the focus fell to the page and the row could be out of sight)
         requestAnimationFrame(() => {
           const name = RENAME === undefined ? null : document.querySelector<HTMLInputElement>(`[data-door="${RENAME.ref}"][data-args="${CSS.escape(JSON.stringify({ token: args.name }))}"] input`);
           name?.scrollIntoView({ block: 'nearest' });

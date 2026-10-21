@@ -16,7 +16,8 @@
     "test": "node tools/test/all.ts",
     "test:changed": "node tools/impact/run.ts",
     "test:independence": "node tools/test/independence.ts",
-    "typecheck": "tsc -p tsconfig.app.json --noEmit --incremental --tsBuildInfoFile .cache/tsc/app.tsbuildinfo && tsc -p tsconfig.node.json --noEmit --incremental --tsBuildInfoFile .cache/tsc/node.tsbuildinfo && tsc -p tsconfig.core.json --noEmit --incremental --tsBuildInfoFile .cache/tsc/core.tsbuildinfo",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.core.json --noEmit",
+    "verify": "node tools/verify/run.ts",
     "lint": "eslint . --max-warnings 0 --cache --cache-location .cache/eslint/",
     "deps:check": "depcruise src tools tests --config .dependency-cruiser.cjs",
     "unit": "vitest run --coverage",
@@ -73,6 +74,7 @@
     "style-dictionary": "^5.5.5",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1",
+    "typescript-native": "npm:typescript@7.0.2",
     "vite": "^8.3.0",
     "vitest": "^5.0.1"
   }

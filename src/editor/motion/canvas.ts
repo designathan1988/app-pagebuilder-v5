@@ -1,4 +1,4 @@
-// Motion on the editor's canvas (plan stage 10, "Rodar no editor"; spec motion-run-in-editor and motion-timeline,
+// Motion on the editor's canvas (plan stage 10, "Run in the editor"; spec motion-run-in-editor and motion-timeline,
 // Preview): the same runtime as the page, started by the canvas owner (src/editor/canvas/frame.tsx) inside the canvas's
 // iframe, with every element addressed by the canvas's own mark (data-node) instead of the export's classes.
 //  - Run mode: the canvas runs the interactions as the page would (the trigger's events reach the page because the

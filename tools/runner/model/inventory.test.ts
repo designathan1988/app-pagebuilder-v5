@@ -10,21 +10,21 @@ import { scanSource } from '../../inventory/ui-scan.ts';
 import { INTERACTIVE_ALLOWED } from '../../lint/interactive-allowed.ts';
 import { mutatedSource } from '../mutants.ts';
 
-describe('o inventário da aplicação', () => {
-  it('manifest/generated/inventory.json é o que o gerador escreve agora', () => {
+describe('the application inventory', () => {
+  it('manifest/generated/inventory.json is what the generator writes now', () => {
     const disk = fs.readFileSync('manifest/generated/inventory.json', 'utf8').replace(/\r\n/g, '\n');
-    expect(disk === inventoryText(), 'o inventário em disco está velho: rode node tools/inventory/write.ts').toBe(true);
+    expect(disk === inventoryText(), 'the inventory on disk is stale: run node tools/inventory/write.ts').toBe(true);
   });
 
-  it('todo elemento em que a pessoa age tem dono, e toda exceção ainda nomeia um elemento sem dono', () => {
+  it('every element the person acts on has an owner, and every exception still names an element without an owner', () => {
     const elements = scanSource('src', (file) => mutatedSource(file, fs.readFileSync(file, 'utf8')));
     const allowed = new Set(INTERACTIVE_ALLOWED.map((entry) => entry.key));
     const nobodys = elements.filter((element) => element.owner === 'none');
     const unowned = nobodys.filter((element) => !allowed.has(element.key)).map((element) => `${element.file}:${element.line} <${element.tag}>`);
-    expect(unowned, 'elementos sem porta, sem data-local e sem exceção com motivo').toEqual([]);
+    expect(unowned, 'elements with no door, no data-local and no exception with a reason').toEqual([]);
     const held = new Set(nobodys.map((element) => element.key));
     const stale = INTERACTIVE_ALLOWED.filter((entry) => !held.has(entry.key)).map((entry) => entry.key);
-    expect(stale, 'exceções que não nomeiam mais um elemento sem dono').toEqual([]);
-    expect(INTERACTIVE_ALLOWED.filter((entry) => entry.reason.trim() === '').map((entry) => entry.key), 'exceções sem motivo').toEqual([]);
+    expect(stale, 'exceptions that no longer name an element without an owner').toEqual([]);
+    expect(INTERACTIVE_ALLOWED.filter((entry) => entry.reason.trim() === '').map((entry) => entry.key), 'exceptions without a reason').toEqual([]);
   });
 });

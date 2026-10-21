@@ -1,30 +1,31 @@
 /* global process, console */
-// Mantém o inventário depois de uma mudança no código: para cada arquivo dado, atualiza Linhas, SHA1 e Partes lidas no
-// bloco que ele já tem num lote (auditoria/inventario/L*.md), ou acrescenta um bloco novo ao lote dado, com o
-// propósito lido do arquivo de propósitos (JSON, caminho → propósito) e a âncora na primeira linha que declara algo.
-// As partes respeitam o limite de leitura da trava (soma dos caracteres mais 8 por linha). No fim junta
+// Keeps the inventory up to date after a code change: for each given file, updates the line count, SHA1 and parts read
+// in the block it already has in a batch (auditoria/inventario/L*.md), or appends a new block to the given batch, with
+// the purpose read from the purposes file (JSON, path → purpose) and the anchor on the first line that declares something.
+// The parts respect the lock's read limit (sum of the characters plus 8 per line). At the end it merges
 // auditoria/inventario-arquivos.md.
-// Uso: node tools/audit/inventariar.mjs [--lote L23] [--propositos arquivo.json] <arquivo>...
+// The block field labels (Lote, Linhas, SHA1, Partes lidas, Propósito, Âncora) are those of the Portuguese records.
+// Usage: node tools/audit/inventory.mjs [--batch L23] [--purposes file.json] <file>...
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, cfg, fileInfo, lineCosts, mergeInventario, readText } from './lib.mjs';
+import { ROOT, cfg, fileInfo, lineCosts, mergeInventory, readText } from './lib.mjs';
 
 const args = process.argv.slice(2);
 const option = (name) => {
   const at = args.indexOf(name);
   return at < 0 ? null : args[at + 1];
 };
-const lote = option('--lote') ?? 'L23';
-const purposesFile = option('--propositos');
+const batch = option('--batch') ?? 'L23';
+const purposesFile = option('--purposes');
 const purposes = purposesFile === null ? {} : JSON.parse(fs.readFileSync(purposesFile, 'utf8'));
-const files = args.filter((a, i) => !a.startsWith('--') && !['--lote', '--propositos'].includes(args[i - 1]));
+const files = args.filter((a, i) => !a.startsWith('--') && !['--batch', '--purposes'].includes(args[i - 1]));
 
 function parts(rel, info) {
   const prefix = lineCosts(rel, info);
   const out = [];
   let a = 1;
   for (let b = 1; b <= info.l; b++) {
-    if (prefix[b] - prefix[a - 1] > cfg.limiteLeituraCaracteres) {
+    if (prefix[b] - prefix[a - 1] > cfg.readLimitChars) {
       out.push(`${a}-${b - 1}`);
       a = b;
     }
@@ -43,7 +44,7 @@ const lots = fs.readdirSync(dir).filter((x) => /^L\d+[a-z]?\.md$/.test(x));
 const report = [];
 for (const rel of files.map((f) => f.replace(/\\/g, '/'))) {
   const info = fileInfo(rel);
-  if (info === null) { report.push(`${rel}: não existe`); continue; }
+  if (info === null) { report.push(`${rel}: does not exist`); continue; }
   const head = `### \`${rel}\``;
   const holder = lots.find((l) => (readText(`auditoria/inventario/${l}`) || '').split('\n').some((line) => line.trim() === head));
   if (holder !== undefined) {
@@ -59,18 +60,19 @@ for (const rel of files.map((f) => f.replace(/\\/g, '/'))) {
       else if (lines[i].startsWith('- **Partes lidas:**')) lines[i] = `- **Partes lidas:** ${parts(rel, info)}`;
     }
     fs.writeFileSync(path.join(ROOT, file), lines.join('\n'));
-    report.push(`${rel}: atualizado em ${holder}`);
+    report.push(`${rel}: updated in ${holder}`);
     continue;
   }
   const purpose = purposes[rel];
-  if (!purpose) { report.push(`${rel}: sem propósito no arquivo de propósitos; nada escrito`); continue; }
-  const target = path.join(dir, `${lote}.md`);
-  const held = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : `# Inventário do lote ${lote} — arquivos dos mecanismos de verificação (auditoria/mecanismos.md)\n\n`;
+  if (!purpose) { report.push(`${rel}: no purpose in the purposes file; nothing written`); continue; }
+  const target = path.join(dir, `${batch}.md`);
+  // The heading of a new batch file stays in Portuguese, like the other inventory records.
+  const held = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : `# Inventário do lote ${batch} — arquivos dos mecanismos de verificação (auditoria/mecanismos.md)\n\n`;
   const at = anchor(rel);
-  const block = [head, `- **Lote:** ${lote}`, `- **Linhas:** ${info.l}`, `- **SHA1:** ${info.h}`, `- **Partes lidas:** ${parts(rel, info)}`, `- **Propósito:** ${purpose}`, ...(at === null ? [] : [`- **Âncora:** ${at}`])].join('\n');
+  const block = [head, `- **Lote:** ${batch}`, `- **Linhas:** ${info.l}`, `- **SHA1:** ${info.h}`, `- **Partes lidas:** ${parts(rel, info)}`, `- **Propósito:** ${purpose}`, ...(at === null ? [] : [`- **Âncora:** ${at}`])].join('\n');
   fs.writeFileSync(target, `${held.trimEnd()}\n\n${block}\n`);
-  report.push(`${rel}: bloco novo em ${lote}`);
+  report.push(`${rel}: new block in ${batch}`);
 }
-const merged = mergeInventario();
+const merged = mergeInventory();
 if (merged !== null) fs.writeFileSync(path.join(ROOT, 'auditoria', 'inventario-arquivos.md'), merged);
 console.log(report.slice(0, 30).join('\n'));

@@ -1,32 +1,32 @@
-// Corrida de MED-0013: a mesma medição, que mediu as partes citadas por fluxos de áreas diferentes; este registro guarda a parte do elemento ativo ao fechar o menu File, ENT-L05b-0031.
+// Run of MED-0013: the same measurement, which measured the parts cited by flows from different areas; this record keeps the part about the active element when the File menu closes, ENT-L05b-0031.
 /* global console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0013 — o id é citado por duas áreas com valores distintos, medidos os dois:
-//  (a) ENT-L05b-0031 (menu.tsx:240): o elemento ativo do documento (`document.activeElement`) no momento em que a
-//      camada fecha, de que a decisão de devolver o foco ao gatilho depende;
-//  (b) ENT-L07-0002, 0003, 0011, 0021, 0067, 0068 (canvas/chip-fit): os tokens calculados `--space-1`, `--space-2` e
-//      `--space-4`, a lista de colunas calculada dos grupos do painel rápido (chip-fit.ts:57) e o tamanho desenhado.
+// MED-0013 — the id is cited by two areas with distinct values, both measured:
+//  (a) ENT-L05b-0031 (menu.tsx:240): the document's active element (`document.activeElement`) at the moment the
+//      layer closes, on which the decision to return focus to the trigger depends;
+//  (b) ENT-L07-0002, 0003, 0011, 0021, 0067, 0068 (canvas/chip-fit): the computed tokens `--space-1`, `--space-2` and
+//      `--space-4`, the computed column list of the quick panel groups (chip-fit.ts:57) and the drawn size.
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
-const PROJETO = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
-const COMANDOS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
+const PROJECT = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
+const COMMANDS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
 
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-const DESCREVE = () => {
+const DESCRIBE = () => {
   const el = document.activeElement;
   if (el === null) return null;
   return { tag: el.tagName, cls: typeof el.className === 'string' ? el.className : '', door: el.getAttribute?.('data-door') ?? null, menu: el.getAttribute?.('data-menu') ?? null, role: el.getAttribute?.('role') ?? null, isBody: el === document.body };
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
-  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJETO, commands: COMANDOS } }));
+  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: COMMANDS } }));
   await page.goto('http://localhost:5399/?test-boot');
   await page.evaluate(async () => {
     const port = () => window.__builderTestPort;
@@ -61,10 +61,10 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
   await page.waitForTimeout(120);
   await page.locator('.menu-button[data-menu="file"]').first().click();
   await page.waitForTimeout(150);
-  const activeInMenu = await page.evaluate(DESCREVE);
+  const activeInMenu = await page.evaluate(DESCRIBE);
   await page.keyboard.press('Escape');
   await page.waitForTimeout(150);
-  const activeAfterEscape = await page.evaluate(DESCREVE);
-  console.log(JSON.stringify({ config: nome, valor: { tokens, panel, activeInMenu, activeAfterEscape } }));
+  const activeAfterEscape = await page.evaluate(DESCRIBE);
+  console.log(JSON.stringify({ config: configName, value: { tokens, panel, activeInMenu, activeAfterEscape } }));
   await browser.close();
 }

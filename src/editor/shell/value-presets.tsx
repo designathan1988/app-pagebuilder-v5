@@ -1,4 +1,4 @@
-// Ready-made values with a preview (the plan's stage 3, "valores dinâmicos com prévia"; spec value-presets): a
+// Ready-made values with a preview (the plan's stage 3, "dynamic values with a preview"; spec value-presets): a
 // property or composite of properties.json may offer presets, each a name and the CSS text it writes. They are drawn
 // under the property's first field as thumbnails of themselves — a square wearing the shadow, the radius, the
 // opacity — and a click writes the value (style.set, or a shadow's own command), one undo step, on every selected

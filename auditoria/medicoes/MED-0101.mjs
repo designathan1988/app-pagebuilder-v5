@@ -1,23 +1,23 @@
 /* global console */
-// MED-0101 — a caixa da barra do gradiente na tela, lida em `src/editor/shell/gradient.tsx:116`
-// `    const box = event.currentTarget.getBoundingClientRect();`, de que a posição da parada depende
+// MED-0101 — the gradient bar's box on screen, read in `src/editor/shell/gradient.tsx:116`
+// `    const box = event.currentTarget.getBoundingClientRect();`, on which the stop's position depends
 // (`src/editor/shell/gradient.tsx:117`
 // `    const at = Math.round(Math.min(100, Math.max(0, ((event.clientX - box.left) / box.width) * 100)));`).
 //
-// Estado: o editor aberto com o projeto manifest/features/fixtures/aurora.json, o cartão n-card-a escolhido, a
-// aba Estilo do inspetor aberta com o modo completo, e um gradiente acrescentado ao `background-image` do
-// cartão — a barra `[data-gradient-bar]` desenhada. A barra é trazida à vista (scrollIntoViewIfNeeded) e a sua
-// caixa é lida como `addHere` a leria ao clique.
+// State: the editor open with the manifest/features/fixtures/aurora.json project, the card n-card-a chosen, the
+// inspector's Style tab open in full mode, and a gradient added to the card's `background-image` — the
+// `[data-gradient-bar]` bar drawn. The bar is brought into view (scrollIntoViewIfNeeded) and its
+// box is read as `addHere` would read it on click.
 //
-// Rodar da raiz: cat auditoria/medicoes/MED-0101.mjs | node --input-type=module -
+// Run from the root: cat auditoria/medicoes/MED-0101.mjs | node --input-type=module -
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/aurora.json', 'utf8');
 
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
 const COMMANDS = [
@@ -28,8 +28,8 @@ const COMMANDS = [
   { command: 'style.setBackgroundImage', args: { property: 'background-image', edit: { add: true } } },
 ];
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [configName, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: COMMANDS, drawn: [] } }));
@@ -44,9 +44,9 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     const r = el.getBoundingClientRect();
     return { left: +r.left.toFixed(2), top: +r.top.toFixed(2), width: +r.width.toFixed(2), height: +r.height.toFixed(2), right: +r.right.toFixed(2), bottom: +r.bottom.toFixed(2) };
   });
-  // a posição que o clique no meio da barra daria, pela fórmula do passo 5
+  // the position a click in the middle of the bar would give, by the formula of step 5
   const at = Math.round(Math.min(100, Math.max(0, ((box.left + box.width / 2 - box.left) / box.width) * 100)));
 
-  console.log(JSON.stringify({ config: nome, caixa: box, at_no_meio: at }));
+  console.log(JSON.stringify({ config: configName, box, at_middle: at }));
   await browser.close();
 }

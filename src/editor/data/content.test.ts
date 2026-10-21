@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 // The content commands on the editor's own store (spec data-import, data-binding, data-pages, shared-regions): every
 // command through the real command table, the derivation the store runs after each change, the validator on every
-// commit, and one undo step for each whole change. jornada03 C4 runs here with Carla's original CSV as the door reads
+// commit, and one undo step for each whole change. journey03 C4 runs here with Carla's original CSV as the door reads
 // it.
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -41,7 +41,7 @@ const undoAll = (store: EditorStore) => {
   while (store.getState().history.past.length > 0) run(store, 'history.undo');
 };
 
-describe("jornada03 C4: Carla's cardapio.csv fills her card", () => {
+describe("journey03 C4: Carla's cardapio.csv fills her card", () => {
   it('imports the original file, connects the card and fills twelve cards, photos found by file name, in one undo step each', async () => {
     const store = storeOf('content-menu');
     const before = store.getState().document;

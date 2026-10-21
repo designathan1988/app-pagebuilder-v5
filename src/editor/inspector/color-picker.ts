@@ -64,7 +64,7 @@ export const CHANNEL_LABELS: Readonly<Record<ColorChannel, MessageId>> = {
   'ok-b': 'colorPicker.okB',
 };
 
-// each channel's key inside its field (jornada02 GENERALISATION: H S B A, the quick panel's key-in-field rule): the
+// each channel's key inside its field (journey02 GENERALISATION: H S B A, the quick panel's key-in-field rule): the
 // colour models' own letters, the same in every language
 export const CHANNEL_KEYS: Readonly<Record<ColorChannel, string>> = { h: 'H', s: 'S', v: 'B', r: 'R', g: 'G', b: 'B', hex: '#', alpha: 'A', 'ok-l': 'L', 'ok-c': 'C', 'ok-h': 'H', 'ok-a': 'a', 'ok-b': 'b' };
 

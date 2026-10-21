@@ -142,7 +142,7 @@ export const browserStorage: PreferenceStorage = {
   },
 };
 
-// The language the editor opens in before the person chose one (jornada03 J26): the first of the browser's languages
+// The language the editor opens in before the person chose one (journey03 J26): the first of the browser's languages
 // the editor speaks, exactly or by its main tag (pt-PT, pt → pt-BR), else the default.
 export function browserLocale(languages: readonly string[]): Locale {
   for (const language of languages) {

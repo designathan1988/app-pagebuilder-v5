@@ -1,4 +1,4 @@
-// Shared regions (spec content-data, "shared regions"; jornada03 C3/H13): a header, a footer or a menu that every
+// Shared regions (spec content-data, "shared regions"; journey03 C3/H13): a header, a footer or a menu that every
 // page shows, edited once. A shared region is a component whose definition is marked shared: its instances are the
 // region on each page, and they hold the same content. Styles already reach every instance through the component
 // (core/design/components.ts componentHolders); what this module adds is the rest — a text, an attribute, an element

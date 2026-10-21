@@ -1,5 +1,5 @@
 // The transition table of the gesture machine (the investigation's C3, option A; grown from
-// auditoria/investigacao/poc/c3-mapa/tabela.poc.ts): `step` of src/editor/input/pointer/machine.ts run on every
+// auditoria/investigacao/poc/c3-mapa/table.poc.ts): `step` of src/editor/input/pointer/machine.ts run on every
 // combination of phase and event, the drag threshold read from the manifest, so the map comes out of the code and
 // never out of words written by hand. A combination the machine leaves as it is, with no effect, is one it ignores:
 // each such combination is declared here with why, so a transition that starts to be ignored, or one that stops being

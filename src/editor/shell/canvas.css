@@ -14,7 +14,7 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  /* its width decides how much the canvas toolbar and the frame bar show (the 1280 x 720 layout, jornada03 J25) */
+  /* its width decides how much the canvas toolbar and the frame bar show (the 1280 x 720 layout, journey03 J25) */
   container: centre / inline-size;
 }
 

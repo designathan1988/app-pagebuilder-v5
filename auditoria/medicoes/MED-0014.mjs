@@ -1,26 +1,26 @@
 /* global console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0014 — o id é citado por duas áreas com valores distintos, medidos os dois:
-//  (a) ENT-L05b-0035 (menu de contexto, menu.tsx:320-322): a folga `--space-4`, a largura medida do menu, a altura
-//      natural, o ponto do último aperto e o tamanho da janela, de que a posição depende;
-//  (b) ENT-L07-0003, 0067, 0068, 0071, 0072, 0073, 0074 (canvas/reveal-selection/chip-fit): a caixa do palco, a caixa
-//      da vista `.frame__view` e o token `--space-8` (reveal-selection.tsx:44-49), e as larguras medidas dos campos e
-//      das suas caixas de texto (chip-fit.ts:25-33).
+// MED-0014 — the id is cited by two areas with different values; both are measured:
+//  (a) ENT-L05b-0035 (context menu, menu.tsx:320-322): the `--space-4` gap, the measured width of the menu, the natural
+//      height, the point of the last press and the window size, on which the position depends;
+//  (b) ENT-L07-0003, 0067, 0068, 0071, 0072, 0073, 0074 (canvas/reveal-selection/chip-fit): the stage box, the box
+//      of the `.frame__view` view and the `--space-8` token (reveal-selection.tsx:44-49), and the measured widths of the fields and
+//      of their text boxes (chip-fit.ts:25-33).
 import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
-const PROJETO = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
-const COMANDOS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
+const PROJECT = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
+const COMMANDS = [{ command: 'selection.select', args: { target: { $node: '/Page/Grid' } } }];
 
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
-  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJETO, commands: COMANDOS } }));
+  await page.route('**/__builderTestBoot.json', (route) => route.fulfill({ json: { project: PROJECT, commands: COMMANDS } }));
   await page.goto('http://localhost:5399/?test-boot');
   await page.evaluate(async () => {
     const port = () => window.__builderTestPort;
@@ -60,6 +60,6 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     const cs = getComputedStyle(m);
     return { width: m.getBoundingClientRect().width, space4: cs.getPropertyValue('--space-4').trim(), naturalHeight: m.scrollHeight + (parseFloat(cs.borderTopWidth) || 0) + (parseFloat(cs.borderBottomWidth) || 0), left: m.getBoundingClientRect().left, top: m.getBoundingClientRect().top, winWidth: window.innerWidth, winHeight: window.innerHeight };
   });
-  console.log(JSON.stringify({ config: nome, valor: { reveal, fields, pressPoint: { x: px, y: py }, contextMenu } }));
+  console.log(JSON.stringify({ config: name, value: { reveal, fields, pressPoint: { x: px, y: py }, contextMenu } }));
   await browser.close();
 }

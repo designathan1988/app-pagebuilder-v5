@@ -604,7 +604,7 @@ export const editKeyframeCommand = registerHandler('motion.editKeyframe', (conte
     if (text === null || text === '') return invalid(value);
     next = editKeyframe(found.timeline, ref, { value: text });
   } else if (field === 'easing') {
-    // the easing of the segment that starts at the keyframe (plan: "aceleração por trecho")
+    // the easing of the segment that starts at the keyframe (plan: "easing per segment")
     const text = readText(value);
     if (text === null) return invalid(value);
     next = editKeyframe(found.timeline, ref, { easing: text === '' ? null : text });

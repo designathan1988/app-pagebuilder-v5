@@ -1,4 +1,4 @@
-// When the page on the canvas may have changed (the plan's stage 4, "laços por quadro": every field shown read the
+// When the page on the canvas may have changed (the plan's stage 4, "per-frame loops": every field shown read the
 // page's computed values at every frame, dozens of loops at once): the one clock the readers of the page measure by.
 // The canvas frame says the page may have changed — the store changed (a document, a selection, a breakpoint, a
 // zoom), the page loaded, a font arrived, the page's box was resized (an image that loaded) — and every reader

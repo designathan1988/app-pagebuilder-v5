@@ -1,4 +1,4 @@
-// Lottie in the motion runtime (plan stage 10: "Lottie só quando usado"; spec motion-runtime, Lottie): an action
+// Lottie in the motion runtime (plan stage 10: "Lottie only when used"; spec motion-runtime, Lottie): an action
 // plays, pauses, stops, seeks or plays a segment of a Lottie animation inside its target. The player is lottie-web
 // (MIT, vendored at src/editor/motion/vendor/), which the page loads only when a timeline it plays uses Lottie
 // (export: js/lottie.min.js before js/motion.js); the animation data comes with the motion data

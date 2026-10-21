@@ -28,7 +28,7 @@ describe('concept rows (src/editor/inspector/concept-rows.ts)', () => {
     expect(rowOfItem('style.set#inspector-width')).toBeNull();
   });
 
-  // The user's review of 2026-10-05: "por que max está dentro de mín?" A row's details are what its head is made of (a
+  // The user's review of 2026-10-05: "why is max inside min?" A row's details are what its head is made of (a
   // border's sides, a radius's corners, an overflow's axes) or settings that act only through it (an overflow's resize,
   // a background image's size); a field is never inside another of its kind. Where a concept's fields are peers, the
   // row's head is the concept's name and what its fields hold (Scroll, Table), or the fields are rows of their own.

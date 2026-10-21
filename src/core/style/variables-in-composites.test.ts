@@ -1,4 +1,4 @@
-// A design token typed into a composite field (jornada03 J1, D1: `var(--line)` as a class's border colour wrote the
+// A design token typed into a composite field (journey03 J1, D1: `var(--line)` as a class's border colour wrote the
 // shorthand border-color, which the model refuses, so the commit failed silently). Every composite of properties.json,
 // on an element and on a class, either writes the token into each longhand or refuses before any patch: never a
 // state the validator refuses.

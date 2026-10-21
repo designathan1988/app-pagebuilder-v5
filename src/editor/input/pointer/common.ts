@@ -239,7 +239,7 @@ export const WHEEL_FACTOR = numberConstant('zoom.wheelFactor');
 export const WHEEL_LINE = 16;
 export const panDrag = (source: string): DoorEntry | null => PAN_DRAGS.find((d) => d.door.kind === 'canvas-drag' && d.door.source === source) ?? null;
 export const onStage = (target: EventTarget | null): boolean => target instanceof Element && target.closest('[data-canvas-stage]') !== null;
-// the region a press went down in, by the keys it gives the canvas (jornada03 J2; views.ts PressRegion): the page in
+// the region a press went down in, by the keys it gives the canvas (journey03 J2; views.ts PressRegion): the page in
 // the frame (another document) or the stage is the canvas, the Layers tree its own, anything else elsewhere
 export function pressRegionOf(target: EventTarget | null): PressRegion {
   const element = target !== null && typeof (target as Element).closest === 'function' ? (target as Element) : null;

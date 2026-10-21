@@ -1,4 +1,4 @@
-// Renaming the selected elements at once (spec batch-rename; the plan's stage 5, "renomear em lote"): a pattern where
+// Renaming the selected elements at once (spec batch-rename; the plan's stage 5, "batch rename"): a pattern where
 // {name} is each element's name and {n} its number, counting from `start` in the order of the selection ("Card {n}"
 // names three cards Card 1, Card 2, Card 3). Every name goes through the one renamer (element.rename, core/nodes/
 // names.ts), so a locked element or the page root refuses the whole batch and nothing is renamed; one undo step.

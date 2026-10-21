@@ -16,7 +16,7 @@ const burst = (p: number, ms: number): Step => ({
     r.clock.advance(ms);
     dispatchOutside(m, r, 'field.step', { direction: 'up', size: 'step', property, value: '20px' });
   },
-  toString: () => `Rajada(${PROPERTIES[p % 3] ?? ''},${ms})`,
+  toString: () => `Burst(${PROPERTIES[p % 3] ?? ''},${ms})`,
 });
 
 // An entry of a field's arrow, a command in between (the same selection chosen again), then a burst on the same field
@@ -34,19 +34,19 @@ const backAndForth = (i: number): Step => ({
     step('down', '12px');
     step('up', '11px');
   },
-  toString: () => `Vaivém(${i})`,
+  toString: () => `BackAndForth(${i})`,
 });
 
 const STEPS = [
   fc.nat(40).map(backAndForth),
   fc.nat(40).map(addToSelection),
-  fc.nat(40).map((i) => command('selection.toggle', (s) => ({ target: pick(nodesOf(s), i) }), `Alternar(${i})`)),
-  fc.constant(null).map(() => command('selection.clear', () => ({}), 'Limpar seleção')),
-  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Estilo(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
+  fc.nat(40).map((i) => command('selection.toggle', (s) => ({ target: pick(nodesOf(s), i) }), `Toggle(${i})`)),
+  fc.constant(null).map(() => command('selection.clear', () => ({}), 'ClearSelection')),
+  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Style(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
   fc.tuple(fc.nat(5), fc.constantFrom(0, 500, 1000, 1001, 3000)).map(([p, ms]) => burst(p, ms)),
 ];
 
-it('o histórico e a seleção seguem o modelo do manifesto em sequências aleatórias', () => {
+it('the history and the selection follow the manifest model in random sequences', () => {
   const summary = runModel('history', STEPS);
   expect(summary.failure).toBeNull();
 });

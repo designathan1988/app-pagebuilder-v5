@@ -140,8 +140,8 @@ export function interpretations(graph: LayoutIntent, parent?: string | null): In
   return [...unique.values()];
 }
 
-// Whether the two likeliest readings of a group are close enough that the person should choose (spec: "Quando duas
-// interpretações forem realmente plausíveis").
+// Whether the two likeliest readings of a group are close enough that the person should choose (spec: "When two
+// interpretations are truly plausible").
 export function ambiguous(candidates: readonly Interpretation[]): boolean {
   const [first, second] = candidates;
   return first !== undefined && second !== undefined && first.confidence - second.confidence < 0.2;

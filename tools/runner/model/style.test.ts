@@ -22,22 +22,22 @@ const burst = (p: number, ms: number, up: boolean): Step => ({
     r.clock.advance(ms);
     dispatchOutside(m, r, 'field.step', { direction: up ? 'up' : 'down', size: 'page', property, value: '20px', modifier: 'Shift' });
   },
-  toString: () => `Rajada(${PROPERTIES[p % 3] ?? ''},${ms},${up ? 'up' : 'down'})`,
+  toString: () => `Burst(${PROPERTIES[p % 3] ?? ''},${ms},${up ? 'up' : 'down'})`,
 });
 
 const STEPS = [
-  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Estilo(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
-  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Estilo(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
+  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Style(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
+  fc.tuple(fc.nat(PROPERTIES.length - 1), fc.nat(VALUES.length - 1)).map(([p, v]) => command('style.set', () => ({ property: PROPERTIES[p], value: VALUES[v] }), `Style(${PROPERTIES[p] ?? ''}=${VALUES[v] ?? ''})`)),
   fc.tuple(fc.nat(5), fc.constantFrom(0, 500, 1000, 1001, 3000), fc.boolean()).map(([p, ms, up]) => burst(p, ms, up)),
-  fc.tuple(fc.nat(2), fc.nat(VALUES.length - 1), fc.boolean()).map(([p, v, up]) => command('field.step', () => ({ direction: up ? 'up' : 'down', size: 'step', property: PROPERTIES[p], value: VALUES[v] }), `PassoDeCampo(${PROPERTIES[p] ?? ''},${VALUES[v] ?? ''})`)),
-  fc.tuple(fc.nat(1), fc.nat(UNITS.length - 1)).map(([p, u]) => command('field.setUnit', () => ({ property: PROPERTIES[p], value: '12px', unit: UNITS[u] }), `Unidade(${PROPERTIES[p] ?? ''},${UNITS[u] ?? ''})`)),
-  fc.tuple(fc.constantFrom('padding', 'margin'), fc.constantFrom('all', 'top', 'left'), fc.constantFrom('4px', '12px', '0')).map(([box, sides, value]) => command('style.setSpacing', () => ({ box, sides, value }), `Espaço(${box},${sides},${value})`)),
-  fc.nat(PROPERTIES.length - 1).map((p) => command('style.reset', () => ({ property: PROPERTIES[p] }), `Redefinir(${PROPERTIES[p] ?? ''})`)),
+  fc.tuple(fc.nat(2), fc.nat(VALUES.length - 1), fc.boolean()).map(([p, v, up]) => command('field.step', () => ({ direction: up ? 'up' : 'down', size: 'step', property: PROPERTIES[p], value: VALUES[v] }), `FieldStep(${PROPERTIES[p] ?? ''},${VALUES[v] ?? ''})`)),
+  fc.tuple(fc.nat(1), fc.nat(UNITS.length - 1)).map(([p, u]) => command('field.setUnit', () => ({ property: PROPERTIES[p], value: '12px', unit: UNITS[u] }), `Unit(${PROPERTIES[p] ?? ''},${UNITS[u] ?? ''})`)),
+  fc.tuple(fc.constantFrom('padding', 'margin'), fc.constantFrom('all', 'top', 'left'), fc.constantFrom('4px', '12px', '0')).map(([box, sides, value]) => command('style.setSpacing', () => ({ box, sides, value }), `Spacing(${box},${sides},${value})`)),
+  fc.nat(PROPERTIES.length - 1).map((p) => command('style.reset', () => ({ property: PROPERTIES[p] }), `Reset(${PROPERTIES[p] ?? ''})`)),
 ];
 
 // A change made on a keyframe, undone and redone with the Timeline closed since: the Timeline opens again on that
 // keyframe (DCS-009, DCS-016), so the step is seen where it was made.
-it('desfazer e refazer devolvem o quadro-chave em que a mudança foi feita', () => {
+it('undo and redo restore the keyframe the change was made on', () => {
   const memory = (): { read(): string | null; write(text: string): void } => {
     let held: string | null = null;
     return { read: () => held, write: (text) => void (held = text) };
@@ -50,17 +50,17 @@ it('desfazer e refazer devolvem o quadro-chave em que a mudança foi feita', () 
   dispatch('workspace.setPanelOpen' as CommandId, { panel: 'timeline', open: 'open' });
   dispatch('timeline.setPlayhead' as CommandId, { time: 0 });
   const made = keyframeTarget(store.getState());
-  expect(made, 'o playhead sobre o quadro-chave de 0%').not.toBeNull();
+  expect(made, 'the playhead on the 0% keyframe').not.toBeNull();
   dispatch('style.set' as CommandId, { property: 'opacity', value: '0.3' });
   for (const step of ['history.undo', 'history.redo'] as const) {
     dispatch('workspace.setPanelOpen' as CommandId, { panel: 'timeline', open: 'close' });
     expect(keyframeTarget(store.getState())).toBeNull();
     dispatch(step as CommandId, {});
-    expect(keyframeTarget(store.getState()), `${step} devolve o quadro-chave`).toEqual(made);
+    expect(keyframeTarget(store.getState()), `${step} restores the keyframe`).toEqual(made);
   }
 });
 
-it('os comandos de estilo seguem o modelo do manifesto e gravam no contexto em que foram pedidos', () => {
+it('the style commands follow the manifest model and write in the context they were asked in', () => {
   const summary = runModel('style', STEPS);
   expect(summary.failure).toBeNull();
 });

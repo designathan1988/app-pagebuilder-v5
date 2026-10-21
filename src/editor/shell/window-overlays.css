@@ -277,7 +277,7 @@
   width: 100%;
 }
 
-/* a setting is a field row of a dialog (jornada02 pairing 5.2): its label in the card's column, its field beside
+/* a setting is a field row of a dialog (journey02 pairing 5.2): its label in the card's column, its field beside
    it, 24 px high — never its label stacked over a 28 px box */
 .guides-grids__field {
   display: grid;
@@ -624,7 +624,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* the canonical palette (jornada02 R-34; the audit's U-041): 72 px from the window's top */
+  /* the canonical palette (journey02 R-34; the audit's U-041): 72 px from the window's top */
   padding-top: calc(var(--space-10) * 2 + var(--space-4));
 }
 
@@ -758,7 +758,7 @@
   font-size: var(--fs-caption);
 }
 
-/* a search no entry matches says so (jornada02 G-22) */
+/* a search no entry matches says so (journey02 G-22) */
 .command-bar__none {
   margin: 0;
   padding: var(--space-4) var(--space-6);
@@ -912,7 +912,7 @@
 }
 
 /* The Timeline panel (group 18): the animations of the selected element on the left, the track with its ruler,
-   playhead and keyframes on the right (src/editor/timeline/panel.tsx) — the canonical anatomy (jornada02 pairing
+   playhead and keyframes on the right (src/editor/timeline/panel.tsx) — the canonical anatomy (journey02 pairing
    5.6): a 236 px side, a 32 px transport bar of 24 px buttons over the track, a bar under it for the keyframe's
    actions. The dock body's padding is the panel's own. */
 .dock-body:has(> .timeline) {
@@ -1401,7 +1401,7 @@
   line-height: var(--lh-caption);
 }
 
-/* a card's rows: the label column of a card (jornada02 R-06 .ix; 116 px since LR2), its values in the UI font */
+/* a card's rows: the label column of a card (journey02 R-06 .ix; 116 px since LR2), its values in the UI font */
 .interaction-card .panel-field,
 .interaction-card .interaction-card__target,
 .interaction-card .field-row {

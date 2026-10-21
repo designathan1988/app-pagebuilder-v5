@@ -1,4 +1,4 @@
-// The concept rows of the Style tab (plan item 2.D; jornada02 G-S1; spec inspector-panel, "Concept rows"): one row per
+// The concept rows of the Style tab (plan item 2.D; journey02 G-S1; spec inspector-panel, "Concept rows"): one row per
 // concept — a border, a radius, an item's place in its parent, a filter — whose head is drawn always and whose details
 // open in place under it. properties.json declares them (conceptRows): each names its head's and its details' items,
 // a Style door ("<command>#<door>") or a pair row ("pair:<id>"); a row with no head draws a summary head, its label

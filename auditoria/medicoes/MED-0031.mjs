@@ -1,26 +1,26 @@
 /* global console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0031 — quatro grandezas distintas citadas sob este mesmo id nos fluxos:
-//  (1) o valor de (prefers-reduced-motion: reduce) (ENT-L08-0001/0002/0006/0008/0009/0010/0022), lido em
+// MED-0031 — four distinct quantities cited under this same id in the flows:
+//  (1) the value of (prefers-reduced-motion: reduce) (ENT-L08-0001/0002/0006/0008/0009/0010/0022), read in
 //      src/editor/motion/runtime/start.ts:55 `const reduced = typeof win.matchMedia === 'function' ? win.matchMedia('(prefers-reduced-motion: reduce)') : null;`;
-//  (2) a distância do pivô ao topo do quadro (ENT-L07-0052, passo 6), lida em
+//  (2) the distance from the pivot to the top of the frame (ENT-L07-0052, step 6), read in
 //      src/editor/canvas/frame.tsx:224 `const at = pivot !== null ? pivot.y - frame.getBoundingClientRect().top : height / 2;`;
-//  (3) o elemento ativo do documento (ENT-L09a-0011, ENT-L09b-0005), lido em
+//  (3) the document's active element (ENT-L09a-0011, ENT-L09b-0005), read in
 //      src/editor/shell/breakpoints-dialog.tsx:180 `    if (input.current !== null && (kept.current || document.activeElement !== input.current)) input.current.value = shown;`
-//      e src/editor/shell/outside-layer.ts:41 `    const before = returnFocus?.current ?? anchor?.current ?? document.activeElement;`;
-//  (4) a caixa da camada na tela, o zoom da moldura e as caixas dos nós (ENT-L10a-0003, passo 3), lidos em
+//      and src/editor/shell/outside-layer.ts:41 `    const before = returnFocus?.current ?? anchor?.current ?? document.activeElement;`;
+//  (4) the layer's box on screen, the frame zoom and the node boxes (ENT-L10a-0003, step 3), read in
 //      src/modules/layout-composer/ui/overlay.tsx:83 `      const origin = layer.current?.parentElement?.getBoundingClientRect();`.
-// Roda: cat auditoria/medicoes/MED-0031.mjs | node --input-type=module -
+// Run: cat auditoria/medicoes/MED-0031.mjs | node --input-type=module -
 import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const AURORA = fs.readFileSync('manifest/features/fixtures/aurora.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 
 async function open(c, boot, waitFor) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   page.on('pageerror', (e) => console.log('pageerror:', e.message));
@@ -36,26 +36,26 @@ async function open(c, boot, waitFor) {
   return { browser, page };
 }
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const valor = {};
-  // (1) menos movimento
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const value = {};
+  // (1) reduced motion
   {
     const { browser, page } = await open(c, { commands: [], drawn: [] }, null);
-    valor.reducedMotion = await page.evaluate(() => ({ reduce: window.matchMedia('(prefers-reduced-motion: reduce)').matches }));
+    value.reducedMotion = await page.evaluate(() => ({ reduce: window.matchMedia('(prefers-reduced-motion: reduce)').matches }));
     await browser.close();
   }
-  // (2) distância do pivô ao topo do quadro: view.zoomAt com um ponto conhecido põe pivot = ponto
+  // (2) distance from the pivot to the top of the frame: view.zoomAt with a known point sets pivot = point
   {
     const POINT = { x: 640, y: 300 };
     const { browser, page } = await open(c, { project: AURORA, commands: [{ command: 'selection.select', args: { target: { $node: '/Page/Hero' } } }], drawn: [{ command: 'view.zoomAt', args: { factor: 1.25, point: POINT } }] }, null);
-    valor.pivot = await page.evaluate((point) => {
+    value.pivot = await page.evaluate((point) => {
       const frame = document.querySelector('.frame__page');
       const top = frame.getBoundingClientRect().top;
       return { point, frameTop: top, at: point.y - top, zoom: frame.currentCSSZoom };
     }, POINT);
     await browser.close();
   }
-  // (3) o elemento ativo do documento: em repouso e com o diálogo de breakpoints aberto
+  // (3) the document's active element: at rest and with the breakpoints dialog open
   {
     const { browser, page } = await open(c, { project: AURORA, commands: [{ command: 'selection.select', args: { target: { $node: '/Page/Hero' } } }], drawn: [] }, null);
     const idle = await page.evaluate(() => { const a = document.activeElement; return a === null ? null : { tag: a.tagName, className: a.className }; });
@@ -63,12 +63,12 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     const { browser: b2, page: p2 } = await open(c, { project: AURORA, commands: [{ command: 'workspace.openDialog', args: { dialog: 'breakpoints' } }], drawn: [] }, '[data-region="breakpoints-dialog"]');
     const dialog = await p2.evaluate(() => { const a = document.activeElement; return { tag: a?.tagName ?? null, className: a?.className ?? null, inDialog: a?.closest('[data-region="breakpoints-dialog"]') !== null && a !== null }; });
     await b2.close();
-    valor.activeElement = { idle, dialogOpen: dialog };
+    value.activeElement = { idle, dialogOpen: dialog };
   }
-  // (4) a caixa da camada, o zoom da moldura e a caixa de um nó, no compositor de leiaute
+  // (4) the layer's box, the frame zoom and a node's box, in the layout composer
   {
     const { browser, page } = await open(c, { project: AURORA, commands: [{ command: 'selection.select', args: { target: { $node: '/Page/Hero' } } }], drawn: [{ command: 'layout.enter', args: { target: { $node: '/Page/Hero' } } }] }, '[data-region="layout-composer-canvas"]:not([hidden])');
-    valor.layoutComposer = await page.evaluate(() => {
+    value.layoutComposer = await page.evaluate(() => {
       const iframe = document.querySelector('.frame__page');
       const layer = document.querySelector('.layout-composer');
       const parent = layer?.parentElement;
@@ -82,5 +82,5 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     });
     await browser.close();
   }
-  console.log(JSON.stringify({ config: nome, valor }));
+  console.log(JSON.stringify({ config: name, value }));
 }

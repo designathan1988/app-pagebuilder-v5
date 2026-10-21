@@ -1,4 +1,4 @@
-// The CSS keywords a field takes in the person's language (the plan's stage 3, "entrada inteligente": "automático",
+// The CSS keywords a field takes in the person's language (the plan's stage 3, "smart input": "automático",
 // "nenhum"): each has a catalogue text, keyword.<keyword>, which is the keyword itself in English. A word typed in any
 // case, with or without its accents, stands for the keyword wherever the property offers that keyword. A field shows a
 // stored keyword as CSS writes it, in every language (the user's choice of 2026-10-05, DEC-65: what a professional

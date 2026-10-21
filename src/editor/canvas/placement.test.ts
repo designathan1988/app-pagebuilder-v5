@@ -1,6 +1,6 @@
 // The label rules (src/editor/canvas/placement.ts). The selection's label has one place (the user's rule of 2026-10-05,
 // DEC-70): above its element, touching the frame's line, at the frame's left edge, whatever lies there; over page text
-// it says so, and then takes no press, so a press meant for the text under it reaches the text (jornada03 J16: a
+// it says so, and then takes no press, so a press meant for the text under it reaches the text (journey03 J16: a
 // button's label over a card's price selected the button). A drop label takes the first free place around its element,
 // and where none is free it covers the least it can and says so.
 import { describe, expect, it } from 'vitest';

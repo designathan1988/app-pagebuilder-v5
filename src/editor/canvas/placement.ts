@@ -6,7 +6,7 @@
 // its bottom on the top edge of the selection's frame and its start on the frame's left edge — never inside, below,
 // beside or moved aside for what lies there, at any size, zoom, scroll, rotation or breakpoint, for one element or
 // several. Where it lies over page text it says so (`covers`), and the selection's label then takes no press, so a
-// press meant for the text under it reaches the text (jornada03 J16: a label over a card's price selected the button
+// press meant for the text under it reaches the text (journey03 J16: a label over a card's price selected the button
 // instead). One thing it never lies over: the editor's own controls about the page — the breakpoint tabs attached to
 // the page's top (D-1), where the one place of an element at the page's top falls (clearedLabel; the owner's choice of
 // 2026-10-07): there it moves along the frame's top line just past the tabs, while it still stands whole over its

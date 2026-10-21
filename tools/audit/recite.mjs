@@ -1,21 +1,21 @@
 /* global process, console */
-// Reposiciona as citações da auditoria depois de uma edição no código, pelo diff exato entre a versão-base de cada
-// arquivo citado (.cache/audit/base/<caminho>, gravada pela execução anterior) e a versão atual: a citação `arquivo:N`
-// cuja linha N da base continha o trecho vai para a linha que corresponde a N na versão atual (subsequência comum
-// mais longa, depois de tirar o começo e o fim iguais). Quando a própria linha citada mudou, ou o arquivo não tem base,
-// a citação que não confere vai para a ocorrência do trecho mais próxima da linha antiga e é listada para revisão; a
-// citação cujo trecho não existe mais fica como está e é listada: ela precisa de rastreamento, não de número novo.
-// A conferência do trecho é a da trava (o trecho inteiro igual à linha, ou contido nela com 6 ou mais caracteres que
-// não sejam espaço). No fim, a base passa a ser a versão atual de cada arquivo citado.
-// Uso: node tools/audit/recitar.mjs [--seco]
-// Primeiro uso, ou depois de uma edição feita sem base: grave a base antes de editar com --so-base.
-// Resumo na saída (no máximo 30 linhas); a lista completa em .cache/audit/recitar.json.
+// Repositions the audit's citations after a code edit, using the exact diff between the base version of each cited file
+// (.cache/audit/base/<path>, written by the previous run) and the current version: the citation `file:N` whose line N in
+// the base held the snippet moves to the line that corresponds to N in the current version (longest common subsequence,
+// after removing the identical head and tail). When the cited line itself changed, or the file has no base, a citation
+// that does not match moves to the occurrence of the snippet nearest the old line and is listed for review; a citation
+// whose snippet no longer exists stays as it is and is listed: it needs re-tracing, not a new number.
+// The snippet check is the lock's (the whole snippet equal to the line, or contained in it with 6 or more
+// non-whitespace characters). At the end, the base becomes the current version of each cited file.
+// Usage: node tools/audit/recite.mjs [--dry-run]
+// First use, or after an edit made without a base: write the base before editing with --base-only.
+// Summary on the output (at most 30 lines); the full list in .cache/audit/recite.json.
 import fs from 'node:fs';
 import path from 'node:path';
 
 const args = process.argv.slice(2);
-const dry = args.includes('--seco');
-const baseOnly = args.includes('--so-base');
+const dry = args.includes('--dry-run');
+const baseOnly = args.includes('--base-only');
 const BASE = '.cache/audit/base';
 const RE = /`([^`\s]+?):(\d+)`(\s*)`([^`\n]+)`/g;
 
@@ -28,7 +28,7 @@ const read = (file) => {
   try { return fs.readFileSync(file, 'utf8'); } catch { return null; }
 };
 
-// linha antiga (1-based) → linha nova, para as linhas iguais nas duas versões
+// old line (1-based) → new line, for the lines that are equal in both versions
 function lineMap(a, b) {
   const map = new Map();
   let head = 0;
@@ -102,11 +102,11 @@ if (!baseOnly) {
       let best = -1;
       for (let i = 0; i < f.now.length; i++) if (fits(f.now[i], snippet) && (best < 0 || Math.abs(i + 1 - old) < Math.abs(best + 1 - old))) best = i;
       if (best < 0) {
-        lost.push({ registro: rel, citacao: `${name}:${old}`, trecho: snippet.slice(0, 120) });
+        lost.push({ record: rel, citation: `${name}:${old}`, snippet: snippet.slice(0, 120) });
         return whole;
       }
       nearest += 1;
-      review.push({ registro: rel, citacao: `${name}:${old}`, para: best + 1, trecho: snippet.slice(0, 120) });
+      review.push({ record: rel, citation: `${name}:${old}`, to: best + 1, snippet: snippet.slice(0, 120) });
       changed = true;
       return `\`${file}:${best + 1}\`${gap}\`${snippet}\``;
     });
@@ -127,9 +127,9 @@ if (!dry) {
   }
 }
 fs.mkdirSync('.cache/audit', { recursive: true });
-fs.writeFileSync('.cache/audit/recitar.json', `${JSON.stringify({ exact, nearest, touched, review, lost }, null, 2)}\n`);
-const linhas = [`${dry ? '(seco) ' : ''}${baseOnly ? 'base gravada' : `citações reposicionadas pelo diff: ${exact}; pela ocorrência mais próxima (a revisar): ${nearest}; em ${touched} registros; trechos que não existem mais: ${lost.length}`}; arquivos citados: ${files.size}`];
-for (const r of review.slice(0, 12)) linhas.push(`  revisar ${r.registro}: ${r.citacao} → ${r.para} \`${r.trecho.slice(0, 60)}\``);
-for (const l of lost.slice(0, 12)) linhas.push(`  perdida ${l.registro}: ${l.citacao} \`${l.trecho.slice(0, 60)}\``);
-if (review.length + lost.length > 24) linhas.push(`  ... lista completa em .cache/audit/recitar.json`);
-console.log(linhas.slice(0, 30).join('\n'));
+fs.writeFileSync('.cache/audit/recite.json', `${JSON.stringify({ exact, nearest, touched, review, lost }, null, 2)}\n`);
+const lines = [`${dry ? '(dry run) ' : ''}${baseOnly ? 'base written' : `citations repositioned by the diff: ${exact}; by the nearest occurrence (to review): ${nearest}; in ${touched} records; snippets that no longer exist: ${lost.length}`}; cited files: ${files.size}`];
+for (const r of review.slice(0, 12)) lines.push(`  review ${r.record}: ${r.citation} → ${r.to} \`${r.snippet.slice(0, 60)}\``);
+for (const l of lost.slice(0, 12)) lines.push(`  lost ${l.record}: ${l.citation} \`${l.snippet.slice(0, 60)}\``);
+if (review.length + lost.length > 24) lines.push(`  ... full list in .cache/audit/recite.json`);
+console.log(lines.slice(0, 30).join('\n'));

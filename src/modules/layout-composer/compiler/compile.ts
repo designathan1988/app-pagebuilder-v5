@@ -1,4 +1,4 @@
-// The Layout Compiler (spec "Layout Compiler", "Inferência de estrutura", "Stable Compilation"): the intent becomes the
+// The Layout Compiler (spec "Layout Compiler", "Structure inference", "Stable Compilation"): the intent becomes the
 // smallest ordinary structure that preserves it — nested flex rows and columns where the space slices cleanly (a
 // guillotine decomposition), a grid with named areas where it does not, never absolute positioning (an overlap the
 // person asked for shares a grid cell). Among the structures that hold the intent, a cost function prefers the one
@@ -173,7 +173,7 @@ function cost(n: CompiledNode, previous: ReadonlySet<string> | undefined, held: 
 }
 
 // A group laid in one line (a row or a column of single regions) is one-dimensional: flexbox's domain, so a grid there
-// costs more (spec "Inferência de Flexbox": one predominant axis).
+// costs more (spec "Flexbox inference": one predominant axis).
 const ONE_DIMENSIONAL_GRID = 15;
 
 // the words grid-area reads as keywords, never as an area's name (CSS Grid's <custom-ident> and CSS's wide keywords)
@@ -248,7 +248,7 @@ export function compile(intent: LayoutIntent, ports: CompilerPorts, options: Com
     return css;
   };
 
-  // how a child takes its length along its row or column (spec "Modos de sizing"); the shares of the fluid ones
+  // how a child takes its length along its row or column (spec "Sizing modes"); the shares of the fluid ones
   const flexSizing = (r: Region, axis: Axis, share: number): Declarations => {
     const d: Dimension = r[lengthKey(axis)];
     if (d.mode === 'fixed') return { flexGrow: '0', flexShrink: '0', flexBasis: px(length(r.box, axis)) };
@@ -321,7 +321,7 @@ export function compile(intent: LayoutIntent, ports: CompilerPorts, options: Com
     readonly children: CompiledNode[];
   }
 
-  // The room between a holder's edges and what it holds, as drawn (spec "Fluxo normal": what is drawn is what the page
+  // The room between a holder's edges and what it holds, as drawn (spec "Normal flow": what is drawn is what the page
   // shows): its padding, side by side, unless the region declares its own. Nothing when the regions touch its edges.
   const inset = (holder: Box, held: readonly Region[], declared: boolean): Declarations => {
     if (declared || held.length === 0) return {};

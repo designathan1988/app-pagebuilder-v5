@@ -1,5 +1,5 @@
 // The model of the store and its history (the investigation's C2 and C7, auditoria/investigacao/relatorio.md; grown
-// from auditoria/investigacao/poc/c7-historico/modelo.poc.ts). Model-based testing with fast-check (fc.commands and
+// from auditoria/investigacao/poc/c7-historico/model.poc.ts). Model-based testing with fast-check (fc.commands and
 // fc.modelRun) over the editor's own store, without a browser: the model is the stack of entries { before, after } the
 // person expects, built from the manifest's history rules (history.coalesce, undoRestoresSelection) and from what each
 // step published. It never reuses the history's code. After every step:
@@ -126,45 +126,45 @@ export function checkPublished(m: Model, r: Real, step: { key: string | null; wi
     const grew = state.history.past.length - previous.history.past.length;
     const documentChanged = !deepEqual(previous.document, state.document);
     if (phase === 'gesture') {
-      demand(state.history === previous.history || deepEqual(state.history, previous.history), 'o histórico mudou durante um gesto aberto');
+      demand(state.history === previous.history || deepEqual(state.history, previous.history), 'the history changed during an open gesture');
     } else if (phase === 'gesture-end' && !gestureClosed && step.beforeGesture !== undefined) {
       gestureClosed = true;
       if (grew === 1) {
-        demand(state.history.future.length === 0, 'o commit do gesto não esvaziou a pilha de refazer');
+        demand(state.history.future.length === 0, 'the gesture commit did not empty the redo stack');
         m.past.push({ before: step.beforeGesture, after: snapshot(state) });
         m.future = [];
       } else if (grew === 0 && documentChanged) {
-        demand(deepEqual(state.document, step.beforeGesture.document), 'cancelar o gesto não devolveu o documento de antes');
-        demand(deepEqual(state.selection, step.beforeGesture.selection), 'cancelar o gesto não devolveu a seleção de antes');
+        demand(deepEqual(state.document, step.beforeGesture.document), 'cancelling the gesture did not restore the previous document');
+        demand(deepEqual(state.selection, step.beforeGesture.selection), 'cancelling the gesture did not restore the previous selection');
       } else {
-        demand(grew === 0, `o fim do gesto mexeu no histórico em ${grew} entradas`);
+        demand(grew === 0, `the end of the gesture changed the history by ${grew} entries`);
       }
     } else if (grew === 1) {
-      demand(documentChanged, 'uma entrada nova entrou no histórico sem mudança no documento');
-      demand(state.history.future.length === 0, 'uma entrada nova não esvaziou a pilha de refazer');
+      demand(documentChanged, 'a new entry entered the history with no change to the document');
+      demand(state.history.future.length === 0, 'a new entry did not empty the redo stack');
       m.past.push({ before: { ...snapshot(previous), context: madeIn ?? contextOf(previous) }, after: snapshot(state) });
       m.future = [];
       madeOrMerged = true;
     } else if ((grew === 0 || grew === -1) && documentChanged) {
       const mayMerge = step.within !== null && step.key !== null && m.lastKey === step.key && r.clock.now() - m.lastAt <= step.within;
-      demand(mayMerge, grew === 0 ? 'o documento mudou e nenhuma entrada nova apareceu, sem fusão que o manifesto permita' : 'o histórico perdeu uma entrada num passo que não desfaz');
-      demand(state.history.future.length === 0, 'a fusão não esvaziou a pilha de refazer');
+      demand(mayMerge, grew === 0 ? 'the document changed and no new entry appeared, with no merge the manifest allows' : 'the history lost an entry in a step that does not undo');
+      demand(state.history.future.length === 0, 'the merge did not empty the redo stack');
       const top = m.past.at(-1);
-      demand(top !== undefined, 'fusão sem entrada anterior');
+      demand(top !== undefined, 'merge with no previous entry');
       // a burst that comes back to the document from before its entry changes nothing: its entry goes (the history's
       // own rule, src/core/history/history.ts: a command that changes nothing records no entry)
       const nothing = deepEqual(state.document, top.before.document);
-      demand(!nothing || grew === -1, 'uma fusão que volta ao documento de antes da entrada deixou uma entrada que não muda nada');
-      demand(nothing || grew === 0, 'uma fusão que muda o documento tirou a entrada do histórico');
+      demand(!nothing || grew === -1, 'a merge that returns to the document from before the entry left an entry that changes nothing');
+      demand(nothing || grew === 0, 'a merge that changes the document removed the entry from the history');
       if (nothing) m.past.pop();
       else top.after = snapshot(state);
       r.counts.merges += 1;
       // after an entry that went, the next step of the burst begins a new one
       madeOrMerged = !nothing;
     } else if (grew === 0) {
-      demand(deepEqual(state.history, previous.history), 'o histórico mudou sem mudança no documento');
+      demand(deepEqual(state.history, previous.history), 'the history changed with no change to the document');
     } else {
-      demand(false, `o histórico perdeu ${-grew} entradas num passo que não desfaz`);
+      demand(false, `the history lost ${-grew} entries in a step that does not undo`);
     }
     previous = state;
   }
@@ -182,9 +182,9 @@ export function checkAfter(m: Model, r: Real): void {
   const s = r.store.getState();
   r.counts.steps += 1;
   r.counts.maxEntries = Math.max(r.counts.maxEntries, s.history.past.length);
-  demand(s.history.past.length === m.past.length, `o histórico tem ${s.history.past.length} entradas e o modelo espera ${m.past.length}`);
-  demand(s.history.future.length === m.future.length, `a pilha de refazer tem ${s.history.future.length} entradas e o modelo espera ${m.future.length}`);
-  for (const change of r.changes) demand(coherent(change), 'um DocumentChange não leva before a after pelos próprios patches');
+  demand(s.history.past.length === m.past.length, `the history has ${s.history.past.length} entries and the model expects ${m.past.length}`);
+  demand(s.history.future.length === m.future.length, `the redo stack has ${s.history.future.length} entries and the model expects ${m.future.length}`);
+  for (const change of r.changes) demand(coherent(change), 'a DocumentChange does not take before to after through its own patches');
   r.changes = [];
   r.published = [];
   r.last = s;
@@ -212,7 +212,7 @@ function layersWritten(change: DocumentChange): { breakpoint: string; state: str
 export function demandWrittenIn(changes: readonly DocumentChange[], context: EditContext, what: string): void {
   if (context.layer === undefined || (context.styleClass ?? null) !== null || (context.keyframe ?? null) !== null) return;
   for (const layer of changes.flatMap(layersWritten)) {
-    demand(layer.breakpoint === context.layer.breakpoint && layer.state === context.layer.state, `${what} gravou em ${layer.breakpoint}/${layer.state} e não no contexto em que a digitação começou, ${context.layer.breakpoint}/${context.layer.state}`);
+    demand(layer.breakpoint === context.layer.breakpoint && layer.state === context.layer.state, `${what} wrote to ${layer.breakpoint}/${layer.state} and not in the context the typing began in, ${context.layer.breakpoint}/${context.layer.state}`);
   }
 }
 
@@ -229,8 +229,8 @@ export function dispatchStep(m: Model, r: Real, id: string, args: Readonly<Recor
   const result = (r.store.dispatch as (i: CommandId, a: unknown) => { status: string })(id as CommandId, args);
   if (result.status === 'confirm') r.store.answer(true);
   if (hadTyping && !inField && !owned) {
-    demand(heldTyping() === null, `a digitação pendente continuou pendente depois de ${id} vindo de fora do campo`);
-    demand(r.typing?.kept === true, `a digitação pendente não foi gravada antes de ${id}`);
+    demand(heldTyping() === null, `the pending typing stayed pending after ${id} came from outside the field`);
+    demand(r.typing?.kept === true, `the pending typing was not kept before ${id}`);
   }
   const merged = checkPublished(m, r, { key, within });
   m.lastKey = merged && key !== null ? key : null;
@@ -255,7 +255,7 @@ class Undo implements Step {
     // the typing kept by the undo itself made an entry: the publications say which
     const published = r.published;
     if (hadTyping) {
-      demand(heldTyping() === null, 'a digitação pendente continuou pendente depois do desfazer');
+      demand(heldTyping() === null, 'the pending typing stayed pending after the undo');
       const keptAt = published.findIndex((p, k) => p.state.history.past.length > (k === 0 ? r.last : (published[k - 1] as { state: EditorState }).state).history.past.length);
       if (keptAt >= 0) {
         const previous = keptAt === 0 ? r.last : (published[keptAt - 1] as { state: EditorState }).state;
@@ -266,19 +266,19 @@ class Undo implements Step {
     const entry = m.past.pop();
     const s = r.store.getState();
     if (entry === undefined) {
-      demand(deepEqual(s.document, before.document) && deepEqual(s.selection, before.selection), 'desfazer sem entrada mudou o estado');
+      demand(deepEqual(s.document, before.document) && deepEqual(s.selection, before.selection), 'undo with no entry changed the state');
     } else {
-      demand(deepEqual(s.document, entry.before.document), 'desfazer não voltou ao documento de antes da entrada');
-      demand(deepEqual(s.selection, entry.before.selection), 'desfazer não voltou à seleção de antes da entrada');
+      demand(deepEqual(s.document, entry.before.document), 'undo did not return to the document from before the entry');
+      demand(deepEqual(s.selection, entry.before.selection), 'undo did not return to the selection from before the entry');
       // the breakpoint, the state, the class and the keyframe the change was made in (DCS-009, D-A)
-      demand(sameContext(contextOf(s), entry.before.context), `desfazer não devolveu o contexto em que a mudança foi feita: ${JSON.stringify(entry.before.context.layer)} e o editor mostra ${JSON.stringify(contextOf(s).layer)}`);
+      demand(sameContext(contextOf(s), entry.before.context), `undo did not restore the context the change was made in: ${JSON.stringify(entry.before.context.layer)} and the editor shows ${JSON.stringify(contextOf(s).layer)}`);
       m.future.push(entry);
       r.counts.undos += 1;
     }
     m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => 'Desfazer';
+  toString = () => 'Undo';
 }
 class Redo implements Step {
   check = () => true;
@@ -288,7 +288,7 @@ class Redo implements Step {
     const before = snapshot(r.store.getState());
     r.store.dispatch('history.redo' as CommandId, {} as never);
     if (hadTyping) {
-      demand(heldTyping() === null, 'a digitação pendente continuou pendente depois do refazer');
+      demand(heldTyping() === null, 'the pending typing stayed pending after the redo');
       // a typing kept before the redo makes an entry and empties the redo stack
       const s = r.store.getState();
       if (s.history.past.length > r.last.history.past.length && s.history.future.length === 0 && deepEqual(s.document, r.published.at(-1)?.state.document)) {
@@ -301,17 +301,17 @@ class Redo implements Step {
     const entry = m.future.pop();
     const s = r.store.getState();
     if (entry === undefined) {
-      demand(deepEqual(s.document, before.document) && deepEqual(s.selection, before.selection), 'refazer sem entrada mudou o estado');
+      demand(deepEqual(s.document, before.document) && deepEqual(s.selection, before.selection), 'redo with no entry changed the state');
     } else {
-      demand(deepEqual(s.document, entry.after.document), 'refazer não voltou ao documento de depois da entrada');
-      demand(deepEqual(s.selection, entry.after.selection), 'refazer não voltou à seleção de depois da entrada');
-      demand(sameContext(contextOf(s), entry.before.context), `refazer não devolveu o contexto em que a mudança foi feita: ${JSON.stringify(entry.before.context.layer)} e o editor mostra ${JSON.stringify(contextOf(s).layer)}`);
+      demand(deepEqual(s.document, entry.after.document), 'redo did not return to the document from after the entry');
+      demand(deepEqual(s.selection, entry.after.selection), 'redo did not return to the selection from after the entry');
+      demand(sameContext(contextOf(s), entry.before.context), `redo did not restore the context the change was made in: ${JSON.stringify(entry.before.context.layer)} and the editor shows ${JSON.stringify(contextOf(s).layer)}`);
       m.past.push(entry);
     }
     m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => 'Refazer';
+  toString = () => 'Redo';
 }
 class Wait implements Step {
   constructor(readonly ms: number) {}
@@ -319,7 +319,7 @@ class Wait implements Step {
   run(_m: Model, r: Real) {
     r.clock.advance(this.ms);
   }
-  toString = () => `Esperar(${this.ms})`;
+  toString = () => `Wait(${this.ms})`;
 }
 // A field takes typing no command kept yet (the one registry of drafts): it captures the context the edit begins in, as
 // the editor's fields do (editContextOf), and owns its own field.step on its property.
@@ -334,7 +334,7 @@ class Type implements Step {
     document.body.append(region);
     const state = r.store.getState();
     const context = editContextOf(state);
-    demand(deepEqual(context, contextOf(state)), 'o contexto que o campo captura não traz a camada, a classe e o quadro-chave em que a edição começa');
+    demand(deepEqual(context, contextOf(state)), 'the context the field captures does not carry the layer, the class and the keyframe the edit begins in');
     const value = TYPED[this.v % TYPED.length] as string;
     const previous = r.typing;
     const pending = heldTyping() !== null;
@@ -353,11 +353,11 @@ class Type implements Step {
         } finally {
           r.keepingIn = null;
         }
-        demandWrittenIn(r.changes.slice(from), context, 'a gravação da digitação');
+        demandWrittenIn(r.changes.slice(from), context, 'the typing write');
       },
     });
-    demand(heldTyping()?.field === field, 'o registro não guardou a digitação nova');
-    if (pending && previous !== null) demand(previous.kept, 'um campo novo descartou a digitação pendente do anterior');
+    demand(heldTyping()?.field === field, 'the registry did not hold the new typing');
+    if (pending && previous !== null) demand(previous.kept, 'a new field discarded the pending typing of the previous one');
     r.typing = typed;
     r.counts.typings += 1;
     field.focus();
@@ -366,7 +366,7 @@ class Type implements Step {
     if (pending) m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => `Digitar(${TYPED[this.v % TYPED.length]})`;
+  toString = () => `Type(${TYPED[this.v % TYPED.length]})`;
 }
 // The field's own command (its arrow) with the focus in it: it runs in the context the typing began in.
 class FieldOwn implements Step {
@@ -379,10 +379,10 @@ class FieldOwn implements Step {
     const from = r.changes.length;
     const changes = r.changes;
     dispatchStep(m, r, 'field.step', { direction: this.up ? 'up' : 'down', size: 'step', property: TYPED_PROPERTY, value: typing.value }, true);
-    demandWrittenIn(changes.slice(from), typing.context, 'o comando do próprio campo');
-    demand(heldTyping()?.field === typing.field, 'o comando do próprio campo gravou a digitação como se viesse de fora');
+    demandWrittenIn(changes.slice(from), typing.context, "the field's own command");
+    demand(heldTyping()?.field === typing.field, "the field's own command kept the typing as if it came from outside");
   }
-  toString = () => `ComandoDoCampo(${this.up ? 'up' : 'down'})`;
+  toString = () => `FieldCommand(${this.up ? 'up' : 'down'})`;
 }
 // A press begins (the pointer owner's first word, src/editor/input/pointer/events.ts): on the field's own row it leaves
 // the typing held; anywhere else the typing is kept first.
@@ -394,13 +394,13 @@ class Touch implements Step {
     const held = typing !== null && heldTyping()?.field === typing.field;
     const target = this.own && typing !== null ? (typing.region.lastElementChild ?? typing.region) : document.body;
     keepTypingBefore(target);
-    if (held && this.own) demand(heldTyping()?.field === typing.field && !typing.kept, 'um toque na própria linha do campo gravou a digitação');
-    else if (held) demand(heldTyping() === null && typing.kept, 'um toque fora do campo não gravou a digitação pendente antes de agir');
+    if (held && this.own) demand(heldTyping()?.field === typing.field && !typing.kept, "a press on the field's own row kept the typing");
+    else if (held) demand(heldTyping() === null && typing.kept, 'a press outside the field did not keep the pending typing before acting');
     checkPublished(m, r, { key: null, within: null });
     if (held && heldTyping() === null) m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => `Toque(${this.own ? 'no campo' : 'fora'})`;
+  toString = () => `Press(${this.own ? 'in field' : 'outside'})`;
 }
 // The breakpoint or the style state changes, from outside the field or from inside it (a key with the focus in the
 // field): what the field edits moves, so the typing is kept at once, where it was typed (rule G1).
@@ -422,14 +422,14 @@ class Context implements Step {
     r.counts.contexts += 1;
     if (held && typing !== null) {
       const moved = !deepEqual(contextOf(r.store.getState()), typing.context);
-      if (moved || !this.inside) demand(heldTyping() === null && typing.kept, 'a troca do que o campo edita não gravou a digitação pendente na hora');
-      if (typing.kept) demandWrittenIn(r.changes.slice(from), typing.context, 'a troca de contexto');
+      if (moved || !this.inside) demand(heldTyping() === null && typing.kept, 'changing what the field edits did not keep the pending typing at once');
+      if (typing.kept) demandWrittenIn(r.changes.slice(from), typing.context, 'the context change');
     }
     checkPublished(m, r, { key: null, within: null });
     m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => `Contexto(${this.breakpoint},${this.state ?? '-'},${this.inside ? 'dentro do campo' : 'fora'})`;
+  toString = () => `Context(${this.breakpoint},${this.state ?? '-'},${this.inside ? 'inside field' : 'outside'})`;
 }
 // A pointer gesture with some style.set; `outside`: a command that changes the document arrives from outside during it.
 class GestureStep implements Step {
@@ -455,7 +455,7 @@ class GestureStep implements Step {
     for (let k = 0; k < this.n; k++) g.dispatch('style.set' as CommandId, { property: 'width', value: `${10 + k * 7}px` } as never);
     const documentBeforeOutside = r.store.getState().document;
     if (this.outside) r.store.dispatch('element.duplicate' as CommandId, {} as never);
-    demand(!this.outside || deepEqual(r.store.getState().document, documentBeforeOutside), 'um comando que muda o documento rodou no meio do gesto');
+    demand(!this.outside || deepEqual(r.store.getState().document, documentBeforeOutside), 'a command that changes the document ran in the middle of the gesture');
     // committed, the command from outside runs on the selection the gesture left
     if (this.commits) duplicateRuns = this.outside && r.store.canRun('element.duplicate' as CommandId, {} as never);
     const gestureEntry = this.commits && !deepEqual(r.store.getState().document, beforeGesture.document) ? 1 : 0;
@@ -465,12 +465,12 @@ class GestureStep implements Step {
     r.phase = 'normal';
     checkPublished(m, r, { key: null, within: null, beforeGesture });
     const expected = lastBefore.history.past.length + gestureEntry + (duplicateRuns ? 1 : 0);
-    demand(r.store.getState().history.past.length === expected, `depois do gesto o histórico tem ${r.store.getState().history.past.length} entradas e devia ter ${expected}`);
+    demand(r.store.getState().history.past.length === expected, `after the gesture the history has ${r.store.getState().history.past.length} entries and should have ${expected}`);
     // only a command that ran breaks the merge: a gesture with no command at all (a press that did nothing) does not
     if (pending || this.n > 0 || this.outside || this.select !== null) m.lastKey = null;
     checkAfter(m, r);
   }
-  toString = () => `Gesto(${this.n},${this.commits ? 'commit' : 'cancel'}${this.outside ? ',com comando de fora' : ''}${this.select === null ? '' : `,seleciona ${this.select}`})`;
+  toString = () => `Gesture(${this.n},${this.commits ? 'commit' : 'cancel'}${this.outside ? ',with outside command' : ''}${this.select === null ? '' : `,selects ${this.select}`})`;
 }
 // Another project opens (project.open with a project file's text, project.newBlankPage): the selection and the history
 // start empty, and the document is the one opened.
@@ -483,11 +483,11 @@ class Load implements Step {
     const dispatch = r.store.dispatch as (i: CommandId, a: unknown) => { status: string };
     const result = this.name === null ? dispatch('project.newBlankPage' as CommandId, {}) : dispatch('project.open' as CommandId, { file: JSON.stringify(fixture(this.name)) });
     if (result.status === 'confirm') r.store.answer(true);
-    if (hadTyping) demand(heldTyping() === null && r.typing?.kept === true, 'a digitação pendente não foi gravada antes de abrir outro projeto');
+    if (hadTyping) demand(heldTyping() === null && r.typing?.kept === true, 'the pending typing was not kept before opening another project');
     const s = r.store.getState();
-    demand(s.history.past.length === 0, `abrir outro projeto manteve ${s.history.past.length} entradas do anterior no histórico`);
-    demand(s.history.future.length === 0, 'abrir outro projeto manteve a pilha de refazer do anterior');
-    demand(s.selection.length === 0, 'abrir outro projeto manteve a seleção do anterior');
+    demand(s.history.past.length === 0, `opening another project kept ${s.history.past.length} entries of the previous one in the history`);
+    demand(s.history.future.length === 0, 'opening another project kept the redo stack of the previous one');
+    demand(s.selection.length === 0, 'opening another project kept the selection of the previous one');
     m.past = [];
     m.future = [];
     m.lastKey = null;
@@ -495,7 +495,7 @@ class Load implements Step {
     r.published = [];
     checkAfter(m, r);
   }
-  toString = () => `Carregar(${this.name ?? 'página em branco'})`;
+  toString = () => `Load(${this.name ?? 'blank page'})`;
 }
 
 // a step that dispatches one command from outside the field, its arguments read from the state now
@@ -504,8 +504,8 @@ export const command = (id: string, args: (s: EditorState) => Readonly<Record<st
   run: (m, r) => dispatchOutside(m, r, id, args(r.store.getState())),
   toString: () => label,
 });
-export const select = (i: number): Step => ({ check: () => true, run: (m, r) => dispatchOutside(m, r, 'selection.select', { target: pick(nodesOf(r.store.getState()), i) }), toString: () => `Selecionar(${i})` });
-export const addToSelection = (i: number): Step => ({ check: () => true, run: (m, r) => dispatchOutside(m, r, 'selection.add', { target: pick(nodesOf(r.store.getState()), i) }), toString: () => `Adicionar(${i})` });
+export const select = (i: number): Step => ({ check: () => true, run: (m, r) => dispatchOutside(m, r, 'selection.select', { target: pick(nodesOf(r.store.getState()), i) }), toString: () => `Select(${i})` });
+export const addToSelection = (i: number): Step => ({ check: () => true, run: (m, r) => dispatchOutside(m, r, 'selection.add', { target: pick(nodesOf(r.store.getState()), i) }), toString: () => `Add(${i})` });
 export const pick = <T>(items: readonly T[], i: number): T | undefined => items[i % Math.max(1, items.length)];
 
 // the steps of the history itself, the typing and the gestures, which every group mixes with its own commands
@@ -568,9 +568,9 @@ export function runModel(group: string, steps: readonly fc.Arbitrary<Step>[], op
           const end = real.store.getState().document;
           const n = real.store.getState().history.past.length;
           for (let k = 0; k < n; k++) real.store.dispatch('history.undo' as CommandId, {} as never);
-          demand(deepEqual(real.store.getState().document, start), 'desfazer tudo não voltou ao documento do início do histórico');
+          demand(deepEqual(real.store.getState().document, start), 'undoing everything did not return to the document at the start of the history');
           for (let k = 0; k < n; k++) real.store.dispatch('history.redo' as CommandId, {} as never);
-          demand(deepEqual(real.store.getState().document, end), 'refazer tudo não voltou ao documento final');
+          demand(deepEqual(real.store.getState().document, end), 'redoing everything did not return to the final document');
         } finally {
           for (const key of Object.keys(counts) as (keyof Counts)[]) counts[key] = key === 'maxEntries' ? Math.max(counts[key], real.counts[key]) : counts[key] + real.counts[key];
         }
@@ -578,7 +578,7 @@ export function runModel(group: string, steps: readonly fc.Arbitrary<Step>[], op
       { seed: options.seed ?? 20261008, numRuns: Number(process.env.BUILDER_MODEL_RUNS ?? options.runs ?? 150) },
     );
   } catch (error) {
-    const cause = error instanceof Error && error.cause instanceof Error ? `\nCausa: ${error.cause.message}` : '';
+    const cause = error instanceof Error && error.cause instanceof Error ? `\nCause: ${error.cause.message}` : '';
     failure = String(error instanceof Error ? error.message : error) + cause;
   }
   const mutant = process.env.BUILDER_MUTANT ?? null;

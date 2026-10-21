@@ -1,5 +1,5 @@
 // The corpus's scoreboard rule (written by tools/capture/report.ts): whether a measured site
-// is at the target. The user, 2026-10-04: the target is 98 % ("pode ser 98"; DEC-62). A site counts when its reference
+// is at the target. The user, 2026-10-04: the target is 98 % ("it can be 98"; DEC-62). A site counts when its reference
 // is current and every width reaches the target. What the site blocks or never serves (its record's problem) is an
 // observation beside the score, never a failure: every real site has some. A site under the target is inconclusive
 // when, at every width under it, its own two live loads also differ by more than the target allows: the site varies.

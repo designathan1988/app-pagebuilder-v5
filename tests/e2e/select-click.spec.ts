@@ -76,7 +76,7 @@ test(
     await expectBox(page, '[data-chrome="selection"]', intro, 'the selection outline lies on the paragraph');
     // the label names the element and its tag, and stands in its one place (the user's rule of 2026-10-05, DEC-70):
     // above the element, touching its frame, at its left edge, whatever lies there. The Intro's space above holds the
-    // Title's text: the label lies over it, and then takes no press (jornada03 J16), so a press there reaches the text.
+    // Title's text: the label lies over it, and then takes no press (journey03 J16), so a press there reaches the text.
     const label = page.locator('[data-chrome="label"]');
     await expect(label).toHaveText(/Intro\s*p/);
     await expect(label).toHaveAttribute('data-placement', 'above');

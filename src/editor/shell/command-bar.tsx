@@ -108,7 +108,7 @@ function CommandBarDialog() {
         // the CSS name, as the spec asks (the status names the CSS property), and what a person types to reach it
         return [{ entry, args: write.args, label: t(entry.door.labelKey as MessageId, { property: property.id, value: asked.value }), key: entryKey(entry, write.args) }];
       }
-      // the project's own things (jornada03 J12): its pages to go to, the open page's elements to select, its classes
+      // the project's own things (journey03 J12): its pages to go to, the open page's elements to select, its classes
       // to apply to the selection, each an entry of its own door with the item as its argument
       if (kind === 'go-to-page') {
         return state.document.pages.flatMap((one): BarEntry[] => {

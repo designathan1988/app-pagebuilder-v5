@@ -118,7 +118,7 @@ export function snappedDelta(edge: number, delta: number, targets: readonly Snap
 // ---------------------------------------------------------------- lanes
 
 // One row of the timeline: a target's row, which holds the bars of its actions, and under it one row per property its
-// animations key, which holds that property's keyframes (plan: "trilhas por alvo e por propriedade").
+// animations key, which holds that property's keyframes (plan: "tracks per target and per property").
 export type Lane =
   | { readonly kind: 'target'; readonly key: string; readonly target: MotionTarget; readonly actions: readonly TimelineAction[] }
   | { readonly kind: 'property'; readonly key: string; readonly target: MotionTarget; readonly property: string; readonly keyframes: readonly { readonly action: string; readonly track: string; readonly id: string; readonly time: number; readonly value: string; readonly easing: string | null }[] };

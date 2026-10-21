@@ -1,4 +1,4 @@
-// The motion Timeline (plan stage 10, "Linha do tempo de verdade"; spec motion-timeline, motion-keyframes): the
+// The motion Timeline (plan stage 10, "A real timeline"; spec motion-timeline, motion-keyframes): the
 // project's timelines on the left; on the right a seconds axis with zoom, a ruler, a playhead with its readout
 // ("0.48 s / 1.20 s"), markers, and one lane per target with its actions as bars, each followed by one lane per
 // property its animations key, with the keyframes as diamonds; below, the fields of the selected action and keyframe.

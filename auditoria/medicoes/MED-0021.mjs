@@ -1,17 +1,17 @@
 /* global console, document, getComputedStyle, performance, setTimeout, window */
-// MED-0021 — as caixas das trilhas da grade, lidas em src/editor/canvas/grid-editor.tsx:38
-// `const found = frame && origin !== null ? trackBoxes(frame, editing as NodeId) : null;` (ENT-L07-0056, passo 5).
-// Estado: o projeto grid-page.json aberto, a grade em edição (grid.enterEdit). As caixas são lidas do desenho do
-// editor de grade (chrome__grid-line-number e chrome__grid-track-grip) e refeitas por trackBoxes
-// (src/editor/canvas/coordinates.ts:393) sobre os mesmos valores que o navegador calcula.
-// Roda: cat auditoria/medicoes/MED-0021.mjs | node --input-type=module -
+// MED-0021 — the boxes of the grid tracks, read in src/editor/canvas/grid-editor.tsx:38
+// `const found = frame && origin !== null ? trackBoxes(frame, editing as NodeId) : null;` (ENT-L07-0056, step 5).
+// State: the grid-page.json project open, the grid being edited (grid.enterEdit). The boxes are read from the drawing of the
+// grid editor (chrome__grid-line-number and chrome__grid-track-grip) and recomputed by trackBoxes
+// (src/editor/canvas/coordinates.ts:393) from the same values the browser computes.
+// Run: cat auditoria/medicoes/MED-0021.mjs | node --input-type=module -
 import fs from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const PROJECT = fs.readFileSync('manifest/features/fixtures/grid-page.json', 'utf8');
 const CONFIGS = {
-  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, barras: false },
-  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, barras: true },
+  A: { viewport: { width: 1280, height: 720 }, locale: 'pt-BR', deviceScaleFactor: 1, scrollbars: false },
+  B: { viewport: { width: 1440, height: 900 }, locale: 'en-US', deviceScaleFactor: 1.25, scrollbars: true },
 };
 const BOOT = {
   project: PROJECT,
@@ -58,7 +58,7 @@ const MEASURE = () => {
   const editing = 'n-grid';
   const screen = trackBoxes(iframe, editing);
   const relative = originRect === null ? [] : screen.map((b) => ({ x: b.x - originRect.x, y: b.y - originRect.y, width: b.width, height: b.height }));
-  // o desenho do editor de grade (a saída do próprio aplicativo), para conferir a leitura acima
+  // the grid editor's drawing (the app's own output), to check the reading above
   const numbers = [...document.querySelectorAll('[data-chrome="grid-line-number"]')].map((el) => ({ text: el.textContent, left: el.style.left, top: el.style.top }));
   const grips = [...document.querySelectorAll('[data-chrome="grid-track-grip"]')].map((el) => ({ left: el.style.left, top: el.style.top, width: el.style.width, height: el.style.height, start: el.dataset.start }));
   const grid = iframe.contentDocument.querySelector('[data-node="n-grid"]');
@@ -75,8 +75,8 @@ const MEASURE = () => {
   };
 };
 
-for (const [nome, c] of Object.entries(CONFIGS)) {
-  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.barras ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
+for (const [name, c] of Object.entries(CONFIGS)) {
+  const browser = await chromium.launch({ channel: 'chrome', headless: true, ...(c.scrollbars ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}) });
   const context = await browser.newContext({ viewport: c.viewport, locale: c.locale, deviceScaleFactor: c.deviceScaleFactor });
   const page = await context.newPage();
   page.on('pageerror', (e) => console.log('pageerror:', e.message));
@@ -89,7 +89,7 @@ for (const [nome, c] of Object.entries(CONFIGS)) {
     await new Promise((r) => setTimeout(r, 500));
   }, BOOT.commands.length + 1);
   const boot = await page.evaluate(() => window.__builderTestPort.boot().map((b) => `${b.command}:${b.status}`));
-  const valor = await page.evaluate(MEASURE);
-  console.log(JSON.stringify({ config: nome, boot, valor }));
+  const value = await page.evaluate(MEASURE);
+  console.log(JSON.stringify({ config: name, boot, value }));
   await browser.close();
 }

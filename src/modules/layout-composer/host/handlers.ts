@@ -395,7 +395,7 @@ function adopt(context: Context, container: DocNode, graph: LayoutIntent): { rea
 
 // layout.enter: compose a container (the selected one, else the page's root). The first time, its elements become the
 // regions the layout places, where they stand; afterwards it reopens with the intent it keeps, and elements added since
-// join it as placed regions (spec "Reedição"). Nothing about the page's look changes until the first gesture.
+// join it as placed regions (spec "Re-editing"). Nothing about the page's look changes until the first gesture.
 export const enterLayout = registerHandler<'layout.enter', EditorUi>('layout.enter', (context, { target }) => {
   try {
     const id = target ?? context.state.selection[0] ?? pageShown(context.state)?.tree.id;

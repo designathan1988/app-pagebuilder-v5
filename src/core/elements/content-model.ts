@@ -317,7 +317,7 @@ export function retagRefusal(document: DocumentJson, rules: ModelRules, id: Node
 }
 
 // Where every element of a tree stands against the HTML content model (feature nesting-grammar; the integrity of the
-// document, CLAUDE.md: "consistência pai/filho e regras de aninhamento"): the problems of the whole tree in one walk,
+// document, CLAUDE.md: "parent/child consistency and nesting rules"): the problems of the whole tree in one walk,
 // by the rules placementRefusal asks of one placement — a parent's closed list, an element that only exists inside
 // certain parents, one a parent holds at most once, an ancestor that excludes it, interactive content inside an
 // element that refuses it. Validation runs it on every commit (validate.ts), so no write and no file opened reaches

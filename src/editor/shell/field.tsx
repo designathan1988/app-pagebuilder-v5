@@ -113,7 +113,7 @@ function FieldMenu({ id, anchor, list, label, children }: { readonly id: string;
   );
 }
 
-// The wheel over a field that holds the focus (the plan's stage 3, "setas e arrasto"): each notch runs the field's own
+// The wheel over a field that holds the focus (the plan's stage 3, "arrows and drag"): each notch runs the field's own
 // ArrowUp or ArrowDown door (field.step), Shift ×10 and Alt ×0.1 as with the keys; a field without the focus lets the
 // panel scroll. The doors are the number field's step keys (interactions.json number-field context).
 const WHEEL_STEPS = manifest.doors.filter((d) => d.door.kind === 'shortcut' && typeof d.door.args.direction === 'string' && d.door.context === NUMBER_FIELD_CONTEXT && d.door.args.size === 'step');
@@ -734,7 +734,7 @@ export function NumberField({ entry, door, property, label, bare = false, labell
         <VariableSuggestions entry={entry} property={property} label={t('field.variables.of', { property: propertyWord(t, property) })} input={input} anchor={cellRef} variables={variables} choose={chooseVariable} />
     </span>
   );
-  // Reset this value stands at the row's end, never inside the value cell (jornada02 A.0, J6 of the jornada03 study:
+  // Reset this value stands at the row's end, never inside the value cell (journey02 A.0, J6 of the journey03 study:
   // inside the cell it shrank the number of a pair to nothing while the field was focused). It is drawn only while
   // the element holds a value of its own (spec inspector-provenance-reset, Problems in Pager 5), and shows while its
   // field is hovered or holds the focus (inspector.css .field__end).
@@ -1234,7 +1234,7 @@ export function TextStyleField({
         {sliderRange !== undefined ? <FieldSlider key="slider" range={sliderRange} value={shown !== '' ? shown : effective} available={available} label={label} said={said} keep={(text) => keepText.current(text, store.getState().selection)} /> : null}
     </span>
   );
-  // Reset this value at the row's end, as a number field's (jornada02 A.0, J6): never inside the value cell
+  // Reset this value at the row's end, as a number field's (journey02 A.0, J6): never inside the value cell
   const reset = RESET !== undefined && (set || anyStored) ? <DoorControl key="reset" entry={RESET} args={{ property }} ready={available} label={t('field.reset.of', { property: propertyWord(t, property) })} /> : null;
   // a row of its own: at the row's end; a field of a pair: at the end of the row's label column (inspector.css)
   const end = <span className="field__end">{reset}</span>;
@@ -1273,7 +1273,7 @@ export function TextStyleField({
 // its command (one undo step), and the button of the value the primary selected element holds (else the page computes)
 // is pressed. The buttons never wrap: when their words do not fit the row's value column (Position's five), the field
 // is drawn as a keyword menu — its value on a button that opens the list of the values, each item the same door
-// standing for its value (jornada02 GENERALISATION "Keyword buttons"; the audit's S-015).
+// standing for its value (journey02 GENERALISATION "Keyword buttons"; the audit's S-015).
 export function KeywordButtons({ entry, door, property, values, icons, label }: {
   readonly entry: DoorEntry;
   readonly door: DoorState;

@@ -88,8 +88,12 @@ describe('element.insert (src/core/structure/insert.ts)', () => {
     expect(childrenOf(applied(run([], { entry: 'container', parent: 'Hero', index: 0 })), 'Hero')).toEqual(['Container', 'Title', 'Actions']);
   });
 
-  it('refuses where the parent does not accept the element, and an element that holds no children as the parent', () => {
-    expect(run(['Perks'], { entry: 'section' })).toEqual({ kind: 'refused', message: { key: 'status.refused.onlyAccepts', params: { parent: '<ul>', children: '<li>' } } });
+  it('puts what a selected container does not accept right after it, in a parent that does (DEF-0601)', () => {
+    expect(childrenOf(applied(run(['Perks'], { entry: 'section' })), 'Page')).toEqual(['Hero', 'Perks', 'Section']);
+  });
+
+  it('refuses where the given parent does not accept the element, and an element that holds no children as the parent', () => {
+    expect(run([], { entry: 'section', parent: 'Perks' })).toEqual({ kind: 'refused', message: { key: 'status.refused.onlyAccepts', params: { parent: '<ul>', children: '<li>' } } });
     expect(run([], { entry: 'section', parent: 'Title' })).toEqual({ kind: 'refused', message: { key: 'status.refused.noChildren', params: { parent: 'Title' } } });
   });
 });

@@ -1,4 +1,4 @@
-// The Insert panel's search (jornada03 J11, J12): accents and case aside, the name first, then the words that also
+// The Insert panel's search (journey03 J11, J12): accents and case aside, the name first, then the words that also
 // name an entry (its English name, its synonyms), then its tag.
 import { describe, expect, it } from 'vitest';
 import { paletteRank } from './palette.ts';

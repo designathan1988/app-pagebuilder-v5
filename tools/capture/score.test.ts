@@ -1,4 +1,4 @@
-// The corpus's scoreboard rule (tools/capture/score.ts). The user, 2026-10-04: the target is 98 % ("pode ser 98"). A
+// The corpus's scoreboard rule (tools/capture/score.ts). The user, 2026-10-04: the target is 98 % ("it can be 98"). A
 // site counts when its reference is current and its four widths reach 98 %; resources the site blocks are an
 // observation, never a failure; a site below 98 % whose own live loads differ by as much is inconclusive.
 import { describe, expect, it } from 'vitest';

@@ -15,8 +15,8 @@ export default defineConfig(
   // worktrees; none is project code. tests/support/folders holds the sample folders a scenario opens with File ›
   // Open folder (spec explorer-open-folder): those files are the person's own site, kept as they were written.
   globalIgnores(['dist', 'reference', '.cache', '.playwright-mcp', '.claude', 'node_modules', 'test-results', 'playwright-report', 'tests/support/folders']),
-  // The audit journeys (jornada*/) hold the auditors' capture scripts and evidence, not project code.
-  globalIgnores(['jornada01', 'jornada02', 'jornada03']),
+  // The audit journeys (journey*/) hold the auditors' capture scripts and evidence, not project code.
+  globalIgnores(['journey01', 'journey02', 'journey03']),
   // Third-party code shipped as it was published (the Lottie player, minified, with its licence): never edited here.
   globalIgnores(['src/**/vendor/**']),
   // the browser extension as built (npm run extension:build): generated from companion/extension/src

@@ -159,7 +159,7 @@ describe('the invariant probe', () => {
         for (let i = store.getState().history.past.length; i > 0; i -= 1) dispatch('history.undo' as CommandId, {});
         if (!deepEqual(store.getState().document, initial)) throw new Error(`undoing everything did not return to the start of ${name}, after:\n  ${steps.join('\n  ')}`);
       }),
-      { seed: 20261002, numRuns: 200 },
+      { seed: 20261002, numRuns: Number(process.env.BUILDER_MODEL_RUNS ?? 200) },
     );
   });
 

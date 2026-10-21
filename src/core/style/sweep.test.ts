@@ -1,4 +1,4 @@
-// The silent-failure sweep (jornada03 J1): a style write the model refuses after the handler produced patches is a
+// The silent-failure sweep (journey03 J1): a style write the model refuses after the handler produced patches is a
 // failure the person never sees. Every property and composite of properties.json, with every keyword it offers, bare
 // and unit lengths, percentages and design tokens, on an element and on a class, at the base and at another
 // breakpoint, either changes the document into one the validator takes, changes nothing, or is refused by the handler

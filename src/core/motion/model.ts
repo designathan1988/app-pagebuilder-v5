@@ -56,7 +56,7 @@ export interface PropertyTrack {
   readonly keyframes: readonly MotionKeyframe[];
 }
 
-// The parts of a transform a track may key on its own (plan: "partes de transformação"). The runtime composes them
+// The parts of a transform a track may key on its own (plan: "transform parts"). The runtime composes them
 // through registered custom properties, so x and y keyed in different tracks interpolate independently.
 export const TRANSFORM_PARTS = ['translate-x', 'translate-y', 'translate-z', 'scale-x', 'scale-y', 'rotate-z', 'rotate-x', 'rotate-y', 'skew-x', 'skew-y'] as const;
 
@@ -98,7 +98,7 @@ type DisplayTransition = 'none' | 'fade' | 'slide-up' | 'slide-down' | 'scale';
 
 // ---------------------------------------------------------------- the timeline
 
-// How an action's targets are offset one after the other (plan: "escalonar início/centro/fim/aleatório"): each next
+// How an action's targets are offset one after the other (plan: "stagger from start/centre/end/random"): each next
 // target starts `each` ms later, counted from the first, the middle, the last or a seeded shuffle of them.
 export interface Stagger {
   readonly each: number;

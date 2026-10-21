@@ -63,7 +63,7 @@
   font: var(--fw-caption) var(--fs-caption) / var(--lh-caption) var(--font-ui);
 }
 
-/* the label column the Style tab uses, so a value of Settings starts at the same x (jornada02 R-06) */
+/* the label column the Style tab uses, so a value of Settings starts at the same x (journey02 R-06) */
 [data-region='inspector-settings'] .field-row {
   grid-template-columns: var(--size-label-column) minmax(0, 1fr);
   gap: var(--space-3);
@@ -94,7 +94,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
-/* a custom attribute's name is code: mono, as its value (jornada02 GENERALISATION 1.3: name mono | value mono) */
+/* a custom attribute's name is code: mono, as its value (journey02 GENERALISATION 1.3: name mono | value mono) */
 [data-region='inspector-settings'] .custom-attributes .field-row__label {
   font-family: var(--font-mono);
 }

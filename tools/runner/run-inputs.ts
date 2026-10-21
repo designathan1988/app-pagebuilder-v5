@@ -29,9 +29,13 @@ export const RUN_INPUTS: readonly string[] = [
   'tsconfig.node.json',
 ];
 
-// the root paths no test executes: documentation, the editor's and the agents' local configuration, the lint's own
-// configuration (lint runs as its own step), and what the tools write (OUTPUTS)
-export const NOT_INPUTS: readonly string[] = ['.claude', '.vscode', 'docs', 'README.md', 'CLAUDE.md', 'AGENTS.md', '.mcp.json', '.gitignore', '.gitattributes', '.git', 'eslint.config.js', '.dependency-cruiser.cjs'];
+// the root paths no test executes: documentation and the work records, the editor's and the agents' local
+// configuration, the lint's own configuration (lint runs as its own step), and what the tools write (OUTPUTS)
+export const NOT_INPUTS: readonly string[] = ['.claude', '.vscode', 'docs', 'auditoria', 'reports', 'research_notes', 'README.md', 'CLAUDE.md', 'AGENTS.md', '.mcp.json', '.gitignore', '.gitattributes', '.git', 'eslint.config.js', '.dependency-cruiser.cjs'];
+
+// a root path no test executes: one of NOT_INPUTS, or a note or a local script of the owner at the root (a Markdown
+// file, a PowerShell script), which the repository does not carry
+export const isNotInput = (root: string): boolean => NOT_INPUTS.includes(root) || /\.(md|ps1)$/u.test(root);
 
 // folders the tools and the package manager write, at any depth: never an input
 export const OUTPUTS: ReadonlySet<string> = new Set(['node_modules', 'dist', '.cache', '.playwright-mcp', 'test-results', 'playwright-report', 'coverage']);

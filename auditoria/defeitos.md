@@ -1446,3 +1446,9 @@
 - Sintoma: clicar com o botão direito numa camada no meio do painel (Rodapé, Botão 2, a 1366×768): o menu abre em y=8, e "Organizar" da barra de menus aparece sobre "Renomear".
 - Causa: `src/editor/shell/top-bar.css:30`: os botões da barra têm `z-index: var(--z-menu-anchor)` (51), acima de `--z-menu` (50) do menu de contexto.
 - Prova: reproduzido 2× no Chrome (`elementFromPoint` no primeiro item = "Organizar"), fotos 68, 79 e `105-menu-contexto-*`.
+
+## DEF-0622 — espaçamento com um estado que o elemento não aceita quebrava o documento
+- Status: corrigido (verificação rápida, 2026-10-21)
+- Sintoma: com o estado Disabled ativo, digitar o padding da página (campo de outro elemento selecionado, `targets` = página) gravava `styles.desktop.disabled` na página; o validador recusava e o comando terminava em erro em vez de dizer "não se aplica".
+- Causa: `src/core/nodes/flags.ts` `edited` lia só `args.target` e caía na seleção; os escritores de estilo editam `args.targets` (`set.ts` `withTargets`), então a recusa por estado conferia outros elementos.
+- Prova: `tools/runner/invariants.test.ts` (sonda de sequências aleatórias, semente 20261002) falhava com `view.setStyleState disabled` + `style.setSpacing` na página e passa nas 200 execuções depois.

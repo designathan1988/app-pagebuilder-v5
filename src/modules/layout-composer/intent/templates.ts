@@ -1,4 +1,4 @@
-// Layout templates and spatial components (spec "Layout templates", "Conversão para template", "Spatial Components"):
+// Layout templates and spatial components (spec "Layout templates", "Conversion to a template", "Spatial Components"):
 // any valid composition, or the regions selected in one, saved as a reusable structure with the parameters it can be
 // placed with — its layout variables (gap = 24) and the count of each repeated group (columns = 4). Placing one adds
 // its regions to the composition at the place chosen, scaled to it, as one operation. The project keeps the saved

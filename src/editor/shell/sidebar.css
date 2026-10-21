@@ -386,7 +386,7 @@
   position: absolute;
   right: var(--space-3);
   /* never wider than the room the name leaves it (.row__page-name's margin, less a gap): a long file name ends in an
-     ellipsis instead of running back over the page's name (jornada03 plan, stage 5: row__meta); half the row was
+     ellipsis instead of running back over the page's name (journey03 plan, stage 5: row__meta); half the row was
      wider than that room, and "about-us-and-our…" lay over the name (DEF-0610) */
   max-width: calc(var(--space-10) * 2 + var(--space-3) - var(--space-2));
   /* the gap from the name is the width's own (less a gap): no inner gap besides, or "index.html" read "index.htm…" */
@@ -648,7 +648,7 @@
 }
 
 /* a row's labelled action (a data file's Fill, spec repeat-element) shows at rest: its words say what it does without a
-   hover (jornada03 J13), over the row's meta */
+   hover (journey03 J13), over the row's meta */
 .row__actions .door--button {
   opacity: 1;
 }
@@ -797,7 +797,7 @@
   line-height: var(--lh-caption);
 }
 
-/* the note of a Layers search that matches nothing (the audit's U-020), in the note recipe (jornada02 G-22) */
+/* the note of a Layers search that matches nothing (the audit's U-020), in the note recipe (journey02 G-22) */
 .layers-search__none {
   margin: 0;
   padding: var(--space-3) var(--space-6);

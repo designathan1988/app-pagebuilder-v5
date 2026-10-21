@@ -1,9 +1,9 @@
 /* global console */
-// MED-0029 — não medido: nenhum fluxo cita este id.
-// O procedimento (auditoria/medicoes/PROCEDIMENTO.md) diz que cada id já está citado por um ou mais fluxos, na seção
-// `## Medições`. Este script procura o id em auditoria/fluxos/ e mostra quantas citações há: zero, e por isso não há
-// valor nem estado a montar no navegador.
-// Roda: cat auditoria/medicoes/MED-0029.mjs | node --input-type=module -
+// MED-0029 — not measured: no flow cites this id.
+// The procedure (auditoria/medicoes/PROCEDIMENTO.md) says every id is already cited by one or more flows, in the
+// `## Medições` section. This script searches for the id in auditoria/fluxos/ and shows how many citations there are: zero, so there is
+// no value and no state to set up in the browser.
+// Run: cat auditoria/medicoes/MED-0029.mjs | node --input-type=module -
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -23,6 +23,6 @@ for (const f of files) {
   const text = fs.readFileSync(f, 'utf8');
   if (text.includes(ID)) hits.push(f);
 }
-// os vizinhos, para mostrar que o id cai numa faixa em uso
+// the neighbours, to show that the id falls in a range in use
 const range = ['MED-0028', 'MED-0030'].map((id) => ({ id, citations: files.filter((f) => fs.readFileSync(f, 'utf8').includes(id)).length }));
 console.log(JSON.stringify({ id: ID, flowFiles: files.length, citations: hits.length, files: hits, neighbours: range }));

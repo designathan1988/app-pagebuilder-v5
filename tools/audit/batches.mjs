@@ -1,14 +1,15 @@
 /* global process, console */
-// Fase 2: divide o escopo da vistoria nos lotes do plano (auditoria/plano-execucao.md, B.2)
-// e grava auditoria/lotes/<lote>.md com, por arquivo, linhas, SHA1 e a lista de leituras
-// (offset, limit) cujo custo cabe no alvo. Recusa arquivo sem lote ou em dois lotes.
-// Uso: node tools/audit/lotes.mjs
+// Phase 2: splits the inspection scope into the plan's batches (auditoria/plano-execucao.md, B.2)
+// and writes auditoria/lotes/<batch>.md with, per file, its line count, SHA1 and the list of reads
+// (offset, limit) whose cost fits the target. Rejects a file with no batch or in two batches.
+// The batch files keep the Portuguese record format (Lote, Arquivos, Linhas, Leituras).
+// Usage: node tools/audit/batches.mjs
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, cfg, scopeFiles, fileInfo, readText } from './lib.mjs';
 
 const AUD = path.join(ROOT, 'auditoria');
-const TARGET = Math.min(50000, cfg.limiteLeituraCaracteres);
+const TARGET = Math.min(50000, cfg.readLimitChars);
 
 const SPLIT = {
   'manifest/features/04-inspector.json': ['L14a', 'L14b'],
@@ -23,7 +24,7 @@ const EXACT = {
 const CMD_L11B = new Set(['style.json', 'structure.json', 'text.json', 'view.json', 'workspace.json', 'selection.json']);
 const MANIFEST_L12 = new Set(['checks.json', 'consumers.json', 'css-exclusions.json', 'elements.json', 'environment.json', 'interactions.json', 'layout.json', 'properties.json', 'references.json']);
 
-function featureLote(base) {
+function featureBatch(base) {
   if (base === '02-structure-editing.json') return 'L13a';
   if (base === '24-motion.json') return 'L18b';
   if (base === '25-content.json') return 'L18c';
@@ -35,7 +36,7 @@ function featureLote(base) {
   return null;
 }
 
-function e2eLote(rest) {
+function e2eBatch(rest) {
   const c = rest[0];
   if (c >= 'a' && c <= 'h') return 'L20a';
   if (c >= 'i' && c <= 'p') return 'L20b';
@@ -43,7 +44,7 @@ function e2eLote(rest) {
   return null;
 }
 
-function loteOf(rel) {
+function batchOf(rel) {
   if (SPLIT[rel]) return SPLIT[rel];
   if (EXACT[rel]) return EXACT[rel];
   if (rel === 'src/app/' || rel.startsWith('src/app/')) return 'L05a';
@@ -79,9 +80,9 @@ function loteOf(rel) {
       motion: 'L08',
     };
     if (seg === 'shell') {
-      const dentro = rest.slice('shell/'.length);
-      if (dentro.startsWith('sidebar/')) return 'L09b';
-      return dentro[0] >= 'l' ? 'L09b' : 'L09a';
+      const inside = rest.slice('shell/'.length);
+      if (inside.startsWith('sidebar/')) return 'L09b';
+      return inside[0] >= 'l' ? 'L09b' : 'L09a';
     }
     if (map[seg]) return map[seg];
     return 'L05b';
@@ -98,7 +99,7 @@ function loteOf(rel) {
   if (rel.startsWith('manifest/features/')) {
     const base = rel.slice('manifest/features/'.length);
     if (base.includes('/')) return 'L19';
-    return featureLote(base);
+    return featureBatch(base);
   }
   if (rel.includes('/') === false) return 'L22b';
   if (rel.startsWith('manifest/')) {
@@ -107,7 +108,7 @@ function loteOf(rel) {
   }
   if (rel.startsWith('tests/e2e/')) {
     const rest = rel.slice('tests/e2e/'.length);
-    if (!rest.includes('/')) return e2eLote(rest);
+    if (!rest.includes('/')) return e2eBatch(rest);
     return null;
   }
   if (rel.startsWith('tests/support/') || rel.startsWith('tests/perf/')) return 'L21';
@@ -133,53 +134,53 @@ function readsFor(rel) {
 }
 
 const scope = scopeFiles();
-const byLote = new Map();
+const byBatch = new Map();
 const problems = [];
 for (const f of scope) {
-  const l = loteOf(f);
-  if (!l) { problems.push(`sem lote: ${f}`); continue; }
-  const lotes = Array.isArray(l) ? l : [l];
-  for (const nome of lotes) {
-    if (!byLote.has(nome)) byLote.set(nome, []);
-    byLote.get(nome).push(f);
+  const l = batchOf(f);
+  if (!l) { problems.push(`no batch: ${f}`); continue; }
+  const batches = Array.isArray(l) ? l : [l];
+  for (const name of batches) {
+    if (!byBatch.has(name)) byBatch.set(name, []);
+    byBatch.get(name).push(f);
   }
 }
 const seen = new Map();
-for (const [nome, files] of byLote) {
+for (const [name, files] of byBatch) {
   for (const f of files) {
     if (SPLIT[f]) continue;
-    if (seen.has(f)) problems.push(`em dois lotes: ${f} (${seen.get(f)}, ${nome})`);
-    seen.set(f, nome);
+    if (seen.has(f)) problems.push(`in two batches: ${f} (${seen.get(f)}, ${name})`);
+    seen.set(f, name);
   }
 }
 
 const outDir = path.join(AUD, 'lotes');
 fs.mkdirSync(outDir, { recursive: true });
-const resumo = [];
-for (const [nome, files] of [...byLote.entries()].sort()) {
+const summary = [];
+for (const [name, files] of [...byBatch.entries()].sort()) {
   const uniq = [...new Set(files)].sort();
-  let totalLinhas = 0;
-  let out = `# Lote ${nome}\n\nArquivos: ${uniq.length}.\n\n`;
+  let totalLines = 0;
+  let out = `# Lote ${name}\n\nArquivos: ${uniq.length}.\n\n`;
   for (const f of uniq) {
     const info = fileInfo(f);
-    totalLinhas += info.l;
+    totalLines += info.l;
     let parts = readsFor(f);
     if (SPLIT[f]) {
       const half = Math.ceil(parts.length / 2);
-      parts = nome === SPLIT[f][0] ? parts.slice(0, half) : parts.slice(half);
+      parts = name === SPLIT[f][0] ? parts.slice(0, half) : parts.slice(half);
     }
     out += `## \`${f}\`\n`;
     out += `Linhas: ${info.l}. SHA1: ${info.h}\n`;
     out += `Leituras: ${parts.map(([a, b]) => `(${a}, ${b - a + 1})`).join(' ')}\n\n`;
   }
-  fs.writeFileSync(path.join(outDir, `${nome}.md`), out);
-  resumo.push([nome, uniq.length, totalLinhas]);
+  fs.writeFileSync(path.join(outDir, `${name}.md`), out);
+  summary.push([name, uniq.length, totalLines]);
 }
 
-console.log('lote | arquivos | linhas');
-for (const [n, a, l] of resumo) console.log(`${n} | ${a} | ${l}`);
-console.log(`TOTAL: ${scope.length} arquivos`);
+console.log('batch | files | lines');
+for (const [n, a, l] of summary) console.log(`${n} | ${a} | ${l}`);
+console.log(`TOTAL: ${scope.length} files`);
 if (problems.length) {
-  for (const p of problems) console.log(`PROBLEMA: ${p}`);
+  for (const p of problems) console.log(`PROBLEM: ${p}`);
   process.exit(1);
 }

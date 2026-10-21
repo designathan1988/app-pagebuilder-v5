@@ -54,7 +54,7 @@ function firstRule(report: string, id: string, detectors: readonly Detector[]): 
     if (!fs.existsSync(file)) continue;
     const failure = (JSON.parse(fs.readFileSync(file, 'utf8')) as { failure: string | null }).failure;
     if (failure === null) continue;
-    const cause = /Causa: (.+)/.exec(failure)?.[1];
+    const cause = /Cause: (.+)/.exec(failure)?.[1];
     return `${group}: ${cause ?? failure.split('\n')[0] ?? ''}`;
   }
   try {
@@ -63,14 +63,14 @@ function firstRule(report: string, id: string, detectors: readonly Detector[]): 
       if (file.message) return file.message.split('\n')[0] ?? '';
       for (const test of file.assertionResults ?? []) {
         const text = (test.failureMessages ?? []).join('\n');
-        const cause = /Causa: ([^\n"\\]+)/.exec(text)?.[1];
+        const cause = /Cause: ([^\n"\\]+)/.exec(text)?.[1];
         if (cause !== undefined) return cause;
         const line = text.split('\n').find((l) => l.trim() !== '');
         if (line !== undefined) return line.trim();
       }
     }
   } catch {
-    return 'sem relatório do Vitest';
+    return 'no Vitest report';
   }
   return '';
 }
@@ -101,7 +101,7 @@ function run(mutant: Mutant | null): Promise<Run> {
       const failures = failuresOf(report);
       const unreported = !timedOut && exit !== 0 && (failures === null || failures === 0);
       const detected = !timedOut && exit !== 0 && failures !== null && failures > 0;
-      resolve({ mutant: id, exit, ms: Date.now() - start, applied, detected, timedOut, unreported, rule: exit === 0 ? '' : timedOut ? `tempo esgotado (${mutant === null ? BASELINE_LIMIT : LIMIT} ms)` : firstRule(report, id, mutant?.detectors ?? ALL_DETECTORS) });
+      resolve({ mutant: id, exit, ms: Date.now() - start, applied, detected, timedOut, unreported, rule: exit === 0 ? '' : timedOut ? `timed out (${mutant === null ? BASELINE_LIMIT : LIMIT} ms)` : firstRule(report, id, mutant?.detectors ?? ALL_DETECTORS) });
     });
   });
 }
@@ -124,26 +124,26 @@ const baseline = await run(null);
 const lines: string[] = [];
 let failed = false;
 if (baseline.exit !== 0 || baseline.timedOut) {
-  lines.push(`linha de base FALHOU (${baseline.ms} ms): ${baseline.rule}`);
+  lines.push(`baseline FAILED (${baseline.ms} ms): ${baseline.rule}`);
   failed = true;
 }
 const runs = failed ? [] : await pool(chosen, 4, run);
 const results = runs.map((r) => {
   const mutant = MUTANTS.find((m) => m.id === r.mutant) as Mutant;
-  const verdict = r.timedOut ? 'TEMPO ESGOTADO' : !r.applied ? 'TROCA NÃO CARREGADA' : r.unreported ? 'FALHOU SEM TESTE' : r.detected ? 'acusado' : mutant.equivalent !== undefined ? 'sobrevive (equivalente)' : 'SOBREVIVEU';
+  const verdict = r.timedOut ? 'TIMED OUT' : !r.applied ? 'SWAP NOT LOADED' : r.unreported ? 'FAILED WITHOUT A TEST' : r.detected ? 'detected' : mutant.equivalent !== undefined ? 'survives (equivalent)' : 'SURVIVED';
   return { ...r, verdict, breaks: mutant.breaks, source: mutant.source, detectors: mutant.detectors, equivalent: mutant.equivalent ?? null };
 });
-const detected = results.filter((r) => r.verdict === 'acusado').length;
-const equivalent = results.filter((r) => r.verdict === 'sobrevive (equivalente)').length;
-const bad = results.filter((r) => r.verdict === 'SOBREVIVEU' || r.verdict === 'TROCA NÃO CARREGADA' || r.verdict === 'TEMPO ESGOTADO' || r.verdict === 'FALHOU SEM TESTE');
+const detected = results.filter((r) => r.verdict === 'detected').length;
+const equivalent = results.filter((r) => r.verdict === 'survives (equivalent)').length;
+const bad = results.filter((r) => r.verdict === 'SURVIVED' || r.verdict === 'SWAP NOT LOADED' || r.verdict === 'TIMED OUT' || r.verdict === 'FAILED WITHOUT A TEST');
 if (bad.length > 0) failed = true;
 const total = Date.now() - started;
 fs.writeFileSync(`${OUT}/summary.json`, `${JSON.stringify({ baseline, results, detected, equivalent, total }, null, 2)}\n`);
 
-lines.unshift(`mutantes: ${results.length}; acusados: ${detected}; equivalentes com motivo: ${equivalent}; taxa de acusação dos não equivalentes: ${results.length - equivalent === 0 ? '-' : `${((100 * detected) / (results.length - equivalent)).toFixed(1)}%`}; linha de base ${baseline.ms} ms; total ${(total / 1000).toFixed(1)} s`);
-for (const r of results.filter((x) => x.verdict !== 'acusado').slice(0, 20)) lines.push(`${r.mutant} ${r.verdict}: ${r.breaks}`);
+lines.unshift(`mutants: ${results.length}; detected: ${detected}; equivalent with a reason: ${equivalent}; detection rate of the non-equivalent: ${results.length - equivalent === 0 ? '-' : `${((100 * detected) / (results.length - equivalent)).toFixed(1)}%`}; baseline ${baseline.ms} ms; total ${(total / 1000).toFixed(1)} s`);
+for (const r of results.filter((x) => x.verdict !== 'detected').slice(0, 20)) lines.push(`${r.mutant} ${r.verdict}: ${r.breaks}`);
 const slowest = [...results].sort((a, b) => b.ms - a.ms)[0];
-if (slowest !== undefined) lines.push(`processo mais lento: ${slowest.mutant} ${slowest.ms} ms`);
-lines.push(`completo em ${OUT}/summary.json`);
+if (slowest !== undefined) lines.push(`slowest process: ${slowest.mutant} ${slowest.ms} ms`);
+lines.push(`full summary in ${OUT}/summary.json`);
 console.log(lines.slice(0, 30).join('\n'));
 process.exitCode = failed ? 1 : 0;

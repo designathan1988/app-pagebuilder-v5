@@ -1,6 +1,6 @@
 // The interface's own face (Source Sans 3, src/ui/fonts/), read from the TrueType file — cmap, hmtx, the kern table
 // and GPOS — so the width of an editor label is computed in Node, without a browser (the investigation's C4, option A).
-// The proof of the arithmetic is auditoria/investigacao/poc/c4-texto/medir.mjs and its resultados.txt: with the GPOS
+// The proof of the arithmetic is auditoria/investigacao/poc/c4-texto/measure.mjs and its resultados.txt: with the GPOS
 // kerning the width differs from what Chrome draws by at most 0,015 px over the 6229 messages of both catalogues.
 // tools/ui-fit/check.ts is the check that rests on it.
 import fs from 'node:fs';

@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 // @vitest-environment-options {"settings":{"disableCSSFileLoading":true,"handleDisabledFileLoadingAsSuccess":true,"disableJavaScriptFileLoading":true}}
-// How many times a view redraws, per action, in happy-dom (the investigation's C8, "re-render desnecessário"): a view
+// How many times a view redraws, per action, in happy-dom (the investigation's C8, "unnecessary re-render"): a view
 // that reads a slice of the editor state with useEditorState redraws when the slice changes and not when something
 // else does — the count of the <Profiler>'s commits and of the component's own reads are the two witnesses, and the
 // selection's change is what gives the counter something to see. A view whose selector is not stable (a new object at
@@ -48,8 +48,8 @@ function mount(store: EditorStore, element: ReactElement): Drawn {
   };
 }
 
-describe('quantas vezes uma vista redesenha', () => {
-  it('uma vista de uma fatia redesenha quando a fatia muda, e não quando outra coisa muda', () => {
+describe('how many times a view redraws', () => {
+  it('a view of a slice redraws when the slice changes, and not when something else changes', () => {
     const store = storeOf();
     const View = () => {
       const count = useEditorState((s: EditorState) => s.selection.length);
@@ -57,19 +57,19 @@ describe('quantas vezes uma vista redesenha', () => {
       return createElement('span', null, String(count));
     };
     const drawn = mount(store, createElement(View));
-    expect(drawn.reads(), 'a montagem desenha a vista uma vez').toBe(1);
+    expect(drawn.reads(), 'the mount draws the view once').toBe(1);
     // the slice changes: one redraw, one commit more than the mount's (DEF-0567: the mount's own commit made the check
     // pass with none)
     const mounted = drawn.commits();
     act(() => void dispatch(store, 'selection.select', { target: firstElement(store) }));
-    expect(drawn.reads(), 'a seleção mudou: a vista redesenha').toBe(2);
-    expect(drawn.commits(), 'a seleção mudou: um commit').toBe(mounted + 1);
+    expect(drawn.reads(), 'the selection changed: the view redraws').toBe(2);
+    expect(drawn.commits(), 'the selection changed: one commit').toBe(mounted + 1);
     // another part of the state changes: no redraw
     const readsBefore = drawn.reads();
     const commitsBefore = drawn.commits();
     act(() => void dispatch(store, 'view.zoomIn', {}));
-    expect(drawn.reads(), 'o zoom mudou e a vista da seleção não redesenha').toBe(readsBefore);
-    expect(drawn.commits(), 'o zoom mudou e a vista da seleção não é comprometida').toBe(commitsBefore);
+    expect(drawn.reads(), 'the zoom changed and the selection view does not redraw').toBe(readsBefore);
+    expect(drawn.commits(), 'the zoom changed and the selection view is not committed').toBe(commitsBefore);
     drawn.stop();
   });
 });
@@ -77,18 +77,18 @@ describe('quantas vezes uma vista redesenha', () => {
 // A view of the app itself (the investigation's C8 asked the readers of the document, not a view written here): the
 // Layers panel, which reads the document and the selection, commits when the selection changes and not when only the
 // zoom does (DEF-0567).
-describe('quantas vezes o painel Camadas redesenha', () => {
-  it('a seleção muda e o painel redesenha; o zoom muda e o painel não redesenha', () => {
+describe('how many times the Layers panel redraws', () => {
+  it('the selection changes and the panel redraws; the zoom changes and the panel does not redraw', () => {
     const store = storeOf();
     const drawn = mount(store, createElement(LayersSection));
     const mounted = drawn.commits();
-    expect(mounted, 'a montagem do painel é comprometida').toBeGreaterThan(0);
+    expect(mounted, 'the panel mount is committed').toBeGreaterThan(0);
     act(() => void dispatch(store, 'selection.select', { target: firstElement(store) }));
     const selected = drawn.commits();
-    expect(selected, 'a seleção mudou: o painel redesenha').toBeGreaterThan(mounted);
+    expect(selected, 'the selection changed: the panel redraws').toBeGreaterThan(mounted);
     act(() => void dispatch(store, 'view.zoomIn', {}));
     act(() => void dispatch(store, 'view.zoomIn', {}));
-    expect(drawn.commits(), 'o zoom mudou duas vezes e o painel Camadas não redesenha').toBe(selected);
+    expect(drawn.commits(), 'the zoom changed twice and the Layers panel does not redraw').toBe(selected);
     drawn.stop();
   });
 });

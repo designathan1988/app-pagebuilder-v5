@@ -1,4 +1,4 @@
-// The compiled structure written into the document (spec "Fluxo normal fora do Layout Mode", "Integração com estilos",
+// The compiled structure written into the document (spec "Normal flow outside Layout Mode", "Integration with styles",
 // "Stable Compilation"): the composed container keeps its id and gets the root's declarations, every compiled node
 // becomes an ordinary element — the one it already was when the page holds it (found by its marker), else a new `div`
 // in the tag the region means — and each element of the page the layout places (a content region) keeps its id, its

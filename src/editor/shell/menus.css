@@ -31,7 +31,7 @@
   color: var(--color-text-muted);
 }
 
-/* a menu (jornada02 G-18, the audit's U-035): 240 px at the least, its items 26 px, radius lg, the floating shadow */
+/* a menu (journey02 G-18, the audit's U-035): 240 px at the least, its items 26 px, radius lg, the floating shadow */
 .menu {
   position: absolute;
   top: 100%;
@@ -78,7 +78,7 @@
   cursor: not-allowed;
 }
 
-/* the line between the groups of a menu (jornada02 G-18): the values a field suggests, then its units */
+/* the line between the groups of a menu (journey02 G-18): the values a field suggests, then its units */
 .menu__separator {
   margin: var(--space-2) 0;
   border-top: 1px solid var(--color-border);

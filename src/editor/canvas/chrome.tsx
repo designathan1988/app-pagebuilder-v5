@@ -270,7 +270,8 @@ interface Layout {
   // whether the one selected element's own declarations move its start edge on each axis (4.2): where they do not
   // (the parent lays it out, an inline-level element), the north and west handles are drawn disabled with the reason
   readonly starts: { readonly x: boolean; readonly y: boolean } | null;
-  // the one selected element's size in CSS px, the label's own chip (item 4.2: "L x A", live while a drag goes on)
+  // the one selected element's size in CSS px, the label's own chip (item 4.2: "L x A", width x height in pt-BR, live
+  // while a drag goes on)
   readonly size: { readonly width: number; readonly height: number } | null;
   // the element's own rotation in degrees (0 when it holds none): the outline and the handles turn with it (item 4.4)
   readonly rotation: number;
@@ -768,7 +769,7 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
         } else if (key !== placedFor) {
           // The selection's label has one place (the user's rule of 2026-10-05, DEC-70): above its element, touching
           // the top of the frame's line, at its left edge — whatever lies there, for one element or several, at every
-          // zoom, scroll and breakpoint. Over page text it takes no press (`covers`, jornada03 J16). While a text is
+          // zoom, scroll and breakpoint. Over page text it takes no press (`covers`, journey03 J16). While a text is
           // edited in place, its toolbar sits above the label, at the same start.
           const gap = parseFloat(getComputedStyle(layer.current as HTMLDivElement).getPropertyValue('--space-1')) || 0;
           const content = contentBoxes(iframe).map((b) => local(b) as Box);
@@ -819,7 +820,7 @@ function useChromeLayout({ layer, label, bar, selection, targets, hovered, node,
         // the hovered element's size in CSS px, and, with Alt held, its distances to the one selected element
         const zoom = iframe.currentCSSZoom > 0 ? iframe.currentCSSZoom : 1;
         // the hovered element's size chip stands under its bottom-left corner, or under its bottom-right one where the
-        // selection's label is (jornada03 J16: a button's label and its section's size chip were drawn one over the
+        // selection's label is (journey03 J16: a button's label and its section's size chip were drawn one over the
         // other); the chip's own size is read from the one drawn
         const chip = layer.current?.querySelector<HTMLElement>('[data-chrome="hover-size"]');
         const chipSize = { width: chip?.offsetWidth ?? 0, height: chip?.offsetHeight ?? 0 };

@@ -42,7 +42,7 @@ export const setDensity: RegisteredHandler<'palette.setDensity', EditorUi> = reg
 // the densities the panel offers: the values of the density argument of palette.setDensity (the manifest's)
 export const PALETTE_DENSITIES: readonly string[] = commandOf(setDensity.command).args.density?.values ?? [];
 
-// How well a palette entry answers what the search field holds (spec palette-search-groups; jornada03 J11, J12): null
+// How well a palette entry answers what the search field holds (spec palette-search-groups; journey03 J11, J12): null
 // when it does not, else a rank, lower first — the name itself, a name that starts with the text, a word of the name
 // that does, a name that holds it, then the words that also name it (its English name, the synonyms of the person's
 // language: "texto" finds Paragraph, "botao" Button), then its tag. Case, accents and the spaces around the text aside;

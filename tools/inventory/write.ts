@@ -15,7 +15,7 @@ try {
   const { inventoryText } = (await server.ssrLoadModule('/tools/inventory/inventory-file.ts')) as typeof import('./inventory-file.ts');
   fs.mkdirSync('manifest/generated', { recursive: true });
   fs.writeFileSync('manifest/generated/inventory.json', inventoryText());
-  console.log('manifest/generated/inventory.json gravado');
+  console.log('manifest/generated/inventory.json written');
 } finally {
   await server.close();
 }
