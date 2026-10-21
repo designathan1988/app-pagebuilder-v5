@@ -4,27 +4,31 @@ Page builder com editor visual. O canvas é renderizado em iframe e há breakpoi
 
 Este arquivo contém **requisitos e regras de trabalho**. Ele não descreve o estado atual do código: o estado está em `auditoria/progresso.md`.
 
-## 0. Ritmo (exigência do dono, 2026-10-09)
-O trabalho estava lento demais pelo ritual, não pelo código. Valem estas regras:
-- **Lotes por área:** corrija de 5 a 10 defeitos da mesma área por vez. Dentro do lote, rode só o grupo de detectores da área (`npx vitest run --config tools/runner/model/vitest.config.ts tools/runner/model/<grupo>.test.ts`) e o spec de navegador da área.
-- **Portões completos uma vez por lote:** todos os detectores, `npm run typecheck`, `npm run lint`, os mutantes novos (`BUILDER_MUTANT=<id>`) e um commit com push.
-- **Catálogo inteiro de mutantes e suíte inteira de navegador:** só no fim de uma etapa, **uma vez**, numa só condição (a padrão). Falhou algo: corrija e rode só o que falhou (`npx playwright test --last-failed`), nas duas condições. Nunca repita a suíte inteira.
-- **Produção primeiro (2026-10-09):** o tempo vai para defeitos do app que o usuário vê. Rodada de teste sem defeito do app a corrigir não é lote. Um caso que só falha com a máquina ocupada (tempo de quadro, leitura cedo demais) é registrado e não abre investigação no meio do lote.
-- **Fim de lote:** encerre os servidores e navegadores que você abriu (`vite preview`, Chrome de medição).
+## 0. Ritmo e verificação (exigência do dono, 2026-10-21)
+**Proibido rodar testes e medições.** O dono encerrou: suítes de navegador, detectores (vitest), catálogo de mutantes, medições de tempo e de largura (`ui-widths`), `npm test`, `npm run e2e`, `npx playwright test`, `npx vitest`, `node tools/runner/mutants-run.ts`. Não escreva spec, detector nem mutante novo. Os arquivos ficam no repositório, parados: não se apagam, não se mantêm.
+
+A verificação passa a ter três partes:
+1. **Leitura de código (a principal):** antes e depois de cada correção, leia o fluxo inteiro: quem chama, o tratador, a store, o render. Confira contra as regras G1–G7 e a integridade do documento (seção 5). Subagentes fazem revisão cética por leitura, por área: cada um lê o código de uma área procurando defeitos que o usuário veria, e cada achado traz `caminho:linha` e o passo a passo de uso que o mostra.
+2. **Autoverificação do app em uso:** o app já confere a si mesmo em desenvolvimento (`src/core/incidents.ts`, invariantes da store em `src/core/store/store.ts`). Ao usar o app, o feed de incidentes e o console têm de ficar vazios. Uma regra que o app pode conferir sozinho ganha checagem lá, no ponto garantidor, e nunca um teste separado.
+3. **Uso real, curto:** uma sessão por lote no app (`npm run dev` em segundo plano), fazendo as ações do lote como o usuário faz, com fotos examinadas (regra abaixo). Sem roteiro automatizado nem repetição em várias condições.
+
+Portões de cada lote, e só eles: `npm run typecheck`, `npm run lint` (são compilação, levam segundos), a sessão de uso com o feed de incidentes vazio, e um commit com push.
+- **Lotes por área:** corrija de 5 a 10 defeitos da mesma área por vez.
+- **Produção primeiro:** o tempo vai inteiro para defeitos do app que o usuário vê.
+- **Fim de lote:** encerre os servidores e navegadores que você abriu.
 - **Foto vista é foto corrigida (2026-10-09):** o dono cobrou fotos de uso com defeitos à vista e o registro "sem defeito" (commit 8c0d871d). Valem estas regras:
   - Toda foto do app que você tirar, você abre e examina antes da próxima ação.
   - Procure o que o usuário veria de errado: texto coberto, cortado ou escondido (inclusive por alça, rótulo ou chip do editor); controle que some ou encolhe havendo espaço; cabeçalho cortado; sobreposição; desalinhamento; idioma trocado.
   - Cada coisa vista vira DEF e é corrigida no mesmo lote. Se esbarrar numa decisão do dono (seção 6), registre em `decisoes.md` e leve a foto ao dono no relatório. Ignorar não é opção.
   - Proibido escrever "sem defeito" sobre fotos sem uma linha por foto dizendo o que foi conferido nela.
-- **Ferramenta de teste nova** só quando um defeito do app pedir. Não conserte ferramenta por conserto.
 - **Sem perguntas:** decisão de produto vai para `auditoria/decisoes.md` com a opção que preserva o comportamento atual, e o trabalho segue.
-- **Subagentes** para o mecânico (rodar, medir, capturar) e para a conferência cética antes de declarar um lote feito.
+- **Subagentes** para a revisão por leitura e para a conferência cética antes de declarar um lote feito.
 
 ## 1. Memória do trabalho
 - `auditoria/progresso.md`: o estado e **um único** próximo passo. Leia antes de começar; atualize ao fim de cada lote. É curto: histórico não entra nele.
 - `auditoria/defeitos.md`: um registro por defeito, **no máximo 5 linhas** (formato abaixo).
 - `auditoria/decisoes.md`: decisões tomadas, que não se rediscutem.
-- `auditoria/mecanismos.md`: cada detector novo, uma linha.
+- `auditoria/mecanismos.md`: cada checagem nova do feed de incidentes, uma linha.
 - `auditoria/otimizacoes.md`: cada otimização, com a medida de antes e depois.
 - Os demais arquivos de `auditoria/` (inventários, fluxos, matriz, interações, `check.mjs`) estão **congelados** desde 2026-10-08: não se leem, não se atualizam, não se rodam.
 
@@ -34,7 +38,7 @@ Formato do defeito:
 - Status: aberto | corrigido (commit)
 - Sintoma: o que o usuário vê, e como reproduzir.
 - Causa: `caminho:linha` e uma frase.
-- Prova: detector (grupo) e mutante (Mnnn), ou o spec de navegador que falha antes e passa depois.
+- Prova: o raciocínio pelo código (`caminho:linha` antes e depois) e o que se viu no uso real depois da correção.
 ```
 
 ## 2. Escopo
@@ -45,14 +49,14 @@ Formato do defeito:
 ## 3. Método
 1. Leia o código envolvido (a função inteira e quem a chama). Nunca deduza o comportamento pelo nome de uma função.
 2. Corrija no ponto único que garante a regra (seção 4), nunca em cada componente que manifesta o defeito.
-3. Todo defeito corrigido ganha prova: um mutante no catálogo (`tools/runner/mutants.ts`) que o detector acusa antes da correção e não acusa depois; defeito de layout tem como prova o spec que falha antes e passa depois.
-4. Um detector precisa passar pelo caminho que confere: um caso que passaria com o código quebrado não é prova.
-5. Antes de dizer que um lote está feito: os portões completos sem falha **e** o app usado no navegador como o usuário usa (seção 8).
+3. Todo defeito corrigido tem prova por leitura: o caminho do código que produzia o erro e por que a correção o fecha em todos os chamadores, não só no caso visto.
+4. Regra que o app consegue conferir sozinho em desenvolvimento ganha a checagem no ponto garantidor (feed de incidentes), não um teste.
+5. Antes de dizer que um lote está feito: typecheck e lint sem erro **e** o app usado como o usuário usa, com o feed de incidentes vazio (seção 8).
 
 ## 4. Conduta
-- Proibido declarar "funciona", "corrigido" ou equivalente sem a saída dos portões do lote.
+- Proibido declarar "funciona", "corrigido" ou equivalente sem typecheck e lint sem erro e sem o uso real do lote.
 - Proibido silenciar erros: `@ts-ignore`, `eslint-disable`, `any` para calar o tipo, try/catch vazio, fallback que esconde falha, remover funcionalidade.
-- Proibido mudar texto da interface só para um detector passar. Rótulo que não cabe é corrigido no CSS do componente; encurtar a mensagem só quando o texto novo for igualmente claro (sem abreviação).
+- Proibido mudar texto da interface só para caber. Rótulo que não cabe é corrigido no CSS do componente; encurtar a mensagem só quando o texto novo for igualmente claro (sem abreviação).
 - Bibliotecas externas: consulte a documentação oficial da versão instalada antes de usar uma API nova.
 - Relate fatos, sem ressalvas.
 
@@ -111,14 +115,13 @@ Após toda escrita: esquema de cada bloco válido; IDs únicos; nenhum bloco ór
 | Shell e workspace | `src/editor/shell/`, `src/editor/workspace/` |
 | Mensagens | `src/i18n/locales/en.json`, `src/i18n/locales/pt-BR.json` |
 | Geradores | `tools/gen/generate.ts`, `tools/map/generate.ts`, `tools/inventory/write.ts` |
-| Detectores | `tools/runner/model/` (`npx vitest run --config tools/runner/model/vitest.config.ts`) |
-| Catálogo de mutantes | `tools/runner/mutants.ts` (`node tools/runner/mutants-run.ts`) |
+| Feed de incidentes (autoverificação) | `src/core/incidents.ts` |
+| Testes antigos (parados, não rodar) | `tests/`, `tools/runner/` |
 
-## 8. Navegador
-- **Specs:** `npx playwright test <arquivos>`, com `E2E_WORKERS=2` no máximo (com 3 o PC do dono travou, 2026-10-09; o hook `guarda-navegador` bloqueia sem o limite). O `playwright.config.ts` monta o build e sobe o servidor sozinho; liste todos os arquivos de uma rodada num único comando e nunca rode duas execuções ao mesmo tempo (cada uma reconstrói `dist/`). Use a fixture `tests/support/test.ts`, que já confere a guarda de tela, o feed de incidentes e o console.
-- **Proibido** no laço do lote: `npm test`, `npm run e2e` e `npx playwright test` sem arquivos (a suíte inteira passa de uma hora).
-- **Duas condições de tela:** padrão, e Windows real com `E2E_SCROLLBARS=shown E2E_SCALE=1.25`. `tests/e2e/espaco.spec.ts` cobre 1280×720 em pt-BR e 1440×900 em inglês.
-- **Usar como o usuário:** `npm run build:e2e`, `PORT=5320 npm run preview` em segundo plano e `npm run ui -- <fluxo>` (fluxos em `tools/ui/flows.ts`), ou Playwright headless com `chromium.launch({ channel: 'chrome', headless: true })`. Não use o painel de navegador do app: oculto, ele para de desenhar quadros. Um editor por página.
+## 8. Uso real
+- **Como:** `npm run dev` em segundo plano e o app aberto em Chrome headless (`chromium.launch({ channel: 'chrome', headless: true })`) ou no Claude in Chrome. Não use o painel de navegador do app: oculto, ele para de desenhar quadros. Um editor por página.
+- **O que fazer:** as ações do lote, como o usuário faz, numa janela comum (1280×720 ou 1440×900), alternando pt-BR e inglês quando o lote mexe em texto.
+- **O que conferir:** o resultado de cada ação, as fotos (seção 0) e o feed de incidentes e o console vazios.
 - **Ponto no canvas:** posição do iframe mais a posição do nó vezes `iframe.currentCSSZoom`.
 
 ## 9. Ambiente e armadilhas
@@ -126,5 +129,4 @@ Após toda escrita: esquema de cada bloco válido; IDs únicos; nenhum bloco ór
 - **Finais de linha:** convivem arquivos CRLF e LF. Ao editar por script, preserve o final de linha de cada arquivo.
 - **Ids do manifesto:** nunca se escrevem à mão (regra de lint `builder/no-manifest-id`). Leia do manifesto.
 - **Mensagem nova:** entra em `en.json` **e** em `pt-BR.json`. Depois rode `node tools/gen/generate.ts`.
-- **Código de `src/` mudado:** rode `node tools/inventory/write.ts` antes dos detectores (o grupo `inventory` exige o arquivo fresco).
 - **Repositório:** `origin` é `github.com/designathan1988/app-pagebuilder-v5`; commit e push a cada lote. Ficam fora do repositório `PROMPT.md`, `claude-tarefa.md`, `deepseek-tarefa.md`, `deepseek.ps1` e `.claude/`.
